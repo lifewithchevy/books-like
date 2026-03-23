@@ -1895,38 +1895,111 @@
     const searchInput = document.getElementById('searchInput');
     let selectedIdx = -1;
 
+    // Detect type from label/key for display
+    function getItemType(item) {
+      const label = (item.label || '').toLowerCase();
+      const search = (item.search || '').toLowerCase();
+      if (label.includes('(netflix)') || label.includes('(hulu)') || label.includes('(hbo)') || label.includes('(fx)') ||
+          search.includes('netflix') || search.includes('hulu') || search.includes('hbo') || search.includes('fx show')) return 'tv';
+      if (label.includes('(movie)') || label.includes('(film)') || search.includes('movie') || search.includes('film')) return 'movie';
+      if (label.includes('(tv)') || search.includes('tv show') || search.includes('series')) return 'tv';
+      return 'book';
+    }
+    function typeIcon(type) {
+      if (type === 'tv') return '<span class="dd-type dd-type-tv">📺 TV Show</span>';
+      if (type === 'movie') return '<span class="dd-type dd-type-movie">🎬 Movie</span>';
+      return '<span class="dd-type dd-type-book">📖 Book</span>';
+    }
+
+    // Media search index — built later after mediaThemeMap is defined
+    let mediaSearchIndex = [];
+
     function getMatches(q) {
       if (q.length < 2) return [];
       const lower = q.toLowerCase();
       const words = lower.split(/\s+/).filter(w => w.length > 0);
+
+      // Score curated book index
       const scored = searchIndex.map(item => {
         let score = 0;
-        // Exact substring match in search blob
         if (item.search.includes(lower)) score += 100;
-        // All words present
         const matched = words.filter(w => item.search.includes(w));
         score += (matched.length / words.length) * 60;
-        // Starts-with bonus on label
         if (item.label.toLowerCase().startsWith(lower)) score += 50;
-        // Label contains query
         if (item.label.toLowerCase().includes(lower)) score += 30;
-        return { ...item, score };
+        return { ...item, score, itemType: getItemType(item) };
       }).filter(x => x.score > 30);
-      // Dedupe by label (keep highest score)
+
+      // Score media index (movies/TV shows from mediaThemeMap)
+      const mediaScored = mediaSearchIndex.map(item => {
+        let score = 0;
+        if (item.search.includes(lower)) score += 100;
+        const matched = words.filter(w => item.search.includes(w));
+        score += (matched.length / words.length) * 60;
+        if (item.label.toLowerCase().startsWith(lower)) score += 50;
+        if (item.label.toLowerCase().includes(lower)) score += 30;
+        return { ...item, score, itemType: item.mediaType };
+      }).filter(x => x.score > 30);
+
+      // Merge and dedupe by label+type (keep both book AND movie/tv versions)
+      const all = [...scored, ...mediaScored];
       const seen = new Map();
-      for (const s of scored) {
-        if (!seen.has(s.label) || seen.get(s.label).score < s.score) seen.set(s.label, s);
+      for (const s of all) {
+        const dedupKey = s.label.toLowerCase().replace(/\s*\(.*?\)\s*/g, '').trim() + '|' + s.itemType;
+        if (!seen.has(dedupKey) || seen.get(dedupKey).score < s.score) seen.set(dedupKey, s);
       }
-      return [...seen.values()].sort((a, b) => b.score - a.score).slice(0, 8);
+      // Sort: books first (primary feature), then by score within each type
+      return [...seen.values()].sort((a, b) => {
+        const typeOrder = { book: 0, movie: 1, tv: 1 };
+        const typeDiff = (typeOrder[a.itemType] || 0) - (typeOrder[b.itemType] || 0);
+        if (typeDiff !== 0) return typeDiff;
+        return b.score - a.score;
+      }).slice(0, 8);
     }
 
     function renderDropdown(matches) {
-      if (matches.length === 0) { dropdown.classList.remove('open'); return; }
-      dropdown.innerHTML = matches.map((m, i) => `
-        <div class="dropdown-item${i === selectedIdx ? ' active' : ''}" data-key="${m.dataKey}" data-label="${m.label}" data-idx="${i}">
-          <div class="dd-title">${highlightMatch(m.label, searchInput.value)}</div>
-          <div class="dd-sub"><span class="dd-author">${m.author}</span></div>
-        </div>`).join('');
+      const q = searchInput.value.trim();
+      let html = '';
+
+      // Always show "Search for: [query]" at top when there's input
+      if (q.length >= 2) {
+        html += `<div class="dropdown-item dd-search-for${selectedIdx === 0 ? ' active' : ''}" data-key="__search__" data-label="${q.replace(/"/g, '&quot;')}" data-idx="0">
+          <div class="dd-title">🔍 Search for <strong style="color:var(--accent-light)">"${q}"</strong></div>
+          <div class="dd-sub">Find books, movies & shows</div>
+        </div>`;
+      }
+
+      if (matches.length === 0 && q.length < 2) { dropdown.classList.remove('open'); return; }
+
+      // Group matches by type for section headers
+      const books = matches.filter(m => m.itemType === 'book');
+      const media = matches.filter(m => m.itemType === 'movie' || m.itemType === 'tv');
+      let idx = 1;
+
+      if (books.length > 0) {
+        html += `<div class="dd-section-label">📖 Books</div>`;
+        books.forEach(m => {
+          html += `<div class="dropdown-item${idx === selectedIdx ? ' active' : ''}" data-key="${m.dataKey}" data-label="${m.label}" data-idx="${idx}">
+            <div class="dd-title">${highlightMatch(m.label, q)}</div>
+            <div class="dd-sub"><span class="dd-author">${m.author}</span></div>
+          </div>`;
+          idx++;
+        });
+      }
+
+      if (media.length > 0) {
+        html += `<div class="dd-section-label">🎬 Movies & TV Shows</div>`;
+        media.forEach(m => {
+          const badge = m.itemType === 'tv' ? '📺' : '🎬';
+          html += `<div class="dropdown-item${idx === selectedIdx ? ' active' : ''}" data-key="${m.dataKey}" data-label="${m.label}" data-idx="${idx}">
+            <div class="dd-title">${highlightMatch(m.label, q)} ${typeIcon(m.itemType)}</div>
+            <div class="dd-sub"><span class="dd-author">${m.author}</span></div>
+          </div>`;
+          idx++;
+        });
+      }
+
+      dropdown.innerHTML = html;
       dropdown.classList.add('open');
     }
 
@@ -1959,7 +2032,7 @@
         items.forEach((el, i) => el.classList.toggle('active', i === selectedIdx));
       } else if (e.key === 'ArrowUp') {
         e.preventDefault();
-        selectedIdx = Math.max(selectedIdx - 1, 0);
+        selectedIdx = Math.max(selectedIdx - 1, -1);
         items.forEach((el, i) => el.classList.toggle('active', i === selectedIdx));
       } else if (e.key === 'Enter') {
         e.preventDefault();
@@ -1978,6 +2051,7 @@
       const item = e.target.closest('.dropdown-item');
       if (!item) return;
       searchInput.value = item.dataset.label;
+      document.getElementById('clearBtn').style.display = 'flex';
       dropdown.classList.remove('open');
       showResults();
     });
@@ -2039,6 +2113,20 @@
       'normal people': { label: 'Normal People', type: 'TV Show', themes: ['love', 'class', 'coming of age', 'intimacy'], searchTerms: ['literary romance coming of age', 'class divide love story', 'intimate literary fiction', 'contemporary love story literary'] },
       'the summer i turned pretty': { label: 'The Summer I Turned Pretty', type: 'TV Show', themes: ['summer romance', 'love triangle', 'coming of age', 'beach'], searchTerms: ['summer romance young adult', 'beach romance coming of age', 'love triangle young adult', 'summer love story fiction'] },
     };
+
+    // Build media search index from mediaThemeMap (for autocomplete)
+    mediaSearchIndex = [];
+    for (const [key, val] of Object.entries(mediaThemeMap)) {
+      const type = val.type === 'TV Show' ? 'tv' : 'movie';
+      mediaSearchIndex.push({
+        label: val.label,
+        author: val.type,
+        dataKey: '__media__',
+        search: (key + ' ' + val.label + ' ' + val.themes.join(' ')).toLowerCase(),
+        mediaType: type,
+        mediaKey: key
+      });
+    }
 
     // Helper: score results from media theme searches
     function scoreMediaResults(themeResults, themes, queryLower) {
@@ -2394,10 +2482,11 @@
       // Source card
       if (isMedia && mediaMatch) {
         const mediaIcon = mediaMatch.type === 'TV Show' ? '&#128250;' : '&#127916;';
+        const mediaCoverId = 'media-cover-' + Math.random().toString(36).slice(2, 8);
         html += `
           <div class="section-label">If you like...</div>
           <div class="book-card" style="border-left: 3px solid var(--accent); margin-bottom: 24px;">
-            <div class="book-cover-wrap">
+            <div class="book-cover-wrap" id="${mediaCoverId}">
               <div class="cover-placeholder" style="background: linear-gradient(135deg, #2a1a3e, #1a2a3e);">
                 <div class="placeholder-icon" style="font-size: 32px;">${mediaIcon}</div>
                 <div class="placeholder-title" style="color: var(--accent-light);">${mediaMatch.type}</div>
@@ -2414,6 +2503,19 @@
               </div>
             </div>
           </div>`;
+        // Try to fetch a cover image for the media title from Open Library
+        setTimeout(() => {
+          fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(mediaMatch.label)}&fields=cover_i&limit=1`)
+            .then(r => r.json())
+            .then(data => {
+              if (data.docs && data.docs[0] && data.docs[0].cover_i) {
+                const coverEl = document.getElementById(mediaCoverId);
+                if (coverEl) {
+                  coverEl.innerHTML = `<img src="https://covers.openlibrary.org/b/id/${data.docs[0].cover_i}-M.jpg" alt="${mediaMatch.label} cover" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" onerror="this.parentElement.innerHTML='<div class=\\'cover-placeholder\\' style=\\'background:linear-gradient(135deg,#2a1a3e,#1a2a3e)\\'><div class=\\'placeholder-icon\\' style=\\'font-size:32px\\'>${mediaIcon}</div><div class=\\'placeholder-title\\' style=\\'color:var(--accent-light)\\'>${mediaMatch.type}</div></div>'">`;
+                }
+              }
+            }).catch(() => {});
+        }, 100);
       } else if (sourceBook) {
         const srcGenre = getGenreTag(subjects);
         const srcCoverUrl = sourceBook.cover_i ? `https://covers.openlibrary.org/b/id/${sourceBook.cover_i}-M.jpg` : '';
@@ -2721,6 +2823,37 @@
       color: var(--text-dim);
       float: right;
       margin-top: 2px;
+    }
+    .dd-type {
+      font-size: 10px;
+      padding: 2px 8px;
+      border-radius: 8px;
+      margin-left: 6px;
+      font-weight: 500;
+      vertical-align: middle;
+    }
+    .dd-type-book { background: rgba(100,180,100,0.15); color: #8bc48b; }
+    .dd-type-tv { background: rgba(100,150,220,0.15); color: #8bb5e0; }
+    .dd-type-movie { background: rgba(220,150,100,0.15); color: #e0b58b; }
+    .dd-search-for {
+      border-bottom: 1px solid var(--border) !important;
+    }
+    .dd-search-for .dd-sub {
+      font-size: 11px;
+      color: var(--text-dim);
+    }
+    .dd-section-label {
+      font-size: 10px;
+      text-transform: uppercase;
+      letter-spacing: 1px;
+      color: var(--text-dim);
+      padding: 8px 14px 4px;
+      font-weight: 600;
+      border-top: 1px solid var(--border);
+    }
+    .dd-section-label:first-child,
+    .dd-search-for + .dd-section-label {
+      border-top: none;
     }
 
     /* Clear/Reset Button */
