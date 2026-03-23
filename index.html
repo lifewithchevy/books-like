@@ -6,17 +6,6 @@
   <title>Books Like - Find Your Next Favorite Book | Similar Books, Movies & TV Shows</title>
   <meta name="description" content="Find books like your favorites. Search any book, movie, or TV show and get personalized book recommendations. Like asking a friend who reads everything.">
   <meta name="keywords" content="books like, similar books, book recommendations, books similar to, what to read next, booktok recommendations, if you liked, books like twilight, books like fourth wing">
-  <!-- Open Graph / Social Sharing -->
-  <meta property="og:title" content="Books Like - Find Your Next Favorite Book">
-  <meta property="og:description" content="Search any book, movie, or TV show and get personalized book recommendations. Like asking a friend who reads everything.">
-  <meta property="og:type" content="website">
-  <meta property="og:url" content="https://books-like.app">
-  <meta name="twitter:card" content="summary_large_image">
-  <meta name="twitter:title" content="Books Like - Find Your Next Favorite Book">
-  <meta name="twitter:description" content="Search any book, movie, or TV show and get personalized book recommendations. BookTok approved.">
-  <!-- Favicon -->
-  <link rel="icon" href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📚</text></svg>">
-  <link rel="canonical" href="https://books-like.app">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -587,7 +576,7 @@
     </div>
     <div class="user-badge">
       <div class="dot"></div>
-      Powered by BookTok vibes &middot; Open Library
+      Olga's Library &middot; Goodreads connected
     </div>
   </header>
 
@@ -614,7 +603,7 @@
 
         <div class="result-section visible" id="results">
           <!-- Source Material -->
-          <div class="section-label">so you liked...</div>
+          <div class="section-label">If you like...</div>
           <div class="book-card" style="border-left: 3px solid var(--accent); margin-bottom: 24px;">
             <div class="book-title">Vladimir</div>
             <div class="book-author">Julia May Jonas</div>
@@ -628,7 +617,7 @@
           </div>
 
           <!-- Closest Matches -->
-          <div class="section-label">then you NEED to read these</div>
+          <div class="section-label">Then read these</div>
           <div class="book-grid">
             <div class="book-card">
               <div class="match-badge">97% match</div>
@@ -667,7 +656,7 @@
 
           <!-- Same Energy -->
           <hr class="divider">
-          <div class="section-label">same vibe, different flavor</div>
+          <div class="section-label">Same vibe, different book</div>
           <div class="book-grid">
             <div class="book-card">
               <div class="match-badge">88% match</div>
@@ -706,7 +695,7 @@
 
           <!-- Wild Card -->
           <hr class="divider">
-          <div class="section-label">hear me out...</div>
+          <div class="section-label">Hear me out...</div>
           <div class="book-grid">
             <div class="book-card wildcard-card">
               <div class="match-badge" style="background: rgba(200,169,110,0.25);">Wild Card</div>
@@ -821,34 +810,74 @@
     <!-- Sidebar -->
     <div class="sidebar">
       <div class="sidebar-card">
-        <h3>How It Works</h3>
-        <div style="color: var(--text-muted); font-size: 13px; line-height: 1.6;">
-          <p style="margin-bottom: 10px;">Search any <strong>book, movie, or TV show</strong> and we'll find books with the same vibe.</p>
-          <p style="margin-bottom: 10px;">Like asking that friend who reads 100 books a year and always has the perfect rec.</p>
-          <p>Powered by Open Library's database of millions of books.</p>
+        <h3>Currently Reading</h3>
+        <div class="reading-item">
+          <div class="reading-cover">&#128214;</div>
+          <div class="reading-info">
+            <div class="title">Tomorrow, and Tomorrow, and Tomorrow</div>
+            <div class="author">Gabrielle Zevin</div>
+            <div class="status">In progress</div>
+            <div class="progress-bar"><div class="progress-fill" style="width: 45%;"></div></div>
+          </div>
         </div>
       </div>
 
       <div class="sidebar-card">
-        <h3>Try Searching</h3>
-        <div style="display: flex; flex-wrap: wrap; gap: 6px;">
-          <span class="genre-tag tag-fantasy" style="font-size: 12px; padding: 5px 12px; cursor: pointer;" onclick="document.getElementById('searchInput').value='Fourth Wing';showResults()">Fourth Wing</span>
-          <span class="genre-tag tag-romance" style="font-size: 12px; padding: 5px 12px; cursor: pointer;" onclick="document.getElementById('searchInput').value='Bridgerton';showResults()">Bridgerton</span>
-          <span class="genre-tag tag-thriller" style="font-size: 12px; padding: 5px 12px; cursor: pointer;" onclick="document.getElementById('searchInput').value='Dracula 2025';showResults()">Dracula 2025</span>
-          <span class="genre-tag tag-literary" style="font-size: 12px; padding: 5px 12px; cursor: pointer;" onclick="document.getElementById('searchInput').value='Succession';showResults()">Succession</span>
-          <span class="genre-tag tag-scifi" style="font-size: 12px; padding: 5px 12px; cursor: pointer;" onclick="document.getElementById('searchInput').value='Stranger Things';showResults()">Stranger Things</span>
-          <span class="genre-tag tag-romance" style="font-size: 12px; padding: 5px 12px; cursor: pointer;" onclick="document.getElementById('searchInput').value='Normal People';showResults()">Normal People</span>
+        <h3>2026 Reading Challenge</h3>
+        <div class="stats-grid">
+          <div class="stat-item">
+            <div class="number">24</div>
+            <div class="label">Books Read</div>
+          </div>
+          <div class="stat-item">
+            <div class="number">50</div>
+            <div class="label">Goal</div>
+          </div>
+          <div class="stat-item">
+            <div class="number">4.4</div>
+            <div class="label">Avg Rating</div>
+          </div>
+          <div class="stat-item">
+            <div class="number">48%</div>
+            <div class="label">Progress</div>
+          </div>
+        </div>
+        <div class="progress-bar" style="margin-top: 12px;">
+          <div class="progress-fill" style="width: 48%;"></div>
         </div>
       </div>
 
       <div class="sidebar-card">
-        <h3>Popular Genres</h3>
+        <h3>Your Favorites</h3>
+        <div class="reading-item">
+          <div class="reading-cover">&#128156;</div>
+          <div class="reading-info">
+            <div class="title">A Court of Mist and Fury</div>
+            <div class="author">Sarah J. Maas</div>
+          </div>
+        </div>
+        <div class="reading-item">
+          <div class="reading-cover">&#128156;</div>
+          <div class="reading-info">
+            <div class="title">A Court of Silver Flames</div>
+            <div class="author">Sarah J. Maas</div>
+          </div>
+        </div>
+        <div class="reading-item">
+          <div class="reading-cover">&#128156;</div>
+          <div class="reading-info">
+            <div class="title">Fourth Wing</div>
+            <div class="author">Rebecca Yarros</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="sidebar-card">
+        <h3>Top Genres</h3>
         <div style="display: flex; flex-wrap: wrap; gap: 6px;">
           <span class="genre-tag tag-fantasy" style="font-size: 12px; padding: 5px 12px;">Fantasy</span>
           <span class="genre-tag tag-romance" style="font-size: 12px; padding: 5px 12px;">Romance</span>
-          <span class="genre-tag tag-thriller" style="font-size: 12px; padding: 5px 12px;">Thriller</span>
-          <span class="genre-tag tag-literary" style="font-size: 12px; padding: 5px 12px;">Literary Fiction</span>
-          <span class="genre-tag tag-scifi" style="font-size: 12px; padding: 5px 12px;">Sci-Fi</span>
+          <span class="genre-tag tag-literary" style="font-size: 12px; padding: 5px 12px;">Young Adult</span>
           <span class="genre-tag tag-drama" style="font-size: 12px; padding: 5px 12px;">Romantasy</span>
         </div>
       </div>
@@ -1313,7 +1342,7 @@
 
       const srcCoverId = 'cover-src-' + Math.random().toString(36).substr(2, 9);
       return `
-        <div class="section-label">so you liked...</div>
+        <div class="section-label">If you like...</div>
         <div class="book-card" style="border-left: 3px solid var(--accent); margin-bottom: 24px;">
           <div class="book-cover-wrap">
             <div class="cover-placeholder">
@@ -1335,13 +1364,13 @@
             ${srcAdapted}
           </div>
         </div>
-        ${filteredClosest.length > 0 ? `<div class="section-label">then you NEED to read these</div>
+        ${filteredClosest.length > 0 ? `<div class="section-label">Then read these</div>
         <div class="book-grid">${filteredClosest.map(b => renderBookCard(b, true)).join('')}</div>` : ''}
         ${filteredSameEnergy.length > 0 ? `<hr class="divider">
-        <div class="section-label">same vibe, different flavor</div>
+        <div class="section-label">Same vibe, different book</div>
         <div class="book-grid">${filteredSameEnergy.map(b => renderBookCard(b, true)).join('')}</div>` : ''}
         ${showWildcard ? `<hr class="divider">
-        <div class="section-label">hear me out...</div>
+        <div class="section-label">Hear me out...</div>
         <div class="book-grid">${renderBookCard(wc, false)}</div>` : ''}`;
     }
 
@@ -2284,7 +2313,7 @@
       if (isMedia && mediaMatch) {
         const mediaIcon = mediaMatch.type === 'TV Show' ? '&#128250;' : '&#127916;';
         html += `
-          <div class="section-label">so you liked...</div>
+          <div class="section-label">If you like...</div>
           <div class="book-card" style="border-left: 3px solid var(--accent); margin-bottom: 24px;">
             <div class="book-cover-wrap">
               <div class="cover-placeholder" style="background: linear-gradient(135deg, #2a1a3e, #1a2a3e);">
@@ -2307,7 +2336,7 @@
         const srcGenre = getGenreTag(subjects);
         const srcCoverUrl = sourceBook.cover_i ? `https://covers.openlibrary.org/b/id/${sourceBook.cover_i}-M.jpg` : '';
         html += `
-          <div class="section-label">so you liked...</div>
+          <div class="section-label">If you like...</div>
           <div class="book-card" style="border-left: 3px solid var(--accent); margin-bottom: 24px;">
             <div class="book-cover-wrap">
               ${srcCoverUrl ? `<img src="${srcCoverUrl}" alt="${sourceBook.title} cover" style="width:100%;height:100%;object-fit:cover;border-radius:8px;" onerror="this.parentElement.innerHTML='<div class=\\'cover-placeholder\\'><div class=\\'placeholder-icon\\'>&#128214;</div></div>'">` :
@@ -2329,7 +2358,7 @@
 
       // Similar books
       if (topBooks.length > 0) {
-        html += `<div class="section-label">then you NEED to read these</div>`;
+        html += `<div class="section-label">Then read these</div>`;
         html += `<div class="book-grid">`;
         topBooks.forEach(book => {
           const pct = Math.max(65, Math.round((book.matchCount / maxMatch) * 100));
