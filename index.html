@@ -11,23 +11,28 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
 
     :root {
-      --bg: #0f0f0f;
-      --surface: #1a1a1a;
-      --surface2: #242424;
-      --surface3: #2e2e2e;
-      --accent: #c8a96e;
-      --accent-light: #e0c992;
-      --accent-dim: #8a7345;
-      --text: #e8e8e8;
-      --text-muted: #999;
-      --text-dim: #666;
-      --border: #333;
-      --success: #4ade80;
-      --tag-fantasy: #7c3aed;
-      --tag-romance: #e11d48;
-      --tag-thriller: #0891b2;
-      --tag-literary: #ca8a04;
-      --tag-scifi: #2563eb;
+      /* Kindle-inspired: high contrast dark with paper warmth */
+      --bg: #111111;
+      --surface: #191919;
+      --surface2: #1f1f1f;
+      --surface3: #282828;
+      /* Bookmark highlighter yellow — the classic */
+      --accent: #F5D547;
+      --accent-light: #FFE88A;
+      --accent-dim: #B89D2E;
+      /* High contrast text like ink on paper */
+      --text: #FAFAFA;
+      --text-muted: #A0A0A0;
+      --text-dim: #6B6B6B;
+      --border: #2a2a2a;
+      --success: #6EE7B7;
+      /* Highlighter palette for genre tags */
+      --tag-fantasy: #C084FC;     /* lavender highlighter */
+      --tag-romance: #FB7185;     /* pink highlighter */
+      --tag-thriller: #38BDF8;    /* blue highlighter */
+      --tag-literary: #F5D547;    /* yellow highlighter */
+      --tag-scifi: #38BDF8;       /* blue highlighter */
+      --tag-drama: #FB923C;       /* orange highlighter */
     }
 
     body {
@@ -39,7 +44,7 @@
 
     /* Header */
     header {
-      background: linear-gradient(135deg, #1a1a1a 0%, #252525 100%);
+      background: linear-gradient(135deg, #151515 0%, #1a1a1a 100%);
       border-bottom: 1px solid var(--border);
       padding: 20px 32px;
       display: flex;
@@ -60,11 +65,13 @@
       width: 36px;
       height: 36px;
       background: var(--accent);
+      color: #111;
       border-radius: 8px;
       display: flex;
       align-items: center;
       justify-content: center;
       font-size: 20px;
+      font-weight: 700;
     }
 
     .logo h1 {
@@ -297,7 +304,7 @@
       position: absolute;
       top: 12px;
       right: 12px;
-      background: rgba(200, 169, 110, 0.15);
+      background: rgba(245, 213, 71, 0.15);
       color: var(--accent-light);
       font-size: 11px;
       font-weight: 600;
@@ -342,11 +349,13 @@
       font-weight: 500;
     }
 
-    .tag-fantasy { background: rgba(124,58,237,0.15); color: #a78bfa; }
-    .tag-romance { background: rgba(225,29,72,0.15); color: #fb7185; }
-    .tag-thriller { background: rgba(8,145,178,0.15); color: #22d3ee; }
-    .tag-literary { background: rgba(202,138,4,0.15); color: #fbbf24; }
-    .tag-drama { background: rgba(34,197,94,0.15); color: #4ade80; }
+    /* Highlighter-style genre tags */
+    .tag-fantasy { background: rgba(192,132,252,0.18); color: #C084FC; }
+    .tag-romance { background: rgba(251,113,133,0.18); color: #FB7185; }
+    .tag-thriller { background: rgba(56,189,248,0.18); color: #38BDF8; }
+    .tag-literary { background: rgba(245,213,71,0.18); color: #F5D547; }
+    .tag-drama { background: rgba(251,146,60,0.18); color: #FB923C; }
+    .tag-scifi { background: rgba(56,189,248,0.18); color: #38BDF8; }
 
     .book-card .book-pitch {
       font-size: 13px;
@@ -361,6 +370,65 @@
       display: flex;
       align-items: center;
       gap: 4px;
+    }
+
+    .book-card-actions {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 10px;
+      flex-wrap: wrap;
+    }
+
+    .book-card-actions a {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 11.5px;
+      font-weight: 600;
+      padding: 5px 12px;
+      border-radius: 8px;
+      text-decoration: none;
+      transition: all 0.2s;
+      white-space: nowrap;
+    }
+
+    .btn-goodreads {
+      background: rgba(255,255,255,0.06);
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+    }
+    .btn-goodreads:hover {
+      background: rgba(255,255,255,0.12);
+      color: var(--text);
+      border-color: rgba(255,255,255,0.15);
+    }
+    .btn-goodreads svg { width: 14px; height: 14px; }
+
+    .btn-amazon {
+      background: rgba(255,153,0,0.12);
+      color: #FF9900;
+      border: 1px solid rgba(255,153,0,0.2);
+    }
+    .btn-amazon:hover {
+      background: rgba(255,153,0,0.22);
+      color: #FFB340;
+      border-color: rgba(255,153,0,0.35);
+    }
+    .btn-amazon svg { width: 14px; height: 14px; }
+
+    .ku-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 4px;
+      font-size: 10.5px;
+      font-weight: 700;
+      padding: 3px 9px;
+      border-radius: 6px;
+      background: rgba(0,150,255,0.12);
+      color: #38BDF8;
+      letter-spacing: 0.3px;
+      white-space: nowrap;
     }
 
     @media (max-width: 600px) {
@@ -393,11 +461,11 @@
     .mood-pill:hover {
       border-color: var(--accent);
       color: var(--accent-light);
-      background: rgba(200, 169, 110, 0.08);
+      background: rgba(245, 213, 71, 0.08);
     }
 
     .mood-pill.active {
-      background: rgba(200, 169, 110, 0.15);
+      background: rgba(245, 213, 71, 0.15);
       border-color: var(--accent);
       color: var(--accent-light);
     }
@@ -505,8 +573,8 @@
       align-items: center;
       gap: 8px;
       padding: 12px 16px;
-      background: rgba(200, 169, 110, 0.08);
-      border: 1px solid rgba(200, 169, 110, 0.2);
+      background: rgba(245, 213, 71, 0.08);
+      border: 1px solid rgba(245, 213, 71, 0.2);
       border-radius: 10px;
       font-size: 12px;
       color: var(--accent-light);
@@ -556,8 +624,8 @@
     }
 
     .wildcard-card {
-      background: linear-gradient(135deg, rgba(200,169,110,0.08) 0%, rgba(200,169,110,0.02) 100%);
-      border: 1px solid rgba(200,169,110,0.25);
+      background: linear-gradient(135deg, rgba(245,213,71,0.08) 0%, rgba(245,213,71,0.02) 100%);
+      border: 1px solid rgba(245,213,71,0.25);
     }
 
     /* Responsive */
@@ -1229,6 +1297,80 @@
       processCoverQueue();
     }
 
+    // ===== AMAZON AFFILIATE TAG =====
+    const AMAZON_AFFILIATE_TAG = 'bookslike0e-20';
+
+    // Generate Goodreads search URL
+    function goodreadsUrl(title, author) {
+      const q = encodeURIComponent((title + ' ' + (author || '')).replace(/\s*\(.*?\)\s*/g, '').trim());
+      return `https://www.goodreads.com/search?q=${q}`;
+    }
+
+    // Generate Amazon search URL with affiliate tag
+    function amazonUrl(title, author) {
+      const q = encodeURIComponent((title + ' ' + (author || '')).replace(/\s*\(.*?\)\s*/g, '').replace(/\s*\/\s*5$/,'').trim());
+      return `https://www.amazon.com/s?k=${q}&i=stripbooks&tag=${AMAZON_AFFILIATE_TAG}`;
+    }
+
+    // Kindle Unlimited popular titles (curated set)
+    const kindleUnlimitedTitles = new Set([
+      'the housemaid', 'the housemaid\'s secret', 'things we never got over', 'things we hide from the light',
+      'the seven husbands of evelyn hugo', 'ugly love', 'november 9', 'verity', 'it ends with us',
+      'it starts with us', 'confess', 'reminders of him', 'layla', 'regretting you', 'too late',
+      'never never', 'heart bones', 'finding cinderella', 'losing hope', 'maybe someday',
+      'maybe not', 'maybe now', 'all your perfects', 'without merit',
+      'twisted love', 'twisted games', 'twisted hate', 'twisted lies',
+      'king of wrath', 'king of pride', 'king of greed', 'king of sloth',
+      'things we left behind', 'the fine print', 'terms and conditions',
+      'assistant to the villain', 'apprentice to the villain',
+      'haunting adeline', 'hunting adeline', 'the sweetest oblivion',
+      'the maddest obsession', 'the darkest temptation',
+      'credence', 'birthday girl', 'punk 57', 'bully',
+      'corrupt', 'hideaway', 'kill switch', 'conclave',
+      'the love hypothesis', 'love on the brain', 'love, theoretically',
+      'check & mate', 'bride', 'the deal', 'the mistake', 'the score', 'the goal',
+      'a touch of darkness', 'a touch of ruin', 'a game of gods',
+      'zodiac academy', 'ruthless boys of the zodiac',
+      'from blood and ash', 'a kingdom of flesh and fire', 'the crown of gilded bones',
+      'the war of two queens', 'a soul of ash and blood',
+      'powerless', 'reckless', 'fearless', 'heartless',
+      'flawless', 'lore of the wilds', 'house of flame and shadow',
+      'the invisible life of addie larue',
+      'daisy jones & the six', 'malibu rising', 'carrie soto is back',
+      'the spanish love deception', 'the american roommate experiment',
+      'beach read', 'people we meet on vacation', 'happy place', 'funny story',
+      'book lovers', 'the unmaking of june farrow',
+      'a court of thorns and roses', 'a court of mist and fury', 'a court of wings and ruin',
+      'a court of frost and starlight', 'a court of silver flames',
+      'throne of glass', 'crown of midnight', 'heir of fire', 'queen of shadows',
+      'empire of storms', 'tower of dawn', 'kingdom of ash',
+      'crescent city', 'house of earth and blood', 'house of sky and breath',
+      'the atlas six', 'the atlas paradox', 'the atlas complex',
+      'divine rivals', 'ruthless vows', 'a fire in the flesh',
+      'born of blood and fire', 'the serpent and the wings of night',
+      'the ashes & the star-cursed king', 'six scorched roses',
+    ].map(t => t.toLowerCase()));
+
+    function isKindleUnlimited(title) {
+      return kindleUnlimitedTitles.has(title.toLowerCase().trim());
+    }
+
+    // Goodreads icon SVG
+    const grIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.43 23.995c-3.608-.208-6.274-2.077-6.448-5.078.695.007 1.375-.013 2.07-.006.224 1.342 1.065 2.43 2.683 3.026 1.583.496 3.737.46 5.082-.174 1.726-.814 2.723-2.277 2.842-4.585.038-.736.054-1.473.054-2.21v-.392c-.88 1.553-2.14 2.503-3.868 2.837-5.043.976-8.19-1.86-8.48-6.71-.242-4.036 2.172-7.726 6.09-8.39 1.98-.336 3.67.186 5.05 1.536l.133.134.085-.086c.052-.554.386-1.034.932-1.203h1.543v13.263c0 2.217-.207 3.85-1.14 5.3-1.425 2.207-4.07 3.016-6.628 2.738zm5.246-12.39c.062-3.136-.987-5.958-4.396-6.158-3.122-.183-5.108 2.043-5.108 5.378 0 3.49 1.712 5.825 4.613 5.88 2.738.052 4.478-1.588 4.89-5.1z"/></svg>`;
+    // Amazon icon SVG
+    const azIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M.045 18.02c.072-.116.187-.124.348-.022 2.344 1.476 4.882 2.214 7.614 2.214 1.903 0 3.727-.375 5.474-1.126.262-.113.494-.201.697-.263.244-.075.39.026.44.306.044.244-.06.467-.313.668-.756.6-1.675 1.1-2.76 1.5-1.417.52-2.878.78-4.384.78-2.32 0-4.47-.615-6.453-1.845-.186-.115-.239-.256-.157-.424l-.003.002zm7.647-1.588c-.207-.274-.428-.382-.665-.325-.237.06-.28.224-.126.5.154.278.394.444.722.5.326.056.48-.074.46-.39-.018-.278-.175-.39-.39-.285zm6.37-2.065c-.135-.334-.32-.46-.558-.378-.172.06-.2.18-.086.36.026.04.17.296.435.767.265.47.37.76.316.872-.158.318-.663.49-1.513.513-.528.014-.973-.1-1.337-.34l-.17-.126c-.178-.15-.283-.16-.316-.03-.03.106.065.24.287.4.222.16.514.28.878.36.363.082.65.098.86.05.714-.16 1.19-.55 1.425-1.168.087-.227.038-.548-.145-.962l-.076-.158-.002-.005zM.045 18.02c.072-.116.187-.124.348-.022 2.344 1.476 4.882 2.214 7.614 2.214 1.903 0 3.727-.375 5.474-1.126.262-.113.494-.201.697-.263.244-.075.39.026.44.306.044.244-.06.467-.313.668-.756.6-1.675 1.1-2.76 1.5-1.417.52-2.878.78-4.384.78-2.32 0-4.47-.615-6.453-1.845-.186-.115-.239-.256-.157-.424l-.003.002z"/><path d="M21.045 17.296c-.287-.146-.56-.186-.82-.12-.168.044-.286.12-.356.227-.07.108-.066.207.01.298.076.09.183.152.32.186.14.034.333.01.582-.074l.098-.038c.104-.044.186-.034.244.027.058.06.064.143.018.248-.046.105-.16.197-.344.278-.292.13-.618.178-.978.147-.36-.03-.634-.143-.82-.34-.187-.197-.265-.458-.236-.78.03-.328.168-.59.416-.786.248-.196.57-.308.968-.336.397-.028.73.033 1 .183.168.094.246.2.234.318-.01.116-.086.2-.228.252l-.108.036v.073z"/></svg>`;
+
+    // Render action links for a book card
+    function renderBookActions(title, author) {
+      const kuBadge = isKindleUnlimited(title) ? `<span class="ku-badge">📖 Kindle Unlimited</span>` : '';
+      return `
+        <div class="book-card-actions">
+          <a href="${goodreadsUrl(title, author)}" target="_blank" rel="noopener" class="btn-goodreads" onclick="event.stopPropagation()">${grIcon} Goodreads</a>
+          <a href="${amazonUrl(title, author)}" target="_blank" rel="noopener" class="btn-amazon" onclick="event.stopPropagation()">${azIcon} Amazon</a>
+          ${kuBadge}
+        </div>`;
+    }
+
     function renderBookCard(book, showMatch) {
       const adaptedLine = book.adapted ? `<div class="adapted">&#127916; ${book.adapted}</div>` : '';
       const tags = book.tags
@@ -1248,7 +1390,7 @@
           </div>
           <div class="book-card-content">
             ${showMatch && book.match ? `<div class="match-badge">${book.match} match</div>` : ''}
-            ${book.wildcard ? '<div class="match-badge" style="background: rgba(200,169,110,0.25);">Wild Card</div>' : ''}
+            ${book.wildcard ? '<div class="match-badge" style="background: rgba(245,213,71,0.25);">Wild Card</div>' : ''}
             <div class="book-title">${book.title}</div>
             <div class="book-author">${book.author}</div>
             <div class="book-meta">
@@ -1257,6 +1399,7 @@
             </div>
             <div class="book-pitch">${book.pitch}</div>
             ${adaptedLine}
+            ${renderBookActions(book.title, book.author)}
           </div>
         </div>`;
     }
@@ -1318,6 +1461,7 @@
             </div>
             <div class="book-pitch">${data.appeal || src.pitch}</div>
             ${srcAdapted}
+            ${renderBookActions(displayTitle, src.author)}
           </div>
         </div>
         ${filteredClosest.length > 0 ? `<div class="section-label">Then read these</div>
@@ -1957,7 +2101,7 @@
       }).slice(0, 8);
     }
 
-    function renderDropdown(matches) {
+    function renderDropdown(matches, apiResults) {
       const q = searchInput.value.trim();
       let html = '';
 
@@ -1969,7 +2113,7 @@
         </div>`;
       }
 
-      if (matches.length === 0 && q.length < 2) { dropdown.classList.remove('open'); return; }
+      if (matches.length === 0 && (!apiResults || apiResults.length === 0) && q.length < 2) { dropdown.classList.remove('open'); return; }
 
       // Group matches by type for section headers
       const books = matches.filter(m => m.itemType === 'book');
@@ -1999,6 +2143,18 @@
         });
       }
 
+      // API results from Open Library
+      if (apiResults && apiResults.length > 0) {
+        html += `<div class="dd-section-label">📖 From the Web</div>`;
+        apiResults.forEach(r => {
+          html += `<div class="dropdown-item${idx === selectedIdx ? ' active' : ''}" data-key="__search__" data-label="${r.title.replace(/"/g, '&quot;')}" data-idx="${idx}">
+            <div class="dd-title">${highlightMatch(r.title, q)}</div>
+            <div class="dd-sub"><span class="dd-author">${r.author}${r.year ? ' (' + r.year + ')' : ''}</span></div>
+          </div>`;
+          idx++;
+        });
+      }
+
       dropdown.innerHTML = html;
       dropdown.classList.add('open');
     }
@@ -2009,11 +2165,41 @@
       return text.slice(0, idx) + '<strong style="color:var(--accent-light)">' + text.slice(idx, idx + query.length) + '</strong>' + text.slice(idx + query.length);
     }
 
+    let _apiDebounceTimer = null;
+    let _lastApiResults = [];
+
     searchInput.addEventListener('input', () => {
       const q = searchInput.value.trim();
       selectedIdx = -1;
       const matches = getMatches(q);
+      _lastApiResults = [];
       renderDropdown(matches);
+
+      // Debounced live API search if local results are sparse
+      clearTimeout(_apiDebounceTimer);
+      if (q.length >= 2 && matches.length < 3) {
+        _apiDebounceTimer = setTimeout(() => {
+          const currentQ = searchInput.value.trim();
+          if (currentQ !== q) return; // user kept typing
+          fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(q)}&fields=title,author_name,cover_i,first_publish_year&limit=5`)
+            .then(res => res.json())
+            .then(data => {
+              if (searchInput.value.trim() !== q) return; // stale
+              const localLabels = new Set(matches.map(m => m.label.toLowerCase()));
+              const apiResults = (data.docs || [])
+                .filter(doc => doc.title && !localLabels.has(doc.title.toLowerCase()))
+                .map(doc => ({
+                  title: doc.title,
+                  author: (doc.author_name || []).slice(0, 2).join(', ') || 'Unknown',
+                  year: doc.first_publish_year || null
+                }));
+              _lastApiResults = apiResults;
+              const freshMatches = getMatches(currentQ);
+              renderDropdown(freshMatches, apiResults);
+            })
+            .catch(() => {}); // silently fail
+        }, 300);
+      }
     });
 
     searchInput.addEventListener('focus', () => {
@@ -2112,6 +2298,7 @@
       'past lives': { label: 'Past Lives', type: 'Movie', themes: ['fate', 'lost love', 'immigration', 'what if'], searchTerms: ['lost love literary fiction', 'immigration love story novel', 'fate reunion romance literary', 'bittersweet love story fiction'] },
       'normal people': { label: 'Normal People', type: 'TV Show', themes: ['love', 'class', 'coming of age', 'intimacy'], searchTerms: ['literary romance coming of age', 'class divide love story', 'intimate literary fiction', 'contemporary love story literary'] },
       'the summer i turned pretty': { label: 'The Summer I Turned Pretty', type: 'TV Show', themes: ['summer romance', 'love triangle', 'coming of age', 'beach'], searchTerms: ['summer romance young adult', 'beach romance coming of age', 'love triangle young adult', 'summer love story fiction'] },
+      'star wars': { label: 'Star Wars', type: 'Movie', themes: ['space opera', 'chosen one', 'good vs evil', 'adventure'], searchTerms: ['space opera science fiction', 'chosen one hero journey novel', 'galactic war science fiction', 'epic adventure sci-fi novel'] },
     };
 
     // Build media search index from mediaThemeMap (for autocomplete)
@@ -2536,6 +2723,7 @@
               <div class="book-pitch" style="color: var(--text-dim); font-style: italic;">
                 Themes: ${subjects.slice(0, 6).join(', ')}
               </div>
+              ${renderBookActions(sourceBook.title, sourceBook.author)}
             </div>
           </div>`;
       }
@@ -2566,6 +2754,7 @@
                 </div>
                 <div class="book-pitch" style="margin-top: 6px; font-size: 12.5px; color: var(--text-muted); line-height: 1.4;">${whyBlurb}</div>
                 ${tagLabels.length > 0 ? `<div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px;">${tagLabels.map(s => `<span class="matched-tag">${s}</span>`).join('')}</div>` : ''}
+                ${renderBookActions(book.title, book.author)}
               </div>
             </div>`;
         });
@@ -2743,11 +2932,11 @@
     .prompt-tag:hover {
       border-color: var(--accent);
       color: var(--accent-light);
-      background: rgba(200, 169, 110, 0.1);
+      background: rgba(245, 213, 71, 0.1);
       transform: translateY(-1px);
     }
     .prompt-tag.active {
-      background: rgba(200, 169, 110, 0.15);
+      background: rgba(245, 213, 71, 0.15);
       border-color: var(--accent);
       color: var(--accent-light);
     }
@@ -2767,7 +2956,7 @@
       font-size: 10px;
       padding: 2px 8px;
       border-radius: 8px;
-      background: rgba(200,169,110,0.12);
+      background: rgba(245,213,71,0.12);
       color: var(--accent-light);
       font-weight: 500;
     }
@@ -2883,7 +3072,7 @@
 
     /* Personal Rec Pill */
     .personal-tag {
-      background: linear-gradient(135deg, rgba(200,169,110,0.2), rgba(200,169,110,0.05)) !important;
+      background: linear-gradient(135deg, rgba(245,213,71,0.2), rgba(245,213,71,0.05)) !important;
       border-color: var(--accent) !important;
       color: var(--accent) !important;
       font-weight: 600;
@@ -2891,7 +3080,7 @@
     .personal-tag:hover, .personal-tag.active {
       background: var(--accent) !important;
       color: var(--bg) !important;
-      box-shadow: 0 2px 12px rgba(200,169,110,0.3);
+      box-shadow: 0 2px 12px rgba(245,213,71,0.3);
     }
 
     /* Homepage Landing */
@@ -2945,8 +3134,8 @@
       transform: translateY(-1px);
     }
     .vibe-pill {
-      background: rgba(200, 169, 110, 0.1);
-      border-color: rgba(200, 169, 110, 0.3);
+      background: rgba(245, 213, 71, 0.1);
+      border-color: rgba(245, 213, 71, 0.3);
     }
     .vibe-pill:hover {
       background: var(--accent);
