@@ -151,12 +151,17 @@
       align-items: center;
     }
 
-    .search-input {
+    .search-input-wrap {
       flex: 1;
+      position: relative;
+    }
+    .search-input {
+      width: 100%;
+      box-sizing: border-box;
       background: var(--surface2);
       border: 1px solid var(--border);
       border-radius: 12px;
-      padding: 14px 20px;
+      padding: 14px 44px 14px 20px;
       color: var(--text);
       font-size: 15px;
       font-family: 'Inter', sans-serif;
@@ -567,7 +572,7 @@
 
   <!-- Header -->
   <header>
-    <div class="logo">
+    <div class="logo" onclick="goHome()" style="cursor: pointer;" title="Back to home">
       <div class="logo-icon">B</div>
       <div>
         <h1>Books Like</h1>
@@ -582,7 +587,7 @@
 
   <!-- Tabs -->
   <div class="tabs">
-    <div class="tab active" onclick="switchTab('more-like-this')">More Like This</div>
+    <div class="tab active" onclick="switchTab('more-like-this')">Books Like</div>
     <div class="tab" onclick="switchTab('mood')">By Mood</div>
     <div class="tab" onclick="switchTab('weekly')">Weekly Picks</div>
   </div>
@@ -594,7 +599,10 @@
       <div id="tab-more-like-this">
         <div class="search-section">
           <div class="search-box" style="position: relative;">
-            <input type="text" class="search-input" id="searchInput" placeholder="Search any book, show, or movie..." value="Vladimir (Netflix)" autocomplete="off">
+            <div class="search-input-wrap">
+              <input type="text" class="search-input" id="searchInput" placeholder="Search any book, show, or movie..." value="" autocomplete="off">
+              <button class="search-clear-btn" id="clearBtn" onclick="goHome()" title="Clear &amp; start over" style="display:none;">&#10005;</button>
+            </div>
             <button class="search-btn" onclick="showResults()">Find Similar Books</button>
             <div id="searchDropdown" class="search-dropdown"></div>
           </div>
@@ -602,111 +610,59 @@
         </div>
 
         <div class="result-section visible" id="results">
-          <!-- Source Material -->
-          <div class="section-label">If you like...</div>
-          <div class="book-card" style="border-left: 3px solid var(--accent); margin-bottom: 24px;">
-            <div class="book-title">Vladimir</div>
-            <div class="book-author">Julia May Jonas</div>
-            <div class="book-meta">
-              <span class="rating"><span class="star">&#9733;</span> 3.3/5 on Goodreads</span>
-              <span class="genre-tag tag-literary">Literary Fiction</span>
-              <span class="genre-tag tag-drama">Campus Novel</span>
-            </div>
-            <div class="book-pitch">The novel behind the Netflix series. Goes even deeper into the unnamed protagonist's head &mdash; raw, stream-of-consciousness writing about desire, obsession, and a woman who refuses to be invisible. The ending hits differently than the show.</div>
-            <div class="adapted">&#127916; Adapted into Netflix series (2026) starring Rachel Weisz</div>
-          </div>
-
-          <!-- Closest Matches -->
-          <div class="section-label">Then read these</div>
-          <div class="book-grid">
-            <div class="book-card">
-              <div class="match-badge">97% match</div>
-              <div class="book-title">Big Swiss</div>
-              <div class="book-author">Jen Beagin</div>
-              <div class="book-meta">
-                <span class="rating"><span class="star">&#9733;</span> 3.5/5</span>
-                <span class="genre-tag tag-literary">Literary Fiction</span>
-              </div>
-              <div class="book-pitch">A therapy transcriber starts an affair with a patient. Same sharp humor, same messy women making terrible choices, same delicious discomfort. If Vladimir's tone was your thing, this is it.</div>
-              <div class="adapted">&#127916; HBO series adaptation</div>
+          <!-- Homepage / Landing State -->
+          <div id="homepage-landing">
+            <div class="homepage-hero">
+              <div class="homepage-hero-icon">&#128218;</div>
+              <h2 class="homepage-hero-title">Find your next favorite book</h2>
+              <p class="homepage-hero-sub">Search any book, movie, or TV show &mdash; we'll find books with the same vibe</p>
             </div>
 
-            <div class="book-card">
-              <div class="match-badge">94% match</div>
-              <div class="book-title">My Education</div>
-              <div class="book-author">Susan Choi</div>
-              <div class="book-meta">
-                <span class="rating"><span class="star">&#9733;</span> 3.4/5</span>
-                <span class="genre-tag tag-literary">Literary Fiction</span>
+            <div class="homepage-section">
+              <div class="section-label" style="font-size: 11px;">&#128293; Trending right now</div>
+              <div class="homepage-pills" id="trendingPills">
+                <span class="search-pill" onclick="quickSearch('Fourth Wing')">Books like Fourth Wing</span>
+                <span class="search-pill" onclick="quickSearch('Bridgerton')">Books like Bridgerton</span>
+                <span class="search-pill" onclick="quickSearch('Succession')">Books like Succession</span>
+                <span class="search-pill" onclick="quickSearch('dracula a love tale 2025')">Books like Dracula (2025)</span>
+                <span class="search-pill" onclick="quickSearch('Wednesday')">Books like Wednesday</span>
+                <span class="search-pill" onclick="quickSearch('Iron Flame')">Books like Iron Flame</span>
               </div>
-              <div class="book-pitch">A grad student becomes obsessed with her professor's wife. The forbidden academic desire cranked up to eleven &mdash; lush, intense writing about wanting someone you absolutely shouldn't.</div>
             </div>
 
-            <div class="book-card">
-              <div class="match-badge">92% match</div>
-              <div class="book-title">All Fours</div>
-              <div class="book-author">Miranda July</div>
-              <div class="book-meta">
-                <span class="rating"><span class="star">&#9733;</span> 3.5/5</span>
-                <span class="genre-tag tag-literary">Literary Fiction</span>
+            <div class="homepage-section">
+              <div class="section-label" style="font-size: 11px;">&#128214; Popular on BookTok</div>
+              <div class="homepage-pills">
+                <span class="search-pill" onclick="quickSearch('ACOTAR')">Books like ACOTAR</span>
+                <span class="search-pill" onclick="quickSearch('Colleen Hoover')">Books like Colleen Hoover</span>
+                <span class="search-pill" onclick="quickSearch('The Summer I Turned Pretty')">Books like The Summer I Turned Pretty</span>
+                <span class="search-pill" onclick="quickSearch('Normal People')">Books like Normal People</span>
+                <span class="search-pill" onclick="quickSearch('Twilight')">Books like Twilight</span>
+                <span class="search-pill" onclick="quickSearch('You')">Books like You (Netflix)</span>
               </div>
-              <div class="book-pitch">A married woman in her 40s detours into a motel near her house and spirals into obsession with a younger man. Mid-life desire and refusing to be invisible &mdash; pure Vladimir energy.</div>
-            </div>
-          </div>
-
-          <!-- Same Energy -->
-          <hr class="divider">
-          <div class="section-label">Same vibe, different book</div>
-          <div class="book-grid">
-            <div class="book-card">
-              <div class="match-badge">88% match</div>
-              <div class="book-title">Animal</div>
-              <div class="book-author">Lisa Taddeo</div>
-              <div class="book-meta">
-                <span class="rating"><span class="star">&#9733;</span> 3.2/5</span>
-                <span class="genre-tag tag-thriller">Dark Fiction</span>
-              </div>
-              <div class="book-pitch">From the author of Three Women. A woman fleeing New York carries years of rage and dark desire. Even more unapologetic and provocative than Vladimir.</div>
             </div>
 
-            <div class="book-card">
-              <div class="match-badge">85% match</div>
-              <div class="book-title">Fleishman Is in Trouble</div>
-              <div class="book-author">Taffy Brodesser-Akner</div>
-              <div class="book-meta">
-                <span class="rating"><span class="star">&#9733;</span> 3.6/5</span>
-                <span class="genre-tag tag-literary">Literary Fiction</span>
+            <div class="homepage-section">
+              <div class="section-label" style="font-size: 11px;">&#127916; Watched it, now read it</div>
+              <div class="homepage-pills">
+                <span class="search-pill" onclick="quickSearch('Game of Thrones')">Books like Game of Thrones</span>
+                <span class="search-pill" onclick="quickSearch('Stranger Things')">Books like Stranger Things</span>
+                <span class="search-pill" onclick="quickSearch('The Bear')">Books like The Bear</span>
+                <span class="search-pill" onclick="quickSearch('Saltburn')">Books like Saltburn</span>
+                <span class="search-pill" onclick="quickSearch('Euphoria')">Books like Euphoria</span>
+                <span class="search-pill" onclick="quickSearch('Emily in Paris')">Books like Emily in Paris</span>
               </div>
-              <div class="book-pitch">Sharp, literary, darkly funny &mdash; same world of privileged people behaving badly. The marriage unraveling is told from shifting perspectives that keep you guessing.</div>
-              <div class="adapted">&#127916; Hulu series adaptation</div>
             </div>
 
-            <div class="book-card">
-              <div class="match-badge">83% match</div>
-              <div class="book-title">Trust Exercise</div>
-              <div class="book-author">Susan Choi</div>
-              <div class="book-meta">
-                <span class="rating"><span class="star">&#9733;</span> 3.1/5</span>
-                <span class="genre-tag tag-literary">Literary Fiction</span>
+            <div class="homepage-section">
+              <div class="section-label" style="font-size: 11px;">&#9889; Search by vibe</div>
+              <div class="homepage-pills">
+                <span class="search-pill vibe-pill" onclick="switchTab('mood')">&#128148; Books that will destroy me</span>
+                <span class="search-pill vibe-pill" onclick="switchTab('mood')">&#127770; Dark romance</span>
+                <span class="search-pill vibe-pill" onclick="switchTab('mood')">&#129418; Enemies to lovers</span>
+                <span class="search-pill vibe-pill" onclick="switchTab('mood')">&#127783;&#65039; Cozy rainy day reads</span>
+                <span class="search-pill vibe-pill" onclick="switchTab('mood')">&#128561; Plot twists that wrecked me</span>
               </div>
-              <div class="book-pitch">Power dynamics between students and teachers at a performing arts school. The structure keeps shifting under you &mdash; National Book Award winner that plays with perspective like Vladimir does.</div>
-            </div>
-          </div>
-
-          <!-- Wild Card -->
-          <hr class="divider">
-          <div class="section-label">Hear me out...</div>
-          <div class="book-grid">
-            <div class="book-card wildcard-card">
-              <div class="match-badge" style="background: rgba(200,169,110,0.25);">Wild Card</div>
-              <div class="book-title">Luster</div>
-              <div class="book-author">Raven Leilani</div>
-              <div class="book-meta">
-                <span class="rating"><span class="star">&#9733;</span> 3.7/5</span>
-                <span class="genre-tag tag-literary">Literary Fiction</span>
-                <span class="genre-tag tag-drama">Dark Comedy</span>
-              </div>
-              <div class="book-pitch">A young Black woman starts an affair with a married man and moves in with his family. Razor-sharp writing about desire, race, and self-destruction. If Vladimir's unapologetic messiness hooked you, Luster goes even harder.</div>
             </div>
           </div>
         </div>
@@ -1386,7 +1342,13 @@
     function switchTab(tab) {
       document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
       document.querySelectorAll('[id^="tab-"]').forEach(t => t.style.display = 'none');
-      event.target.classList.add('active');
+      // Find the matching tab button and activate it
+      document.querySelectorAll('.tab').forEach(t => {
+        if (t.textContent.toLowerCase().replace(/\s+/g, '-') === tab ||
+            t.getAttribute('onclick')?.includes(tab)) {
+          t.classList.add('active');
+        }
+      });
       document.getElementById('tab-' + tab).style.display = 'block';
     }
 
@@ -1412,14 +1374,21 @@
 
     function initMoods() {
       const container = document.getElementById('promptTags');
-      container.innerHTML = promptSuggestions.map(p =>
+      // Personal rec pill first, then mood suggestions
+      let html = `<div class="prompt-tag personal-tag" data-prompt="personal">&#10024; Recommend based on what I like</div>`;
+      html += promptSuggestions.map(p =>
         `<div class="prompt-tag" data-prompt="${p}">${p}</div>`
       ).join('');
+      container.innerHTML = html;
       container.addEventListener('click', (e) => {
         const tag = e.target.closest('.prompt-tag');
         if (!tag) return;
         container.querySelectorAll('.prompt-tag').forEach(t => t.classList.remove('active'));
         tag.classList.add('active');
+        if (tag.dataset.prompt === 'personal') {
+          getPersonalRecs();
+          return;
+        }
         document.getElementById('moodInput').value = tag.dataset.prompt;
         searchByMood();
       });
@@ -1600,6 +1569,119 @@
       "powerful": ["powerful", "strong female", "empowering", "epic"],
       "put myself": ["self care", "self help", "empowering", "healing", "growth"],
     };
+
+    // Personal recommendations based on Goodreads favorites
+    async function getPersonalRecs() {
+      const resultsEl = document.getElementById('mood-results');
+      resultsEl.innerHTML = '<div style="text-align:center; padding: 40px;"><div style="font-size: 32px; margin-bottom: 12px;">&#10024;</div><div style="color: var(--text-muted);">Finding books based on your taste...</div></div>';
+
+      // Pick 3 random favorites to base recs on
+      const favorites = [
+        { title: 'A Court of Mist and Fury', author: 'Sarah J. Maas', themes: ['fantasy romance', 'fae romance', 'enemies to lovers fantasy'] },
+        { title: 'A Court of Silver Flames', author: 'Sarah J. Maas', themes: ['fantasy romance healing', 'warrior woman fantasy', 'romantic fantasy'] },
+        { title: 'Fourth Wing', author: 'Rebecca Yarros', themes: ['dragon rider fantasy romance', 'academy enemies to lovers', 'romantasy'] },
+        { title: 'Iron Flame', author: 'Rebecca Yarros', themes: ['dragon fantasy war romance', 'fantasy sequel romance', 'romantasy adventure'] },
+        { title: 'Reckless', author: 'Elsie Silver', themes: ['contemporary romance cowboy', 'small town romance', 'sports romance'] },
+        { title: 'Powerless', author: 'Lauren Roberts', themes: ['fantasy romance forbidden', 'enemies to lovers fantasy', 'powers fantasy romance'] },
+        { title: 'Haunting Adeline', author: 'H.D. Carlton', themes: ['dark romance thriller', 'dark romance stalker', 'spicy dark romance'] },
+        { title: 'It Ends with Us', author: 'Colleen Hoover', themes: ['emotional romance contemporary', 'women fiction drama', 'romance literary'] },
+      ];
+
+      // Shuffle and pick 3
+      const shuffled = favorites.sort(() => Math.random() - 0.5);
+      const picked = shuffled.slice(0, 3);
+
+      // Search for each
+      const allBooks = [];
+      const seenTitles = new Set(favorites.map(f => f.title.toLowerCase()));
+      const alreadyReadLower = alreadyRead.map(r => r.toLowerCase());
+
+      const fetches = [];
+      picked.forEach(fav => {
+        fav.themes.forEach(theme => {
+          fetches.push(
+            fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(theme)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=6`)
+              .then(r => r.json())
+              .then(data => ({ source: fav.title, data }))
+              .catch(() => ({ source: fav.title, data: { docs: [] } }))
+          );
+        });
+      });
+
+      const results = await Promise.all(fetches);
+
+      results.forEach(result => {
+        if (!result.data.docs) return;
+        result.data.docs.forEach(doc => {
+          const titleLow = (doc.title || '').toLowerCase();
+          if (seenTitles.has(titleLow)) return;
+          if (alreadyReadLower.some(r => titleLow.includes(r) || r.includes(titleLow))) return;
+          if (!doc.ratings_average || doc.ratings_average < 3.3) return;
+          const subs = (doc.subject || []).join(' ').toLowerCase();
+          if (subs.includes('juvenile') || subs.includes('children') || subs.includes('picture book')) return;
+          seenTitles.add(titleLow);
+
+          const yr = doc.first_publish_year || 0;
+          const modernBonus = yr >= 2015 ? 3 : yr >= 2000 ? 2 : yr >= 1990 ? 1 : 0;
+
+          allBooks.push({
+            title: doc.title,
+            author: doc.author_name ? doc.author_name[0] : 'Unknown',
+            rating: doc.ratings_average ? doc.ratings_average.toFixed(1) + '/5' : '—',
+            cover_i: doc.cover_i,
+            year: doc.first_publish_year,
+            source: result.source,
+            score: (doc.ratings_average || 0) + modernBonus
+          });
+        });
+      });
+
+      // Sort by score, diversify by author (max 2 per author)
+      allBooks.sort((a, b) => b.score - a.score);
+      const authorCount = {};
+      const diverse = allBooks.filter(b => {
+        const a = b.author.toLowerCase();
+        authorCount[a] = (authorCount[a] || 0) + 1;
+        return authorCount[a] <= 2;
+      });
+      const top = diverse.slice(0, 12);
+
+      if (top.length === 0) {
+        resultsEl.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--text-muted);">No new recommendations found. Try the search tab!</div>';
+        return;
+      }
+
+      // Group by source book
+      const grouped = {};
+      top.forEach(b => {
+        if (!grouped[b.source]) grouped[b.source] = [];
+        grouped[b.source].push(b);
+      });
+
+      let html = '<div class="section-label" style="font-size: 11px;">&#10024; Because you loved these...</div>';
+      for (const [source, books] of Object.entries(grouped)) {
+        html += `<div style="margin-bottom: 24px;">`;
+        html += `<div style="color: var(--accent); font-size: 13px; margin-bottom: 10px; font-style: italic;">Because you liked <strong>${source}</strong></div>`;
+        html += `<div class="book-grid">`;
+        books.forEach(b => {
+          const genre = getGenreTag(b.year > 2000 ? ['romance', 'fantasy'] : ['fiction']);
+          html += renderBookCard({
+            title: b.title,
+            author: b.author,
+            rating: b.rating,
+            cover_i: b.cover_i,
+            year: b.year,
+            matchedSubjects: [],
+            isAuthorMatch: false
+          }, false);
+        });
+        html += `</div></div>`;
+      }
+
+      resultsEl.innerHTML = html;
+      upgradeStaticCards();
+      loadCoversInView();
+    }
 
     function searchByMood() {
       const input = document.getElementById('moodInput').value.trim();
@@ -2398,6 +2480,7 @@
       const input = searchInput.value.trim();
       const resultsEl = document.getElementById('results');
       if (!input) return;
+      document.getElementById('clearBtn').style.display = 'flex';
       dropdown.classList.remove('open');
 
       // Find best match from curated index
@@ -2462,8 +2545,32 @@
     initMoods();
     upgradeStaticCards();
 
-    // Load initial Vladimir results
-    document.getElementById('results').innerHTML = renderSearchResults(searchData['vladimir'], 'Vladimir');
+    // Quick search from homepage pills
+    function quickSearch(query) {
+      document.getElementById('searchInput').value = query;
+      document.getElementById('clearBtn').style.display = 'flex';
+      showResults();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Save homepage HTML for restoring later
+    const homepageHTML = document.getElementById('results').innerHTML;
+
+    // Go back to homepage landing
+    function goHome() {
+      document.getElementById('searchInput').value = '';
+      document.getElementById('clearBtn').style.display = 'none';
+      document.getElementById('results').innerHTML = homepageHTML;
+      switchTab('more-like-this');
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Show/hide clear button based on search input
+    document.getElementById('searchInput').addEventListener('input', function() {
+      document.getElementById('clearBtn').style.display = this.value.length > 0 ? 'flex' : 'none';
+    });
+
+    // Homepage is already in the HTML — no need to load default results
     loadCoversInView();
   </script>
 
@@ -2614,6 +2721,108 @@
       color: var(--text-dim);
       float: right;
       margin-top: 2px;
+    }
+
+    /* Clear/Reset Button */
+    .search-clear-btn {
+      position: absolute;
+      right: 10px;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 14px;
+      cursor: pointer;
+      width: 28px;
+      height: 28px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      border-radius: 50%;
+      transition: all 0.2s;
+      z-index: 2;
+    }
+    .search-clear-btn:hover {
+      background: rgba(255,255,255,0.1);
+      color: var(--text);
+    }
+
+    /* Personal Rec Pill */
+    .personal-tag {
+      background: linear-gradient(135deg, rgba(200,169,110,0.2), rgba(200,169,110,0.05)) !important;
+      border-color: var(--accent) !important;
+      color: var(--accent) !important;
+      font-weight: 600;
+    }
+    .personal-tag:hover, .personal-tag.active {
+      background: var(--accent) !important;
+      color: var(--bg) !important;
+      box-shadow: 0 2px 12px rgba(200,169,110,0.3);
+    }
+
+    /* Homepage Landing */
+    .homepage-hero {
+      text-align: center;
+      padding: 40px 20px 30px;
+    }
+    .homepage-hero-icon {
+      font-size: 48px;
+      margin-bottom: 12px;
+    }
+    .homepage-hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 26px;
+      color: var(--text);
+      margin: 0 0 8px;
+      font-weight: 600;
+    }
+    .homepage-hero-sub {
+      color: var(--text-muted);
+      font-size: 14px;
+      margin: 0;
+      max-width: 400px;
+      margin: 0 auto;
+      line-height: 1.5;
+    }
+    .homepage-section {
+      margin-bottom: 24px;
+    }
+    .homepage-pills {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 8px;
+    }
+    .search-pill {
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      color: var(--text);
+      padding: 8px 14px;
+      border-radius: 20px;
+      font-size: 13px;
+      cursor: pointer;
+      transition: all 0.2s;
+      font-family: 'Inter', sans-serif;
+    }
+    .search-pill:hover {
+      background: var(--accent);
+      color: var(--bg);
+      border-color: var(--accent);
+      transform: translateY(-1px);
+    }
+    .vibe-pill {
+      background: rgba(200, 169, 110, 0.1);
+      border-color: rgba(200, 169, 110, 0.3);
+    }
+    .vibe-pill:hover {
+      background: var(--accent);
+      color: var(--bg);
+    }
+    @media (max-width: 600px) {
+      .homepage-hero-title { font-size: 22px; }
+      .homepage-hero { padding: 24px 16px 20px; }
+      .search-pill { font-size: 12px; padding: 6px 12px; }
     }
   </style>
 </body>
