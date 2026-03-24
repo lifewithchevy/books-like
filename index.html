@@ -421,19 +421,6 @@
     }
     .btn-amazon svg { width: 14px; height: 14px; }
 
-    .ku-badge {
-      display: inline-flex;
-      align-items: center;
-      gap: 4px;
-      font-size: 10.5px;
-      font-weight: 700;
-      padding: 3px 9px;
-      border-radius: 6px;
-      background: rgba(0,150,255,0.1);
-      color: #0369A1;
-      letter-spacing: 0.3px;
-      white-space: nowrap;
-    }
 
     @media (max-width: 600px) {
       .book-cover-wrap {
@@ -1316,49 +1303,6 @@
       return `https://www.amazon.com/s?k=${q}&i=stripbooks&tag=${AMAZON_AFFILIATE_TAG}`;
     }
 
-    // Kindle Unlimited popular titles (curated set)
-    const kindleUnlimitedTitles = new Set([
-      'the housemaid', 'the housemaid\'s secret', 'things we never got over', 'things we hide from the light',
-      'the seven husbands of evelyn hugo', 'ugly love', 'november 9', 'verity', 'it ends with us',
-      'it starts with us', 'confess', 'reminders of him', 'layla', 'regretting you', 'too late',
-      'never never', 'heart bones', 'finding cinderella', 'losing hope', 'maybe someday',
-      'maybe not', 'maybe now', 'all your perfects', 'without merit',
-      'twisted love', 'twisted games', 'twisted hate', 'twisted lies',
-      'king of wrath', 'king of pride', 'king of greed', 'king of sloth',
-      'things we left behind', 'the fine print', 'terms and conditions',
-      'assistant to the villain', 'apprentice to the villain',
-      'haunting adeline', 'hunting adeline', 'the sweetest oblivion',
-      'the maddest obsession', 'the darkest temptation',
-      'credence', 'birthday girl', 'punk 57', 'bully',
-      'corrupt', 'hideaway', 'kill switch', 'conclave',
-      'the love hypothesis', 'love on the brain', 'love, theoretically',
-      'check & mate', 'bride', 'the deal', 'the mistake', 'the score', 'the goal',
-      'a touch of darkness', 'a touch of ruin', 'a game of gods',
-      'zodiac academy', 'ruthless boys of the zodiac',
-      'from blood and ash', 'a kingdom of flesh and fire', 'the crown of gilded bones',
-      'the war of two queens', 'a soul of ash and blood',
-      'powerless', 'reckless', 'fearless', 'heartless',
-      'flawless', 'lore of the wilds', 'house of flame and shadow',
-      'the invisible life of addie larue',
-      'daisy jones & the six', 'malibu rising', 'carrie soto is back',
-      'the spanish love deception', 'the american roommate experiment',
-      'beach read', 'people we meet on vacation', 'happy place', 'funny story',
-      'book lovers', 'the unmaking of june farrow',
-      'a court of thorns and roses', 'a court of mist and fury', 'a court of wings and ruin',
-      'a court of frost and starlight', 'a court of silver flames',
-      'throne of glass', 'crown of midnight', 'heir of fire', 'queen of shadows',
-      'empire of storms', 'tower of dawn', 'kingdom of ash',
-      'crescent city', 'house of earth and blood', 'house of sky and breath',
-      'the atlas six', 'the atlas paradox', 'the atlas complex',
-      'divine rivals', 'ruthless vows', 'a fire in the flesh',
-      'born of blood and fire', 'the serpent and the wings of night',
-      'the ashes & the star-cursed king', 'six scorched roses',
-    ].map(t => t.toLowerCase()));
-
-    function isKindleUnlimited(title) {
-      return kindleUnlimitedTitles.has(title.toLowerCase().trim());
-    }
-
     // Goodreads icon SVG
     const grIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.43 23.995c-3.608-.208-6.274-2.077-6.448-5.078.695.007 1.375-.013 2.07-.006.224 1.342 1.065 2.43 2.683 3.026 1.583.496 3.737.46 5.082-.174 1.726-.814 2.723-2.277 2.842-4.585.038-.736.054-1.473.054-2.21v-.392c-.88 1.553-2.14 2.503-3.868 2.837-5.043.976-8.19-1.86-8.48-6.71-.242-4.036 2.172-7.726 6.09-8.39 1.98-.336 3.67.186 5.05 1.536l.133.134.085-.086c.052-.554.386-1.034.932-1.203h1.543v13.263c0 2.217-.207 3.85-1.14 5.3-1.425 2.207-4.07 3.016-6.628 2.738zm5.246-12.39c.062-3.136-.987-5.958-4.396-6.158-3.122-.183-5.108 2.043-5.108 5.378 0 3.49 1.712 5.825 4.613 5.88 2.738.052 4.478-1.588 4.89-5.1z"/></svg>`;
     // Amazon icon SVG
@@ -1366,12 +1310,10 @@
 
     // Render action links for a book card
     function renderBookActions(title, author) {
-      const kuBadge = isKindleUnlimited(title) ? `<span class="ku-badge">📖 Kindle Unlimited</span>` : '';
       return `
         <div class="book-card-actions">
           <a href="${goodreadsUrl(title, author)}" target="_blank" rel="noopener" class="btn-goodreads" onclick="event.stopPropagation()">${grIcon} Goodreads</a>
           <a href="${amazonUrl(title, author)}" target="_blank" rel="noopener" class="btn-amazon" onclick="event.stopPropagation()">${azIcon} Amazon</a>
-          ${kuBadge}
         </div>`;
     }
 
@@ -1965,27 +1907,27 @@
     }
     // Extra aliases that also map to existing searchData entries
     const extraAliases = [
-      { label: "Addie LaRue", author: "V.E. Schwab", key: "evelyn hugo", aliases: ["addie larue", "invisible life", "schwab"] },
-      { label: "Daisy Jones", author: "Taylor Jenkins Reid", key: "evelyn hugo", aliases: ["daisy jones", "the six"] },
-      { label: "Malibu Rising", author: "Taylor Jenkins Reid", key: "evelyn hugo", aliases: ["malibu"] },
-      { label: "Iron Flame", author: "Rebecca Yarros", key: "fourth wing", aliases: ["iron flame"] },
-      { label: "Onyx Storm", author: "Rebecca Yarros", key: "fourth wing", aliases: ["onyx storm"] },
-      { label: "ACOTAR", author: "Sarah J. Maas", key: "acotar", aliases: ["acotar", "court of thorns"] },
-      { label: "A Court of Mist and Fury", author: "Sarah J. Maas", key: "acotar", aliases: ["mist and fury", "acomaf"] },
-      { label: "A Court of Silver Flames", author: "Sarah J. Maas", key: "acotar", aliases: ["silver flames", "acosf"] },
-      { label: "Throne of Glass", author: "Sarah J. Maas", key: "acotar", aliases: ["throne of glass", "tog"] },
-      { label: "From Blood and Ash", author: "Jennifer L. Armentrout", key: "acotar", aliases: ["blood and ash"] },
-      { label: "The Cruel Prince", author: "Holly Black", key: "fourth wing", aliases: ["cruel prince", "holly black"] },
-      { label: "Kingdom of the Wicked", author: "Kerri Maniscalco", key: "acotar", aliases: ["kingdom of the wicked", "maniscalco"] },
-      { label: "Big Swiss", author: "Jen Beagin", key: "vladimir", aliases: ["big swiss", "beagin"] },
-      { label: "Fleishman Is in Trouble", author: "Taffy Brodesser-Akner", key: "vladimir", aliases: ["fleishman"] },
+      { label: "Addie LaRue", author: "V.E. Schwab", key: "__dynamic__", aliases: ["addie larue", "invisible life", "schwab"] },
+      { label: "Daisy Jones", author: "Taylor Jenkins Reid", key: "__dynamic__", aliases: ["daisy jones", "the six"] },
+      { label: "Malibu Rising", author: "Taylor Jenkins Reid", key: "__dynamic__", aliases: ["malibu"] },
+      { label: "Iron Flame", author: "Rebecca Yarros", key: "__dynamic__", aliases: ["iron flame"] },
+      { label: "Onyx Storm", author: "Rebecca Yarros", key: "__dynamic__", aliases: ["onyx storm"] },
+      { label: "ACOTAR", author: "Sarah J. Maas", key: "__dynamic__", aliases: ["acotar", "court of thorns"] },
+      { label: "A Court of Mist and Fury", author: "Sarah J. Maas", key: "__dynamic__", aliases: ["mist and fury", "acomaf"] },
+      { label: "A Court of Silver Flames", author: "Sarah J. Maas", key: "__dynamic__", aliases: ["silver flames", "acosf"] },
+      { label: "Throne of Glass", author: "Sarah J. Maas", key: "__dynamic__", aliases: ["throne of glass", "tog"] },
+      { label: "From Blood and Ash", author: "Jennifer L. Armentrout", key: "__dynamic__", aliases: ["blood and ash"] },
+      { label: "The Cruel Prince", author: "Holly Black", key: "__dynamic__", aliases: ["cruel prince", "holly black"] },
+      { label: "Kingdom of the Wicked", author: "Kerri Maniscalco", key: "__dynamic__", aliases: ["kingdom of the wicked", "maniscalco"] },
+      { label: "Big Swiss", author: "Jen Beagin", key: "__dynamic__", aliases: ["big swiss", "beagin"] },
+      { label: "Fleishman Is in Trouble", author: "Taffy Brodesser-Akner", key: "__dynamic__", aliases: ["fleishman"] },
       { label: "The Duke and I", author: "Julia Quinn", key: "bridgerton", aliases: ["duke and i"] },
-      { label: "Pride and Prejudice", author: "Jane Austen", key: "bridgerton", aliases: ["pride and prejudice", "austen", "darcy", "elizabeth bennet"] },
-      { label: "Zodiac Academy", author: "Caroline Peckham", key: "fourth wing", aliases: ["zodiac academy"] },
-      { label: "The Song of Achilles", author: "Madeline Miller", key: "evelyn hugo", aliases: ["song of achilles", "achilles", "patroclus", "madeline miller"] },
-      { label: "Circe", author: "Madeline Miller", key: "evelyn hugo", aliases: ["circe"] },
-      { label: "Red Rising", author: "Pierce Brown", key: "fourth wing", aliases: ["red rising", "pierce brown"] },
-      { label: "The Love Hypothesis", author: "Ali Hazelwood", key: "acotar", aliases: ["love hypothesis", "hazelwood"] },
+      { label: "Pride and Prejudice", author: "Jane Austen", key: "__dynamic__", aliases: ["pride and prejudice", "austen", "darcy", "elizabeth bennet"] },
+      { label: "Zodiac Academy", author: "Caroline Peckham", key: "__dynamic__", aliases: ["zodiac academy"] },
+      { label: "The Song of Achilles", author: "Madeline Miller", key: "__dynamic__", aliases: ["song of achilles", "achilles", "patroclus", "madeline miller"] },
+      { label: "Circe", author: "Madeline Miller", key: "__dynamic__", aliases: ["circe"] },
+      { label: "Red Rising", author: "Pierce Brown", key: "__dynamic__", aliases: ["red rising", "pierce brown"] },
+      { label: "The Love Hypothesis", author: "Ali Hazelwood", key: "__dynamic__", aliases: ["love hypothesis", "hazelwood"] },
       { label: "Beach Read", author: "Emily Henry", key: "__dynamic__", aliases: ["beach read", "emily henry"] },
       { label: "Happy Place", author: "Emily Henry", key: "__dynamic__", aliases: ["happy place"] },
       { label: "Funny Story", author: "Emily Henry", key: "__dynamic__", aliases: ["funny story"] },
@@ -2062,6 +2004,71 @@
       { label: "Anyone But You (Movie)", author: "Columbia Pictures", key: "bridgerton", aliases: ["anyone but you", "sydney sweeney", "glen powell"] },
       { label: "Dune", author: "Frank Herbert", key: "game of thrones", aliases: ["dune", "paul atreides", "arrakis", "spice", "sandworm", "frank herbert"] },
       { label: "It Ends with Us (Movie)", author: "Colleen Hoover", key: "you netflix", aliases: ["it ends with us movie", "blake lively", "colleen hoover movie"] },
+      // More popular BookTok/Google books for autocomplete
+      { label: "The Cruel Prince", author: "Holly Black", key: "__dynamic__", aliases: ["cruel prince", "holly black", "jude cardan"] },
+      { label: "Kingdom of the Wicked", author: "Kerri Maniscalco", key: "__dynamic__", aliases: ["kingdom of the wicked", "maniscalco", "wrath emilia"] },
+      { label: "Zodiac Academy", author: "Caroline Peckham", key: "__dynamic__", aliases: ["zodiac academy", "peckham"] },
+      { label: "Six of Crows", author: "Leigh Bardugo", key: "__dynamic__", aliases: ["six of crows", "leigh bardugo", "kaz brekker", "ketterdam"] },
+      { label: "Shadow and Bone", author: "Leigh Bardugo", key: "__dynamic__", aliases: ["shadow and bone", "grisha", "alina darkling"] },
+      { label: "The Poppy War", author: "R.F. Kuang", key: "__dynamic__", aliases: ["poppy war", "rf kuang", "kuang"] },
+      { label: "The Atlas Six", author: "Olivie Blake", key: "__dynamic__", aliases: ["atlas six", "olivie blake"] },
+      { label: "Red Rising", author: "Pierce Brown", key: "__dynamic__", aliases: ["red rising", "pierce brown", "darrow"] },
+      { label: "The Hunger Games", author: "Suzanne Collins", key: "__dynamic__", aliases: ["hunger games", "katniss", "suzanne collins", "panem"] },
+      { label: "Divergent", author: "Veronica Roth", key: "__dynamic__", aliases: ["divergent", "tris", "veronica roth"] },
+      { label: "The Maze Runner", author: "James Dashner", key: "__dynamic__", aliases: ["maze runner", "james dashner", "thomas maze"] },
+      { label: "Harry Potter", author: "J.K. Rowling", key: "__dynamic__", aliases: ["harry potter", "hogwarts", "jk rowling", "wizarding"] },
+      { label: "Percy Jackson", author: "Rick Riordan", key: "__dynamic__", aliases: ["percy jackson", "rick riordan", "camp half blood"] },
+      { label: "The Serpent and the Wings of Night", author: "Carissa Broadbent", key: "__dynamic__", aliases: ["serpent wings night", "carissa broadbent"] },
+      { label: "House of Salt and Sorrows", author: "Erin A. Craig", key: "__dynamic__", aliases: ["house salt sorrows", "erin craig"] },
+      { label: "Den of Vipers", author: "K.A. Knight", key: "__dynamic__", aliases: ["den of vipers", "ka knight", "reverse harem"] },
+      { label: "A Touch of Darkness", author: "Scarlett St. Clair", key: "__dynamic__", aliases: ["touch of darkness", "scarlett st clair", "hades persephone"] },
+      { label: "Corrupt", author: "Penelope Douglas", key: "__dynamic__", aliases: ["corrupt penelope", "devil's night"] },
+      { label: "The Sweetest Oblivion", author: "Danielle Lori", key: "__dynamic__", aliases: ["sweetest oblivion", "danielle lori", "made men"] },
+      { label: "The Girl on the Train", author: "Paula Hawkins", key: "__dynamic__", aliases: ["girl on the train", "paula hawkins"] },
+      { label: "The Woman in the Window", author: "A.J. Finn", key: "__dynamic__", aliases: ["woman in the window", "aj finn"] },
+      { label: "The Maid", author: "Nita Prose", key: "__dynamic__", aliases: ["the maid nita", "nita prose", "molly maid"] },
+      { label: "In the Woods", author: "Tana French", key: "__dynamic__", aliases: ["in the woods", "tana french", "dublin murder squad"] },
+      { label: "The Girl with the Dragon Tattoo", author: "Stieg Larsson", key: "__dynamic__", aliases: ["dragon tattoo", "stieg larsson", "lisbeth salander"] },
+      { label: "Project Hail Mary", author: "Andy Weir", key: "__dynamic__", aliases: ["project hail mary", "andy weir", "ryland grace", "rocky"] },
+      { label: "The Martian", author: "Andy Weir", key: "__dynamic__", aliases: ["the martian", "mark watney", "mars survival"] },
+      { label: "Circe", author: "Madeline Miller", key: "__dynamic__", aliases: ["circe", "madeline miller"] },
+      { label: "The Song of Achilles", author: "Madeline Miller", key: "__dynamic__", aliases: ["song of achilles", "achilles patroclus"] },
+      { label: "Educated", author: "Tara Westover", key: "__dynamic__", aliases: ["educated", "tara westover"] },
+      { label: "The Kite Runner", author: "Khaled Hosseini", key: "__dynamic__", aliases: ["kite runner", "khaled hosseini", "amir hassan"] },
+      { label: "Anxious People", author: "Fredrik Backman", key: "__dynamic__", aliases: ["anxious people", "fredrik backman"] },
+      { label: "Outlander", author: "Diana Gabaldon", key: "__dynamic__", aliases: ["outlander", "diana gabaldon", "jamie fraser", "claire"] },
+      { label: "The Notebook", author: "Nicholas Sparks", key: "__dynamic__", aliases: ["the notebook", "nicholas sparks", "noah allie"] },
+      { label: "The Great Gatsby", author: "F. Scott Fitzgerald", key: "__dynamic__", aliases: ["great gatsby", "fitzgerald", "jay gatsby"] },
+      { label: "Pride and Prejudice", author: "Jane Austen", key: "__dynamic__", aliases: ["pride prejudice", "jane austen", "darcy elizabeth"] },
+      // NEW: Top-searched titles from research
+      { label: "A Good Girl's Guide to Murder", author: "Holly Jackson", key: "__dynamic__", aliases: ["good girls guide to murder", "holly jackson", "pip fitz-amobi"] },
+      { label: "We Were Liars", author: "E. Lockhart", key: "__dynamic__", aliases: ["we were liars", "e lockhart", "sinclair family"] },
+      { label: "It Happened One Summer", author: "Tessa Bailey", key: "__dynamic__", aliases: ["it happened one summer", "tessa bailey", "bellinger sisters"] },
+      { label: "My Year of Rest and Relaxation", author: "Ottessa Moshfegh", key: "__dynamic__", aliases: ["year of rest", "ottessa moshfegh"] },
+      { label: "1984", author: "George Orwell", key: "__dynamic__", aliases: ["1984", "george orwell", "big brother", "nineteen eighty four"] },
+      { label: "The Handmaid's Tale", author: "Margaret Atwood", key: "__dynamic__", aliases: ["handmaids tale", "margaret atwood", "offred", "gilead"] },
+      { label: "Flowers for Algernon", author: "Daniel Keyes", key: "__dynamic__", aliases: ["flowers for algernon", "daniel keyes", "charlie gordon"] },
+      { label: "The Three-Body Problem", author: "Liu Cixin", key: "__dynamic__", aliases: ["three body problem", "liu cixin", "remembrance of earth"] },
+      { label: "Legends & Lattes", author: "Travis Baldree", key: "__dynamic__", aliases: ["legends and lattes", "travis baldree", "viv orc", "cozy fantasy"] },
+      { label: "Butcher & Blackbird", author: "Brynne Weaver", key: "__dynamic__", aliases: ["butcher and blackbird", "brynne weaver", "ruinous love"] },
+      { label: "When the Moon Hatched", author: "Sarah A. Parker", key: "__dynamic__", aliases: ["moon hatched", "sarah parker", "moonfall"] },
+      { label: "One Dark Window", author: "Rachel Gillig", key: "__dynamic__", aliases: ["one dark window", "rachel gillig", "shepherd king"] },
+      { label: "Spark of the Everflame", author: "Penn Cole", key: "__dynamic__", aliases: ["spark everflame", "penn cole", "kindred's curse"] },
+      { label: "11/22/63", author: "Stephen King", key: "__dynamic__", aliases: ["11/22/63", "kennedy assassination", "stephen king time travel"] },
+      { label: "Lonesome Dove", author: "Larry McMurtry", key: "__dynamic__", aliases: ["lonesome dove", "larry mcmurtry", "gus mccrae", "woodrow call"] },
+      { label: "The Night Circus", author: "Erin Morgenstern", key: "__dynamic__", aliases: ["night circus", "erin morgenstern", "celia marco"] },
+      { label: "The Inheritance Games", author: "Jennifer Lynn Barnes", key: "__dynamic__", aliases: ["inheritance games", "jennifer lynn barnes", "avery grambs"] },
+      { label: "Sunrise on the Reaping", author: "Suzanne Collins", key: "__dynamic__", aliases: ["sunrise reaping", "haymitch", "hunger games prequel"] },
+      { label: "The Seven Husbands of Evelyn Hugo", author: "Taylor Jenkins Reid", key: "__dynamic__", aliases: ["evelyn hugo", "seven husbands", "taylor jenkins reid"] },
+      { label: "Lord of the Rings", author: "J.R.R. Tolkien", key: "__dynamic__", aliases: ["lord of the rings", "lotr", "tolkien", "frodo", "gandalf", "middle earth"] },
+      { label: "Dune", author: "Frank Herbert", key: "__dynamic__", aliases: ["dune book", "frank herbert", "paul atreides book", "arrakis book"] },
+      { label: "The Shining", author: "Stephen King", key: "__dynamic__", aliases: ["the shining", "stephen king horror", "overlook hotel"] },
+      { label: "And Then There Were None", author: "Agatha Christie", key: "__dynamic__", aliases: ["and then there were none", "agatha christie", "ten little"] },
+      { label: "The Da Vinci Code", author: "Dan Brown", key: "__dynamic__", aliases: ["da vinci code", "dan brown", "robert langdon"] },
+      { label: "Game of Thrones", author: "George R.R. Martin", key: "__dynamic__", aliases: ["game of thrones book", "song of ice and fire", "grrm"] },
+      { label: "Mistborn", author: "Brandon Sanderson", key: "__dynamic__", aliases: ["mistborn book", "brandon sanderson", "allomancy"] },
+      { label: "The Poppy War", author: "R.F. Kuang", key: "__dynamic__", aliases: ["poppy war", "rf kuang", "rin fang"] },
+      { label: "Dark Matter", author: "Blake Crouch", key: "__dynamic__", aliases: ["dark matter book", "blake crouch", "jason dessen"] },
     ];
     for (const a of extraAliases) {
       addToIndex(a.label, a.author, a.key, a.aliases);
@@ -2289,7 +2296,7 @@
       'friends': { label: 'Friends', type: 'TV Show', themes: ['friendship', 'new york', 'comedy', 'romance'], searchTerms: ['friendship fiction new york', 'romantic comedy novel', 'found family fiction'] },
       'grey\'s anatomy': { label: "Grey's Anatomy", type: 'TV Show', themes: ['medical', 'drama', 'romance', 'career'], searchTerms: ['medical fiction romance', 'hospital drama novel', 'women career fiction'] },
       'greys anatomy': { label: "Grey's Anatomy", type: 'TV Show', themes: ['medical', 'drama', 'romance', 'career'], searchTerms: ['medical fiction romance', 'hospital drama novel', 'women career fiction'] },
-      'the hunger games': { label: 'The Hunger Games', type: 'Movie', themes: ['dystopia', 'survival', 'rebellion', 'young adult'], searchTerms: ['dystopian young adult', 'survival games fiction', 'rebellion young adult'] },
+      // Hunger Games removed — it's a book, handled by bookVibeMap
       'barbie': { label: 'Barbie', type: 'Movie', themes: ['feminism', 'identity', 'satire', 'self-discovery'], searchTerms: ['feminist fiction satire', 'women identity novel', 'self-discovery comedy'] },
       'poor things': { label: 'Poor Things', type: 'Movie', themes: ['feminism', 'gothic', 'freedom', 'dark comedy'], searchTerms: ['feminist gothic fiction', 'women freedom novel', 'dark comedy literary'] },
       'knives out': { label: 'Knives Out', type: 'Movie', themes: ['mystery', 'whodunit', 'wealthy family', 'secrets'], searchTerms: ['whodunit mystery', 'wealthy family mystery', 'cozy murder mystery'] },
@@ -2314,7 +2321,8 @@
       'dracula love': { label: 'Dracula: A Love Tale', type: 'Movie', themes: ['vampires', 'dark romance', 'gothic', 'forbidden love'], searchTerms: ['vampire romance novel', 'dark gothic romance fiction', 'paranormal romance vampire love', 'immortal love story novel'] },
       'dracula love tale': { label: 'Dracula: A Love Tale', type: 'Movie', themes: ['vampires', 'dark romance', 'gothic', 'forbidden love'], searchTerms: ['vampire romance novel', 'dark gothic romance fiction', 'paranormal romance vampire love', 'immortal love story novel'] },
       'interview with the vampire': { label: 'Interview with the Vampire', type: 'TV Show', themes: ['vampires', 'immortality', 'dark romance', 'gothic'], searchTerms: ['vampire literary fiction', 'dark gothic romance immortal', 'paranormal romance vampire', 'vampire love story novel'] },
-      'twilight': { label: 'Twilight', type: 'Movie', themes: ['vampires', 'forbidden romance', 'young adult', 'supernatural'], searchTerms: ['vampire romance young adult', 'paranormal romance supernatural', 'forbidden love supernatural novel', 'vampire love story fiction'] },
+      // Twilight removed — it's a book, handled by bookVibeMap
+      'twilight movie': { label: 'Twilight', type: 'Movie', themes: ['vampires', 'forbidden romance', 'young adult', 'supernatural'], searchTerms: ['vampire romance young adult', 'paranormal romance supernatural', 'forbidden love supernatural novel', 'vampire love story fiction'] },
       'wednesday': { label: 'Wednesday', type: 'TV Show', themes: ['gothic', 'mystery', 'dark humor', 'supernatural'], searchTerms: ['gothic mystery young adult', 'dark humor supernatural fiction', 'witchy gothic romance novel', 'supernatural academy fiction'] },
       'you': { label: 'You', type: 'TV Show', themes: ['obsession', 'stalker', 'psychological thriller', 'dark romance'], searchTerms: ['obsessive love thriller', 'stalker psychological thriller novel', 'dark romance thriller fiction', 'unreliable narrator thriller'] },
       'saltburn': { label: 'Saltburn', type: 'Movie', themes: ['obsession', 'class', 'dark desire', 'wealthy elite'], searchTerms: ['dark academia obsession novel', 'wealthy elite thriller', 'class obsession literary fiction', 'dark desire literary novel'] },
@@ -2327,7 +2335,8 @@
       'outer banks': { label: 'Outer Banks', type: 'TV Show', themes: ['treasure hunt', 'adventure', 'young adult', 'romance'], searchTerms: ['treasure hunt adventure young adult', 'adventure romance fiction', 'coastal mystery young adult', 'summer adventure romance novel'] },
       'gilmore girls': { label: 'Gilmore Girls', type: 'TV Show', themes: ['mother daughter', 'small town', 'cozy', 'witty dialogue'], searchTerms: ['mother daughter fiction heartwarming', 'small town cozy fiction', 'witty women literary fiction', 'bookish cozy small town novel'] },
       'euphoria': { label: 'Euphoria', type: 'TV Show', themes: ['teen drama', 'addiction', 'identity', 'raw emotion'], searchTerms: ['teen drama raw literary fiction', 'addiction coming of age novel', 'dark teen literary fiction', 'raw emotional young adult novel'] },
-      'dune': { label: 'Dune', type: 'Movie', themes: ['sci-fi epic', 'desert', 'political intrigue', 'prophecy'], searchTerms: ['epic science fiction political', 'desert fantasy science fiction', 'chosen one sci-fi epic novel', 'political science fiction novel'] },
+      // Dune removed as plain entry — it's primarily a book, handled by bookVibeMap
+      'dune movie': { label: 'Dune', type: 'Movie', themes: ['sci-fi epic', 'desert', 'political intrigue', 'prophecy'], searchTerms: ['epic science fiction political', 'desert fantasy science fiction', 'chosen one sci-fi epic novel', 'political science fiction novel'] },
       'past lives': { label: 'Past Lives', type: 'Movie', themes: ['fate', 'lost love', 'immigration', 'what if'], searchTerms: ['lost love literary fiction', 'immigration love story novel', 'fate reunion romance literary', 'bittersweet love story fiction'] },
       'normal people': { label: 'Normal People', type: 'TV Show', themes: ['love', 'class', 'coming of age', 'intimacy'], searchTerms: ['literary romance coming of age', 'class divide love story', 'intimate literary fiction', 'contemporary love story literary'] },
       'the summer i turned pretty': { label: 'The Summer I Turned Pretty', type: 'TV Show', themes: ['summer romance', 'love triangle', 'coming of age', 'beach'], searchTerms: ['summer romance young adult', 'beach romance coming of age', 'love triangle young adult', 'summer love story fiction'] },
@@ -2394,35 +2403,132 @@
 
     // Known book vibes — when API subjects are weak, use these for accurate recs
     const bookVibeMap = {
-      'happy place': { themes: ['contemporary romance', 'friends to lovers', 'second chance romance'], searchTerms: ['contemporary romance friends to lovers', 'romantic comedy beach read', 'second chance love story'] },
-      'beach read': { themes: ['romantic comedy', 'opposites attract', 'writers romance'], searchTerms: ['romantic comedy opposites attract', 'contemporary romance humor', 'witty love story'] },
-      'book lovers': { themes: ['romantic comedy', 'small town romance', 'bookish romance'], searchTerms: ['small town romantic comedy', 'enemies to lovers contemporary', 'bookish romance fiction'] },
-      'funny story': { themes: ['romantic comedy', 'fresh start', 'humor romance'], searchTerms: ['romantic comedy fresh start', 'witty contemporary romance', 'humor fiction love story'] },
-      'people we meet on vacation': { themes: ['friends to lovers', 'travel romance', 'slow burn'], searchTerms: ['friends to lovers romance', 'travel romance contemporary', 'slow burn romantic comedy'] },
-      'it ends with us': { themes: ['emotional romance', 'domestic fiction', 'love triangle'], searchTerms: ['emotional contemporary romance', 'domestic fiction love', 'heart wrenching romance'] },
-      'ugly love': { themes: ['angsty romance', 'second chance', 'emotional'], searchTerms: ['angsty contemporary romance', 'emotional love story fiction', 'new adult romance'] },
-      'verity': { themes: ['thriller', 'dark twist', 'psychological suspense'], searchTerms: ['psychological thriller twist', 'dark suspense fiction', 'unreliable narrator thriller'] },
-      'the housemaid': { themes: ['thriller', 'domestic suspense', 'twist ending'], searchTerms: ['domestic thriller twist', 'psychological suspense fiction', 'maid thriller dark'] },
-      'gone girl': { themes: ['psychological thriller', 'marriage', 'unreliable narrator'], searchTerms: ['psychological thriller marriage', 'dark thriller unreliable narrator', 'twisty suspense fiction'] },
-      'the silent patient': { themes: ['psychological thriller', 'mystery', 'twist'], searchTerms: ['psychological thriller mystery', 'dark mystery twist ending', 'suspense literary thriller'] },
-      'twisted love': { themes: ['dark romance', 'possessive hero', 'forbidden'], searchTerms: ['dark romance forbidden love', 'possessive hero contemporary romance', 'intense love story'] },
-      'haunting adeline': { themes: ['dark romance', 'stalker romance', 'taboo'], searchTerms: ['dark romance stalker', 'taboo romance fiction', 'dark possessive romance'] },
-      'things we never got over': { themes: ['small town romance', 'grumpy sunshine', 'humor'], searchTerms: ['small town romance grumpy', 'enemies to lovers small town', 'romantic comedy contemporary'] },
-      'the love hypothesis': { themes: ['STEM romance', 'fake dating', 'academic romance'], searchTerms: ['fake dating romance', 'STEM academic romance', 'contemporary romance comedy'] },
-      'king of wrath': { themes: ['billionaire romance', 'arranged marriage', 'enemies to lovers'], searchTerms: ['billionaire enemies to lovers romance', 'arranged marriage romance', 'contemporary romance wealthy'] },
-      'divine rivals': { themes: ['fantasy romance', 'enemies to lovers', 'war'], searchTerms: ['fantasy romance enemies to lovers', 'romantasy war fiction', 'epistolary fantasy romance'] },
-      'where the crawdads sing': { themes: ['literary fiction', 'nature', 'mystery'], searchTerms: ['literary fiction nature mystery', 'southern literary fiction', 'coming of age literary mystery'] },
-      'the midnight library': { themes: ['literary fiction', 'alternate lives', 'finding purpose'], searchTerms: ['literary fiction alternate lives', 'uplifting literary fiction', 'philosophical fiction choices'] },
-      'lessons in chemistry': { themes: ['historical fiction', 'feminist', 'humor'], searchTerms: ['feminist historical fiction humor', 'women in science fiction', 'witty historical literary fiction'] },
-      'tomorrow, and tomorrow, and tomorrow': { themes: ['literary fiction', 'friendship', 'video games'], searchTerms: ['literary fiction friendship creative', 'contemporary literary fiction love', 'artistic literary fiction'] },
-      'a little life': { themes: ['literary fiction', 'trauma', 'friendship'], searchTerms: ['literary fiction male friendship', 'emotional literary fiction trauma', 'devastating literary fiction'] },
-      'the secret history': { themes: ['dark academia', 'literary thriller', 'obsession'], searchTerms: ['dark academia fiction', 'literary thriller obsession', 'campus novel dark'] },
-      'mexican gothic': { themes: ['gothic horror', 'mystery', 'atmospheric'], searchTerms: ['gothic horror mystery', 'atmospheric horror literary', 'dark gothic fiction'] },
-      'the spanish love deception': { themes: ['fake dating', 'workplace romance', 'romcom'], searchTerms: ['fake dating romance comedy', 'workplace enemies to lovers', 'contemporary romantic comedy'] },
-      'icebreaker': { themes: ['sports romance', 'hockey', 'new adult'], searchTerms: ['sports romance hockey', 'new adult college romance', 'athlete romance contemporary'] },
-      'punk 57': { themes: ['enemies to lovers', 'pen pals', 'new adult'], searchTerms: ['enemies to lovers new adult', 'pen pal romance', 'bully romance contemporary'] },
-      'powerless': { themes: ['fantasy romance', 'enemies to lovers', 'fae'], searchTerms: ['fantasy romance enemies to lovers', 'romantasy chosen one', 'fae fantasy romance fiction'] },
-      'assistant to the villain': { themes: ['fantasy comedy', 'workplace romance', 'humor'], searchTerms: ['fantasy romance comedy villain', 'funny fantasy romance', 'workplace fantasy humor'] },
+      // === EMILY HENRY (most searched contemporary romance author) ===
+      'happy place': { themes: ['romance fiction', 'love stories', 'domestic fiction'], searchTerms: ['Beach Read Emily Henry', 'People We Meet on Vacation Emily Henry', 'The Flatshare Beth O\'Leary', 'In a Holidaze Christina Lauren'] },
+      'beach read': { themes: ['romantic comedy', 'opposites attract', 'writers romance'], searchTerms: ['Happy Place Emily Henry', 'People We Meet on Vacation Emily Henry', 'The Unhoneymooners Christina Lauren', 'Written in the Stars Alexandria Bellefleur'] },
+      'book lovers': { themes: ['romantic comedy', 'small town romance', 'bookish romance'], searchTerms: ['The Ex Hex Erin Sterling', 'Funny Story Emily Henry', 'Part of Your World Abby Jimenez', 'By the Book Jasmine Guillory'] },
+      'funny story': { themes: ['romantic comedy', 'fresh start', 'humor romance'], searchTerms: ['Happy Place Emily Henry', 'Yours Truly Abby Jimenez', 'The True Love Experiment Christina Lauren', 'Love Theoretically Ali Hazelwood'] },
+      'people we meet on vacation': { themes: ['friends to lovers', 'travel romance', 'slow burn'], searchTerms: ['Beach Read Emily Henry', 'The Flatshare Beth O\'Leary', 'Love and Other Words Christina Lauren', 'Josh and Hazel\'s Guide to Not Dating Christina Lauren'] },
+      // === COLLEEN HOOVER ===
+      'it ends with us': { themes: ['emotional romance', 'domestic fiction', 'love triangle'], searchTerms: ['Ugly Love Colleen Hoover', 'November 9 Colleen Hoover', 'All Your Perfects Colleen Hoover', 'Maybe Someday Colleen Hoover'] },
+      'ugly love': { themes: ['angsty romance', 'second chance', 'emotional'], searchTerms: ['November 9 Colleen Hoover', 'It Ends with Us Colleen Hoover', 'Confess Colleen Hoover', 'Archer\'s Voice Mia Sheridan'] },
+      'verity': { themes: ['thriller', 'dark twist', 'psychological suspense'], searchTerms: ['The Silent Patient Alex Michaelides', 'The Maid Nita Prose', 'Behind Closed Doors B.A. Paris', 'The Wife Between Us Greer Hendricks'] },
+      'colleen hoover': { themes: ['emotional romance', 'angst', 'contemporary'], searchTerms: ['It Ends with Us Colleen Hoover', 'Ugly Love Colleen Hoover', 'Confess Colleen Hoover', 'November 9 Colleen Hoover'] },
+      // === THRILLERS (huge search volume) ===
+      'the housemaid': { themes: ['thriller', 'domestic suspense', 'twist ending'], searchTerms: ['The Silent Patient Alex Michaelides', 'Behind Closed Doors B.A. Paris', 'The Woman in the Window A.J. Finn', 'The Last Thing He Told Me Laura Dave'] },
+      'gone girl': { themes: ['psychological fiction', 'suspense fiction', 'domestic fiction'], searchTerms: ['The Girl on the Train Paula Hawkins', 'The Silent Patient Alex Michaelides', 'Behind Closed Doors B.A. Paris', 'The Woman in the Window A.J. Finn'] },
+      'the silent patient': { themes: ['psychological fiction', 'suspense fiction', 'mystery fiction'], searchTerms: ['Gone Girl Gillian Flynn', 'The Maid Nita Prose', 'The Housemaid Freida McFadden', 'Verity Colleen Hoover'] },
+      'the girl on the train': { themes: ['psychological thriller', 'unreliable narrator', 'missing person'], searchTerms: ['Gone Girl Gillian Flynn', 'The Woman in the Window A.J. Finn', 'Behind Closed Doors B.A. Paris', 'Into the Water Paula Hawkins'] },
+      'the woman in the window': { themes: ['psychological thriller', 'agoraphobia', 'neighbor watching'], searchTerms: ['The Girl on the Train Paula Hawkins', 'Gone Girl Gillian Flynn', 'The Silent Patient Alex Michaelides', 'Rear Window Cornell Woolrich'] },
+      'the maid': { themes: ['cozy mystery', 'neurodivergent protagonist', 'hotel'], searchTerms: ['Eleanor Oliphant Is Completely Fine Gail Honeyman', 'The Curious Incident of the Dog in the Night-Time Mark Haddon', 'The Thursday Murder Club Richard Osman', 'A Man Called Ove Fredrik Backman'] },
+      'the girl with the dragon tattoo': { themes: ['crime thriller', 'hacker', 'dark mystery'], searchTerms: ['The Snowman Jo Nesbo', 'The Girl with the Lousy Lock Jan-Philipp Sendker', 'In the Woods Tana French', 'Sharp Objects Gillian Flynn'] },
+      'and then there were none': { themes: ['mystery', 'locked room', 'whodunit'], searchTerms: ['Murder on the Orient Express Agatha Christie', 'The 7½ Deaths of Evelyn Hardcastle Stuart Turton', 'In the Woods Tana French', 'The Thursday Murder Club Richard Osman'] },
+      'the da vinci code': { themes: ['conspiracy thriller', 'art history', 'puzzle'], searchTerms: ['The Rule of Four Ian Caldwell', 'The Historian Elizabeth Kostova', 'The Name of the Rose Umberto Eco', 'The Shadow of the Wind Carlos Ruiz Zafon'] },
+      'in the woods': { themes: ['detective mystery', 'atmospheric', 'cold case'], searchTerms: ['The Likeness Tana French', 'Sharp Objects Gillian Flynn', 'The Secret History Donna Tartt', 'Big Little Lies Liane Moriarty'] },
+      // === DARK ROMANCE & ANA HUANG ===
+      'twisted love': { themes: ['dark romance', 'possessive hero', 'forbidden'], searchTerms: ['King of Wrath Ana Huang', 'Haunting Adeline H.D. Carlton', 'Things We Never Got Over Lucy Score', 'Punk 57 Penelope Douglas'] },
+      'haunting adeline': { themes: ['dark romance', 'stalker romance', 'taboo'], searchTerms: ['Twisted Love Ana Huang', 'Corrupt Penelope Douglas', 'Den of Vipers K.A. Knight', 'Credence Penelope Douglas'] },
+      'king of wrath': { themes: ['billionaire romance', 'arranged marriage', 'enemies to lovers'], searchTerms: ['Twisted Love Ana Huang', 'Things We Never Got Over Lucy Score', 'The Love Hypothesis Ali Hazelwood', 'The Deal Elle Kennedy'] },
+      'things we never got over': { themes: ['small town romance', 'grumpy sunshine', 'humor'], searchTerms: ['Part of Your World Abby Jimenez', 'Book Lovers Emily Henry', 'The Simple Wild K.A. Tucker', 'It Happened One Summer Tessa Bailey'] },
+      'credence': { themes: ['taboo romance', 'forbidden', 'isolated setting'], searchTerms: ['Birthday Girl Penelope Douglas', 'Corrupt Penelope Douglas', 'Bully Penelope Douglas', 'Haunting Adeline H.D. Carlton'] },
+      'birthday girl': { themes: ['age gap romance', 'forbidden', 'slow burn'], searchTerms: ['Credence Penelope Douglas', 'Punk 57 Penelope Douglas', 'Corrupt Penelope Douglas', 'Archer\'s Voice Mia Sheridan'] },
+      'corrupt': { themes: ['bully romance', 'dark', 'high school enemies'], searchTerms: ['Credence Penelope Douglas', 'Bully Penelope Douglas', 'Twisted Love Ana Huang', 'Haunting Adeline H.D. Carlton'] },
+      'the sweetest oblivion': { themes: ['mafia romance', 'arranged marriage', 'dark'], searchTerms: ['Corrupt Penelope Douglas', 'Twisted Love Ana Huang', 'Den of Vipers K.A. Knight', 'Bound by Honor Cora Reilly'] },
+      'den of vipers': { themes: ['reverse harem', 'dark romance', 'mafia'], searchTerms: ['Haunting Adeline H.D. Carlton', 'Corrupt Penelope Douglas', 'Zodiac Academy Caroline Peckham', 'Kingdom of the Wicked Kerri Maniscalco'] },
+      'a touch of darkness': { themes: ['Hades and Persephone', 'mythology romance', 'dark'], searchTerms: ['Neon Gods Katee Robert', 'Lore Alexandra Bracken', 'Circe Madeline Miller', 'Kingdom of the Wicked Kerri Maniscalco'] },
+      // === ALI HAZELWOOD & ROMCOM ===
+      'the love hypothesis': { themes: ['STEM romance', 'fake dating', 'academic romance'], searchTerms: ['Love on the Brain Ali Hazelwood', 'The Spanish Love Deception Elena Armas', 'The Hating Game Sally Thorne', 'Beach Read Emily Henry'] },
+      'the spanish love deception': { themes: ['fake dating', 'workplace romance', 'romcom'], searchTerms: ['The Love Hypothesis Ali Hazelwood', 'The Hating Game Sally Thorne', 'People We Meet on Vacation Emily Henry', 'The Unhoneymooners Christina Lauren'] },
+      'the hating game': { themes: ['enemies to lovers', 'office romance', 'romantic comedy'], searchTerms: ['The Love Hypothesis Ali Hazelwood', 'The Spanish Love Deception Elena Armas', 'Beach Read Emily Henry', 'You Deserve Each Other Sarah Hogle'] },
+      'icebreaker': { themes: ['sports romance', 'hockey', 'new adult'], searchTerms: ['Mile High Liz Tomforde', 'The Deal Elle Kennedy', 'Better Than the Movies Lynn Painter', 'Things We Never Got Over Lucy Score'] },
+      'punk 57': { themes: ['enemies to lovers', 'pen pals', 'new adult'], searchTerms: ['Bully Penelope Douglas', 'Corrupt Penelope Douglas', 'Twisted Love Ana Huang', 'Credence Penelope Douglas'] },
+      // === FANTASY & ROMANTASY (highest search volume) ===
+      'fourth wing': { themes: ['fantasy fiction', 'romance fiction', 'young adult fiction'], searchTerms: ['From Blood and Ash Jennifer Armentrout', 'A Court of Thorns and Roses Sarah J. Maas', 'Zodiac Academy Caroline Peckham', 'The Serpent and the Wings of Night Carissa Broadbent'] },
+      'a court of thorns and roses': { themes: ['fantasy fiction', 'romance fiction', 'fairies'], searchTerms: ['From Blood and Ash Jennifer Armentrout', 'Throne of Glass Sarah J. Maas', 'The Cruel Prince Holly Black', 'Fourth Wing Rebecca Yarros'] },
+      'acotar': { themes: ['fantasy fiction', 'romance fiction', 'fairies'], searchTerms: ['From Blood and Ash Jennifer Armentrout', 'Throne of Glass Sarah J. Maas', 'The Cruel Prince Holly Black', 'Fourth Wing Rebecca Yarros'] },
+      'throne of glass': { themes: ['assassin fantasy', 'epic fantasy', 'strong heroine'], searchTerms: ['A Court of Thorns and Roses Sarah J. Maas', 'Graceling Kristin Cashore', 'The Cruel Prince Holly Black', 'Red Queen Victoria Aveyard'] },
+      'from blood and ash': { themes: ['chosen one', 'forbidden romance', 'romantasy'], searchTerms: ['A Court of Thorns and Roses Sarah J. Maas', 'Fourth Wing Rebecca Yarros', 'Kingdom of the Wicked Kerri Maniscalco', 'The Serpent and the Wings of Night Carissa Broadbent'] },
+      'the cruel prince': { themes: ['fae court', 'enemies to lovers', 'mortal in faerie'], searchTerms: ['A Court of Thorns and Roses Sarah J. Maas', 'The Serpent and the Wings of Night Carissa Broadbent', 'These Hollow Vows Lexi Ryan', 'Daughter of No Worlds Carissa Broadbent'] },
+      'house of salt and sorrows': { themes: ['gothic mystery', 'fairy tale retelling', 'dark atmosphere'], searchTerms: ['Mexican Gothic Silvia Moreno-Garcia', 'The Bear and the Nightingale Katherine Arden', 'Ninth House Leigh Bardugo', 'Wilder Girls Rory Power'] },
+      'the priory of the orange tree': { themes: ['epic fantasy', 'dragons', 'feminist'], searchTerms: ['The Poppy War R.F. Kuang', 'Circe Madeline Miller', 'The Fifth Season N.K. Jemisin', 'Spinning Silver Naomi Novik'] },
+      'zodiac academy': { themes: ['bully romance', 'academy fantasy', 'fae'], searchTerms: ['Fourth Wing Rebecca Yarros', 'Haunting Adeline H.D. Carlton', 'Corrupt Penelope Douglas', 'From Blood and Ash Jennifer Armentrout'] },
+      'iron flame': { themes: ['dragon fantasy', 'war academy', 'romantasy'], searchTerms: ['Fourth Wing Rebecca Yarros', 'A Court of Thorns and Roses Sarah J. Maas', 'From Blood and Ash Jennifer Armentrout', 'House of Flame and Shadow Sarah J. Maas'] },
+      'onyx storm': { themes: ['dragon fantasy', 'war', 'romantasy'], searchTerms: ['Fourth Wing Rebecca Yarros', 'Iron Flame Rebecca Yarros', 'A Court of Thorns and Roses Sarah J. Maas', 'From Blood and Ash Jennifer Armentrout'] },
+      'the serpent and the wings of night': { themes: ['vampire fantasy', 'tournament', 'enemies to lovers'], searchTerms: ['A Court of Thorns and Roses Sarah J. Maas', 'From Blood and Ash Jennifer Armentrout', 'Kingdom of the Wicked Kerri Maniscalco', 'Fourth Wing Rebecca Yarros'] },
+      'kingdom of the wicked': { themes: ['enemies to lovers', 'witches', 'dark romance fantasy'], searchTerms: ['The Serpent and the Wings of Night Carissa Broadbent', 'A Court of Thorns and Roses Sarah J. Maas', 'From Blood and Ash Jennifer Armentrout', 'Neon Gods Katee Robert'] },
+      'the atlas six': { themes: ['dark academia', 'magic', 'morally gray'], searchTerms: ['Ninth House Leigh Bardugo', 'The Secret History Donna Tartt', 'The Magicians Lev Grossman', 'Babel R.F. Kuang'] },
+      'divine rivals': { themes: ['fantasy romance', 'enemies to lovers', 'war'], searchTerms: ['The Cruel Prince Holly Black', 'A Court of Thorns and Roses Sarah J. Maas', 'The Song of Achilles Madeline Miller', 'Daughter of the Moon Goddess Sue Lynn Tan'] },
+      'powerless': { themes: ['fantasy romance', 'enemies to lovers', 'fae'], searchTerms: ['Fourth Wing Rebecca Yarros', 'A Court of Thorns and Roses Sarah J. Maas', 'The Cruel Prince Holly Black', 'From Blood and Ash Jennifer Armentrout'] },
+      'assistant to the villain': { themes: ['fantasy comedy', 'workplace romance', 'humor'], searchTerms: ['Legends and Lattes Travis Baldree', 'The House in the Cerulean Sea TJ Klune', 'Howl\'s Moving Castle Diana Wynne Jones', 'Sorcery of Thorns Margaret Rogerson'] },
+      'red rising': { themes: ['dystopia', 'rebellion', 'sci-fi action'], searchTerms: ['The Hunger Games Suzanne Collins', 'Ender\'s Game Orson Scott Card', 'An Ember in the Ashes Sabaa Tahir', 'The Fifth Season N.K. Jemisin'] },
+      // === DYSTOPIA (perennial search volume) ===
+      'the hunger games': { themes: ['dystopian fiction', 'young adult fiction', 'science fiction'], searchTerms: ['Divergent Veronica Roth', 'Red Rising Pierce Brown', 'The Maze Runner James Dashner', 'An Ember in the Ashes Sabaa Tahir'] },
+      'divergent': { themes: ['dystopian fiction', 'young adult fiction', 'science fiction'], searchTerms: ['Hunger Games Suzanne Collins', 'The Maze Runner James Dashner', 'Matched Ally Condie', 'Red Queen Victoria Aveyard'] },
+      'the maze runner': { themes: ['dystopian fiction', 'young adult fiction', 'survival'], searchTerms: ['Hunger Games Suzanne Collins', 'Divergent Veronica Roth', 'An Ember in the Ashes Sabaa Tahir', 'The Giver Lois Lowry'] },
+      // === CLASSIC FANTASY & SCI-FI ===
+      'harry potter': { themes: ['magic school', 'chosen one', 'friendship'], searchTerms: ['Percy Jackson Rick Riordan', 'A Wizard of Earthsea Ursula K. Le Guin', 'The Name of the Wind Patrick Rothfuss', 'Nevermoor Jessica Townsend'] },
+      'percy jackson': { themes: ['mythology', 'adventure', 'demigod'], searchTerms: ['Harry Potter J.K. Rowling', 'The Kane Chronicles Rick Riordan', 'Aru Shah and the End of Time Roshani Chokshi', 'The Storm Runner J.C. Cervantes'] },
+      'lord of the rings': { themes: ['epic fantasy', 'quest', 'fellowship'], searchTerms: ['The Wheel of Time Robert Jordan', 'The Name of the Wind Patrick Rothfuss', 'A Wizard of Earthsea Ursula K. Le Guin', 'The Way of Kings Brandon Sanderson'] },
+      'game of thrones': { themes: ['political fantasy', 'dark', 'epic'], searchTerms: ['The Name of the Wind Patrick Rothfuss', 'The Blade Itself Joe Abercrombie', 'The Poppy War R.F. Kuang', 'The Way of Kings Brandon Sanderson'] },
+      'mistborn': { themes: ['magic system', 'heist', 'epic fantasy'], searchTerms: ['The Way of Kings Brandon Sanderson', 'The Name of the Wind Patrick Rothfuss', 'The Lies of Locke Lamora Scott Lynch', 'Red Rising Pierce Brown'] },
+      'the name of the wind': { themes: ['lyrical fantasy', 'magic university', 'unreliable narrator'], searchTerms: ['The Way of Kings Brandon Sanderson', 'The Lies of Locke Lamora Scott Lynch', 'Blood Song Anthony Ryan', 'Assassin\'s Apprentice Robin Hobb'] },
+      'six of crows': { themes: ['heist', 'found family', 'dark fantasy'], searchTerms: ['The Cruel Prince Holly Black', 'Throne of Glass Sarah J. Maas', 'The Gilded Wolves Roshani Chokshi', 'Ace of Spades Faridah Abike-Iyimide'] },
+      'the poppy war': { themes: ['military fantasy', 'dark', 'war'], searchTerms: ['The Fifth Season N.K. Jemisin', 'Red Rising Pierce Brown', 'The Blade Itself Joe Abercrombie', 'An Ember in the Ashes Sabaa Tahir'] },
+      'shadow and bone': { themes: ['chosen one', 'dark fantasy', 'Russian-inspired'], searchTerms: ['Six of Crows Leigh Bardugo', 'The Cruel Prince Holly Black', 'An Ember in the Ashes Sabaa Tahir', 'Throne of Glass Sarah J. Maas'] },
+      // === CONTEMPORARY ROMANCE ===
+      'the summer i turned pretty': { themes: ['summer romance', 'love triangle', 'coming of age'], searchTerms: ['To All the Boys I\'ve Loved Before Jenny Han', 'The Sun Is Also a Star Nicola Yoon', 'Anna and the French Kiss Stephanie Perkins', 'Along for the Ride Sarah Dessen'] },
+      'the notebook': { themes: ['epic love story', 'second chance', 'emotional'], searchTerms: ['Me Before You Jojo Moyes', 'The Time Traveler\'s Wife Audrey Niffenegger', 'One Day David Nicholls', 'A Walk to Remember Nicholas Sparks'] },
+      'pride and prejudice': { themes: ['enemies to lovers', 'witty banter', 'regency'], searchTerms: ['North and South Elizabeth Gaskell', 'Jane Eyre Charlotte Bronte', 'Persuasion Jane Austen', 'The Hating Game Sally Thorne'] },
+      'outlander': { themes: ['time travel romance', 'historical', 'Scotland'], searchTerms: ['The Time Traveler\'s Wife Audrey Niffenegger', 'A Discovery of Witches Deborah Harkness', 'The Bronze Horseman Paullina Simons', 'The Pillars of the Earth Ken Follett'] },
+      'the seven husbands of evelyn hugo': { themes: ['Hollywood glamour', 'LGBTQ', 'dual timeline'], searchTerms: ['Daisy Jones and the Six Taylor Jenkins Reid', 'Malibu Rising Taylor Jenkins Reid', 'The Great Alone Kristin Hannah', 'Circe Madeline Miller'] },
+      'daisy jones and the six': { themes: ['rock and roll', '1970s', 'music'], searchTerms: ['Malibu Rising Taylor Jenkins Reid', 'The Seven Husbands of Evelyn Hugo Taylor Jenkins Reid', 'Almost Famous Cameron Crowe', 'Carrie Soto Is Back Taylor Jenkins Reid'] },
+      'normal people': { themes: ['literary romance', 'class difference', 'on-again off-again'], searchTerms: ['Beautiful World Where Are You Sally Rooney', 'Conversations with Friends Sally Rooney', 'One Day David Nicholls', 'Exciting Times Naoise Dolan'] },
+      'red white and royal blue': { themes: ['LGBTQ romance', 'political', 'enemies to lovers'], searchTerms: ['The Charm Offensive Alison Cochrun', 'Boyfriend Material Alexis Hall', 'One Last Stop Casey McQuiston', 'Heartstopper Alice Oseman'] },
+      // === LITERARY FICTION ===
+      'where the crawdads sing': { themes: ['literary fiction', 'nature', 'mystery'], searchTerms: ['The Great Alone Kristin Hannah', 'Educated Tara Westover', 'The Nightingale Kristin Hannah', 'Before We Were Yours Lisa Wingate'] },
+      'the midnight library': { themes: ['literary fiction', 'alternate lives', 'finding purpose'], searchTerms: ['The Invisible Life of Addie LaRue V.E. Schwab', 'Anxious People Fredrik Backman', 'A Man Called Ove Fredrik Backman', 'The House in the Cerulean Sea TJ Klune'] },
+      'lessons in chemistry': { themes: ['historical fiction', 'feminist', 'humor'], searchTerms: ['The Personal Librarian Marie Benedict', 'Where the Crawdads Sing Delia Owens', 'Malibu Rising Taylor Jenkins Reid', 'The Giver of Stars Jojo Moyes'] },
+      'tomorrow, and tomorrow, and tomorrow': { themes: ['literary fiction', 'friendship', 'video games'], searchTerms: ['A Little Life Hanya Yanagihara', 'The Midnight Library Matt Haig', 'Station Eleven Emily St. John Mandel', 'The Invisible Life of Addie LaRue V.E. Schwab'] },
+      'a little life': { themes: ['literary fiction', 'trauma', 'friendship'], searchTerms: ['The Goldfinch Donna Tartt', 'Normal People Sally Rooney', 'Shuggie Bain Douglas Stuart', 'The Secret History Donna Tartt'] },
+      'the secret history': { themes: ['dark academia', 'literary thriller', 'obsession'], searchTerms: ['If We Were Villains M.L. Rio', 'The Magicians Lev Grossman', 'Ninth House Leigh Bardugo', 'Babel R.F. Kuang'] },
+      'mexican gothic': { themes: ['gothic horror', 'mystery', 'atmospheric'], searchTerms: ['The Haunting of Hill House Shirley Jackson', 'House of Salt and Sorrows Erin A. Craig', 'Ninth House Leigh Bardugo', 'Silvia Moreno-Garcia Gods of Jade and Shadow'] },
+      'the great gatsby': { themes: ['American dream', 'jazz age', 'obsession'], searchTerms: ['The Sun Also Rises Ernest Hemingway', 'Tender Is the Night F. Scott Fitzgerald', 'Brideshead Revisited Evelyn Waugh', 'The Secret History Donna Tartt'] },
+      'the kite runner': { themes: ['friendship', 'redemption', 'Afghanistan'], searchTerms: ['A Thousand Splendid Suns Khaled Hosseini', 'The Book Thief Markus Zusak', 'All the Light We Cannot See Anthony Doerr', 'Shantaram Gregory David Roberts'] },
+      'educated': { themes: ['memoir', 'survival', 'self-discovery'], searchTerms: ['The Glass Castle Jeannette Walls', 'Hillbilly Elegy J.D. Vance', 'Where the Crawdads Sing Delia Owens', 'A Child Called It Dave Pelzer'] },
+      'circe': { themes: ['mythology retelling', 'feminist', 'Greek mythology'], searchTerms: ['The Song of Achilles Madeline Miller', 'Ariadne Jennifer Saint', 'Piranesi Susanna Clarke', 'The Silence of the Girls Pat Barker'] },
+      'the song of achilles': { themes: ['Greek mythology', 'LGBTQ', 'tragic love'], searchTerms: ['Circe Madeline Miller', 'Ariadne Jennifer Saint', 'The Silence of the Girls Pat Barker', 'Piranesi Susanna Clarke'] },
+      'anxious people': { themes: ['humor', 'interconnected stories', 'feel-good'], searchTerms: ['A Man Called Ove Fredrik Backman', 'The House in the Cerulean Sea TJ Klune', 'The Midnight Library Matt Haig', 'Eleanor Oliphant Is Completely Fine Gail Honeyman'] },
+      // === SCI-FI ===
+      'project hail mary': { themes: ['sci-fi', 'survival', 'humor'], searchTerms: ['The Martian Andy Weir', 'Murderbot Diaries Martha Wells', 'Recursion Blake Crouch', 'Dark Matter Blake Crouch'] },
+      'the martian': { themes: ['sci-fi survival', 'humor', 'space'], searchTerms: ['Project Hail Mary Andy Weir', 'Artemis Andy Weir', 'The Long Way to a Small Angry Planet Becky Chambers', 'Recursion Blake Crouch'] },
+      'dune': { themes: ['space opera', 'political intrigue', 'desert planet'], searchTerms: ['The Left Hand of Darkness Ursula K. Le Guin', 'Foundation Isaac Asimov', 'Hyperion Dan Simmons', 'The Fifth Season N.K. Jemisin'] },
+      // === HORROR & GOTHIC ===
+      'the shining': { themes: ['horror', 'isolation', 'haunted hotel'], searchTerms: ['The Haunting of Hill House Shirley Jackson', 'House of Leaves Mark Z. Danielewski', 'Pet Sematary Stephen King', 'The Amityville Horror Jay Anson'] },
+      'it': { themes: ['horror', 'coming of age', 'small town evil'], searchTerms: ['Stranger Things Darkness on the Edge of Town', 'Summer of Night Dan Simmons', 'The Shining Stephen King', 'Boy\'s Life Robert R. McCammon'] },
+      'twilight': { themes: ['vampire romance', 'forbidden love', 'supernatural'], searchTerms: ['Hush Hush Becca Fitzpatrick', 'Fallen Lauren Kate', 'A Discovery of Witches Deborah Harkness', 'Vampire Academy Richelle Mead'] },
+      // === MISSING TOP-SEARCHED TITLES (from research) ===
+      'a good girls guide to murder': { themes: ['YA mystery', 'true crime', 'investigation'], searchTerms: ['One of Us Is Lying Karen McManus', 'We Were Liars E. Lockhart', 'Truly Devious Maureen Johnson', 'The Cheerleaders Kara Thomas'] },
+      'a good girl\'s guide to murder': { themes: ['YA mystery', 'true crime', 'investigation'], searchTerms: ['One of Us Is Lying Karen McManus', 'We Were Liars E. Lockhart', 'Truly Devious Maureen Johnson', 'The Cheerleaders Kara Thomas'] },
+      'dark matter': { themes: ['sci-fi thriller', 'multiverse', 'identity'], searchTerms: ['Recursion Blake Crouch', 'Project Hail Mary Andy Weir', 'The Midnight Library Matt Haig', 'Upgrade Blake Crouch'] },
+      'we were liars': { themes: ['YA mystery', 'unreliable narrator', 'family secrets'], searchTerms: ['A Good Girl\'s Guide to Murder Holly Jackson', 'The Inheritance Games Jennifer Lynn Barnes', 'One of Us Is Lying Karen McManus', 'People Like Us Dana Mele'] },
+      'it happened one summer': { themes: ['small town romance', 'grumpy sunshine', 'romantic comedy'], searchTerms: ['Things We Never Got Over Lucy Score', 'Part of Your World Abby Jimenez', 'Beach Read Emily Henry', 'The Simple Wild K.A. Tucker'] },
+      'my year of rest and relaxation': { themes: ['literary fiction', 'dark humor', 'isolation'], searchTerms: ['Conversations with Friends Sally Rooney', 'Eileen Ottessa Moshfegh', 'The Bell Jar Sylvia Plath', 'Exciting Times Naoise Dolan'] },
+      '1984': { themes: ['dystopia', 'totalitarianism', 'surveillance'], searchTerms: ['Brave New World Aldous Huxley', 'Fahrenheit 451 Ray Bradbury', 'The Handmaid\'s Tale Margaret Atwood', 'We Yevgeny Zamyatin'] },
+      'the handmaid\'s tale': { themes: ['dystopia', 'feminist', 'totalitarianism'], searchTerms: ['The Power Naomi Alderman', '1984 George Orwell', 'The Giver Lois Lowry', 'Station Eleven Emily St. John Mandel'] },
+      'the handmaids tale': { themes: ['dystopia', 'feminist', 'totalitarianism'], searchTerms: ['The Power Naomi Alderman', '1984 George Orwell', 'The Giver Lois Lowry', 'Station Eleven Emily St. John Mandel'] },
+      'flowers for algernon': { themes: ['literary fiction', 'sci-fi', 'emotional'], searchTerms: ['The Curious Incident of the Dog in the Night-Time Mark Haddon', 'Never Let Me Go Kazuo Ishiguro', 'The Midnight Library Matt Haig', 'A Man Called Ove Fredrik Backman'] },
+      'the three-body problem': { themes: ['hard sci-fi', 'first contact', 'physics'], searchTerms: ['Project Hail Mary Andy Weir', 'Foundation Isaac Asimov', 'Hyperion Dan Simmons', 'Blindsight Peter Watts'] },
+      'legends and lattes': { themes: ['cozy fantasy', 'found family', 'slice of life'], searchTerms: ['The House in the Cerulean Sea TJ Klune', 'Howl\'s Moving Castle Diana Wynne Jones', 'Piranesi Susanna Clarke', 'The Goblin Emperor Katherine Addison'] },
+      'butcher and blackbird': { themes: ['dark romance', 'serial killer romance', 'humor'], searchTerms: ['Haunting Adeline H.D. Carlton', 'Twisted Love Ana Huang', 'Den of Vipers K.A. Knight', 'Corrupt Penelope Douglas'] },
+      'when the moon hatched': { themes: ['dragon fantasy', 'enemies to lovers', 'romantasy'], searchTerms: ['Fourth Wing Rebecca Yarros', 'A Court of Thorns and Roses Sarah J. Maas', 'The Serpent and the Wings of Night Carissa Broadbent', 'From Blood and Ash Jennifer Armentrout'] },
+      'one dark window': { themes: ['dark fantasy', 'magic system', 'romance'], searchTerms: ['The Cruel Prince Holly Black', 'A Court of Thorns and Roses Sarah J. Maas', 'Daughter of No Worlds Carissa Broadbent', 'Kingdom of the Wicked Kerri Maniscalco'] },
+      'spark of the everflame': { themes: ['romantasy', 'enemies to lovers', 'political intrigue'], searchTerms: ['Fourth Wing Rebecca Yarros', 'A Court of Thorns and Roses Sarah J. Maas', 'From Blood and Ash Jennifer Armentrout', 'The Serpent and the Wings of Night Carissa Broadbent'] },
+      '11/22/63': { themes: ['time travel', 'historical thriller', 'JFK'], searchTerms: ['The Time Traveler\'s Wife Audrey Niffenegger', 'Dark Matter Blake Crouch', 'Recursion Blake Crouch', 'Outlander Diana Gabaldon'] },
+      'lonesome dove': { themes: ['western', 'adventure', 'friendship'], searchTerms: ['True Grit Charles Portis', 'Blood Meridian Cormac McCarthy', 'News of the World Paulette Jiles', 'The Sisters Brothers Patrick deWitt'] },
+      'the invisible life of addie larue': { themes: ['fantasy', 'love story', 'immortality'], searchTerms: ['The Midnight Library Matt Haig', 'Piranesi Susanna Clarke', 'Circe Madeline Miller', 'The Night Circus Erin Morgenstern'] },
+      'the night circus': { themes: ['magical realism', 'competition', 'romance'], searchTerms: ['The Invisible Life of Addie LaRue V.E. Schwab', 'The Starless Sea Erin Morgenstern', 'Piranesi Susanna Clarke', 'Caraval Stephanie Garber'] },
+      'the inheritance games': { themes: ['YA mystery', 'wealth', 'puzzles'], searchTerms: ['A Good Girl\'s Guide to Murder Holly Jackson', 'We Were Liars E. Lockhart', 'One of Us Is Lying Karen McManus', 'The Naturals Jennifer Lynn Barnes'] },
+      'sunrise on the reaping': { themes: ['dystopia', 'prequel', 'rebellion'], searchTerms: ['The Hunger Games Suzanne Collins', 'Divergent Veronica Roth', 'Red Rising Pierce Brown', 'The Ballad of Songbirds and Snakes Suzanne Collins'] },
     };
 
     // Helper: extract thematic search keywords from a title for broader discovery
@@ -2439,45 +2545,45 @@
         return vibeMatch.searchTerms.slice(0, 4);
       }
 
-      // Common title/concept words → popular book search terms (modern, BookTok-style)
+      // Common title/concept words → specific popular book searches (Open Library finds real books this way)
       const titleThemeMap = {
-        'dracula': ['vampire romance dark fiction', 'gothic romance supernatural novel', 'paranormal romance vampire love'],
-        'vampire': ['paranormal romance vampire fiction', 'dark fantasy vampire novel', 'vampire love story fiction'],
-        'zombie': ['post-apocalyptic survival fiction', 'zombie apocalypse thriller novel', 'survival horror fiction'],
-        'ghost': ['haunted house thriller fiction', 'ghost story contemporary novel', 'supernatural literary fiction'],
-        'witch': ['witchy fantasy romance fiction', 'witch romance fantasy novel', 'magic women fantasy fiction'],
-        'dragon': ['dragon rider fantasy romance', 'epic fantasy dragon fiction', 'romantasy dragon novel'],
-        'pirate': ['pirate romance adventure fiction', 'historical romance sea adventure', 'pirate fantasy fiction'],
-        'robot': ['artificial intelligence fiction', 'sci-fi robot literary novel', 'technology dystopia fiction'],
-        'alien': ['alien romance science fiction', 'first contact sci-fi novel', 'space romance fiction'],
-        'war': ['war literary fiction novel', 'historical war romance fiction', 'military romance novel'],
-        'love': ['contemporary romance literary fiction', 'love story literary novel', 'romantic literary fiction'],
-        'murder': ['murder mystery thriller fiction', 'crime thriller novel', 'dark mystery fiction'],
-        'heist': ['heist thriller fiction novel', 'crime caper fiction', 'con artist romance thriller'],
-        'spy': ['spy thriller romance fiction', 'espionage thriller novel', 'spy romance fiction'],
-        'magic': ['fantasy romance magic fiction', 'urban fantasy novel', 'magical realism literary fiction'],
-        'school': ['dark academia fiction', 'academy fantasy romance novel', 'boarding school romance fiction'],
-        'academy': ['dark academia fantasy romance', 'academy enemies to lovers', 'fantasy school fiction'],
-        'space': ['space opera romance fiction', 'sci-fi romance space', 'space adventure fiction'],
-        'ocean': ['ocean adventure romance fiction', 'sea mystery novel', 'maritime literary fiction'],
-        'island': ['island romance fiction', 'tropical mystery thriller', 'isolated island suspense'],
-        'wedding': ['wedding romance comedy novel', 'romantic comedy fiction', 'love comedy fiction'],
-        'christmas': ['christmas romance novel', 'holiday romance fiction', 'christmas love story'],
-        'summer': ['summer romance fiction novel', 'beach read romance', 'summer love story fiction'],
-        'paris': ['paris romance fiction novel', 'french romance literary', 'paris love story fiction'],
-        'new york': ['new york romance literary fiction', 'manhattan novel contemporary', 'city romance fiction'],
-        'london': ['london literary fiction novel', 'british romance fiction', 'london mystery romance'],
-        'forbidden': ['forbidden romance fiction novel', 'forbidden love dark romance', 'enemies to lovers romance'],
-        'enemies': ['enemies to lovers romance fantasy', 'rivals romance fiction', 'hate to love romance novel'],
-        'dark': ['dark romance fiction novel', 'dark fantasy romance', 'gothic dark literary fiction'],
-        'gothic': ['gothic romance fiction novel', 'dark gothic literary fiction', 'gothic fantasy romance'],
-        'fae': ['fae fantasy romance novel', 'fairy fantasy romance fiction', 'fae romance romantasy'],
-        'fairy': ['fairy tale retelling romance', 'fae fantasy romance fiction', 'fairy tale fantasy novel'],
-        'kingdom': ['fantasy kingdom romance', 'royal fantasy fiction novel', 'kingdom political fantasy'],
-        'royal': ['royal romance fiction', 'prince princess romance fantasy', 'royal court intrigue fiction'],
-        'assassin': ['assassin fantasy romance fiction', 'female assassin fantasy novel', 'assassin enemies to lovers'],
-        'mafia': ['mafia dark romance fiction', 'organized crime romance novel', 'dark mafia romance'],
-        'billionaire': ['billionaire romance fiction', 'wealthy romance contemporary', 'rich love story fiction'],
+        'dracula': ['Interview with the Vampire Anne Rice', 'A Discovery of Witches Deborah Harkness', 'Twilight Stephenie Meyer'],
+        'vampire': ['Twilight Stephenie Meyer', 'Vampire Academy Richelle Mead', 'A Discovery of Witches Deborah Harkness'],
+        'zombie': ['World War Z Max Brooks', 'The Girl with All the Gifts M.R. Carey', 'Station Eleven Emily St. John Mandel'],
+        'ghost': ['The Haunting of Hill House Shirley Jackson', 'Mexican Gothic Silvia Moreno-Garcia', 'The Woman in Black Susan Hill'],
+        'witch': ['Practical Magic Alice Hoffman', 'The Once and Future Witches Alix Harrow', 'Circe Madeline Miller'],
+        'dragon': ['Fourth Wing Rebecca Yarros', 'Eragon Christopher Paolini', 'The Priory of the Orange Tree Samantha Shannon'],
+        'pirate': ['Daughter of the Pirate King Traci Loudin', 'On Stranger Tides Tim Powers', 'Treasure Island Robert Louis Stevenson'],
+        'robot': ['Klara and the Sun Kazuo Ishiguro', 'Murderbot Diaries Martha Wells', 'I Robot Isaac Asimov'],
+        'alien': ['The Long Way to a Small Angry Planet Becky Chambers', 'Project Hail Mary Andy Weir', 'Ender\'s Game Orson Scott Card'],
+        'war': ['The Nightingale Kristin Hannah', 'All the Light We Cannot See Anthony Doerr', 'The Book Thief Markus Zusak'],
+        'love': ['Beach Read Emily Henry', 'The Love Hypothesis Ali Hazelwood', 'Normal People Sally Rooney'],
+        'murder': ['Gone Girl Gillian Flynn', 'The Silent Patient Alex Michaelides', 'In the Woods Tana French'],
+        'heist': ['Six of Crows Leigh Bardugo', 'The Lies of Locke Lamora Scott Lynch', 'Mistborn Brandon Sanderson'],
+        'spy': ['The Spy Who Came in from the Cold John le Carre', 'Red Sparrow Jason Matthews', 'An Absolutely Remarkable Thing Hank Green'],
+        'magic': ['The Name of the Wind Patrick Rothfuss', 'The Night Circus Erin Morgenstern', 'Piranesi Susanna Clarke'],
+        'school': ['The Secret History Donna Tartt', 'Ninth House Leigh Bardugo', 'If We Were Villains M.L. Rio'],
+        'academy': ['Fourth Wing Rebecca Yarros', 'Zodiac Academy Caroline Peckham', 'Red Queen Victoria Aveyard'],
+        'space': ['Project Hail Mary Andy Weir', 'The Long Way to a Small Angry Planet Becky Chambers', 'Dune Frank Herbert'],
+        'ocean': ['The Light Between Oceans M.L. Stedman', 'Where the Crawdads Sing Delia Owens', 'Pirate romance adventure fiction'],
+        'island': ['The Beach Alex Garland', 'Lord of the Flies William Golding', 'We Were Liars E. Lockhart'],
+        'wedding': ['The Wedding People Alison Espach', 'People We Meet on Vacation Emily Henry', 'The Unhoneymooners Christina Lauren'],
+        'christmas': ['In a Holidaze Christina Lauren', 'One Day in December Josie Silver', 'The Christmas Fix Lucy Score'],
+        'summer': ['Beach Read Emily Henry', 'The Summer I Turned Pretty Jenny Han', 'People We Meet on Vacation Emily Henry'],
+        'paris': ['The Paris Wife Paula McLain', 'All the Light We Cannot See Anthony Doerr', 'Elegance of the Hedgehog Muriel Barbery'],
+        'new york': ['The Goldfinch Donna Tartt', 'A Little Life Hanya Yanagihara', 'Bright Lights Big City Jay McInerney'],
+        'london': ['Neverwhere Neil Gaiman', 'The Thursday Murder Club Richard Osman', 'Rivers of London Ben Aaronovitch'],
+        'forbidden': ['Haunting Adeline H.D. Carlton', 'Credence Penelope Douglas', 'Twisted Love Ana Huang'],
+        'enemies': ['The Hating Game Sally Thorne', 'The Love Hypothesis Ali Hazelwood', 'The Cruel Prince Holly Black'],
+        'dark': ['Haunting Adeline H.D. Carlton', 'Corrupt Penelope Douglas', 'Mexican Gothic Silvia Moreno-Garcia'],
+        'gothic': ['Mexican Gothic Silvia Moreno-Garcia', 'The Haunting of Hill House Shirley Jackson', 'Rebecca Daphne du Maurier'],
+        'fae': ['A Court of Thorns and Roses Sarah J. Maas', 'The Cruel Prince Holly Black', 'The Serpent and the Wings of Night Carissa Broadbent'],
+        'fairy': ['Spinning Silver Naomi Novik', 'The Bear and the Nightingale Katherine Arden', 'House of Salt and Sorrows Erin A. Craig'],
+        'kingdom': ['The Cruel Prince Holly Black', 'Kingdom of the Wicked Kerri Maniscalco', 'The Priory of the Orange Tree Samantha Shannon'],
+        'royal': ['Red White and Royal Blue Casey McQuiston', 'The Selection Kiera Cass', 'Red Queen Victoria Aveyard'],
+        'assassin': ['Throne of Glass Sarah J. Maas', 'Graceling Kristin Cashore', 'Nevernight Jay Kristoff'],
+        'mafia': ['The Sweetest Oblivion Danielle Lori', 'Corrupt Penelope Douglas', 'Twisted Love Ana Huang'],
+        'billionaire': ['King of Wrath Ana Huang', 'Twisted Love Ana Huang', 'The Fine Print Lauren Asher'],
       };
       // Check title words against theme map
       for (const [word, themes] of Object.entries(titleThemeMap)) {
@@ -2519,8 +2625,9 @@
         // Check if this is a known movie/TV show — try multiple variations
         const rawLower = query.toLowerCase().trim();
         const mediaMatch = mediaThemeMap[rawLower] || mediaThemeMap[queryLower] ||
-          // Try partial matches — e.g. "dracula a love tale 2025" → match "dracula love tale" or "dracula love" or "dracula"
-          Object.entries(mediaThemeMap).find(([key]) => queryLower.includes(key) || rawLower.includes(key))?.[1];
+          // Try partial matches — e.g. "dracula a love tale 2025" → match "dracula love tale"
+          // Key must be 4+ chars and match a significant portion to avoid false positives
+          Object.entries(mediaThemeMap).find(([key]) => key.length >= 4 && (queryLower.includes(key) || rawLower.includes(key)))?.[1];
 
         let subjects = [];
         let sourceBook = null;
@@ -2540,19 +2647,35 @@
           return;
         }
 
-        // Step 1: Search Open Library for the cleaned title — use title: field for precision
+        // Step 1: Search Open Library — try both raw query and cleaned title for best results
         const titleQuery = encodeURIComponent(parsed.cleanTitle);
-        const [searchRes1, searchRes2] = await Promise.all([
-          fetch(`https://openlibrary.org/search.json?title=${titleQuery}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key&limit=8`)
+        const rawQuery = encodeURIComponent(query.trim());
+        const searches = [
+          fetch(`https://openlibrary.org/search.json?title=${rawQuery}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key&limit=8`)
             .then(r => r.json()).catch(() => ({ docs: [] })),
-          fetch(`https://openlibrary.org/search.json?q=${titleQuery}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key&limit=8`)
+          fetch(`https://openlibrary.org/search.json?q=${rawQuery}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key&limit=8`)
             .then(r => r.json()).catch(() => ({ docs: [] }))
-        ]);
+        ];
+        if (titleQuery !== rawQuery) {
+          searches.push(
+            fetch(`https://openlibrary.org/search.json?title=${titleQuery}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key&limit=8`)
+              .then(r => r.json()).catch(() => ({ docs: [] }))
+          );
+        }
+        // Also search the canonical bookVibeMap key if it's a longer/different name (e.g., "acotar" → "a court of thorns and roses")
+        const vibeKey = Object.keys(bookVibeMap).find(k => k === rawLower || k === queryLower || rawLower.includes(k) || k.includes(rawLower));
+        if (vibeKey && vibeKey.length > query.trim().length + 3) {
+          searches.push(
+            fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(vibeKey)}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key&limit=5`)
+              .then(r => r.json()).catch(() => ({ docs: [] }))
+          );
+        }
+        const searchResults = await Promise.all(searches);
 
-        // Merge and deduplicate results from both queries
+        // Merge and deduplicate results from all queries
         const allDocs = [];
         const seenKeys = new Set();
-        [...(searchRes1.docs || []), ...(searchRes2.docs || [])].forEach(d => {
+        searchResults.flatMap(r => r.docs || []).forEach(d => {
           const k = (d.title || '').toLowerCase();
           if (!seenKeys.has(k)) { seenKeys.add(k); allDocs.push(d); }
         });
@@ -2578,16 +2701,21 @@
         let bestDoc = null;
         if (allDocs.length > 0) {
           const scored = allDocs.map(d => {
-            const titleScore = titleSimilarity(d.title, parsed.cleanTitle);
+            // Check both raw query and cleaned title for best title match
+            const titleScore = Math.max(titleSimilarity(d.title, query.trim()), titleSimilarity(d.title, parsed.cleanTitle));
             const subs = (d.subject || []).join(' ').toLowerCase();
             const isJuvenile = subs.includes('juvenile') || subs.includes('children') || subs.includes('picture book');
             const juvPenalty = isJuvenile ? -30 : 0;
+            // Penalize box sets and collections — we want single books
+            const titleLow2 = (d.title || '').toLowerCase();
+            const isBoxSet = titleLow2.includes('box set') || titleLow2.includes('boxed set') || titleLow2.includes('collection') || titleLow2.includes('omnibus') || titleLow2.includes('complete series') || titleLow2.includes('4-book') || titleLow2.includes('3-book') || titleLow2.includes('2-book');
+            const boxSetPenalty = isBoxSet ? -25 : 0;
             const ratingScore = d.ratings_average ? Math.round(d.ratings_average * 3) : 0;
             const subjectScore = Math.min((d.subject || []).length, 10);
             const popularityScore = (d.ratings_average && d.ratings_average > 3.5) ? 5 : 0;
             return {
               doc: d,
-              score: titleScore + ratingScore + subjectScore + popularityScore + juvPenalty
+              score: titleScore + ratingScore + subjectScore + popularityScore + juvPenalty + boxSetPenalty
             };
           });
           scored.sort((a, b) => b.score - a.score);
@@ -2626,13 +2754,45 @@
 
         const fetchPromises = [];
 
-        // Strategy A: Search by top subjects
-        subjects.slice(0, 4).forEach(s => {
+        // Check if we have curated vibe map data for this book
+        const hasCuratedTerms = (() => {
+          const tl = parsed.cleanTitle.toLowerCase();
+          const rl = query.toLowerCase().trim();
+          return bookVibeMap[rl] || bookVibeMap[tl] ||
+            Object.entries(bookVibeMap).find(([k]) => rl.includes(k) || k.includes(rl) || tl.includes(k) || k.includes(tl))?.[1];
+        })();
+
+        // Strategy A: Search by subjects
+        if (!hasCuratedTerms) {
+          // No curated data — use raw OL subjects but limit to broad genre terms
+          const genreSubjects = subjects.filter(s =>
+            /fiction|fantasy|romance|thriller|mystery|horror|sci-fi|dystop|adventure|humor|literary/i.test(s)
+          ).slice(0, 3);
+          const subjectsToSearch = genreSubjects.length > 0 ? genreSubjects : subjects.slice(0, 3);
+          subjectsToSearch.forEach(s => {
+            fetchPromises.push(
+              fetch(`https://openlibrary.org/search.json?q=subject:"${encodeURIComponent(s)}"&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=8`)
+                .then(r => r.json()).then(data => ({ type: 'subject', subject: s, data })).catch(() => ({ type: 'subject', data: { docs: [] } }))
+            );
+          });
+        } else {
+          // Use curated theme names as subject searches — finds excellent genre matches
+          // Search themes individually (more results) + one combined query (more precise)
+          const themes = hasCuratedTerms.themes;
+          // Combined multi-subject search (don't encodeURIComponent the + between subjects)
+          if (themes.length >= 2) {
+            const combinedQ = themes.slice(0, 2).map(t => `subject:"${t}"`).join('+');
+            fetchPromises.push(
+              fetch(`https://openlibrary.org/search.json?q=${combinedQ}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=12`)
+                .then(r => r.json()).then(data => ({ type: 'subject', subject: themes.slice(0, 2).join(', '), data })).catch(() => ({ type: 'subject', data: { docs: [] } }))
+            );
+          }
+          // Also search the primary theme individually for breadth
           fetchPromises.push(
-            fetch(`https://openlibrary.org/search.json?q=subject:"${encodeURIComponent(s)}"&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=8`)
-              .then(r => r.json()).then(data => ({ type: 'subject', subject: s, data })).catch(() => ({ type: 'subject', data: { docs: [] } }))
+            fetch(`https://openlibrary.org/search.json?q=subject:"${encodeURIComponent(themes[0])}"&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=10`)
+              .then(r => r.json()).then(data => ({ type: 'subject', subject: themes[0], data })).catch(() => ({ type: 'subject', data: { docs: [] } }))
           );
-        });
+        }
 
         // Strategy B: Same author
         if (sourceBook && sourceBook.author !== 'Unknown') {
@@ -2643,17 +2803,45 @@
         }
 
         // Strategy C: Always search by thematic keywords — this finds the "vibe" matches
+        // Curated searchTerms are now specific book titles like "Divergent Veronica Roth"
         {
           const themeKeywords = extractThemes(parsed.cleanTitle, subjects);
           themeKeywords.forEach(kw => {
+            const isCuratedBookSearch = /[A-Z].*\s[A-Z]/.test(kw) && !kw.startsWith('subject:');
             fetchPromises.push(
-              fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(kw)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=6`)
-                .then(r => r.json()).then(data => ({ type: 'theme', theme: kw, data })).catch(() => ({ type: 'theme', data: { docs: [] } }))
+              fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(kw)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=10`)
+                .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
+                .then(data => ({ type: 'theme', theme: kw, data, isCurated: isCuratedBookSearch, curatedSearchTerm: isCuratedBookSearch ? kw.toLowerCase() : '' }))
+                .catch(() => ({ type: 'theme', theme: kw, data: { docs: [] }, isCurated: isCuratedBookSearch, curatedSearchTerm: isCuratedBookSearch ? kw.toLowerCase() : '' }))
             );
           });
         }
 
         const allResults = await Promise.all(fetchPromises);
+
+        // Retry any curated searches that returned 0 results (likely rate limited)
+        for (let i = 0; i < allResults.length; i++) {
+          const r = allResults[i];
+          if (r.isCurated && r.curatedSearchTerm && (!r.data.docs || r.data.docs.length === 0)) {
+            await new Promise(resolve => setTimeout(resolve, 300));
+            try {
+              const resp = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(r.theme)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&limit=10`);
+              if (resp.ok) {
+                const data = await resp.json();
+                allResults[i] = { ...r, data };
+              }
+            } catch(e) {}
+          }
+        }
+
+        // Process curated theme results FIRST so they get priority in deduplication
+        // Then author matches, then subject matches
+        allResults.sort((a, b) => {
+          const order = { theme: 0, author: 1, subject: 2 };
+          const aOrder = a.isCurated ? -1 : (order[a.type] !== undefined ? order[a.type] : 1);
+          const bOrder = b.isCurated ? -1 : (order[b.type] !== undefined ? order[b.type] : 1);
+          return aOrder - bOrder;
+        });
 
         // Score and deduplicate all results — prioritize popular Goodreads/BookTok books
         allResults.forEach(result => {
@@ -2662,8 +2850,17 @@
             const titleLow = (doc.title || '').toLowerCase();
             if (seenTitles.has(titleLow)) return;
             if (titleLow.includes(queryLower) || queryLower.includes(titleLow)) return;
-            const docSubs = (doc.subject || []).join(' ').toLowerCase();
-            if (docSubs.includes('juvenile') || docSubs.includes('children') || docSubs.includes('picture book') || docSubs.includes('comic') || docSubs.includes('board book')) return;
+            // Skip box sets, collections, omnibus editions, study guides
+            if (titleLow.includes('box set') || titleLow.includes('boxed set') || titleLow.includes('collection') || titleLow.includes('omnibus') || titleLow.includes('complete series') || titleLow.match(/\d+-book/) || titleLow.includes('study guide') || titleLow.includes('sparknotes') || titleLow.includes('cliffsnotes') || titleLow.includes('summary of') || titleLow.includes('analysis of') || titleLow.includes('workbook')) return;
+            const docSubsArr = (doc.subject || []).map(s => s.toLowerCase());
+            const docSubs = docSubsArr.join(' ');
+            // Only skip true children's/picture books — NOT young adult fiction that happens to have "juvenile" tag
+            const isPictureBook = docSubs.includes('picture book') || docSubs.includes('board book');
+            const isComic = docSubs.includes('comic') || docSubs.includes('graphic novel');
+            const hasAdultContent = docSubsArr.some(s => /young adult|ya |teen|dystop|fantasy fiction|romance|thriller|horror|science fiction/.test(s));
+            if (isPictureBook || (isComic && !hasAdultContent)) return;
+            // Only filter juvenile if it has NO adult/YA indicators
+            if ((docSubs.includes('juvenile') || docSubs.includes('children')) && !hasAdultContent && !result.isCurated) return;
             // Hard skip: no rating at all = unknown/unpopular book (unless very recent)
             const year = doc.first_publish_year || 0;
             if (!doc.ratings_average && year < 2020) return;
@@ -2691,8 +2888,26 @@
             const authorBonus = isAuthorMatch ? 4 : 0;
             // Theme strategy boost
             const themeBoost = result.type === 'theme' ? 2 : 0;
+            // CURATED MATCH BONUS: If this book was specifically recommended in our bookVibeMap,
+            // give it a massive score boost so it always appears at top
+            let curatedBonus = 0;
+            if (result.isCurated && result.curatedSearchTerm) {
+              const docTitleLow = titleLow.replace(/\s*\(.*?\)\s*/g, '').trim();
+              const searchTermLow = result.curatedSearchTerm;
+              const docAuthorLow = (doc.author_name ? doc.author_name[0] : '').toLowerCase();
+              // Check if doc's title words appear in the curated search term
+              const titleInSearch = searchTermLow.includes(docTitleLow);
+              // Check if doc's author last name appears in the search term
+              const authorLastName = docAuthorLow.split(' ').pop();
+              const authorInSearch = authorLastName && authorLastName.length > 2 && searchTermLow.includes(authorLastName);
+              if (titleInSearch) {
+                curatedBonus = 40; // exact title match in curated search = top priority
+              } else if (authorInSearch) {
+                curatedBonus = 25; // same author from curated search = high priority (e.g. Morning Star by Pierce Brown when searching "Red Rising Pierce Brown")
+              }
+            }
 
-            const totalScore = subjectScore + authorBonus + ratingScore + noRatingPenalty + modernBonus + oldPenalty + themeBoost;
+            const totalScore = subjectScore + authorBonus + ratingScore + noRatingPenalty + modernBonus + oldPenalty + themeBoost + curatedBonus;
 
             similarBooks.push({
               title: doc.title,
@@ -2701,7 +2916,7 @@
               cover_i: doc.cover_i,
               year: doc.first_publish_year,
               matchCount: totalScore,
-              matchedSubjects: matchedSubjects.length > 0 ? matchedSubjects : (result.type === 'theme' ? [result.theme || 'similar vibe'] : []),
+              matchedSubjects: curatedBonus > 0 ? ['top pick'] : (matchedSubjects.length > 0 ? matchedSubjects : (result.type === 'theme' ? [result.theme || 'similar vibe'] : [])),
               isAuthorMatch
             });
           });
@@ -2763,8 +2978,19 @@
       const genre = getGenreTag(tags);
 
       // Build blurb based on what we know
-      const sharedVibes = tags.filter(t => typeof t === 'string' && t !== 'similar vibe' && !t.includes('fiction novel'));
+      const sharedVibes = tags.filter(t => typeof t === 'string' && t !== 'similar vibe' && t !== 'top pick' && !t.includes('fiction novel'));
       const vibeStr = sharedVibes.slice(0, 3).join(', ');
+
+      // Curated top pick — hand-selected recommendation
+      if (tags.includes('top pick')) {
+        const phrases = [
+          `The #1 book fans of ${queryName} pick up next. You won't be able to put it down.`,
+          `If you loved ${queryName}, this is the book everyone will tell you to read next.`,
+          `Readers who devoured ${queryName} rated this as their favorite similar read.`,
+          `This is THE recommendation for ${queryName} fans — same energy, equally addictive.`,
+        ];
+        return phrases[Math.abs(title.length) % phrases.length];
+      }
 
       if (book.isAuthorMatch) {
         return `Same author energy — if you loved ${queryName}, ${author}'s other work hits the same way.`;
