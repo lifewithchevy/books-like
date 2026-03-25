@@ -2645,6 +2645,7 @@
         let subjects = [];
         let sourceBook = null;
         let sourceSubjects = [];
+        let sourceSeries = new Set(); // series names from source book (for same-series dedup)
 
         if (mediaMatch) {
           // Known movie/TV show — use themed search
@@ -2755,12 +2756,19 @@
             cover_i: bestDoc.cover_i,
             year: bestDoc.first_publish_year
           };
-          sourceSubjects = (bestDoc.subject || []).slice(0, 30);
+          sourceSubjects = (bestDoc.subject || []).slice(0, 50);
+          // Extract series names from raw subjects before filtering (for same-series dedup)
+          sourceSeries = new Set(
+            sourceSubjects
+              .filter(s => /^series:/i.test(s))
+              .map(s => s.replace(/^series:/i, '').toLowerCase().replace(/_/g, ' ').trim())
+          );
           subjects = sourceSubjects.filter(s =>
-            !s.match(/^(nyt:|place:|time:|person:)/i) &&
+            !s.includes(':') &&  // removes collectionID:*, series:*, readingLevel:*, etc.
             s.length < 40 &&
             !s.match(/^(fiction|accessible|protected|large type|reading level|juvenile|children|young adult|picture book|board book|specimen|bibliography|cataloging|isbn|oclc)/i) &&
-            !s.match(/^(new york times|bestseller|book club|oprah|reese)/i)
+            !s.match(/^(new york times|bestseller|book club|oprah|reese|awards)/i) &&
+            !s.match(/^(nyt|place|time|person)/i)
           ).slice(0, 12);
 
           // If subjects are weak, enrich with curated vibe data
@@ -2890,6 +2898,16 @@
             // Skip explicit sequels (#2, #3+) — recommend first books only, not "Book 3 of a series"
             const isSequel = rawTitleLow.match(/[,(#]\s*#[2-9]\d*[)s,\s]|[,(#]\s*#[2-9]$/) || rawTitleLow.match(/\bbook\s+[2-9]\b/) || rawTitleLow.match(/\bvol(?:ume)?\s*\.?\s*[2-9]\b/);
             if (isSequel && !result.isCurated) return;
+            // Skip books in the SAME series as the source (e.g. don't recommend ACOMAF when user searched ACOSF)
+            if (sourceSeries.size > 0) {
+              const docSeriesTags = docSubsArr
+                .filter(s => /^series:/i.test(s))
+                .map(s => s.replace(/^series:/i, '').toLowerCase().replace(/_/g, ' ').trim());
+              const inSameSeries = docSeriesTags.some(ds =>
+                [...sourceSeries].some(ss => ds === ss || ds.includes(ss) || ss.includes(ds))
+              );
+              if (inSameSeries) return;
+            }
             const docSubsArr = (doc.subject || []).map(s => s.toLowerCase());
             const docSubs = docSubsArr.join(' ');
             // Only skip true children's/picture books — NOT young adult fiction that happens to have "juvenile" tag
@@ -2947,6 +2965,8 @@
 
             const totalScore = subjectScore + authorBonus + ratingScore + noRatingPenalty + modernBonus + oldPenalty + themeBoost + curatedBonus;
 
+            // Clean matched subjects — remove any garbage internal tags
+            const cleanMatched = matchedSubjects.filter(s => !s.includes(':') && s.length < 40);
             similarBooks.push({
               title: doc.title,
               author: doc.author_name ? doc.author_name[0] : 'Unknown',
@@ -2954,7 +2974,8 @@
               cover_i: doc.cover_i,
               year: doc.first_publish_year,
               matchCount: totalScore,
-              matchedSubjects: curatedBonus > 0 ? ['top pick'] : (matchedSubjects.length > 0 ? matchedSubjects : (result.type === 'theme' ? [result.theme || 'similar vibe'] : [])),
+              matchedSubjects: curatedBonus > 0 ? ['top pick'] : (cleanMatched.length > 0 ? cleanMatched : []),
+              allSubjects: (doc.subject || []).map(s => s.toLowerCase()),  // full subjects for genre detection
               isAuthorMatch
             });
           });
@@ -2994,71 +3015,104 @@
 
     function getGenreTag(subs) {
       const s = (subs || []).join(' ').toLowerCase();
-      if (s.includes('fantasy') || s.includes('magic')) return { tag: 'Fantasy', cls: 'tag-fantasy' };
-      if (s.includes('romance') || s.includes('love')) return { tag: 'Romance', cls: 'tag-romance' };
-      if (s.includes('thriller') || s.includes('suspense') || s.includes('mystery')) return { tag: 'Thriller', cls: 'tag-thriller' };
-      if (s.includes('science fiction') || s.includes('sci-fi')) return { tag: 'Sci-Fi', cls: 'tag-scifi' };
+      const isFantasy = s.includes('fantasy') || s.includes('magic') || s.includes('fae') || s.includes('faeries') || s.includes('faerie') || s.includes('dragon') || s.includes('witch') || s.includes('sorcery') || s.includes('wizard');
+      const isRomance = s.includes('romance') || s.includes('love story') || s.includes('romantic fiction') || s.includes('love interest');
+      // Fantasy Romance (Romantasy) — the #1 BookTok genre
+      if (isFantasy && isRomance) return { tag: 'Fantasy Romance', cls: 'tag-fantasy' };
+      if (isFantasy) return { tag: 'Fantasy', cls: 'tag-fantasy' };
+      if (isRomance || s.includes('love') && s.includes('fiction')) return { tag: 'Romance', cls: 'tag-romance' };
+      if (s.includes('thriller') || s.includes('suspense')) return { tag: 'Thriller', cls: 'tag-thriller' };
+      if (s.includes('mystery') || s.includes('detective')) return { tag: 'Mystery', cls: 'tag-thriller' };
+      if (s.includes('science fiction') || s.includes('sci-fi') || s.includes('dystop')) return { tag: 'Sci-Fi', cls: 'tag-scifi' };
       if (s.includes('horror')) return { tag: 'Horror', cls: 'tag-thriller' };
       if (s.includes('history') || s.includes('historical')) return { tag: 'Historical', cls: 'tag-literary' };
-      if (s.includes('comedy') || s.includes('humor')) return { tag: 'Comedy', cls: 'tag-drama' };
-      if (s.includes('crime') || s.includes('detective')) return { tag: 'Crime', cls: 'tag-thriller' };
+      if (s.includes('comedy') || s.includes('humor') || s.includes('humorous')) return { tag: 'Comedy', cls: 'tag-drama' };
+      if (s.includes('crime') || s.includes('detective') || s.includes('noir')) return { tag: 'Crime', cls: 'tag-thriller' };
+      if (s.includes('literary') || s.includes('contemporary')) return { tag: 'Literary', cls: 'tag-literary' };
       return { tag: 'Fiction', cls: 'tag-literary' };
     }
 
-    // Generate a BookTok-style "why you'll love it" blurb based on matched data
+    // Generate a BookTok-librarian "why you'll love it" blurb
     function generateWhyBlurb(book, query, mediaMatch, subjects, isMedia) {
       const title = book.title;
       const author = book.author;
-      const year = book.year;
       const tags = book.matchedSubjects || [];
       const queryName = mediaMatch ? mediaMatch.label : query;
-      const themes = mediaMatch ? mediaMatch.themes : subjects.slice(0, 4);
-      const genre = getGenreTag(tags);
+      // Use full subjects for richer genre detection, fall back to matchedSubjects
+      const allSubs = book.allSubjects || tags;
+      const genre = getGenreTag(allSubs);
 
-      // Build blurb based on what we know
-      const sharedVibes = tags.filter(t => typeof t === 'string' && t !== 'similar vibe' && t !== 'top pick' && !t.includes('fiction novel'));
-      const vibeStr = sharedVibes.slice(0, 3).join(', ');
+      // Helper: pick a phrase based on title hash for variety
+      function pick(arr) { return arr[Math.abs(title.length + (queryName.length || 0)) % arr.length]; }
 
       // Curated top pick — hand-selected recommendation
       if (tags.includes('top pick')) {
-        const phrases = [
-          `The #1 book fans of ${queryName} pick up next. You won't be able to put it down.`,
-          `If you loved ${queryName}, this is the book everyone will tell you to read next.`,
-          `Readers who devoured ${queryName} rated this as their favorite similar read.`,
-          `This is THE recommendation for ${queryName} fans — same energy, equally addictive.`,
-        ];
-        return phrases[Math.abs(title.length) % phrases.length];
+        return pick([
+          `If you loved ${queryName}, this is the one everyone points you to next. There's a reason for that.`,
+          `This is THE book ${queryName} fans keep recommending to each other. You'll understand why by chapter three.`,
+          `If ${queryName} had you in a chokehold, this one will do the same thing. Clear your weekend.`,
+          `The ${queryName} → this book pipeline exists for a reason. Every fan ends up here eventually.`,
+          `Literally the #1 pick for readers who devoured ${queryName}. The obsession is fully justified.`,
+        ]);
       }
 
       if (book.isAuthorMatch) {
-        return `Same author energy — if you loved ${queryName}, ${author}'s other work hits the same way.`;
+        return pick([
+          `Same author, same addictive writing style. If you're not reading everything ${author} writes, what are you doing?`,
+          `${author} has this way of pulling you in and not letting go — and this one does the same thing as ${queryName}.`,
+          `If ${queryName} made you a ${author} stan, this is your next read. You already know you'll love it.`,
+        ]);
       }
 
-      if (isMedia && vibeStr) {
-        const phrases = [
-          `Gives the same ${vibeStr} energy as ${queryName} but in book form. Trust us on this one.`,
-          `If ${queryName} left you wanting more ${vibeStr}, this is your next read.`,
-          `Same ${vibeStr} vibes as ${queryName} — but you get to live inside the characters' heads.`,
-          `That ${vibeStr} feeling you got from ${queryName}? This book delivers it and then some.`,
-        ];
-        return phrases[Math.abs(title.length) % phrases.length];
+      // Determine a reader-friendly genre description from full subjects
+      function readerGenre(subs) {
+        const s = (subs || []).join(' ').toLowerCase();
+        const hasFantasy = s.includes('fantasy') || s.includes('fae') || s.includes('magic') || s.includes('dragon');
+        const hasRomance = s.includes('romance') || s.includes('love story') || s.includes('romantic');
+        const hasDark = s.includes('dark') || s.includes('blood') || s.includes('war') || s.includes('death');
+        if (hasFantasy && hasRomance && hasDark) return 'dark fantasy romance';
+        if (hasFantasy && hasRomance) return 'fantasy romance';
+        if (hasFantasy) return 'fantasy';
+        if (s.includes('dystop')) return 'dystopian';
+        if (hasRomance) return 'romance';
+        if (s.includes('thriller') || s.includes('suspense')) return 'thriller';
+        if (s.includes('mystery') || s.includes('detective')) return 'mystery';
+        if (s.includes('horror')) return 'horror';
+        if (s.includes('science fiction') || s.includes('sci-fi')) return 'sci-fi';
+        if (s.includes('historical')) return 'historical fiction';
+        if (s.includes('literary') || s.includes('contemporary')) return 'literary fiction';
+        return null;
       }
 
-      if (vibeStr) {
-        const phrases = [
-          `Shares the same ${vibeStr} DNA as ${queryName}. If you loved one, you'll devour the other.`,
-          `The ${vibeStr} vibes are immaculate. BookTok approved for fans of ${queryName}.`,
-          `Think ${queryName} meets ${vibeStr} — this one's been passed around booktok for a reason.`,
-          `If you're chasing that ${vibeStr} feeling from ${queryName}, start here.`,
-        ];
-        return phrases[Math.abs(title.length) % phrases.length];
+      const genreLabel = readerGenre(allSubs);
+
+      if (isMedia) {
+        if (genreLabel) return pick([
+          `If ${queryName} got you hooked on ${genreLabel}, this book delivers the same fix — but you get to live inside the characters' heads.`,
+          `Same energy as ${queryName} but in ${genreLabel} book form. It's the kind of read you'll finish in two days and immediately want more of.`,
+          `Fans of ${queryName} who drift toward ${genreLabel} books always end up loving this one. It just makes sense.`,
+        ]);
+        return pick([
+          `Captures that exact feeling ${queryName} gave you, but in book form. The world-building hits different when you're inside the POV.`,
+          `If ${queryName} left you wanting more, this book fills that hole perfectly. Trust the recommendation.`,
+        ]);
       }
 
-      if (genre.tag !== 'Fiction') {
-        return `A ${genre.tag.toLowerCase()} pick that hits the same notes as ${queryName}. The vibe transfer is real.`;
+      if (genreLabel) {
+        return pick([
+          `Same ${genreLabel} energy as ${queryName} — different world, same "I can't stop reading this" feeling.`,
+          `If the ${genreLabel} vibes of ${queryName} are what got you, this one delivers on every single one of them.`,
+          `This is what you reach for when you finish ${queryName} and need something with the same ${genreLabel} pull.`,
+          `The ${genreLabel} fans who loved ${queryName} go absolutely feral for this one. The obsession makes total sense.`,
+          `Gives you everything you loved about ${queryName} — just a whole new world to get lost in.`,
+        ]);
       }
 
-      return `Readers who loved ${queryName} couldn't put this one down either. Same energy, different story.`;
+      return pick([
+        `Readers who loved ${queryName} couldn't put this one down. Same obsessive energy, completely different story.`,
+        `If ${queryName} is your vibe, this one should absolutely be on your list. The parallels are real.`,
+        `There's something about this book that hits the same way ${queryName} did. You'll know it when you feel it.`,
+      ]);
     }
 
     function renderDynamicResults(resultsEl, query, sourceBook, mediaMatch, topBooks, subjects, isMedia) {
@@ -3113,6 +3167,7 @@
             }).catch(() => {});
         }, 100);
       } else if (sourceBook) {
+        // Use the enriched subjects (which include vibeMap themes) for source book genre
         const srcGenre = getGenreTag(subjects);
         const srcCoverUrl = sourceBook.cover_i ? `https://covers.openlibrary.org/b/id/${sourceBook.cover_i}-M.jpg` : '';
         html += `
@@ -3130,7 +3185,7 @@
                 <span class="genre-tag ${srcGenre.cls}">${srcGenre.tag}</span>
               </div>
               <div class="book-pitch" style="color: var(--text-dim); font-style: italic;">
-                Themes: ${subjects.slice(0, 6).join(', ')}
+                Themes: ${subjects.filter(s => !s.includes(':') && s.length < 35).slice(0, 5).join(', ')}
               </div>
               ${renderBookActions(sourceBook.title, sourceBook.author)}
             </div>
@@ -3143,9 +3198,12 @@
         html += `<div class="book-grid">`;
         topBooks.forEach(book => {
           const pct = Math.max(65, Math.round((book.matchCount / maxMatch) * 100));
-          const genre = getGenreTag(book.matchedSubjects);
+          // Use full allSubjects for accurate genre detection, fall back to matchedSubjects
+          const genre = getGenreTag(book.allSubjects || book.matchedSubjects);
           const coverUrl = book.cover_i ? `https://covers.openlibrary.org/b/id/${book.cover_i}-M.jpg` : '';
-          const tagLabels = book.isAuthorMatch ? ['same author'] : book.matchedSubjects.slice(0, 4);
+          // Clean tag labels: filter out internal OL tags (collectionID:, series:, etc.)
+          const cleanTags = (book.matchedSubjects || []).filter(t => !t.includes(':') && t.length < 40 && t !== 'similar vibe');
+          const tagLabels = book.isAuthorMatch ? ['same author'] : cleanTags.slice(0, 3);
           const whyBlurb = generateWhyBlurb(book, query, mediaMatch, subjects, isMedia);
           html += `
             <div class="book-card">
