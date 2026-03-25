@@ -2617,6 +2617,19 @@
       return { cleanTitle: cleanTitle || q, isMediaIntent, original: raw };
     }
 
+    // Abbreviation → canonical full title (for source book lookup)
+    const ABBREVIATION_TITLES = {
+      'acotar': 'A Court of Thorns and Roses',
+      'acomaf': 'A Court of Mist and Fury',
+      'acofas': 'A Court of Frost and Starlight',
+      'acosas': 'A Court of Silver Flames',
+      'tog': 'Throne of Glass',
+      'fbaa': 'From Blood and Ash',
+      'kotlc': 'Keeper of the Lost Cities',
+      'lotr': 'The Fellowship of the Ring',
+      'thg': 'The Hunger Games',
+    };
+
     async function dynamicSearch(query, resultsEl) {
       try {
         const parsed = parseQuery(query);
@@ -2662,6 +2675,14 @@
               .then(r => r.json()).catch(() => ({ docs: [] }))
           );
         }
+        // If query is a known abbreviation (e.g. "acotar"), search for the full canonical title directly
+        const canonicalTitle = ABBREVIATION_TITLES[rawLower] || ABBREVIATION_TITLES[queryLower] || null;
+        if (canonicalTitle) {
+          searches.push(
+            fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(canonicalTitle)}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key&limit=5`)
+              .then(r => r.json()).catch(() => ({ docs: [] }))
+          );
+        }
         // Also search the canonical bookVibeMap key if it's a longer/different name (e.g., "acotar" → "a court of thorns and roses")
         const vibeKey = Object.keys(bookVibeMap).find(k => k === rawLower || k === queryLower || rawLower.includes(k) || k.includes(rawLower));
         if (vibeKey && vibeKey.length > query.trim().length + 3) {
@@ -2701,8 +2722,12 @@
         let bestDoc = null;
         if (allDocs.length > 0) {
           const scored = allDocs.map(d => {
-            // Check both raw query and cleaned title for best title match
-            const titleScore = Math.max(titleSimilarity(d.title, query.trim()), titleSimilarity(d.title, parsed.cleanTitle));
+            // Check both raw query and cleaned title for best title match; also check canonical title for abbreviations
+            const titleScore = Math.max(
+              titleSimilarity(d.title, query.trim()),
+              titleSimilarity(d.title, parsed.cleanTitle),
+              canonicalTitle ? titleSimilarity(d.title, canonicalTitle) : 0
+            );
             const subs = (d.subject || []).join(' ').toLowerCase();
             const isJuvenile = subs.includes('juvenile') || subs.includes('children') || subs.includes('picture book');
             const juvPenalty = isJuvenile ? -30 : 0;
@@ -2748,9 +2773,17 @@
         }
 
         // Step 2: Gather similar books from multiple strategies in parallel
+        // Normalize title for dedup: strip trailing parentheticals like "(Series, #2)" and subtitles after ":"
+        function normTitle(t) {
+          return (t || '').toLowerCase()
+            .replace(/\s*\([^)]*\)\s*$/, '')   // Remove trailing (Series, #N) or (subtitle)
+            .replace(/\s*:\s*.+$/, '')           // Remove ": Subtitle"
+            .trim();
+        }
+
         const similarBooks = [];
         const seenTitles = new Set();
-        if (sourceBook) seenTitles.add(sourceBook.title.toLowerCase());
+        if (sourceBook) seenTitles.add(normTitle(sourceBook.title));
 
         const fetchPromises = [];
 
@@ -2847,11 +2880,16 @@
         allResults.forEach(result => {
           if (!result.data || !result.data.docs) return;
           result.data.docs.forEach(doc => {
-            const titleLow = (doc.title || '').toLowerCase();
+            const rawTitleLow = (doc.title || '').toLowerCase();
+            // Normalize title for dedup — strip trailing parentheticals like "(Series, #2)" and subtitles
+            const titleLow = normTitle(rawTitleLow);
             if (seenTitles.has(titleLow)) return;
             if (titleLow.includes(queryLower) || queryLower.includes(titleLow)) return;
             // Skip box sets, collections, omnibus editions, study guides
-            if (titleLow.includes('box set') || titleLow.includes('boxed set') || titleLow.includes('collection') || titleLow.includes('omnibus') || titleLow.includes('complete series') || titleLow.match(/\d+-book/) || titleLow.includes('study guide') || titleLow.includes('sparknotes') || titleLow.includes('cliffsnotes') || titleLow.includes('summary of') || titleLow.includes('analysis of') || titleLow.includes('workbook')) return;
+            if (rawTitleLow.includes('box set') || rawTitleLow.includes('boxed set') || rawTitleLow.includes('collection') || rawTitleLow.includes('omnibus') || rawTitleLow.includes('complete series') || rawTitleLow.match(/\d+-book/) || rawTitleLow.includes('study guide') || rawTitleLow.includes('sparknotes') || rawTitleLow.includes('cliffsnotes') || rawTitleLow.includes('summary of') || rawTitleLow.includes('analysis of') || rawTitleLow.includes('workbook')) return;
+            // Skip explicit sequels (#2, #3+) — recommend first books only, not "Book 3 of a series"
+            const isSequel = rawTitleLow.match(/[,(#]\s*#[2-9]\d*[)s,\s]|[,(#]\s*#[2-9]$/) || rawTitleLow.match(/\bbook\s+[2-9]\b/) || rawTitleLow.match(/\bvol(?:ume)?\s*\.?\s*[2-9]\b/);
+            if (isSequel && !result.isCurated) return;
             const docSubsArr = (doc.subject || []).map(s => s.toLowerCase());
             const docSubs = docSubsArr.join(' ');
             // Only skip true children's/picture books — NOT young adult fiction that happens to have "juvenile" tag
@@ -2922,13 +2960,13 @@
           });
         });
 
-        // Sort by match quality and diversify by author (max 2 per author)
+        // Sort by match quality and diversify by author (max 1 per author — keeps recs diverse, prevents series flooding)
         similarBooks.sort((a, b) => b.matchCount - a.matchCount);
         const authorCount = {};
         const diverseBooks = similarBooks.filter(b => {
           const a = b.author.toLowerCase();
           authorCount[a] = (authorCount[a] || 0) + 1;
-          return authorCount[a] <= 2;
+          return authorCount[a] <= 1;
         });
         const topBooks = diverseBooks.slice(0, 10);
 
