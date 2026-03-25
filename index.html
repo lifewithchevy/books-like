@@ -2898,6 +2898,8 @@
             // Skip explicit sequels (#2, #3+) — recommend first books only, not "Book 3 of a series"
             const isSequel = rawTitleLow.match(/[,(#]\s*#[2-9]\d*[)s,\s]|[,(#]\s*#[2-9]$/) || rawTitleLow.match(/\bbook\s+[2-9]\b/) || rawTitleLow.match(/\bvol(?:ume)?\s*\.?\s*[2-9]\b/);
             if (isSequel && !result.isCurated) return;
+            const docSubsArr = (doc.subject || []).map(s => s.toLowerCase());
+            const docSubs = docSubsArr.join(' ');
             // Skip books in the SAME series as the source (e.g. don't recommend ACOMAF when user searched ACOSF)
             if (sourceSeries.size > 0) {
               const docSeriesTags = docSubsArr
@@ -2908,8 +2910,6 @@
               );
               if (inSameSeries) return;
             }
-            const docSubsArr = (doc.subject || []).map(s => s.toLowerCase());
-            const docSubs = docSubsArr.join(' ');
             // Only skip true children's/picture books — NOT young adult fiction that happens to have "juvenile" tag
             const isPictureBook = docSubs.includes('picture book') || docSubs.includes('board book');
             const isComic = docSubs.includes('comic') || docSubs.includes('graphic novel');
