@@ -3362,9 +3362,9 @@
 
     async function fetchGrShelf(shelf, perPage) {
       const url = `https://www.goodreads.com/review/list_rss/${GOODREADS_USER_ID}?shelf=${shelf}&per_page=${perPage}`;
-      const resp = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
-      const json = await resp.json();
-      return new DOMParser().parseFromString(json.contents, 'text/xml');
+      const resp = await fetch(`https://corsproxy.io/?${encodeURIComponent(url)}`);
+      const text = await resp.text();
+      return new DOMParser().parseFromString(text, 'text/xml');
     }
 
     async function loadGoodreadsData() {
