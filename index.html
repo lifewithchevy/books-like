@@ -826,63 +826,64 @@
     <div class="sidebar">
       <div class="sidebar-card">
         <h3>Currently Reading</h3>
-        <div class="reading-item">
-          <div class="reading-cover">&#128214;</div>
+        <div class="reading-item" id="cr-card">
+          <div class="reading-cover" id="cr-cover">&#128214;</div>
           <div class="reading-info">
-            <div class="title">Tomorrow, and Tomorrow, and Tomorrow</div>
-            <div class="author">Gabrielle Zevin</div>
+            <div class="title" id="cr-title">Tomorrow, and Tomorrow, and Tomorrow</div>
+            <div class="author" id="cr-author">Gabrielle Zevin</div>
             <div class="status">In progress</div>
-            <div class="progress-bar"><div class="progress-fill" style="width: 45%;"></div></div>
           </div>
         </div>
       </div>
 
       <div class="sidebar-card">
-        <h3>2026 Reading Challenge</h3>
+        <h3 id="challenge-year">2026 Reading Challenge</h3>
         <div class="stats-grid">
           <div class="stat-item">
-            <div class="number">24</div>
+            <div class="number" id="stat-read">24</div>
             <div class="label">Books Read</div>
           </div>
           <div class="stat-item">
-            <div class="number">50</div>
+            <div class="number" id="stat-goal">50</div>
             <div class="label">Goal</div>
           </div>
           <div class="stat-item">
-            <div class="number">4.4</div>
+            <div class="number" id="stat-avg">4.4</div>
             <div class="label">Avg Rating</div>
           </div>
           <div class="stat-item">
-            <div class="number">48%</div>
+            <div class="number" id="stat-pct">48%</div>
             <div class="label">Progress</div>
           </div>
         </div>
         <div class="progress-bar" style="margin-top: 12px;">
-          <div class="progress-fill" style="width: 48%;"></div>
+          <div class="progress-fill" id="challenge-bar" style="width: 48%;"></div>
         </div>
       </div>
 
       <div class="sidebar-card">
         <h3>Your Favorites</h3>
-        <div class="reading-item">
-          <div class="reading-cover">&#128156;</div>
-          <div class="reading-info">
-            <div class="title">A Court of Mist and Fury</div>
-            <div class="author">Sarah J. Maas</div>
+        <div id="favorites-list">
+          <div class="reading-item">
+            <div class="reading-cover">&#128156;</div>
+            <div class="reading-info">
+              <div class="title">A Court of Mist and Fury</div>
+              <div class="author">Sarah J. Maas</div>
+            </div>
           </div>
-        </div>
-        <div class="reading-item">
-          <div class="reading-cover">&#128156;</div>
-          <div class="reading-info">
-            <div class="title">A Court of Silver Flames</div>
-            <div class="author">Sarah J. Maas</div>
+          <div class="reading-item">
+            <div class="reading-cover">&#128156;</div>
+            <div class="reading-info">
+              <div class="title">A Court of Silver Flames</div>
+              <div class="author">Sarah J. Maas</div>
+            </div>
           </div>
-        </div>
-        <div class="reading-item">
-          <div class="reading-cover">&#128156;</div>
-          <div class="reading-info">
-            <div class="title">Fourth Wing</div>
-            <div class="author">Rebecca Yarros</div>
+          <div class="reading-item">
+            <div class="reading-cover">&#128156;</div>
+            <div class="reading-info">
+              <div class="title">Fourth Wing</div>
+              <div class="author">Rebecca Yarros</div>
+            </div>
           </div>
         </div>
       </div>
@@ -1361,8 +1362,8 @@
       });
     }
 
-    // Olga's Goodreads read list (titles to never recommend)
-    const alreadyRead = ['reckless','powerless','heartless','flawless','in her own league','the ashes & the star-cursed king','six scorched roses','funny story','happy place','the invisible life of addie larue','fourth wing','a court of mist and fury','a court of silver flames','the serpent and the wings of night','atmosphere','the seven husbands of evelyn hugo','king of wrath','rewind it back','play along','caught up','the right move','mile high','fearless','people we meet on vacation','powerful','iron flame','onyx storm','a court of thorns and roses'];
+    // Olga's Goodreads read list (titles to never recommend) — also updated live from Goodreads
+    let alreadyRead = ['reckless','powerless','heartless','flawless','in her own league','the ashes & the star-cursed king','six scorched roses','funny story','happy place','the invisible life of addie larue','fourth wing','a court of mist and fury','a court of silver flames','the serpent and the wings of night','atmosphere','the seven husbands of evelyn hugo','king of wrath','rewind it back','play along','caught up','the right move','mile high','fearless','people we meet on vacation','powerful','iron flame','onyx storm','a court of thorns and roses'];
 
     function isAlreadyRead(title) {
       return alreadyRead.some(r => title.toLowerCase().includes(r) || r.includes(title.toLowerCase()));
@@ -3352,6 +3353,133 @@
 
     // Homepage is already in the HTML — no need to load default results
     loadCoversInView();
+
+    // ===== LIVE GOODREADS DATA =====
+    const GOODREADS_USER_ID = '84782638';
+    const READING_GOAL = 50;
+    const GR_CACHE_KEY = 'gr_live_v2';
+    const GR_CACHE_TTL = 20 * 60 * 1000; // refresh every 20 minutes
+
+    async function fetchGrShelf(shelf, perPage) {
+      const url = `https://www.goodreads.com/review/list_rss/${GOODREADS_USER_ID}?shelf=${shelf}&per_page=${perPage}`;
+      const resp = await fetch(`https://api.allorigins.win/get?url=${encodeURIComponent(url)}`);
+      const json = await resp.json();
+      return new DOMParser().parseFromString(json.contents, 'text/xml');
+    }
+
+    async function loadGoodreadsData() {
+      // Serve from cache if fresh
+      try {
+        const cached = JSON.parse(localStorage.getItem(GR_CACHE_KEY));
+        if (cached && Date.now() - cached.ts < GR_CACHE_TTL) {
+          applyGoodreadsData(cached.d);
+          return;
+        }
+      } catch(e) {}
+
+      try {
+        const [crXml, readXml] = await Promise.all([
+          fetchGrShelf('currently-reading', 5),
+          fetchGrShelf('read', 200),
+        ]);
+
+        const thisYear = new Date().getFullYear().toString();
+
+        // Currently reading — take first item
+        const crItems = crXml.querySelectorAll('item');
+        let cr = null;
+        if (crItems.length > 0) {
+          const it = crItems[0];
+          const rawTitle = it.querySelector('title')?.textContent?.trim() || '';
+          cr = {
+            title: rawTitle,
+            author: it.querySelector('author_name')?.textContent?.trim() || '',
+            cover: it.querySelector('book_large_image_url')?.textContent?.trim() ||
+                   it.querySelector('book_image_url')?.textContent?.trim() || '',
+          };
+        }
+
+        // Read shelf — count this year, avg rating, collect 5-star favorites, build alreadyRead list
+        const readItems = [...readXml.querySelectorAll('item')];
+        let yearRead = 0, totalRating = 0, ratedCount = 0;
+        const favorites = [];
+        const readTitles = [];
+
+        readItems.forEach(it => {
+          const title = it.querySelector('title')?.textContent?.trim() || '';
+          const readAt = it.querySelector('user_read_at')?.textContent?.trim() || '';
+          const rating = parseInt(it.querySelector('user_rating')?.textContent || '0');
+
+          if (title) readTitles.push(title.toLowerCase());
+          if (readAt.includes(thisYear)) yearRead++;
+          if (rating > 0) { totalRating += rating; ratedCount++; }
+          if (rating === 5 && favorites.length < 5) {
+            favorites.push({
+              title,
+              author: it.querySelector('author_name')?.textContent?.trim() || '',
+            });
+          }
+        });
+
+        const avgRating = ratedCount > 0 ? (totalRating / ratedCount).toFixed(1) : '—';
+        const data = { cr, yearRead, avgRating, goal: READING_GOAL, favorites, readTitles };
+
+        localStorage.setItem(GR_CACHE_KEY, JSON.stringify({ d: data, ts: Date.now() }));
+        applyGoodreadsData(data);
+
+      } catch(e) {
+        console.warn('Goodreads fetch failed — using cached data', e);
+      }
+    }
+
+    function applyGoodreadsData(data) {
+      // Currently Reading
+      const crCard = document.getElementById('cr-card');
+      if (crCard) {
+        if (data.cr && data.cr.title) {
+          document.getElementById('cr-title').textContent = data.cr.title;
+          document.getElementById('cr-author').textContent = data.cr.author;
+          if (data.cr.cover) {
+            document.getElementById('cr-cover').innerHTML =
+              `<img src="${data.cr.cover}" alt="" style="width:44px;height:66px;object-fit:cover;border-radius:4px;box-shadow:0 2px 8px rgba(0,0,0,.15)">`;
+          }
+          crCard.style.display = '';
+        } else {
+          crCard.style.display = 'none';
+        }
+      }
+
+      // Reading Challenge stats
+      const yr = new Date().getFullYear();
+      const el = id => document.getElementById(id);
+      if (el('challenge-year')) el('challenge-year').textContent = `${yr} Reading Challenge`;
+      if (el('stat-read'))  el('stat-read').textContent  = data.yearRead;
+      if (el('stat-goal'))  el('stat-goal').textContent  = data.goal;
+      if (el('stat-avg'))   el('stat-avg').textContent   = data.avgRating;
+      const pct = Math.min(100, Math.round((data.yearRead / data.goal) * 100));
+      if (el('stat-pct'))   el('stat-pct').textContent   = pct + '%';
+      if (el('challenge-bar')) el('challenge-bar').style.width = pct + '%';
+
+      // Favorites — 5-star books from Goodreads
+      if (data.favorites && data.favorites.length > 0 && el('favorites-list')) {
+        el('favorites-list').innerHTML = data.favorites.map(f => `
+          <div class="reading-item">
+            <div class="reading-cover">&#128156;</div>
+            <div class="reading-info">
+              <div class="title">${f.title}</div>
+              <div class="author">${f.author}</div>
+            </div>
+          </div>`).join('');
+      }
+
+      // Merge live read titles into alreadyRead so we never recommend them
+      if (data.readTitles && data.readTitles.length > 0) {
+        alreadyRead = [...new Set([...alreadyRead, ...data.readTitles])];
+      }
+    }
+
+    // Kick off Goodreads fetch on page load (non-blocking)
+    loadGoodreadsData();
   </script>
 
   <style>
