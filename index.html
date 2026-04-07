@@ -859,6 +859,7 @@
         <div class="progress-bar" style="margin-top: 12px;">
           <div class="progress-fill" id="challenge-bar" style="width: 48%;"></div>
         </div>
+        <div id="gr-sync-time" style="margin-top: 8px; font-size: 11px; color: var(--text-dim);"></div>
       </div>
 
       <div class="sidebar-card">
@@ -3285,6 +3286,20 @@
         return;
       }
 
+      // Check if curated has at least 3 non-read recommendations after filtering
+      // (alreadyRead grows over time as Goodreads data loads, so some entries get filtered out)
+      const _sl = input.toLowerCase();
+      const _canRec = b => !isAlreadyRead(b.title) &&
+        !b.title.toLowerCase().includes(_sl) && !_sl.includes(b.title.toLowerCase());
+      const _total = [...(data.closest||[]), ...(data.sameEnergy||[]),
+        ...(data.wildcard ? [data.wildcard] : [])].filter(_canRec).length;
+
+      if (_total < 3) {
+        // Too few curated results — dynamic search gives broader, more diverse results
+        dynamicSearch(input, resultsEl);
+        return;
+      }
+
       setTimeout(() => {
         resultsEl.classList.remove('visible');
         setTimeout(() => {
@@ -3358,7 +3373,7 @@
     const GOODREADS_USER_ID = '84782638';
     const READING_GOAL = 50;
     const GR_CACHE_KEY = 'gr_live_v2';
-    const GR_CACHE_TTL = 20 * 60 * 1000; // refresh every 20 minutes
+    const GR_CACHE_TTL = 60 * 60 * 1000; // refresh every hour
 
     async function fetchGrShelf(shelf, perPage) {
       const url = `https://www.goodreads.com/review/list_rss/${GOODREADS_USER_ID}?shelf=${shelf}&per_page=${perPage}`;
@@ -3475,6 +3490,18 @@
       // Merge live read titles into alreadyRead so we never recommend them
       if (data.readTitles && data.readTitles.length > 0) {
         alreadyRead = [...new Set([...alreadyRead, ...data.readTitles])];
+      }
+
+      // Show last synced time
+      const syncEl = document.getElementById('gr-sync-time');
+      if (syncEl) {
+        const cached = JSON.parse(localStorage.getItem(GR_CACHE_KEY) || 'null');
+        if (cached) {
+          const mins = Math.round((Date.now() - cached.ts) / 60000);
+          syncEl.textContent = mins < 2 ? '↻ Synced just now from Goodreads'
+            : mins < 60 ? `↻ Synced ${mins}m ago from Goodreads`
+            : `↻ Synced ${Math.round(mins/60)}h ago from Goodreads`;
+        }
       }
     }
 
