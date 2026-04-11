@@ -2360,18 +2360,19 @@
     }
 
     // Helper: score results from media theme searches
+    // searchTerms are now "Title Author" pairs — take docs[0] from each as the curated pick
     function scoreMediaResults(themeResults, themes, queryLower) {
       const similarBooks = [];
       const seenTitles = new Set();
       themeResults.forEach((result, batchIdx) => {
-        if (!result.docs) return;
-        result.docs.forEach(doc => {
+        if (!result.docs || result.docs.length === 0) return;
+        result.docs.forEach((doc, docIdx) => {
           const titleLow = (doc.title || '').toLowerCase();
           if (seenTitles.has(titleLow)) return;
           if (titleLow.includes(queryLower)) return;
-          if (!doc.ratings_average || doc.ratings_average < 3.3) return;
+          if (!doc.ratings_average || doc.ratings_average < 3.2) return;
           const bookSubs = (doc.subject || []).join(' ').toLowerCase();
-          if (bookSubs.includes('juvenile') || bookSubs.includes('children') || bookSubs.includes('picture book') || bookSubs.includes('comic')) return;
+          if (bookSubs.includes('picture book') || bookSubs.includes('comic book')) return;
           seenTitles.add(titleLow);
           const bookSubjects = (doc.subject || []).map(s => s.toLowerCase());
           const matchedSubjects = themes.filter(t => bookSubjects.some(s => s.includes(t)));
@@ -2380,14 +2381,16 @@
           const ratingScore = rating >= 4.2 ? 6 : rating >= 4.0 ? 4 : rating >= 3.8 ? 3 : rating >= 3.5 ? 1 : 0;
           const modernBonus = yr >= 2020 ? 5 : yr >= 2015 ? 4 : yr >= 2010 ? 3 : yr >= 2000 ? 2 : yr >= 1990 ? 1 : 0;
           const oldPenalty = (yr > 0 && yr < 1970) ? -6 : (yr > 0 && yr < 1990) ? -3 : 0;
+          // First result from each curated "Title Author" search = the intended book — boost it strongly
+          const curatedBonus = docIdx === 0 ? 40 : 0;
           similarBooks.push({
             title: doc.title,
             author: doc.author_name ? doc.author_name[0] : 'Unknown',
             rating: doc.ratings_average ? (doc.ratings_average.toFixed(1) + '/5') : '—',
             cover_i: doc.cover_i,
             year: doc.first_publish_year,
-            matchCount: matchedSubjects.length * 1.5 + (batchIdx === 0 ? 2 : 0) + ratingScore + modernBonus + oldPenalty,
-            matchedSubjects: matchedSubjects.length > 0 ? matchedSubjects : ['similar vibe'],
+            matchCount: curatedBonus + matchedSubjects.length * 1.5 + ratingScore + modernBonus + oldPenalty,
+            matchedSubjects: curatedBonus > 0 ? ['top pick'] : (matchedSubjects.length > 0 ? matchedSubjects : ['similar vibe']),
             isAuthorMatch: false
           });
         });
