@@ -2652,7 +2652,7 @@
           subjects = mediaMatch.themes;
           const themeResults = await Promise.all(
             mediaMatch.searchTerms.map(term =>
-              fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(term)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=8`)
+              fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(term)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&limit=3`)
                 .then(r => r.json()).catch(() => ({ docs: [] }))
             )
           );
