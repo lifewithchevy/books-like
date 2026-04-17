@@ -2047,6 +2047,7 @@
                 <div class="book-pitch">${book.pitch}</div>
                 ${adaptedLine}
                 <div class="matched-tags">${whyTags}</div>
+                ${renderBookActions(book.title, book.author)}
               </div>
             </div>`;
         });
@@ -3521,11 +3522,12 @@
       }, 800);
     }
 
-    // Upgrade static HTML book cards (Weekly Picks) to include cover layout
+    // Upgrade static HTML book cards (Weekly Picks) to include cover layout + action buttons
     function upgradeStaticCards() {
       document.querySelectorAll('.book-card').forEach(card => {
         if (card.querySelector('.book-cover-wrap')) return; // already upgraded
         const title = card.querySelector('.book-title')?.textContent || '';
+        const author = card.querySelector('.book-author')?.textContent || '';
         const coverId = 'cover-' + Math.random().toString(36).substr(2, 9);
         const coverWrap = document.createElement('div');
         coverWrap.className = 'book-cover-wrap';
@@ -3541,6 +3543,10 @@
         contentWrap.className = 'book-card-content';
         while (card.firstChild) {
           contentWrap.appendChild(card.firstChild);
+        }
+        // Inject Goodreads + Amazon buttons if not already present
+        if (!contentWrap.querySelector('.book-card-actions')) {
+          contentWrap.insertAdjacentHTML('beforeend', renderBookActions(title, author));
         }
         card.appendChild(coverWrap);
         card.appendChild(contentWrap);
