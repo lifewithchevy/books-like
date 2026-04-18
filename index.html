@@ -1354,13 +1354,29 @@
         return;
       }
       const q = encodeURIComponent(title + ' ' + author);
-      fetch(`https://openlibrary.org/search.json?q=${q}&fields=cover_i&limit=1`)
+      fetch(`https://openlibrary.org/search.json?q=${q}&fields=cover_i,isbn&limit=5`)
         .then(r => r.json())
         .then(data => {
-          if (data.docs && data.docs[0] && data.docs[0].cover_i) {
-            const url = `https://covers.openlibrary.org/b/id/${data.docs[0].cover_i}-M.jpg`;
-            coverCache[key] = url;
-            imgEl.src = url;
+          // Find the English edition cover — prefer isbn13 (9780/9781) over cover_i
+          // which might belong to a foreign-language edition
+          let isbnUrl = null;
+          let fallbackCoverId = null;
+          for (const doc of (data.docs || [])) {
+            if (!fallbackCoverId && doc.cover_i) fallbackCoverId = doc.cover_i;
+            const { isbn13 } = pickIsbn(doc.isbn);
+            if (isbn13) { isbnUrl = `https://covers.openlibrary.org/b/isbn/${isbn13}-M.jpg`; break; }
+          }
+          const fbUrl = fallbackCoverId ? `https://covers.openlibrary.org/b/id/${fallbackCoverId}-M.jpg` : null;
+          const applyImgSrc = u => { if (u) { coverCache[key] = u; imgEl.src = u; } };
+          if (isbnUrl) {
+            // OL sometimes returns a 1×1 blank image for ISBNs without a stored cover.
+            // Probe dimensions first; fall back to cover_i-based URL if it's blank.
+            const probe = new Image();
+            probe.onload = () => probe.naturalWidth > 1 ? applyImgSrc(isbnUrl) : applyImgSrc(fbUrl);
+            probe.onerror = () => applyImgSrc(fbUrl);
+            probe.src = isbnUrl;
+          } else {
+            applyImgSrc(fbUrl);
           }
         })
         .catch(() => {})
@@ -1389,7 +1405,10 @@
     // Extract best ISBN-10 and ISBN-13 from Open Library isbn array
     function pickIsbn(isbnArray) {
       if (!isbnArray || !isbnArray.length) return {};
-      const isbn13 = isbnArray.find(i => /^97[89]\d{10}$/.test(i));
+      // Prefer English-language ISBN-13 (9780 or 9781 prefix) so Goodreads/covers
+      // link to the English edition, not a Spanish/foreign translation
+      const isbn13 = isbnArray.find(i => /^978[01]\d{9}$/.test(i))
+                  || isbnArray.find(i => /^97[89]\d{10}$/.test(i));
       // Prefer US/UK ISBN-10 starting with 0 or 1 — these work as Amazon.com ASINs
       // Foreign ISBNs (starting with 2-9) often don't appear on Amazon.com
       const isbn10 = isbnArray.find(i => /^[01]\d{8}[\dX]$/i.test(i))
@@ -1446,18 +1465,43 @@
           // limit=5: classic books often have 0 ISBNs in doc[0] — scan all docs
           // and collect best isbn13 + isbn10 independently across results
           const q = encodeURIComponent(`${title} ${author}`);
-          fetch(`https://openlibrary.org/search.json?q=${q}&fields=isbn&limit=5`)
+          fetch(`https://openlibrary.org/search.json?q=${q}&fields=isbn,cover_i&limit=5`)
             .then(r => r.json())
             .then(data => {
-              let isbn13, isbn10;
+              let isbn13, isbn10, fallbackCoverId;
               for (const doc of (data.docs || [])) {
                 const picked = pickIsbn(doc.isbn);
                 if (!isbn13 && picked.isbn13) isbn13 = picked.isbn13;
                 if (!isbn10 && picked.isbn10) isbn10 = picked.isbn10;
-                if (isbn13 && isbn10) break;
+                if (!fallbackCoverId && doc.cover_i) fallbackCoverId = doc.cover_i;
+                if (isbn13 && isbn10 && fallbackCoverId) break;
               }
               if (isbn13 || isbn10) grLink.href = goodreadsUrl(title, author, isbn13 || isbn10);
               if (isbn10) azLink.href = amazonUrl(title, author, isbn10); // isbn10 only for Amazon dp/
+              // Update cover to English edition — but only if no cover is already loaded
+              // (dynamic cards already have cover_i covers; curated cards need this)
+              const coverImg = card.querySelector('.book-cover-wrap img');
+              const alreadyLoaded = coverImg && coverImg.complete && coverImg.naturalWidth > 1;
+              if (coverImg && !alreadyLoaded && (isbn13 || fallbackCoverId)) {
+                const isbnCoverUrl = isbn13 ? `https://covers.openlibrary.org/b/isbn/${isbn13}-M.jpg` : null;
+                const fbUrl = fallbackCoverId ? `https://covers.openlibrary.org/b/id/${fallbackCoverId}-M.jpg` : null;
+                const showCover = u => {
+                  if (!u) return;
+                  coverImg.src = u;
+                  coverImg.style.display = 'block';
+                  coverImg.style.position = 'relative';
+                  const placeholder = coverImg.previousElementSibling;
+                  if (placeholder) placeholder.style.display = 'none';
+                };
+                if (isbnCoverUrl) {
+                  const probe = new Image();
+                  probe.onload = () => probe.naturalWidth > 1 ? showCover(isbnCoverUrl) : showCover(fbUrl);
+                  probe.onerror = () => showCover(fbUrl);
+                  probe.src = isbnCoverUrl;
+                } else {
+                  showCover(fbUrl);
+                }
+              }
             })
             .catch(() => {});
         }, i * 250);
