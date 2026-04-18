@@ -1510,6 +1510,7 @@
 
     function renderBookCard(book, showMatch) {
       const adaptedLine = book.adapted ? `<div class="adapted">&#127916; ${book.adapted}</div>` : '';
+      const tbrLine = book.isTbr ? `<div style="margin-top:5px;font-size:11px;font-weight:600;color:var(--success);">&#128204; On your TBR list</div>` : '';
       const tags = book.tags
         ? book.tags.map(t => `<span class="genre-tag ${t.cls}">${t.label}</span>`).join('')
         : `<span class="genre-tag ${book.tagClass}">${book.tag}</span>`;
@@ -1535,6 +1536,7 @@
               ${tags}
             </div>
             <div class="book-pitch">${book.pitch}</div>
+            ${tbrLine}
             ${adaptedLine}
             ${renderBookActions(book.title, book.author, book.isbn)}
           </div>
@@ -1552,6 +1554,9 @@
       });
       upgradeToDirectLinks();
     }
+
+    // TBR shelf from Goodreads — populated by loadGoodreadsData
+    let tbrBooks = [];
 
     // Olga's Goodreads read list (titles to never recommend) — also updated live from Goodreads
     let alreadyRead = ['reckless','powerless','heartless','flawless','in her own league','the ashes & the star-cursed king','six scorched roses','funny story','happy place','the invisible life of addie larue','fourth wing','a court of mist and fury','a court of silver flames','the serpent and the wings of night','atmosphere','the seven husbands of evelyn hugo','king of wrath','rewind it back','play along','caught up','the right move','mile high','fearless','people we meet on vacation','powerful','iron flame','onyx storm','a court of thorns and roses'];
@@ -1852,117 +1857,214 @@
       "put myself": ["self care", "self help", "empowering", "healing", "growth"],
     };
 
-    // Personal recommendations based on Goodreads favorites
+    // Normalize a title for TBR/seen matching (strip series tags, lower-case)
+    function normTitle(t) { return (t || '').replace(/\s*\(.*?\)\s*/g, '').trim().toLowerCase(); }
+
+    // Theme map: books the user has loved → OL search themes that find SIMILAR books
+    // Used when a book isn't in curated searchData (searching title+author returns translations, not lookalikes)
+    const PERSONAL_REC_THEMES = {
+      'happy place':                   ['contemporary romance vacation beach', 'grumpy sunshine romance humor women fiction', 'friends to lovers romance comedy'],
+      'funny story':                   ['contemporary romance humor', 'grumpy sunshine women fiction comedy', 'romance women fiction funny'],
+      'people we meet on vacation':    ['contemporary romance travel friendship', 'best friends to lovers vacation', 'women fiction romance travel summer'],
+      'a court of mist and fury':      ['fae romance fantasy enemies to lovers', 'romantasy fae court magic spicy', 'fantasy romance enemies to lovers spice'],
+      'a court of silver flames':      ['romantasy warrior woman romance', 'fantasy romance fae spicy strong female', 'enemies to lovers fantasy magic spice'],
+      'a court of thorns and roses':   ['fae fantasy romance', 'romantasy enemies to lovers magic', 'fantasy romance court fae'],
+      'fourth wing':                   ['dragon fantasy romance academy', 'enemies to lovers romantasy dragon rider', 'fantasy romance dragon spicy academy'],
+      'iron flame':                    ['romantasy dragon war romance', 'enemies to lovers fantasy magic war spice', 'spicy fantasy romance action'],
+      'onyx storm':                    ['romantasy magic war adventure', 'dragon fantasy romance spice sequel', 'fantasy romance war adventure spicy'],
+      'haunting adeline':              ['dark romance stalker thriller', 'dark romance spicy obsessive paranoia', 'dark thriller romance obsession'],
+      'it ends with us':               ['contemporary romance emotional women fiction', 'romance drama difficult relationship', 'women fiction emotional heart-wrenching'],
+      'reckless':                      ['sports romance cowboy contemporary', 'small town romance grumpy sunshine', 'contemporary romance athlete forbidden'],
+      'powerless':                     ['fantasy romance forbidden power magic', 'enemies to lovers young adult fantasy powers', 'fantasy romance forbidden chosen one'],
+      'the seven husbands of evelyn hugo': ['historical fiction romance glamour hollywood', 'literary fiction romance iconic woman secrets', 'women fiction romance celebrity historical saga'],
+      'daisy jones and the six':       ['historical fiction music romance 70s', 'rock band romance drama 1970s', 'music romance historical drama'],
+      'the summer i turned pretty':    ['young adult romance beach summer love triangle', 'coming of age summer romance YA', 'beach summer love triangle romance'],
+      'in her own league':             ['sports romance contemporary', 'athlete romance grumpy sunshine spicy', 'contemporary romance forbidden sports'],
+      'caught up':                     ['sports romance contemporary', 'athlete romance forbidden contemporary', 'hockey romance spicy contemporary'],
+      'the right move':                ['sports romance basketball contemporary', 'athlete romance forbidden spicy', 'grumpy sunshine sports romance'],
+      'mile high':                     ['sports romance contemporary forbidden', 'athlete romance spicy forced proximity', 'contemporary romance sports forbidden'],
+      'play along':                    ['sports romance contemporary spicy', 'athlete forbidden romance contemporary', 'grumpy sunshine sports romance'],
+      'rewind it back':                ['sports romance contemporary spicy', 'athlete forbidden romance', 'contemporary romance sports forbidden'],
+    };
+
+    // Personal recommendations based on real Goodreads favorites + TBR shelf
     async function getPersonalRecs() {
       const resultsEl = document.getElementById('mood-results');
       resultsEl.innerHTML = '<div style="text-align:center; padding: 40px;"><div style="font-size: 32px; margin-bottom: 12px;">&#10024;</div><div style="color: var(--text-muted);">Finding books based on your taste...</div></div>';
 
-      // Pick 3 random favorites to base recs on
-      const favorites = [
-        { title: 'A Court of Mist and Fury', author: 'Sarah J. Maas', themes: ['fantasy romance', 'fae romance', 'enemies to lovers fantasy'] },
-        { title: 'A Court of Silver Flames', author: 'Sarah J. Maas', themes: ['fantasy romance healing', 'warrior woman fantasy', 'romantic fantasy'] },
-        { title: 'Fourth Wing', author: 'Rebecca Yarros', themes: ['dragon rider fantasy romance', 'academy enemies to lovers', 'romantasy'] },
-        { title: 'Iron Flame', author: 'Rebecca Yarros', themes: ['dragon fantasy war romance', 'fantasy sequel romance', 'romantasy adventure'] },
-        { title: 'Reckless', author: 'Elsie Silver', themes: ['contemporary romance cowboy', 'small town romance', 'sports romance'] },
-        { title: 'Powerless', author: 'Lauren Roberts', themes: ['fantasy romance forbidden', 'enemies to lovers fantasy', 'powers fantasy romance'] },
-        { title: 'Haunting Adeline', author: 'H.D. Carlton', themes: ['dark romance thriller', 'dark romance stalker', 'spicy dark romance'] },
-        { title: 'It Ends with Us', author: 'Colleen Hoover', themes: ['emotional romance contemporary', 'women fiction drama', 'romance literary'] },
-      ];
+      // Load Goodreads data from cache
+      const cached = JSON.parse(localStorage.getItem(GR_CACHE_KEY) || 'null');
+      const grData = cached && cached.d;
 
-      // Shuffle and pick 3
-      const shuffled = favorites.sort(() => Math.random() - 0.5);
-      const picked = shuffled.slice(0, 3);
-
-      // Search for each
-      const allBooks = [];
-      const seenTitles = new Set(favorites.map(f => f.title.toLowerCase()));
-      const alreadyReadLower = alreadyRead.map(r => r.toLowerCase());
-
-      const fetches = [];
-      picked.forEach(fav => {
-        fav.themes.forEach(theme => {
-          fetches.push(
-            fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(theme)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year,isbn&sort=rating&limit=6`)
-              .then(r => r.json())
-              .then(data => ({ source: fav.title, data }))
-              .catch(() => ({ source: fav.title, data: { docs: [] } }))
-          );
-        });
-      });
-
-      const results = await Promise.all(fetches);
-
-      results.forEach(result => {
-        if (!result.data.docs) return;
-        result.data.docs.forEach(doc => {
-          const titleLow = (doc.title || '').toLowerCase();
-          if (seenTitles.has(titleLow)) return;
-          if (alreadyReadLower.some(r => titleLow.includes(r) || r.includes(titleLow))) return;
-          if (!doc.ratings_average || doc.ratings_average < 3.3) return;
-          const subs = (doc.subject || []).join(' ').toLowerCase();
-          if (subs.includes('juvenile') || subs.includes('children') || subs.includes('picture book')) return;
-          seenTitles.add(titleLow);
-
-          const yr = doc.first_publish_year || 0;
-          const modernBonus = yr >= 2015 ? 3 : yr >= 2000 ? 2 : yr >= 1990 ? 1 : 0;
-
-          allBooks.push({
-            title: doc.title,
-            author: doc.author_name ? doc.author_name[0] : 'Unknown',
-            rating: doc.ratings_average ? doc.ratings_average.toFixed(1) + '/5' : '—',
-            cover_i: doc.cover_i,
-            isbn: doc.isbn,
-            year: doc.first_publish_year,
-            source: result.source,
-            score: (doc.ratings_average || 0) + modernBonus
-          });
-        });
-      });
-
-      // Sort by score, diversify by author (max 2 per author)
-      allBooks.sort((a, b) => b.score - a.score);
-      const authorCount = {};
-      const diverse = allBooks.filter(b => {
-        const a = b.author.toLowerCase();
-        authorCount[a] = (authorCount[a] || 0) + 1;
-        return authorCount[a] <= 2;
-      });
-      const top = diverse.slice(0, 12);
-
-      if (top.length === 0) {
-        resultsEl.innerHTML = '<div style="text-align:center; padding: 40px; color: var(--text-muted);">No new recommendations found. Try the search tab!</div>';
-        return;
+      // Source books: real 5-star Goodreads books first, then 4-star
+      let sourceCandidates = [];
+      if (grData && grData.favorites && grData.favorites.length) {
+        sourceCandidates = grData.favorites.map(f => ({
+          title: f.title.replace(/\s*\(.*?\)\s*/g, '').trim(),
+          author: f.author, stars: 5
+        }));
+      }
+      if (grData && grData.ratedBooks && grData.ratedBooks.fourStars && grData.ratedBooks.fourStars.length) {
+        grData.ratedBooks.fourStars.forEach(b => sourceCandidates.push({
+          title: b.title.replace(/\s*\(.*?\)\s*/g, '').trim(), author: b.author, stars: 4
+        }));
+      }
+      if (sourceCandidates.length === 0) {
+        sourceCandidates = [
+          { title: 'Fourth Wing', author: 'Rebecca Yarros', stars: 5 },
+          { title: 'A Court of Mist and Fury', author: 'Sarah J. Maas', stars: 5 },
+          { title: 'Happy Place', author: 'Emily Henry', stars: 5 },
+          { title: 'Haunting Adeline', author: 'H.D. Carlton', stars: 5 },
+        ];
       }
 
-      // Group by source book
-      const grouped = {};
-      top.forEach(b => {
-        if (!grouped[b.source]) grouped[b.source] = [];
-        grouped[b.source].push(b);
-      });
+      // TBR set for badge + spotlight
+      const tbrSet = new Set(tbrBooks.map(b => normTitle(b.title)));
 
-      let html = '<div class="section-label" style="font-size: 11px;">&#10024; Because you loved these...</div>';
-      for (const [source, books] of Object.entries(grouped)) {
-        html += `<div style="margin-bottom: 24px;">`;
-        html += `<div style="color: var(--accent); font-size: 13px; margin-bottom: 10px; font-style: italic;">Because you liked <strong>${source}</strong></div>`;
+      // Currently-reading exclusion (from TBR spotlight)
+      const crTitle = grData && grData.cr && grData.cr.title ? normTitle(grData.cr.title) : '';
+
+      // Base exclusion: source books + already-read (never recommend these)
+      // Use normTitle() for both so series-tagged Goodreads titles ("Zodiac Academy (...)") match correctly
+      const baseExcluded = new Set();
+      sourceCandidates.forEach(b => baseExcluded.add(normTitle(b.title)));
+      alreadyRead.forEach(r => baseExcluded.add(normTitle(r)));
+
+      // Pick source books: up to 3 five-star + 1 four-star for variety (shuffled each time)
+      const five = sourceCandidates.filter(b => b.stars === 5).sort(() => Math.random() - 0.5);
+      const four = sourceCandidates.filter(b => b.stars < 5).sort(() => Math.random() - 0.5);
+      const picked = five.slice(0, 3).concat(four.slice(0, 1));
+      if (picked.length === 0) picked.push(...five.slice(0, 4));
+
+      // Fetch OL results for ALL picked books in PARALLEL
+      // Use theme-based queries (not title+author) — OL title+author search returns
+      // translations/editions of the same book, not similar books
+      const olFetches = picked.map(src => {
+        const key = normTitle(src.title);
+        const themes = PERSONAL_REC_THEMES[key];
+        if (themes) {
+          // Use 2 themes per source for variety; merge results
+          return Promise.all(themes.slice(0, 2).map(theme =>
+            fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(theme)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year,isbn,language&sort=rating&limit=6`)
+              .then(r => r.json()).then(d => d.docs || []).catch(() => [])
+          )).then(res => res.flat());
+        }
+        // No theme map entry — skip OL for this source; curated data covers it if available
+        return Promise.resolve([]);
+      });
+      const olResults = await Promise.all(olFetches);
+
+      // Process each source independently; use crossGroupSeen to prevent same
+      // book appearing in two groups, but each source starts fresh from baseExcluded
+      const crossGroupSeen = new Set(baseExcluded);
+      const groups = [];
+
+      for (let i = 0; i < picked.length; i++) {
+        const src = picked[i];
+        const recs = [];
+
+        // Returns true if a raw title should be skipped
+        const shouldSkip = (rawTitle) => {
+          const tl = normTitle(rawTitle);
+          if (crossGroupSeen.has(tl)) return true;
+          const rawLow = rawTitle.toLowerCase();
+          // Multi-strategy match against alreadyRead:
+          // (1) normTitle of rec vs normTitle of alreadyRead entry — catches most cases
+          // (2) rawLow of alreadyRead contains normTitle of rec — catches series names
+          //     e.g. "Zodiac Academy" rec vs "The Awakening (Zodiac Academy, #1)" in alreadyRead
+          // (3) rawLow of rec contains normTitle of alreadyRead — catches boxsets
+          //     e.g. "The Empyrean Series (Iron Flame & Onyx Storm)" vs "Iron Flame" in alreadyRead
+          if (alreadyRead.some(r => {
+            const rl = normTitle(r);
+            const rRaw = r.toLowerCase();
+            return rl.includes(tl) || tl.includes(rl) || rRaw.includes(tl) || rawLow.includes(rl);
+          })) return true;
+          // Catch anthology/boxset titles containing a source book's title
+          if (sourceCandidates.some(s => rawLow.includes(s.title.toLowerCase()))) return true;
+          return false;
+        };
+
+        // 1) Curated searchData — rich pitches, exact genre tags
+        //    Skip __dynamic__ keys (no curated recs stored there)
+        const matchHits = getMatches(src.title);
+        const bestHit = matchHits.length > 0 && matchHits[0].score >= 70 ? matchHits[0] : null;
+        const curated = (bestHit && bestHit.itemType === 'book' && bestHit.dataKey !== '__dynamic__')
+          ? searchData[bestHit.dataKey] : null;
+        if (curated) {
+          const pool = (curated.closest || []).concat(curated.sameEnergy || []).concat(curated.wildcard ? [curated.wildcard] : []);
+          pool.forEach(b => {
+            if (shouldSkip(b.title)) return;
+            const tl = normTitle(b.title);
+            crossGroupSeen.add(tl);
+            recs.push({ title: b.title, author: b.author, rating: b.rating, pitch: b.pitch, tag: b.tag, tagClass: b.tagClass, isbn: b.isbn || null, cover_i: null, isTbr: tbrSet.has(tl) });
+          });
+        }
+
+        // 2) Open Library results (pre-fetched in parallel above)
+        olResults[i].forEach(doc => {
+          if (shouldSkip(doc.title)) return;
+          if (!doc.ratings_average || doc.ratings_average < 3.7) return;
+          // Skip non-English editions (OL returns Spanish/Polish translations mixed in)
+          if (doc.language && doc.language.length > 0 && !doc.language.includes('eng')) return;
+          const subs = (doc.subject || []).join(' ').toLowerCase();
+          if (subs.includes('juvenile') || subs.includes('children')) return;
+          const tl = normTitle(doc.title);
+          crossGroupSeen.add(tl);
+          const genre = getGenreTag(doc.subject || []);
+          recs.push({
+            title: doc.title, author: (doc.author_name || ['Unknown'])[0],
+            rating: doc.ratings_average.toFixed(1) + '/5', pitch: '',
+            tag: genre.tag, tagClass: genre.cls, cover_i: doc.cover_i, isbn: doc.isbn,
+            isTbr: tbrSet.has(tl), score: doc.ratings_average + (doc.first_publish_year >= 2015 ? 0.3 : 0)
+          });
+        });
+
+        // TBR books float to top within each group
+        recs.sort((a, b) => (b.isTbr ? 1 : 0) - (a.isTbr ? 1 : 0) || (b.score || 0) - (a.score || 0));
+        if (recs.length > 0) groups.push({ src: src.title, stars: src.stars, recs: recs.slice(0, 5) });
+      }
+
+      // Collect all rec titles so TBR spotlight doesn't duplicate them
+      const shownInRecs = new Set();
+      groups.forEach(g => g.recs.forEach(b => shownInRecs.add(normTitle(b.title))));
+
+      let html = '';
+
+      // ── TBR spotlight: up to 4 random TBR books not shown in recs + not currently reading ──
+      const tbrSpotlight = tbrBooks
+        .filter(b => {
+          const tl = normTitle(b.title);
+          return !shownInRecs.has(tl) && !baseExcluded.has(tl) && tl !== crTitle;
+        })
+        .sort(() => Math.random() - 0.5)
+        .slice(0, 4);
+      if (tbrSpotlight.length > 0) {
+        html += `<div class="section-label" style="font-size:11px;margin-bottom:10px;">&#128214; Still on your TBR — you wanted these!</div>`;
         html += `<div class="book-grid">`;
-        books.forEach(b => {
-          const genre = getGenreTag(b.year > 2000 ? ['romance', 'fantasy'] : ['fiction']);
-          html += renderBookCard({
-            title: b.title,
-            author: b.author,
-            rating: b.rating,
-            cover_i: b.cover_i,
-            year: b.year,
-            matchedSubjects: [],
-            isAuthorMatch: false
-          }, false);
+        tbrSpotlight.forEach(b => {
+          html += renderBookCard({ title: b.title.replace(/\s*\(.*?\)\s*/g,'').trim(), author: b.author, rating: '—', tag: '&#128204; Your TBR', tagClass: 'tag-fantasy', pitch: 'You added this to your TBR — time to finally read it!', isbn: null, cover_i: null, isTbr: false });
+        });
+        html += `</div><div style="height:24px"></div>`;
+      }
+
+      // ── Rec groups by source book ──
+      for (const group of groups) {
+        const starLabel = group.stars === 5 ? '&#11088;&#11088;&#11088;&#11088;&#11088;' : '&#11088;&#11088;&#11088;&#11088;';
+        html += `<div style="margin-bottom:28px">
+          <div style="color:var(--accent);font-size:13px;margin-bottom:10px;font-style:italic;">
+            ${starLabel} Because you loved <strong>${group.src}</strong>
+          </div><div class="book-grid">`;
+        group.recs.forEach(b => {
+          html += renderBookCard({ title: b.title, author: b.author, rating: b.rating || '—', tag: b.tag || 'Fiction', tagClass: b.tagClass || 'tag-literary', pitch: b.pitch || '', isbn: b.isbn || null, cover_i: b.cover_i || null, isTbr: b.isTbr });
         });
         html += `</div></div>`;
       }
 
+      if (!html) {
+        html = '<div style="text-align:center;padding:40px;color:var(--text-muted);">No recommendations found. Try searching directly!</div>';
+      }
+
       resultsEl.innerHTML = html;
-      upgradeStaticCards();
       loadCoversInView();
     }
 
@@ -3611,7 +3713,7 @@
     // ===== LIVE GOODREADS DATA =====
     const GOODREADS_USER_ID = '84782638';
     const READING_GOAL = 50;
-    const GR_CACHE_KEY = 'gr_live_v3';
+    const GR_CACHE_KEY = 'gr_live_v4';
     const GR_CACHE_TTL = 60 * 60 * 1000; // refresh every hour
 
     async function fetchGrShelf(shelf, page = 1) {
@@ -3637,6 +3739,46 @@
         } catch(e) { break; }
       }
       return allTitles;
+    }
+
+    // Fetch to-read shelf (up to 3 pages, ~90 books) for TBR spotlight
+    async function fetchTbrBooks() {
+      const books = [];
+      for (let page = 1; page <= 3; page++) {
+        try {
+          const xml = await fetchGrShelf('to-read', page);
+          const items = [...xml.querySelectorAll('item')];
+          if (items.length === 0) break;
+          items.forEach(it => {
+            const title = it.querySelector('title')?.textContent?.trim() || '';
+            const author = it.querySelector('author_name')?.textContent?.trim() || '';
+            if (title) books.push({ title, author });
+          });
+          if (items.length < 30) break;
+        } catch(e) { break; }
+      }
+      return books;
+    }
+
+    // Fetch rated books from read shelf (pages 1-5) to build preference profile
+    async function fetchRatedBooks() {
+      const fiveStars = [], fourStars = [];
+      for (let page = 1; page <= 5; page++) {
+        try {
+          const xml = await fetchGrShelf('read', page);
+          const items = [...xml.querySelectorAll('item')];
+          if (items.length === 0) break;
+          items.forEach(it => {
+            const rating = parseInt(it.querySelector('user_rating')?.textContent || '0');
+            const title = it.querySelector('title')?.textContent?.trim() || '';
+            const author = it.querySelector('author_name')?.textContent?.trim() || '';
+            if (rating === 5 && title) fiveStars.push({ title, author });
+            else if (rating === 4 && title) fourStars.push({ title, author });
+          });
+          if (items.length < 30) break;
+        } catch(e) { break; }
+      }
+      return { fiveStars, fourStars };
     }
 
     async function loadGoodreadsData() {
@@ -3672,31 +3814,33 @@
           };
         }
 
-        // Read shelf — allReadTitles already contains all pages of read books
-        // We fetch the first page again with full XML to get ratings/dates for stats
+        // Read shelf — fetch ratings across multiple pages + TBR shelf in parallel
         let yearRead = 0, totalRating = 0, ratedCount = 0;
         const favorites = [];
 
+        // Kick off TBR and rated-books fetches in parallel with stat collection
+        const [tbrFetched, ratedBooks] = await Promise.all([
+          fetchTbrBooks(),
+          fetchRatedBooks()
+        ]);
+
+        // Count yearly reads + avg rating from the ratedBooks data (page 1 already fetched inside fetchRatedBooks)
         try {
           const readPage1Xml = await fetchGrShelf('read', 1);
           const readPage1Items = [...readPage1Xml.querySelectorAll('item')];
           readPage1Items.forEach(it => {
-            const title = it.querySelector('title')?.textContent?.trim() || '';
             const readAt = it.querySelector('user_read_at')?.textContent?.trim() || '';
             const rating = parseInt(it.querySelector('user_rating')?.textContent || '0');
             if (readAt.includes(thisYear)) yearRead++;
             if (rating > 0) { totalRating += rating; ratedCount++; }
-            if (rating === 5 && favorites.length < 5) {
-              favorites.push({
-                title,
-                author: it.querySelector('author_name')?.textContent?.trim() || '',
-              });
-            }
           });
         } catch(e) {}
 
+        // Build favorites from ratedBooks (all 5-star books across pages 1-5)
+        ratedBooks.fiveStars.slice(0, 8).forEach(b => favorites.push(b));
+
         const avgRating = ratedCount > 0 ? (totalRating / ratedCount).toFixed(1) : '—';
-        const data = { cr, yearRead, avgRating, goal: READING_GOAL, favorites, readTitles: allReadTitles };
+        const data = { cr, yearRead, avgRating, goal: READING_GOAL, favorites, ratedBooks, readTitles: allReadTitles, tbrBooks: tbrFetched };
 
         localStorage.setItem(GR_CACHE_KEY, JSON.stringify({ d: data, ts: Date.now() }));
         applyGoodreadsData(data);
@@ -3749,6 +3893,11 @@
       // Merge live read titles into alreadyRead so we never recommend them
       if (data.readTitles && data.readTitles.length > 0) {
         alreadyRead = [...new Set([...alreadyRead, ...data.readTitles])];
+      }
+
+      // Populate global tbrBooks for getPersonalRecs TBR integration
+      if (data.tbrBooks && data.tbrBooks.length > 0) {
+        tbrBooks = data.tbrBooks;
       }
 
       // Show last synced time
