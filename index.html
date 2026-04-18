@@ -1386,14 +1386,24 @@
     // ===== AMAZON AFFILIATE TAG =====
     const AMAZON_AFFILIATE_TAG = 'bookslike0e-20';
 
-    // Generate Goodreads search URL
-    function goodreadsUrl(title, author) {
+    // Extract best ISBN-10 and ISBN-13 from Open Library isbn array
+    function pickIsbn(isbnArray) {
+      if (!isbnArray || !isbnArray.length) return {};
+      const isbn13 = isbnArray.find(i => /^97[89]\d{10}$/.test(i));
+      const isbn10 = isbnArray.find(i => /^\d{9}[\dX]$/i.test(i));
+      return { isbn13, isbn10 };
+    }
+
+    // Generate Goodreads URL — direct book page if ISBN known, else search
+    function goodreadsUrl(title, author, isbn) {
+      if (isbn) return `https://www.goodreads.com/book/isbn/${isbn}`;
       const q = encodeURIComponent((title + ' ' + (author || '')).replace(/\s*\(.*?\)\s*/g, '').trim());
       return `https://www.goodreads.com/search?q=${q}`;
     }
 
-    // Generate Amazon search URL with affiliate tag
-    function amazonUrl(title, author) {
+    // Generate Amazon URL — direct product page if ISBN-10 known, else search
+    function amazonUrl(title, author, isbn) {
+      if (isbn) return `https://www.amazon.com/dp/${isbn}?tag=${AMAZON_AFFILIATE_TAG}`;
       const q = encodeURIComponent((title + ' ' + (author || '')).replace(/\s*\(.*?\)\s*/g, '').replace(/\s*\/\s*5$/,'').trim());
       return `https://www.amazon.com/s?k=${q}&i=stripbooks&tag=${AMAZON_AFFILIATE_TAG}`;
     }
@@ -1404,11 +1414,12 @@
     const azIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M.045 18.02c.072-.116.187-.124.348-.022 2.344 1.476 4.882 2.214 7.614 2.214 1.903 0 3.727-.375 5.474-1.126.262-.113.494-.201.697-.263.244-.075.39.026.44.306.044.244-.06.467-.313.668-.756.6-1.675 1.1-2.76 1.5-1.417.52-2.878.78-4.384.78-2.32 0-4.47-.615-6.453-1.845-.186-.115-.239-.256-.157-.424l-.003.002zm7.647-1.588c-.207-.274-.428-.382-.665-.325-.237.06-.28.224-.126.5.154.278.394.444.722.5.326.056.48-.074.46-.39-.018-.278-.175-.39-.39-.285zm6.37-2.065c-.135-.334-.32-.46-.558-.378-.172.06-.2.18-.086.36.026.04.17.296.435.767.265.47.37.76.316.872-.158.318-.663.49-1.513.513-.528.014-.973-.1-1.337-.34l-.17-.126c-.178-.15-.283-.16-.316-.03-.03.106.065.24.287.4.222.16.514.28.878.36.363.082.65.098.86.05.714-.16 1.19-.55 1.425-1.168.087-.227.038-.548-.145-.962l-.076-.158-.002-.005zM.045 18.02c.072-.116.187-.124.348-.022 2.344 1.476 4.882 2.214 7.614 2.214 1.903 0 3.727-.375 5.474-1.126.262-.113.494-.201.697-.263.244-.075.39.026.44.306.044.244-.06.467-.313.668-.756.6-1.675 1.1-2.76 1.5-1.417.52-2.878.78-4.384.78-2.32 0-4.47-.615-6.453-1.845-.186-.115-.239-.256-.157-.424l-.003.002z"/><path d="M21.045 17.296c-.287-.146-.56-.186-.82-.12-.168.044-.286.12-.356.227-.07.108-.066.207.01.298.076.09.183.152.32.186.14.034.333.01.582-.074l.098-.038c.104-.044.186-.034.244.027.058.06.064.143.018.248-.046.105-.16.197-.344.278-.292.13-.618.178-.978.147-.36-.03-.634-.143-.82-.34-.187-.197-.265-.458-.236-.78.03-.328.168-.59.416-.786.248-.196.57-.308.968-.336.397-.028.73.033 1 .183.168.094.246.2.234.318-.01.116-.086.2-.228.252l-.108.036v.073z"/></svg>`;
 
     // Render action links for a book card
-    function renderBookActions(title, author) {
+    function renderBookActions(title, author, isbnArray) {
+      const { isbn13, isbn10 } = pickIsbn(isbnArray);
       return `
         <div class="book-card-actions">
-          <a href="${goodreadsUrl(title, author)}" target="_blank" rel="noopener" class="btn-goodreads" onclick="event.stopPropagation()">${grIcon} Goodreads</a>
-          <a href="${amazonUrl(title, author)}" target="_blank" rel="noopener" class="btn-amazon" onclick="event.stopPropagation()">${azIcon} Amazon</a>
+          <a href="${goodreadsUrl(title, author, isbn13 || isbn10)}" target="_blank" rel="noopener" class="btn-goodreads" onclick="event.stopPropagation()">${grIcon} Goodreads</a>
+          <a href="${amazonUrl(title, author, isbn10 || isbn13)}" target="_blank" rel="noopener" class="btn-amazon" onclick="event.stopPropagation()">${azIcon} Amazon</a>
         </div>`;
     }
 
@@ -1440,7 +1451,7 @@
             </div>
             <div class="book-pitch">${book.pitch}</div>
             ${adaptedLine}
-            ${renderBookActions(book.title, book.author)}
+            ${renderBookActions(book.title, book.author, book.isbn)}
           </div>
         </div>`;
     }
@@ -1785,7 +1796,7 @@
       picked.forEach(fav => {
         fav.themes.forEach(theme => {
           fetches.push(
-            fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(theme)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=6`)
+            fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(theme)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year,isbn&sort=rating&limit=6`)
               .then(r => r.json())
               .then(data => ({ source: fav.title, data }))
               .catch(() => ({ source: fav.title, data: { docs: [] } }))
@@ -1814,6 +1825,7 @@
             author: doc.author_name ? doc.author_name[0] : 'Unknown',
             rating: doc.ratings_average ? doc.ratings_average.toFixed(1) + '/5' : '—',
             cover_i: doc.cover_i,
+            isbn: doc.isbn,
             year: doc.first_publish_year,
             source: result.source,
             score: (doc.ratings_average || 0) + modernBonus
@@ -1970,7 +1982,7 @@
                 <div class="book-pitch">${book.pitch}</div>
                 ${adaptedLine}
                 <div class="matched-tags">${whyTags}</div>
-                ${renderBookActions(book.title, book.author)}
+                ${renderBookActions(book.title, book.author, book.isbn)}
               </div>
             </div>`;
         });
@@ -2779,7 +2791,7 @@
           subjects = mediaMatch.themes;
           const themeResults = await Promise.all(
             mediaMatch.searchTerms.map(term =>
-              fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(term)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&limit=3`)
+              fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(term)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year,isbn&limit=3`)
                 .then(r => r.json()).catch(() => ({ docs: [] }))
             )
           );
@@ -2792,14 +2804,14 @@
         const titleQuery = encodeURIComponent(parsed.cleanTitle);
         const rawQuery = encodeURIComponent(query.trim());
         const searches = [
-          fetch(`https://openlibrary.org/search.json?title=${rawQuery}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key&limit=8`)
+          fetch(`https://openlibrary.org/search.json?title=${rawQuery}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key,isbn&limit=8`)
             .then(r => r.json()).catch(() => ({ docs: [] })),
-          fetch(`https://openlibrary.org/search.json?q=${rawQuery}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key&limit=8`)
+          fetch(`https://openlibrary.org/search.json?q=${rawQuery}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key,isbn&limit=8`)
             .then(r => r.json()).catch(() => ({ docs: [] }))
         ];
         if (titleQuery !== rawQuery) {
           searches.push(
-            fetch(`https://openlibrary.org/search.json?title=${titleQuery}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key&limit=8`)
+            fetch(`https://openlibrary.org/search.json?title=${titleQuery}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key,isbn&limit=8`)
               .then(r => r.json()).catch(() => ({ docs: [] }))
           );
         }
@@ -2807,7 +2819,7 @@
         const canonicalTitle = ABBREVIATION_TITLES[rawLower] || ABBREVIATION_TITLES[queryLower] || null;
         if (canonicalTitle) {
           searches.push(
-            fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(canonicalTitle)}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key&limit=5`)
+            fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(canonicalTitle)}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key,isbn&limit=5`)
               .then(r => r.json()).catch(() => ({ docs: [] }))
           );
         }
@@ -2815,7 +2827,7 @@
         const vibeKey = Object.keys(bookVibeMap).find(k => k === rawLower || k === queryLower || rawLower.includes(k) || k.includes(rawLower));
         if (vibeKey && vibeKey.length > query.trim().length + 3) {
           searches.push(
-            fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(vibeKey)}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key&limit=5`)
+            fetch(`https://openlibrary.org/search.json?title=${encodeURIComponent(vibeKey)}&fields=title,author_name,first_publish_year,subject,cover_i,ratings_average,key,isbn&limit=5`)
               .then(r => r.json()).catch(() => ({ docs: [] }))
           );
         }
@@ -2881,6 +2893,7 @@
             author: bestDoc.author_name ? bestDoc.author_name[0] : 'Unknown',
             rating: bestDoc.ratings_average ? (bestDoc.ratings_average.toFixed(1) + '/5') : '—',
             cover_i: bestDoc.cover_i,
+            isbn: bestDoc.isbn,
             year: bestDoc.first_publish_year
           };
           sourceSubjects = (bestDoc.subject || []).slice(0, 50);
@@ -2939,7 +2952,7 @@
           const subjectsToSearch = genreSubjects.length > 0 ? genreSubjects : subjects.slice(0, 3);
           subjectsToSearch.forEach(s => {
             fetchPromises.push(
-              fetch(`https://openlibrary.org/search.json?q=subject:"${encodeURIComponent(s)}"&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=8`)
+              fetch(`https://openlibrary.org/search.json?q=subject:"${encodeURIComponent(s)}"&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year,isbn&sort=rating&limit=8`)
                 .then(r => r.json()).then(data => ({ type: 'subject', subject: s, data })).catch(() => ({ type: 'subject', data: { docs: [] } }))
             );
           });
@@ -2951,13 +2964,13 @@
           if (themes.length >= 2) {
             const combinedQ = themes.slice(0, 2).map(t => `subject:"${t}"`).join('+');
             fetchPromises.push(
-              fetch(`https://openlibrary.org/search.json?q=${combinedQ}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=12`)
+              fetch(`https://openlibrary.org/search.json?q=${combinedQ}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year,isbn&sort=rating&limit=12`)
                 .then(r => r.json()).then(data => ({ type: 'subject', subject: themes.slice(0, 2).join(', '), data })).catch(() => ({ type: 'subject', data: { docs: [] } }))
             );
           }
           // Also search the primary theme individually for breadth
           fetchPromises.push(
-            fetch(`https://openlibrary.org/search.json?q=subject:"${encodeURIComponent(themes[0])}"&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=10`)
+            fetch(`https://openlibrary.org/search.json?q=subject:"${encodeURIComponent(themes[0])}"&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year,isbn&sort=rating&limit=10`)
               .then(r => r.json()).then(data => ({ type: 'subject', subject: themes[0], data })).catch(() => ({ type: 'subject', data: { docs: [] } }))
           );
         }
@@ -2965,7 +2978,7 @@
         // Strategy B: Same author
         if (sourceBook && sourceBook.author !== 'Unknown') {
           fetchPromises.push(
-            fetch(`https://openlibrary.org/search.json?q=author:"${encodeURIComponent(sourceBook.author)}"&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=8`)
+            fetch(`https://openlibrary.org/search.json?q=author:"${encodeURIComponent(sourceBook.author)}"&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year,isbn&sort=rating&limit=8`)
               .then(r => r.json()).then(data => ({ type: 'author', data })).catch(() => ({ type: 'author', data: { docs: [] } }))
           );
         }
@@ -2977,7 +2990,7 @@
           themeKeywords.forEach(kw => {
             const isCuratedBookSearch = /[A-Z].*\s[A-Z]/.test(kw) && !kw.startsWith('subject:');
             fetchPromises.push(
-              fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(kw)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&sort=rating&limit=10`)
+              fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(kw)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year,isbn&sort=rating&limit=10`)
                 .then(r => { if (!r.ok) throw new Error(r.status); return r.json(); })
                 .then(data => ({ type: 'theme', theme: kw, data, isCurated: isCuratedBookSearch, curatedSearchTerm: isCuratedBookSearch ? kw.toLowerCase() : '' }))
                 .catch(() => ({ type: 'theme', theme: kw, data: { docs: [] }, isCurated: isCuratedBookSearch, curatedSearchTerm: isCuratedBookSearch ? kw.toLowerCase() : '' }))
@@ -2993,7 +3006,7 @@
           if (r.isCurated && r.curatedSearchTerm && (!r.data.docs || r.data.docs.length === 0)) {
             await new Promise(resolve => setTimeout(resolve, 300));
             try {
-              const resp = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(r.theme)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year&limit=10`);
+              const resp = await fetch(`https://openlibrary.org/search.json?q=${encodeURIComponent(r.theme)}&fields=title,author_name,ratings_average,cover_i,subject,first_publish_year,isbn&limit=10`);
               if (resp.ok) {
                 const data = await resp.json();
                 allResults[i] = { ...r, data };
@@ -3101,6 +3114,7 @@
               author: doc.author_name ? doc.author_name[0] : 'Unknown',
               rating: doc.ratings_average ? (doc.ratings_average.toFixed(1) + '/5') : '—',
               cover_i: doc.cover_i,
+              isbn: doc.isbn,
               year: doc.first_publish_year,
               matchCount: totalScore,
               matchedSubjects: curatedBonus > 0 ? ['top pick'] : (cleanMatched.length > 0 ? cleanMatched : []),
@@ -3337,7 +3351,7 @@
               <div class="book-pitch" style="color: var(--text-dim); font-style: italic;">
                 Themes: ${subjects.filter(s => !s.includes(':') && s.length < 35).slice(0, 5).join(', ')}
               </div>
-              ${renderBookActions(sourceBook.title, sourceBook.author)}
+              ${renderBookActions(sourceBook.title, sourceBook.author, sourceBook.isbn)}
             </div>
           </div>`;
       }
@@ -3379,7 +3393,7 @@
                 </div>
                 <div class="book-pitch" style="margin-top: 6px; font-size: 12.5px; color: var(--text-muted); line-height: 1.4;">${whyBlurb}</div>
                 ${tagLabels.length > 0 ? `<div style="margin-top: 6px; display: flex; flex-wrap: wrap; gap: 4px;">${tagLabels.map(s => `<span class="matched-tag">${s}</span>`).join('')}</div>` : ''}
-                ${renderBookActions(book.title, book.author)}
+                ${renderBookActions(book.title, book.author, book.isbn)}
               </div>
             </div>`;
         });
