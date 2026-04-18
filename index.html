@@ -1390,7 +1390,10 @@
     function pickIsbn(isbnArray) {
       if (!isbnArray || !isbnArray.length) return {};
       const isbn13 = isbnArray.find(i => /^97[89]\d{10}$/.test(i));
-      const isbn10 = isbnArray.find(i => /^\d{9}[\dX]$/i.test(i));
+      // Prefer US/UK ISBN-10 starting with 0 or 1 — these work as Amazon.com ASINs
+      // Foreign ISBNs (starting with 2-9) often don't appear on Amazon.com
+      const isbn10 = isbnArray.find(i => /^[01]\d{8}[\dX]$/i.test(i))
+                  || isbnArray.find(i => /^\d{9}[\dX]$/i.test(i));
       return { isbn13, isbn10 };
     }
 
@@ -1419,8 +1422,46 @@
       return `
         <div class="book-card-actions">
           <a href="${goodreadsUrl(title, author, isbn13 || isbn10)}" target="_blank" rel="noopener" class="btn-goodreads" onclick="event.stopPropagation()">${grIcon} Goodreads</a>
-          <a href="${amazonUrl(title, author, isbn10 || isbn13)}" target="_blank" rel="noopener" class="btn-amazon" onclick="event.stopPropagation()">${azIcon} Amazon</a>
+          <a href="${amazonUrl(title, author, isbn10)}" target="_blank" rel="noopener" class="btn-amazon" onclick="event.stopPropagation()">${azIcon} Amazon</a>
         </div>`;
+    }
+
+    // Lazily upgrade search-fallback links to direct ISBN links for curated cards
+    function upgradeToDirectLinks() {
+      const pending = [...document.querySelectorAll('.book-card')].filter(card => {
+        const grLink = card.querySelector('.btn-goodreads');
+        return grLink && grLink.href.includes('/search?q=') && !card.dataset.isbnFetching;
+      });
+
+      // Stagger requests 250ms apart to avoid Open Library rate limits
+      pending.forEach((card, i) => {
+        card.dataset.isbnFetching = '1';
+        const grLink = card.querySelector('.btn-goodreads');
+        const azLink = card.querySelector('.btn-amazon');
+        const title = card.querySelector('.book-title')?.textContent?.trim() || '';
+        const author = (card.querySelector('.book-author')?.textContent?.trim() || '').replace(/\s*\(\d{4}\).*/, '');
+        if (!title) return;
+
+        setTimeout(() => {
+          // limit=5: classic books often have 0 ISBNs in doc[0] — scan all docs
+          // and collect best isbn13 + isbn10 independently across results
+          const q = encodeURIComponent(`${title} ${author}`);
+          fetch(`https://openlibrary.org/search.json?q=${q}&fields=isbn&limit=5`)
+            .then(r => r.json())
+            .then(data => {
+              let isbn13, isbn10;
+              for (const doc of (data.docs || [])) {
+                const picked = pickIsbn(doc.isbn);
+                if (!isbn13 && picked.isbn13) isbn13 = picked.isbn13;
+                if (!isbn10 && picked.isbn10) isbn10 = picked.isbn10;
+                if (isbn13 && isbn10) break;
+              }
+              if (isbn13 || isbn10) grLink.href = goodreadsUrl(title, author, isbn13 || isbn10);
+              if (isbn10) azLink.href = amazonUrl(title, author, isbn10); // isbn10 only for Amazon dp/
+            })
+            .catch(() => {});
+        }, i * 250);
+      });
     }
 
     function renderBookCard(book, showMatch) {
@@ -1465,6 +1506,7 @@
           fetchCover(title, author, img);
         }
       });
+      upgradeToDirectLinks();
     }
 
     // Olga's Goodreads read list (titles to never recommend) — also updated live from Goodreads
