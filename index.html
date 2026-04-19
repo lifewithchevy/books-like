@@ -1718,10 +1718,12 @@
       });
       html += `</div>`;
 
-      // Grouped sections
+      // Grouped sections (collapsed by default)
       promptGroups.groups.forEach(group => {
         html += `<div class="prompt-tags-group">`;
-        html += `<div class="prompt-group-label">${group.label}</div>`;
+        html += `<div class="prompt-group-label" onclick="this.closest('.prompt-tags-group').classList.toggle('open')">`;
+        html += `<span>${group.label}</span><span class="group-chevron">&#8964;</span>`;
+        html += `</div>`;
         html += `<div class="prompt-tags-row">`;
         group.prompts.forEach(p => {
           html += `<div class="prompt-tag" data-prompt="${p}">${p}</div>`;
@@ -2268,12 +2270,21 @@
         }
 
         // Score each book
-        const scored = moodBooks.map(book => {
+        const allScored = moodBooks.map(book => {
           const matched = book.attrs.filter(a => targetAttrs.has(a));
           return { ...book, score: matched.length, matchedAttrs: matched };
         }).filter(b => b.score > 0).sort((a, b) => b.score - a.score);
 
-        if (scored.length === 0) {
+        // Deduplicate by title (keep highest-scoring entry)
+        const seenTitles = new Set();
+        const deduped = allScored.filter(b => {
+          const key = b.title.toLowerCase();
+          if (seenTitles.has(key)) return false;
+          seenTitles.add(key);
+          return true;
+        });
+
+        if (deduped.length === 0) {
           resultsEl.innerHTML = `
             <div style="text-align:center; padding: 60px 20px;">
               <div style="font-size: 40px; margin-bottom: 16px;">&#129300;</div>
@@ -2283,8 +2294,12 @@
           return;
         }
 
-        const top = scored.slice(0, 8);
-        const maxScore = top[0].score;
+        // Only show books that score at least 33% of the top result — filters out weak/off-topic matches
+        const maxScore = deduped[0].score;
+        const minThreshold = Math.max(2, Math.ceil(maxScore * 0.33));
+        const scored = deduped.filter(b => b.score >= minThreshold);
+
+        const top = scored.slice(0, 6);
 
         let html = `<div class="section-label">Books That Match Your Vibe</div>`;
         html += `<div style="margin-bottom: 16px; display: flex; flex-wrap: wrap; gap: 6px;">`;
@@ -4130,15 +4145,51 @@
     .prompt-tags-group {
       display: flex;
       flex-direction: column;
-      gap: 8px;
+      gap: 0;
+    }
+    .prompt-tags-group .prompt-tags-row {
+      display: none;
+      padding-top: 8px;
+    }
+    .prompt-tags-group.open .prompt-tags-row {
+      display: flex;
     }
     .prompt-group-label {
-      font-size: 10px;
+      font-size: 11px;
       font-weight: 700;
-      letter-spacing: 0.08em;
+      letter-spacing: 0.07em;
       text-transform: uppercase;
+      color: var(--text-muted);
+      padding: 7px 10px;
+      border-radius: 10px;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      background: var(--surface2);
+      border: 1px solid var(--border);
+      transition: background 0.15s, color 0.15s;
+      user-select: none;
+    }
+    .prompt-group-label:hover {
+      background: var(--surface3);
+      color: var(--text);
+    }
+    .prompt-tags-group.open .prompt-group-label {
+      background: var(--surface3);
+      color: var(--text);
+      border-bottom-left-radius: 0;
+      border-bottom-right-radius: 0;
+      border-bottom-color: transparent;
+    }
+    .group-chevron {
+      font-size: 14px;
+      line-height: 1;
+      transition: transform 0.2s ease;
       color: var(--text-dim);
-      padding-left: 2px;
+    }
+    .prompt-tags-group.open .group-chevron {
+      transform: rotate(180deg);
     }
     .prompt-tag {
       background: var(--surface2);
