@@ -1640,32 +1640,95 @@
     }
 
     // ===== MOOD TAB =====
-    const promptSuggestions = [
-      "get me out of my reading slump",
-      "give me smut",
-      "I want to be SHOCKED",
-      "it's time to put myself first",
-      "I need a bingeable book series",
-      "make me cry",
-      "enemies to lovers with spice",
-      "like going to therapy but fun",
-      "I want a strong female lead",
-      "dark and twisty thriller",
-      "cozy fantasy comfort read",
-      "morally gray love interest",
-      "books that feel like a hug",
-      "I need to escape reality",
-      "beach read but make it smart",
-      "obsessive forbidden romance",
-    ];
+    const promptGroups = {
+      shortcuts: [
+        "get me out of my reading slump",
+        "I need a bingeable book series",
+        "it's time to put myself first",
+        "like going to therapy but fun",
+        "I want a strong female lead",
+        "I need to escape reality",
+        "dark and twisty thriller",
+        "cozy fantasy comfort read",
+      ],
+      groups: [
+        {
+          label: "&#128150; Romance",
+          prompts: [
+            "fake dating",
+            "friends to lovers",
+            "found family",
+            "second chance romance",
+            "slow burn that ruins you",
+            "enemies to lovers with spice",
+            "morally gray love interest",
+            "obsessive forbidden romance",
+          ]
+        },
+        {
+          label: "&#129425; Romantasy",
+          prompts: [
+            "dragon riders",
+            "fae / fae court",
+            "vampire romance",
+            "magic school / academy",
+            "gothic",
+            "witchy / coven vibes",
+          ]
+        },
+        {
+          label: "&#128293; Spicy",
+          prompts: [
+            "give me smut",
+            "mafia romance",
+            "hockey romance",
+            "sports romance",
+            "cowboy romance",
+          ]
+        },
+        {
+          label: "&#10024; Vibes",
+          prompts: [
+            "cozy autumn read",
+            "beach read but make it smart",
+          ]
+        },
+        {
+          label: "&#128148; Emotional",
+          prompts: [
+            "sob into your pillow",
+            "a book that healed me",
+            "laugh-out-loud funny",
+            "I want to be SHOCKED",
+            "books that feel like a hug",
+          ]
+        },
+      ]
+    };
 
     function initMoods() {
       const container = document.getElementById('promptTags');
-      // Personal rec pill first, then mood suggestions
-      let html = `<div class="prompt-tag personal-tag" data-prompt="personal">&#10024; Recommend based on what I like</div>`;
-      html += promptSuggestions.map(p =>
-        `<div class="prompt-tag" data-prompt="${p}">${p}</div>`
-      ).join('');
+      let html = '';
+
+      // Personal rec pill + standalone shortcuts row
+      html += `<div class="prompt-tags-row">`;
+      html += `<div class="prompt-tag personal-tag" data-prompt="personal">&#10024; Recommend based on what I like</div>`;
+      promptGroups.shortcuts.forEach(p => {
+        html += `<div class="prompt-tag" data-prompt="${p}">${p}</div>`;
+      });
+      html += `</div>`;
+
+      // Grouped sections
+      promptGroups.groups.forEach(group => {
+        html += `<div class="prompt-tags-group">`;
+        html += `<div class="prompt-group-label">${group.label}</div>`;
+        html += `<div class="prompt-tags-row">`;
+        group.prompts.forEach(p => {
+          html += `<div class="prompt-tag" data-prompt="${p}">${p}</div>`;
+        });
+        html += `</div></div>`;
+      });
+
       container.innerHTML = html;
       container.addEventListener('click', (e) => {
         const tag = e.target.closest('.prompt-tag');
@@ -1746,10 +1809,55 @@
       { title: "Under the Whispering Door", author: "TJ Klune", rating: "4.1/5", tag: "Fantasy", tagClass: "tag-fantasy", pitch: "A man dies and arrives at a tea shop that helps ghosts cross over. He has seven days to make peace with his life. Tender, warm, and quietly devastating.", attrs: ["cozy", "feel good", "fantasy", "heartwarming", "comforting", "healing", "emotional", "wholesome", "lgbtq", "found family", "gentle"] },
       // Forbidden / obsessive romance
       { title: "Credence", author: "Penelope Douglas", rating: "3.9/5", tag: "Dark Romance", tagClass: "tag-romance", pitch: "After losing her parents, a woman moves to a remote mountain cabin with her stepfather and his two sons. Isolation, tension, and lines that get crossed. Very forbidden, very addictive.", attrs: ["forbidden", "spicy", "sexy", "dark", "taboo", "obsessive", "steamy", "page turner", "fiction", "complicated", "smut"] },
-      { title: "Corrupt", author: "Penelope Douglas", rating: "4.1/5", tag: "Dark Romance", tagClass: "tag-romance", pitch: "Three years ago, they set her world on fire. Now they're back, and it's her turn. Revenge, obsession, and enemies-to-lovers taken to the extreme.", attrs: ["forbidden", "spicy", "sexy", "dark", "obsessive", "enemies to lovers", "steamy", "romance", "morally gray", "page turner", "smut", "revenge"] },
+      { title: "Corrupt", author: "Penelope Douglas", rating: "4.1/5", tag: "Dark Romance", tagClass: "tag-romance", pitch: "Three years ago, they set her world on fire. Now they're back, and it's her turn. Revenge, obsession, and enemies-to-lovers taken to the extreme. Dark crime energy and levels of spice that escalate with every chapter.", attrs: ["mafia", "forbidden", "spicy", "sexy", "dark", "obsessive", "enemies to lovers", "steamy", "romance", "morally gray", "page turner", "smut", "revenge", "biker"] },
       // Beach read but smart
       { title: "A Man Called Ove", author: "Fredrik Backman", rating: "4.4/5", tag: "Literary Fiction", tagClass: "tag-literary", pitch: "A grumpy old man's life is upended by his boisterous new neighbors. Funny, heartbreaking, and quietly profound. If you're loving Tomorrow, and Tomorrow, and Tomorrow, this has the same emotional depth.", attrs: ["smart", "literary", "fiction", "friendship", "emotional", "modern", "heartbreaking", "intellectual", "clever", "feel good", "wholesome"] },
       { title: "Normal People", author: "Sally Rooney", rating: "3.6/5", tag: "Literary Fiction", tagClass: "tag-literary", pitch: "Two Irish students orbit each other from school to university. Excruciatingly intimate, painfully real, and the will-they-won't-they is masterful.", adapted: "Hulu series", attrs: ["smart", "literary", "fiction", "romance", "modern", "relationships", "emotional", "young", "introspective", "sexy"] },
+
+      // Friends to lovers
+      { title: "Happy Place", author: "Emily Henry", rating: "4.0/5", tag: "Contemporary Romance", tagClass: "tag-romance", pitch: "Two exes forced to keep pretending they're still together during their annual friend-group vacation. What they pretend eventually becomes unbearably real. Emily Henry at her most emotionally devastating.", attrs: ["friends to lovers", "second chance", "romance", "slow burn", "funny", "contemporary", "feel good", "spicy", "banter", "vacation", "heartbreaking", "page turner"] },
+      { title: "Icebreaker", author: "Hannah Grace", rating: "4.1/5", tag: "Sports Romance", tagClass: "tag-romance", pitch: "A figure skater and a hockey captain have to share ice time — and end up sharing a lot more. Forbidden, swoony, and absolutely bingeable. The hockey romance that started BookTok's obsession.", attrs: ["hockey", "sports romance", "friends to lovers", "forbidden", "romance", "spicy", "contemporary", "banter", "addictive", "page turner", "slow burn"] },
+
+      // Second chance romance
+      { title: "November 9", author: "Colleen Hoover", rating: "4.1/5", tag: "Contemporary Romance", tagClass: "tag-romance", pitch: "Two strangers agree to meet once a year on November 9th for five years. The slow burn of a connection built across time — and the devastating truth hiding underneath. One of CoHo's most emotionally brutal.", attrs: ["second chance", "romance", "emotional", "heartbreaking", "spicy", "contemporary", "page turner", "twist", "slow burn", "addictive", "tragic"] },
+      { title: "The Last Letter from Your Lover", author: "Jojo Moyes", rating: "4.1/5", tag: "Historical Romance", tagClass: "tag-literary", pitch: "A journalist discovers a cache of old love letters and becomes obsessed with uncovering the tragic affair they reveal. Dual timeline, devastating love story, and the kind of aching longing that lingers for days.", adapted: "Netflix film", attrs: ["second chance", "historical", "romance", "emotional", "heartbreaking", "literary", "tragedy", "longing", "beautiful", "dual timeline"] },
+
+      // Dragon riders
+      { title: "Fourth Wing", author: "Rebecca Yarros", rating: "4.4/5", tag: "Romantasy", tagClass: "tag-romance", pitch: "A war college where you bond with a dragon or die trying. Violet Sorrengail was supposed to be a scribe — now she has to survive among the most brutal riders in history while falling for the most dangerous one.", attrs: ["dragon", "dragon rider", "romantasy", "academy", "enemies to lovers", "spicy", "action", "fantasy", "addictive", "page turner", "slow burn", "morally gray"] },
+      { title: "The Priory of the Orange Tree", author: "Samantha Shannon", rating: "4.0/5", tag: "Epic Fantasy", tagClass: "tag-fantasy", pitch: "A standalone epic with dragon riders, secret queens, and an ancient threat that spans the world. Diverse, feminist, and massive in scope — no series commitment needed.", attrs: ["dragon", "dragon rider", "fantasy", "epic", "strong female", "feminist", "quest", "adventure", "political", "magical", "lgbtq"] },
+
+      // Fae / fae court
+      { title: "A Court of Thorns and Roses", author: "Sarah J. Maas", rating: "4.2/5", tag: "Romantasy", tagClass: "tag-romance", pitch: "Feyre is dragged into the fae lands after killing a wolf in an enchanted forest. What starts as a Beauty and the Beast retelling becomes an epic saga of power, war, and the kind of love that remakes you entirely.", attrs: ["fae", "fae court", "fantasy", "romantasy", "enemies to lovers", "romance", "spicy", "slow burn", "magic", "court", "adventure", "page turner", "forbidden"] },
+      { title: "The Cruel Prince", author: "Holly Black", rating: "4.1/5", tag: "Fantasy", tagClass: "tag-fantasy", pitch: "A mortal girl raised in the faerie court schemes her way to power while trading barbs with a fae prince who despises her. The tension is unbearable. The payoff is perfect.", attrs: ["fae", "fae court", "fantasy", "enemies to lovers", "dark", "court intrigue", "strong female", "slow burn", "addictive", "morally gray", "romance"] },
+
+      // Vampire romance
+      { title: "Crave", author: "Tracy Wolff", rating: "3.8/5", tag: "YA Paranormal", tagClass: "tag-fantasy", pitch: "She's sent to a remote Alaskan boarding school full of vampires, werewolves, and other supernaturals. The brooding vampire heir is dangerous, possessive, and completely obsessed with her. Twilight meets academy romance — modern edition.", attrs: ["vampire", "academy", "magic school", "paranormal", "romance", "forbidden", "spicy", "young adult", "addictive", "dark", "enemies to lovers", "page turner"] },
+      { title: "A Discovery of Witches", author: "Deborah Harkness", rating: "3.8/5", tag: "Paranormal Romance", tagClass: "tag-fantasy", pitch: "An Oxford historian discovers a bewitched alchemical manuscript that puts her in the middle of a supernatural war — and draws the obsessive attention of a centuries-old vampire who can't stay away.", attrs: ["vampire", "witchy", "romance", "historical", "magic", "slow burn", "fantasy", "atmospheric", "gothic", "literary", "spicy", "forbidden", "series"] },
+
+      // Magic school / academy
+      { title: "An Ember in the Ashes", author: "Sabaa Tahir", rating: "4.2/5", tag: "Fantasy", tagClass: "tag-fantasy", pitch: "A slave girl and a soldier in a brutal Roman-inspired empire navigate a deadly military academy, an underground rebellion, and a forbidden connection neither can afford. Dark, propulsive, and emotionally devastating.", attrs: ["academy", "magic school", "fantasy", "dark", "forbidden", "romance", "enemies to lovers", "strong female", "action", "page turner", "addictive", "spicy"] },
+
+      // Gothic atmosphere
+      { title: "Rebecca", author: "Daphne du Maurier", rating: "4.2/5", tag: "Gothic Fiction", tagClass: "tag-thriller", pitch: "A young woman marries a wealthy widower and moves into Manderley, his imposing estate — where his dead first wife seems to haunt every corner. The original gothic psychological thriller. Still unmatched.", adapted: "Netflix film (2020)", attrs: ["gothic", "dark", "atmospheric", "psychological", "mystery", "thriller", "classic", "romance", "suspense", "creepy", "page turner", "literary"] },
+
+      // Witchy / coven
+      { title: "Practical Magic", author: "Alice Hoffman", rating: "4.0/5", tag: "Magical Realism", tagClass: "tag-fantasy", pitch: "Two witch sisters from a family cursed in love try to escape their magical legacy. Lyrical, warm, and quietly devastating. The book is even better than the Sandra Bullock film.", adapted: "Film starring Sandra Bullock & Nicole Kidman", attrs: ["witchy", "coven", "sisters", "magic", "romance", "heartwarming", "family", "feel good", "literary", "beautiful", "autumn", "cozy", "healing"] },
+
+      // Mafia romance
+      { title: "King of Wrath", author: "Ana Huang", rating: "3.8/5", tag: "Dark Romance", tagClass: "tag-romance", pitch: "A mafia king needs a society wife. She's not exactly willing. What starts as a power transaction becomes something neither can escape. Possessive, spicy, and impossible to put down.", attrs: ["mafia", "romance", "spicy", "dark", "forbidden", "enemies to lovers", "steamy", "morally gray", "possessive", "addictive", "bingeable", "sexy"] },
+      // Hockey romance
+      { title: "The Pucking Wrong Number", author: "C.R. Jane & Mila Young", rating: "3.9/5", tag: "Sports Romance", tagClass: "tag-romance", pitch: "A wrong-number text kicks off something dangerously real between a woman who's had it rough and a brooding NHL star. Protective, possessive, and the kind of spicy that fogs up your windows.", attrs: ["hockey", "sports romance", "romance", "spicy", "steamy", "contemporary", "addictive", "page turner", "protective", "bingeable", "morally gray", "sexy"] },
+
+      // Sports romance
+      { title: "Things We Never Got Over", author: "Lucy Score", rating: "4.1/5", tag: "Contemporary Romance", tagClass: "tag-romance", pitch: "Stranded in a small Virginia town by her evil twin, a woman reluctantly accepts help from the grumpy bar owner who's made a policy of not helping anyone. Addictive, spicy, and impossible to put down.", attrs: ["sports romance", "small town", "grumpy sunshine", "romance", "contemporary", "funny", "feel good", "spicy", "enemies to lovers", "bingeable", "page turner", "series"] },
+
+      // Cowboy romance
+      { title: "The Simple Wild", author: "K.A. Tucker", rating: "4.2/5", tag: "Contemporary Romance", tagClass: "tag-romance", pitch: "A city girl flies to rural Alaska to meet her estranged father — and clashes hard with his rugged, no-nonsense bush pilot. The wilderness setting and grumpy-sunshine dynamic are absolutely chef's kiss.", attrs: ["cowboy", "small town", "romance", "grumpy sunshine", "enemies to lovers", "feel good", "contemporary", "beautiful", "emotional", "spicy", "western", "nature", "slow burn"] },
+      { title: "In Her Own League", author: "Various Authors", rating: "4.0/5", tag: "Contemporary Romance", tagClass: "tag-romance", pitch: "A feisty woman clashes with the brooding rancher who moves in next door. Small-town setting, big country heart, and enough slow-burn tension to set the prairie on fire.", attrs: ["cowboy", "western", "small town", "grumpy sunshine", "romance", "contemporary", "slow burn", "enemies to lovers", "feel good", "spicy", "nature"] },
+
+      // Cozy autumn read
+      { title: "In a Holidaze", author: "Christina Lauren", rating: "3.7/5", tag: "Seasonal Romance", tagClass: "tag-romance", pitch: "After wishing for the perfect holiday, a woman wakes up reliving the same cozy cabin vacation on loop. Festive, heartwarming, and the kind of fluffy romance that wraps around you like a warm blanket.", attrs: ["cozy", "autumn", "romance", "feel good", "funny", "comforting", "heartwarming", "contemporary", "friends to lovers", "seasonal", "wholesome"] },
+      { title: "Vera Wong's Unsolicited Advice for Murderers", author: "Jesse Q. Sutanto", rating: "3.9/5", tag: "Cozy Mystery", tagClass: "tag-thriller", pitch: "A nosy tea shop owner in San Francisco accidentally discovers a dead body and decides to solve the case herself. Hilarious, cozy, and impossibly charming. Like a warm cup of tea with a murder in it.", attrs: ["cozy", "autumn", "mystery", "funny", "heartwarming", "feel good", "entertaining", "comforting", "wholesome", "found family", "seasonal"] },
     ];
 
     // Keyword mapping: user words -> matching attributes
@@ -1855,6 +1963,50 @@
       "badass": ["strong female", "action", "powerful", "brave"],
       "powerful": ["powerful", "strong female", "empowering", "epic"],
       "put myself": ["self care", "self help", "empowering", "healing", "growth"],
+      // New trope keywords
+      "friends to lovers": ["friends to lovers", "romance", "feel good", "slow burn", "heartwarming", "banter"],
+      "friends": ["friends to lovers", "found family", "ensemble", "heartwarming"],
+      "found family": ["found family", "heartwarming", "ensemble", "cozy", "wholesome", "feel good"],
+      "second chance": ["second chance", "romance", "emotional", "heartbreaking", "longing"],
+      "ruins": ["slow burn", "romance", "heartbreaking", "emotional", "obsessive"],
+      "dragon": ["dragon", "dragon rider", "fantasy", "romantasy", "action", "epic"],
+      "dragon riders": ["dragon", "dragon rider", "fantasy", "romantasy", "academy", "action"],
+      "riders": ["dragon rider", "academy", "fantasy", "action"],
+      "fae": ["fae", "fae court", "fantasy", "romantasy", "enemies to lovers", "magic"],
+      "fae court": ["fae", "fae court", "fantasy", "romantasy", "court intrigue"],
+      "court": ["fae court", "court intrigue", "fantasy", "romantasy", "political"],
+      "vampire": ["vampire", "paranormal", "romance", "dark", "gothic", "forbidden"],
+      "vampires": ["vampire", "paranormal", "romance", "dark", "gothic"],
+      "paranormal": ["paranormal", "vampire", "supernatural", "fantasy", "dark"],
+      "supernatural": ["paranormal", "vampire", "supernatural", "fantasy"],
+      "academy": ["academy", "magic school", "fantasy", "romantasy", "young adult"],
+      "magic school": ["academy", "magic school", "fantasy", "young adult", "romantasy"],
+      "witchy": ["witchy", "coven", "magic", "fantasy", "gothic", "autumn", "supernatural"],
+      "coven": ["witchy", "coven", "magic", "fantasy", "supernatural"],
+      "witch": ["witchy", "coven", "magic", "fantasy", "paranormal"],
+      "mafia": ["mafia", "dark", "spicy", "forbidden", "morally gray", "romance", "possessive"],
+      "hockey": ["hockey", "sports romance", "forbidden", "romance", "contemporary", "addictive"],
+      "sports": ["sports romance", "contemporary", "romance", "athletes", "feel good"],
+      "athlete": ["sports romance", "contemporary", "romance", "competitive"],
+      "cowboy": ["cowboy", "small town", "romance", "western", "nature", "grumpy sunshine"],
+      "western": ["cowboy", "western", "romance", "small town", "nature"],
+      "rancher": ["cowboy", "western", "small town", "romance", "grumpy sunshine"],
+      "autumn": ["cozy", "autumn", "atmospheric", "feel good", "comforting", "seasonal"],
+      "fall": ["cozy", "autumn", "atmospheric", "feel good", "seasonal", "comforting"],
+      "seasonal": ["cozy", "autumn", "seasonal", "comforting", "heartwarming", "wholesome"],
+      "holiday": ["cozy", "seasonal", "comforting", "heartwarming", "romance", "feel good"],
+      "healed": ["healing", "self discovery", "feel good", "heartwarming", "comforting", "therapy"],
+      "sob": ["heartbreaking", "emotional", "crying", "sad", "tragic", "devastating"],
+      "pillow": ["heartbreaking", "emotional", "crying", "devastating"],
+      "devastat": ["heartbreaking", "emotional", "tragic", "devastating"],
+      "laugh": ["funny", "dark humor", "entertaining", "witty", "hilarious"],
+      "loud": ["funny", "entertaining", "hilarious"],
+      "hilarious": ["funny", "dark humor", "entertaining", "witty", "hilarious"],
+      "romantasy": ["romantasy", "fantasy", "romance", "fae", "dragon", "magic", "spicy", "enemies to lovers"],
+      "protective": ["protective", "possessive", "morally gray", "dark", "romance"],
+      "possessive": ["possessive", "protective", "morally gray", "dark", "obsessive", "romance"],
+      "slow burn that": ["slow burn", "romance", "heartbreaking", "emotional", "obsessive", "enemies to lovers"],
+      "hug": ["feel good", "cozy", "heartwarming", "comforting", "wholesome", "healing"],
     };
 
     // Normalize a title for TBR/seen matching (strip series tags, lower-case)
@@ -3967,8 +4119,26 @@
     }
     .prompt-tags {
       display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .prompt-tags-row {
+      display: flex;
       flex-wrap: wrap;
       gap: 8px;
+    }
+    .prompt-tags-group {
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+    }
+    .prompt-group-label {
+      font-size: 10px;
+      font-weight: 700;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--text-dim);
+      padding-left: 2px;
     }
     .prompt-tag {
       background: var(--surface2);
