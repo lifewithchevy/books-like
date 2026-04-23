@@ -358,6 +358,18 @@
     .tag-romance { background: rgba(241,91,181,0.12); color: #DB2777; }
     .tag-thriller { background: rgba(0,187,249,0.12); color: #0284C7; }
     .tag-literary { background: rgba(254,228,64,0.25); color: #A16207; }
+
+    /* Secondary badge for book club attribution — low visual weight */
+    .club-tag {
+      font-size: 10px;
+      padding: 2px 7px;
+      border-radius: 8px;
+      font-weight: 500;
+      background: transparent;
+      color: var(--text-muted);
+      border: 1px solid var(--border);
+      opacity: 0.8;
+    }
     .tag-drama { background: rgba(247,127,0,0.12); color: #C2410C; }
     .tag-scifi { background: rgba(0,187,249,0.12); color: #0284C7; }
 
@@ -1926,12 +1938,12 @@
         { title: "Dark Matter", author: "Blake Crouch", rating: "4.1/5", tag: "Sci-Fi Thriller", tagClass: "tag-thriller", pitch: "A physicist is kidnapped and wakes up in a life he doesn't recognize. Multiverse thriller that is genuinely impossible to put down. Read it in one sitting.", adapted: "Apple TV+ series" },
       ],
       "book club favorite": [
-        { title: "Where the Crawdads Sing", author: "Delia Owens", rating: "4.3/5", tag: "Reese's Book Club", tagClass: "tag-literary", pitch: "Reese's all-time #1 pick — and it earned it. A girl who raised herself in the North Carolina marshes, a murder mystery, and a love story with a twist the whole club will debate.", adapted: "Film" },
-        { title: "Little Fires Everywhere", author: "Celeste Ng", rating: "4.1/5", tag: "Reese's Book Club", tagClass: "tag-literary", pitch: "Two mothers, one picture-perfect suburb, and a slow-burning collision over class, race, and the choices we make for our children. Reese's pick and endlessly, passionately discussable.", adapted: "Hulu series" },
-        { title: "Lessons in Chemistry", author: "Bonnie Garmus", rating: "4.3/5", tag: "GMA Book Club", tagClass: "tag-literary", pitch: "A 1960s female chemist accidentally becomes a TV cooking show star — and accidentally starts a feminist revolution. Razor-sharp wit, 6 million copies sold, and a standing ovation ending.", adapted: "Apple TV+ series" },
-        { title: "The Vanishing Half", author: "Brit Bennett", rating: "4.1/5", tag: "GMA · Read With Jenna", tagClass: "tag-literary", pitch: "Twin sisters choose entirely different lives and identities — one passes as white, one doesn't. A sweeping family saga about race, identity, and the selves we invent. Picked by both GMA and Jenna Bush Hager." },
-        { title: "Hello Beautiful", author: "Ann Napolitano", rating: "4.1/5", tag: "Oprah's Book Club", tagClass: "tag-literary", pitch: "Oprah's 100th Book Club pick and a Pulitzer Prize winner. A multigenerational Chicago family saga about love, estrangement, and whether the broken pieces of a family can ever be made whole." },
-        { title: "All the Colors of the Dark", author: "Chris Whitaker", rating: "4.4/5", tag: "Read With Jenna", tagClass: "tag-literary", pitch: "Jenna Bush Hager said she 'may never have loved a book as much.' A 1970s Missouri epic that's part sweeping love story, part literary thriller — impossible to put down, impossible to forget." },
+        { title: "Where the Crawdads Sing", author: "Delia Owens", rating: "4.3/5", tag: "Literary Fiction", tagClass: "tag-literary", clubTag: "Reese's Book Club", pitch: "Reese's all-time #1 pick — and it earned it. A girl who raised herself in the North Carolina marshes, a murder mystery, and a love story with a twist the whole club will debate.", adapted: "Film" },
+        { title: "Little Fires Everywhere", author: "Celeste Ng", rating: "4.1/5", tag: "Contemporary Fiction", tagClass: "tag-literary", clubTag: "Reese's Book Club", pitch: "Two mothers, one picture-perfect suburb, and a slow-burning collision over class, race, and the choices we make for our children. Reese's pick and endlessly, passionately discussable.", adapted: "Hulu series" },
+        { title: "Lessons in Chemistry", author: "Bonnie Garmus", rating: "4.3/5", tag: "Historical Fiction", tagClass: "tag-literary", clubTag: "GMA Book Club", pitch: "A 1960s female chemist accidentally becomes a TV cooking show star — and accidentally starts a feminist revolution. Razor-sharp wit, 6 million copies sold, and a standing ovation ending.", adapted: "Apple TV+ series" },
+        { title: "The Vanishing Half", author: "Brit Bennett", rating: "4.1/5", tag: "Literary Fiction", tagClass: "tag-literary", clubTag: "GMA · Read With Jenna", pitch: "Twin sisters choose entirely different lives and identities — one passes as white, one doesn't. A sweeping family saga about race, identity, and the selves we invent. Picked by both GMA and Jenna Bush Hager." },
+        { title: "Hello Beautiful", author: "Ann Napolitano", rating: "4.1/5", tag: "Literary Fiction", tagClass: "tag-literary", clubTag: "Oprah's Book Club", pitch: "Oprah's 100th Book Club pick and a Pulitzer Prize winner. A multigenerational Chicago family saga about love, estrangement, and whether the broken pieces of a family can ever be made whole." },
+        { title: "All the Colors of the Dark", author: "Chris Whitaker", rating: "4.4/5", tag: "Literary Thriller", tagClass: "tag-thriller", clubTag: "Read With Jenna", pitch: "Jenna Bush Hager said she 'may never have loved a book as much.' A 1970s Missouri epic that's part sweeping love story, part literary thriller — impossible to put down, impossible to forget." },
       ],
       "dark romance": [
         { title: "Haunting Adeline", author: "H.D. Carlton", rating: "3.8/5", tag: "Dark Romance", tagClass: "tag-romance", pitch: "A woman is being watched by a stalker she can't catch — and can't stop thinking about. The most unhinged, controversial, and feverishly read book on BookTok. CW: very dark themes." },
@@ -2020,6 +2032,7 @@
               <div class="book-meta">
                 <span class="rating"><span class="star">&#9733;</span> ${book.rating}</span>
                 <span class="genre-tag ${book.tagClass}">${book.tag}</span>
+                ${book.clubTag ? `<span class="club-tag">${book.clubTag}</span>` : ''}
               </div>
               <div class="book-pitch">${book.pitch}</div>
               ${adaptedLine}
