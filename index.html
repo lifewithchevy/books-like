@@ -1348,30 +1348,26 @@
         setTimeout(processCoverQueue, 50);
         return;
       }
-      const q = encodeURIComponent(title + ' ' + author);
-      fetch(`https://openlibrary.org/search.json?q=${q}&fields=cover_i,isbn&limit=5`)
+      const olq = encodeURIComponent(title + ' ' + author);
+      // Open Library — filter by English language tag, use cover_i (not ISBN) to avoid wrong-edition covers
+      fetch(`https://openlibrary.org/search.json?q=${olq}&language=eng&fields=cover_i,isbn,language&limit=10`)
         .then(r => r.json())
         .then(data => {
-          // Find the English edition cover — prefer isbn13 (9780/9781) over cover_i
-          // which might belong to a foreign-language edition
-          let isbnUrl = null;
-          let fallbackCoverId = null;
-          for (const doc of (data.docs || [])) {
-            if (!fallbackCoverId && doc.cover_i) fallbackCoverId = doc.cover_i;
-            const { isbn13 } = pickIsbn(doc.isbn);
-            if (isbn13) { isbnUrl = `https://covers.openlibrary.org/b/isbn/${isbn13}-M.jpg`; break; }
-          }
-          const fbUrl = fallbackCoverId ? `https://covers.openlibrary.org/b/id/${fallbackCoverId}-M.jpg` : null;
-          const applyImgSrc = u => { if (u) { coverCache[key] = u; imgEl.src = u; } };
-          if (isbnUrl) {
-            // OL sometimes returns a 1×1 blank image for ISBNs without a stored cover.
-            // Probe dimensions first; fall back to cover_i-based URL if it's blank.
+          const docs = data.docs || [];
+          // Prefer docs explicitly tagged as English
+          const engDocs = docs.filter(d => Array.isArray(d.language) && d.language.includes('eng'));
+          const pool = engDocs.length ? engDocs : docs;
+          // Use cover_i (work-level cover) from first English doc — more reliable than ISBN lookup
+          const withCover = pool.find(d => d.cover_i);
+          const coverId = withCover?.cover_i;
+          const coverUrl = coverId ? `https://covers.openlibrary.org/b/id/${coverId}-M.jpg` : null;
+          if (coverUrl) {
+            // Probe to confirm it's a real image (not 1×1 blank)
             const probe = new Image();
-            probe.onload = () => probe.naturalWidth > 1 ? applyImgSrc(isbnUrl) : applyImgSrc(fbUrl);
-            probe.onerror = () => applyImgSrc(fbUrl);
-            probe.src = isbnUrl;
-          } else {
-            applyImgSrc(fbUrl);
+            probe.onload = () => {
+              if (probe.naturalWidth > 1) { coverCache[key] = coverUrl; imgEl.src = coverUrl; }
+            };
+            probe.src = coverUrl;
           }
         })
         .catch(() => {})
