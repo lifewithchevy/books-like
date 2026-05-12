@@ -5801,6 +5801,30 @@
       } catch(e) {}
     }
 
+    // ── Viewed-book tracking (Spotify Discover Weekly logic) ─────────────────
+    // A book the reader has tapped/opened is "known to them" — Made For You
+    // should surface undiscovered books, not replay browsing history.
+    const _VIEWED_KEY = '90books_viewed';
+
+    function trackViewedBook(key) {
+      if (!key) return;
+      try {
+        const viewed = JSON.parse(localStorage.getItem(_VIEWED_KEY) || '[]');
+        if (!viewed.includes(key)) {
+          viewed.push(key);
+          // Cap at 300 entries so localStorage never grows unbounded
+          if (viewed.length > 300) viewed.splice(0, viewed.length - 300);
+          localStorage.setItem(_VIEWED_KEY, JSON.stringify(viewed));
+        }
+      } catch(e) {}
+    }
+
+    function getViewedBooks() {
+      try { return new Set(JSON.parse(localStorage.getItem(_VIEWED_KEY) || '[]')); }
+      catch(e) { return new Set(); }
+    }
+    // ─────────────────────────────────────────────────────────────────────────
+
     // Build a combined taste vector from all three signals.
     // Returns { moodTally, tropeTally, genreTally } — all normalised to raw counts.
     //
@@ -6007,7 +6031,7 @@
     // Three layers: (1) mood/trope/genre match strength, (2) personalisation depth,
     // (3) dislike suppression. Diversity injection prevents genre monoculture.
     function getForYouBooks(limit) {
-      limit = limit || 24;
+      limit = limit || 10; // curated feel — fewer, better picks (like Discover Weekly)
       try {
         const { moodTally, tropeTally, genreTally } = buildCombinedTasteVector();
         const { dislikeMoodTally, dislikeTropeTally, dislikeGenreTally } = buildDislikeTasteVector();
@@ -6029,10 +6053,15 @@
         // the user has read (e.g. if they read "Fourth Wing", hide "The Empyrean Series")
         const readSeriesSet = buildReadSeriesSet();
 
+        // Spotify Discover Weekly rule: never resurface books the reader has already opened.
+        // They know those exist — Made For You should only show undiscovered titles.
+        const viewedSet = getViewedBooks();
+
         const scored = [];
         for (const [key, meta] of Object.entries(bookMetadata)) {
           if (!meta?.author) continue;
           if (isAlreadyRead(displayTitle(key))) continue;
+          if (viewedSet.has(key)) continue; // already seen — surface something new
           // Also hide if user has read any book in this series
           if (meta.series?.name && readSeriesSet.has(meta.series.name.toLowerCase())) continue;
           // Only recommend book #1 of any series — same rule as all other rec pages
@@ -6176,7 +6205,7 @@
       if (!grid) return;
 
       if (prompt === 'personal') {
-        const books = getForYouBooks(24);
+        const books = getForYouBooks(10);
         const labelEl = document.getElementById('discoverResultsLabel');
         if (labelEl) labelEl.textContent = 'Made For You';
 
@@ -6237,7 +6266,7 @@
             .join('');
 
           subtitleHtml = `<div class="discover-results-desc" style="padding:0 16px 16px;">
-            <p style="margin:0 0 6px;line-height:1.7;">${openLine}${signalLine ? ' ' + signalLine : ''} These ${books.length} picks match your taste — and you haven't read any of them.</p>
+            <p style="margin:0 0 6px;line-height:1.7;">${openLine}${signalLine ? ' ' + signalLine : ''} ${books.length} picks you haven't seen yet — matched to your taste.</p>
             <div class="desc-stats">
               ${likeChips}
               ${dislikedChips ? `<span style="color:#bbb;font-size:10px;margin:0 4px;">✕ not for you:</span>${dislikedChips}` : ''}
@@ -6246,11 +6275,11 @@
           </div>`;
         } else if (sessionInteractions >= 3) {
           subtitleHtml = `<div class="discover-results-desc" style="padding:0 16px 16px;">
-            <p style="margin:0 0 6px;line-height:1.7;">Based on your <strong>${sessionInteractions} in-app picks</strong>, we're starting to see your taste. Connect Goodreads to sharpen these even further.</p>
+            <p style="margin:0 0 6px;line-height:1.7;">We're reading your taste. Every book you open teaches us something. Connect Goodreads to make these even sharper.</p>
           </div>`;
         } else {
           subtitleHtml = `<div class="discover-results-desc" style="padding:0 16px 16px;">
-            <p style="margin:0;line-height:1.7;">We don't know you yet — but we want to. Connect Goodreads or browse a few books and we'll start reading between the lines.</p>
+            <p style="margin:0;line-height:1.7;">Highly rated picks to get you started. Browse a few and we'll personalise these to you — or connect Goodreads for instant recommendations.</p>
           </div>`;
         }
 
@@ -9346,6 +9375,7 @@
       _currentStationIdx = idx;
       // Record this station interaction to build the user's taste profile
       recordTasteInteraction(p.key);
+      trackViewedBook(p.key); // source book is now "known" — don't surface in Made For You
       const meta = bookMetadata[p.key] || {};
 
       // Pre-seed alreadyRead from GR cache if it's still empty (race condition fix)
@@ -9547,6 +9577,7 @@
       }
 
       recordTasteInteraction(key);
+      trackViewedBook(key); // mark as seen — Made For You won't re-surface it
 
       const meta      = bookMetadata[key] || {};
       const isbn      = BOOK_ISBN[key]    || null;
