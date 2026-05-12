@@ -3274,10 +3274,19 @@
           });
       const knownIsbn = isbnEntry ? isbnEntry[1] : null;
 
+      // Title words used for validation — must match returned results to avoid wrong covers
+      const _titleWords = title.toLowerCase().split(/\s+/).filter(w => w.length > 2);
+      const _titleMatches = (candidate) => {
+        if (!candidate) return false;
+        const c = candidate.toLowerCase();
+        const hits = _titleWords.filter(w => c.includes(w)).length;
+        return hits >= Math.max(1, Math.min(2, _titleWords.length - 1));
+      };
+
       (async () => {
         let url = null;
 
-        // 1. OpenLibrary ISBN — fastest, direct CDN hit
+        // 1. OpenLibrary ISBN — fastest, direct CDN hit (ISBN guarantees it's the right book)
         if (knownIsbn) {
           url = await probeImage(`https://covers.openlibrary.org/b/isbn/${knownIsbn}-L.jpg`);
         }
@@ -3285,32 +3294,51 @@
         // 2. Google Books JSON API by ISBN — verified thumbnail, works for most mainstream books
         if (!url && knownIsbn) {
           const gbUrl = await googleBooksImg(knownIsbn);
-          if (gbUrl) url = gbUrl;  // trust the JSON API URL directly
+          if (gbUrl) url = gbUrl;
         }
 
-        // 3. Google Books title+author search — handles books without ISBN or with no cover above
+        // 3. Google Books title+author search — validates title before accepting
         if (!url) {
           const gbUrl = await googleBooksByTitle(title, author);
           if (gbUrl) url = gbUrl;
         }
 
-        // 4. OpenLibrary title+author search — broad final fallback
+        // 3b. Google Books title-only search — wider net but still validates title match
+        if (!url && author) {
+          const gbUrl = await googleBooksByTitle(title, '');
+          if (gbUrl) url = gbUrl;
+        }
+
+        // 4. OpenLibrary title+author search — MUST match title to avoid wrong covers
         if (!url) {
           try {
-            const olq = encodeURIComponent(title + ' ' + author);
+            const olq = encodeURIComponent(title + (author ? ' ' + author : ''));
             const res = await fetch(
-              `https://openlibrary.org/search.json?q=${olq}&language=eng&fields=cover_i&limit=3`
+              `https://openlibrary.org/search.json?q=${olq}&language=eng&fields=cover_i,title&limit=5`
             );
             const data = await res.json();
-            const coverId = (data.docs || []).find(d => d.cover_i)?.cover_i;
-            if (coverId) url = await probeImage(`https://covers.openlibrary.org/b/id/${coverId}-L.jpg`);
+            // Only accept results whose title actually matches — prevents Holy Bible, children's books etc.
+            const match = (data.docs || []).find(d => d.cover_i && _titleMatches(d.title));
+            if (match?.cover_i) url = await probeImage(`https://covers.openlibrary.org/b/id/${match.cover_i}-L.jpg`);
+          } catch(e) {}
+        }
+
+        // 5. OpenLibrary title-only search — last attempt, still validates title
+        if (!url) {
+          try {
+            const res = await fetch(
+              `https://openlibrary.org/search.json?title=${encodeURIComponent(title)}&language=eng&fields=cover_i,title&limit=5`
+            );
+            const data = await res.json();
+            const match = (data.docs || []).find(d => d.cover_i && _titleMatches(d.title));
+            if (match?.cover_i) url = await probeImage(`https://covers.openlibrary.org/b/id/${match.cover_i}-L.jpg`);
           } catch(e) {}
         }
 
         if (url) {
           _applyCoverToEl(key, imgEl, url);
         } else {
-          coverCache[key] = '';  // exhausted — don't retry
+          coverCache[key] = '';  // exhausted — show styled placeholder, never a wrong cover
           if (imgEl.classList.contains('shelf-cover-img')) shelfShowFallback(imgEl);
         }
       })()
@@ -6063,29 +6091,8 @@
     // Called from onerror on img tags when ISBN cover fails or is a 1×1 blank
     async function fetchCoverFallback(imgEl, title, author) {
       if (!imgEl) return;
-      const cacheKey = `90books_cover_${(title||'').toLowerCase().slice(0,30)}`;
-      try {
-        const cached = sessionStorage.getItem(cacheKey);
-        if (cached === 'null') { _showPlaceholder(imgEl); return; }
-        if (cached) { imgEl.src = cached; return; }
-
-        const q = encodeURIComponent(`${title} ${author||''}`);
-        const res = await fetch(`https://openlibrary.org/search.json?q=${q}&limit=1&fields=cover_i,isbn`);
-        const data = await res.json();
-        const doc = data.docs?.[0];
-
-        // Prefer cover_i (OL cover ID), else try first isbn
-        let url = null;
-        if (doc?.cover_i) {
-          url = `https://covers.openlibrary.org/b/id/${doc.cover_i}-L.jpg`;
-        } else if (doc?.isbn?.[0]) {
-          url = `https://covers.openlibrary.org/b/isbn/${doc.isbn[0]}-L.jpg`;
-        }
-
-        sessionStorage.setItem(cacheKey, url || 'null');
-        if (url) { imgEl.src = url; }
-        else      { _showPlaceholder(imgEl); }
-      } catch(e) { _showPlaceholder(imgEl); }
+      // Route through the same validated cover chain instead of raw OL search
+      fetchCover(title, author || '', imgEl);
     }
 
     function _showPlaceholder(imgEl) {
