@@ -9494,26 +9494,26 @@
         : '<div style="padding:20px 16px;color:var(--text-muted)">No matches found.</div>';
 
       grid.innerHTML = `
-        <div class="station-playlist-bg" style="background:${p.bg}">
-          <button class="station-playlist-back" onclick="navBack()">← Back</button>
-          <div class="station-playlist-header">
-            <div style="position:relative;width:120px;height:180px;flex-shrink:0">
-              <img class="station-playlist-cover" src="${coverUrl}" alt="${p.label}" style="position:absolute;inset:0;width:100%;height:100%;object-fit:cover;border-radius:4px;box-shadow:0 8px 32px rgba(0,0,0,0.55)"
+        <div style="background:${p.bg};padding:16px 16px 20px;">
+          <button onclick="navBack()" style="background:rgba(255,255,255,0.15);border:none;cursor:pointer;font-family:'Inter',sans-serif;font-size:13px;font-weight:500;color:rgba(255,255,255,0.9);display:inline-flex;align-items:center;gap:5px;padding:6px 14px;border-radius:20px;margin-bottom:18px;" onmouseover="this.style.background='rgba(255,255,255,0.25)'" onmouseout="this.style.background='rgba(255,255,255,0.15)'">&#8592; Back</button>
+          <div style="display:flex;gap:18px;align-items:flex-start;">
+            <div style="flex-shrink:0;width:110px;height:165px;border-radius:8px;overflow:hidden;box-shadow:0 8px 32px rgba(0,0,0,0.55);background:rgba(255,255,255,0.08);position:relative;display:flex;align-items:center;justify-content:center;">
+              <img src="${coverUrl||''}" alt="${p.label}" style="width:100%;height:100%;object-fit:cover;${coverUrl?'':'display:none'}"
                 onerror="this.style.display='none';this.nextElementSibling.style.display='flex'">
-              <div class="station-playlist-cover-fallback" style="display:none;position:absolute;inset:0;border-radius:4px">${initial}</div>
+              <div style="${coverUrl?'display:none;':''}position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:'Playfair Display',serif;font-size:36px;font-weight:700;color:rgba(255,255,255,0.4);">${initial}</div>
             </div>
-            <div class="station-playlist-info">
-              <div class="station-playlist-type">Books Like</div>
-              <div class="station-playlist-title">${p.label}</div>
-              ${meta.tag ? `<span class="genre-tag ${meta.tagClass||'tag-literary'}" style="font-size:11px;margin:5px 0 6px;display:inline-block;">${meta.tag}</span>` : ''}
-              ${metaParts.length ? `<div class="station-playlist-meta">${metaParts.join(' · ')}</div>` : ''}
+            <div style="flex:1;min-width:0;padding-top:4px;">
+              <div style="font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px;">Books Like</div>
+              <div style="font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:5px;">${p.label}</div>
+              <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:10px;">${meta.author||''}${meta.rating ? ' · ★ ' + meta.rating : ''}${meta.pages ? ' · ' + meta.pages + ' pp' : ''}</div>
+              ${meta.tag ? `<div style="margin-bottom:14px;"><span class="genre-tag ${meta.tagClass||'tag-literary'}" style="font-size:11px;">${meta.tag}</span></div>` : ''}
+              <a href="${goodreadsUrl(p.label, meta.author, BOOK_ISBN[p.key])}" target="_blank" rel="noopener" class="btn-goodreads">${grIcon} Goodreads</a>
             </div>
           </div>
-          ${chips.length ? `<div class="station-playlist-chips">${chips.join('')}</div>` : ''}
-          ${meta.pitch ? `<div style="padding:4px 16px 10px;font-size:14px;color:rgba(255,255,255,0.88);line-height:1.65;">${escapeHtml(meta.pitch)}</div>` : ''}
-          <div style="padding:0 16px 20px;">
-            <a href="${goodreadsUrl(p.label, meta.author, BOOK_ISBN[p.key])}" target="_blank" rel="noopener" class="btn-goodreads">${grIcon} Goodreads</a>
-          </div>
+        </div>
+        <div style="padding:14px 16px 10px;background:var(--surface);border-bottom:1px solid var(--border);">
+          ${chips.length ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:${meta.pitch?'10px':'0'};">${chips.join('')}</div>` : ''}
+          ${meta.pitch ? `<div class="book-pitch" style="margin-top:${chips.length?'0':'4px'};padding-bottom:4px;">${escapeHtml(meta.pitch)}</div>` : ''}
         </div>
         <div style="padding:16px 0 72px;">
           <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;padding:16px 16px 12px;color:var(--text)">Similar reads</div>
