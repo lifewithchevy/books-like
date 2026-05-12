@@ -6177,8 +6177,9 @@
       if (img.naturalWidth < 50) {
         const card = img.closest('.shelf-book');
         if (!card) return;
-        const title  = card.querySelector('.shelf-book-title')?.textContent  || '';
-        const author = card.querySelector('.shelf-book-author')?.textContent  || '';
+        // Prefer data attributes (set on series shelves where .shelf-book-author shows "#3" etc.)
+        const title  = img.dataset.bookTitle  || card.querySelector('.shelf-book-title')?.textContent  || '';
+        const author = img.dataset.bookAuthor || card.querySelector('.shelf-book-author')?.textContent || '';
         if (title) {
           img.onerror = () => shelfShowFallback(img);
           img.onload  = () => { if (img.naturalWidth < 50) shelfShowFallback(img); };
@@ -6219,6 +6220,7 @@
             <div class="shelf-cover-fallback-title">${title}</div>
           </div>
           <img class="shelf-cover-img" src="${imgSrc}" alt="${title}"
+            data-book-title="${safeTitle}" data-book-author="${safeAuthor}"
             onload="shelfCoverLoaded(this)"
             onerror="shelfCoverError(this,'${safeTitle}','${safeAuthor}')">
         </div>
@@ -10697,6 +10699,7 @@
             return `<div class="shelf-book" onclick="openBookDetail('${sk}')">
               <div class="shelf-cover-wrap">
                 <img class="shelf-cover-img" ${cu ? `src="${cu}"` : ''} alt="${dt}"
+                  data-book-title="${stTitle}" data-book-author="${stAuthor}"
                   onload="shelfCoverLoaded(this)"
                   onerror="shelfCoverError(this,'${stTitle}','${stAuthor}')">
               </div>
