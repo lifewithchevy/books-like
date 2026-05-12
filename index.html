@@ -3018,8 +3018,6 @@
       }, delay || 1000);
     }
 
-    // ===== AMAZON AFFILIATE TAG =====
-    const AMAZON_AFFILIATE_TAG = 'bookslike0e-20';
 
     // Extract best ISBN-10 and ISBN-13 from Open Library isbn array
     function pickIsbn(isbnArray) {
@@ -3028,8 +3026,7 @@
       // link to the English edition, not a Spanish/foreign translation
       const isbn13 = isbnArray.find(i => /^978[01]\d{9}$/.test(i))
                   || isbnArray.find(i => /^97[89]\d{10}$/.test(i));
-      // Prefer US/UK ISBN-10 starting with 0 or 1 — these work as Amazon.com ASINs
-      // Foreign ISBNs (starting with 2-9) often don't appear on Amazon.com
+      // Prefer US/UK ISBN-10 starting with 0 or 1 (English editions)
       const isbn10 = isbnArray.find(i => /^[01]\d{8}[\dX]$/i.test(i))
                   || isbnArray.find(i => /^\d{9}[\dX]$/i.test(i));
       return { isbn13, isbn10 };
@@ -3043,17 +3040,8 @@
       return `https://www.goodreads.com/search?q=${q}`;
     }
 
-    // Generate Amazon URL — direct product page if ISBN-10 known, else search
-    function amazonUrl(title, author, isbn) {
-      if (isbn) return `https://www.amazon.com/dp/${isbn}?tag=${AMAZON_AFFILIATE_TAG}`;
-      const q = encodeURIComponent((title + ' ' + (author || '')).replace(/\s*\(.*?\)\s*/g, '').replace(/\s*\/\s*5$/,'').trim());
-      return `https://www.amazon.com/s?k=${q}&i=stripbooks&tag=${AMAZON_AFFILIATE_TAG}`;
-    }
-
     // Goodreads icon SVG
     const grIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M11.43 23.995c-3.608-.208-6.274-2.077-6.448-5.078.695.007 1.375-.013 2.07-.006.224 1.342 1.065 2.43 2.683 3.026 1.583.496 3.737.46 5.082-.174 1.726-.814 2.723-2.277 2.842-4.585.038-.736.054-1.473.054-2.21v-.392c-.88 1.553-2.14 2.503-3.868 2.837-5.043.976-8.19-1.86-8.48-6.71-.242-4.036 2.172-7.726 6.09-8.39 1.98-.336 3.67.186 5.05 1.536l.133.134.085-.086c.052-.554.386-1.034.932-1.203h1.543v13.263c0 2.217-.207 3.85-1.14 5.3-1.425 2.207-4.07 3.016-6.628 2.738zm5.246-12.39c.062-3.136-.987-5.958-4.396-6.158-3.122-.183-5.108 2.043-5.108 5.378 0 3.49 1.712 5.825 4.613 5.88 2.738.052 4.478-1.588 4.89-5.1z"/></svg>`;
-    // Amazon icon SVG
-    const azIcon = `<svg viewBox="0 0 24 24" fill="currentColor"><path d="M.045 18.02c.072-.116.187-.124.348-.022 2.344 1.476 4.882 2.214 7.614 2.214 1.903 0 3.727-.375 5.474-1.126.262-.113.494-.201.697-.263.244-.075.39.026.44.306.044.244-.06.467-.313.668-.756.6-1.675 1.1-2.76 1.5-1.417.52-2.878.78-4.384.78-2.32 0-4.47-.615-6.453-1.845-.186-.115-.239-.256-.157-.424l-.003.002zm7.647-1.588c-.207-.274-.428-.382-.665-.325-.237.06-.28.224-.126.5.154.278.394.444.722.5.326.056.48-.074.46-.39-.018-.278-.175-.39-.39-.285zm6.37-2.065c-.135-.334-.32-.46-.558-.378-.172.06-.2.18-.086.36.026.04.17.296.435.767.265.47.37.76.316.872-.158.318-.663.49-1.513.513-.528.014-.973-.1-1.337-.34l-.17-.126c-.178-.15-.283-.16-.316-.03-.03.106.065.24.287.4.222.16.514.28.878.36.363.082.65.098.86.05.714-.16 1.19-.55 1.425-1.168.087-.227.038-.548-.145-.962l-.076-.158-.002-.005zM.045 18.02c.072-.116.187-.124.348-.022 2.344 1.476 4.882 2.214 7.614 2.214 1.903 0 3.727-.375 5.474-1.126.262-.113.494-.201.697-.263.244-.075.39.026.44.306.044.244-.06.467-.313.668-.756.6-1.675 1.1-2.76 1.5-1.417.52-2.878.78-4.384.78-2.32 0-4.47-.615-6.453-1.845-.186-.115-.239-.256-.157-.424l-.003.002z"/><path d="M21.045 17.296c-.287-.146-.56-.186-.82-.12-.168.044-.286.12-.356.227-.07.108-.066.207.01.298.076.09.183.152.32.186.14.034.333.01.582-.074l.098-.038c.104-.044.186-.034.244.027.058.06.064.143.018.248-.046.105-.16.197-.344.278-.292.13-.618.178-.978.147-.36-.03-.634-.143-.82-.34-.187-.197-.265-.458-.236-.78.03-.328.168-.59.416-.786.248-.196.57-.308.968-.336.397-.028.73.033 1 .183.168.094.246.2.234.318-.01.116-.086.2-.228.252l-.108.036v.073z"/></svg>`;
 
     // ===== UNIFIED CHIP VOCABULARIES =====
     // ONE controlled vocabulary used by BOTH tabs:
@@ -9188,7 +9176,7 @@
         while (card.firstChild) {
           contentWrap.appendChild(card.firstChild);
         }
-        // Inject Goodreads + Amazon buttons if not already present
+        // Inject Goodreads button if not already present
         if (!contentWrap.querySelector('.book-card-actions')) {
           contentWrap.insertAdjacentHTML('beforeend', renderBookActions(title, author));
         }
