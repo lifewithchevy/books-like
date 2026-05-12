@@ -9462,6 +9462,7 @@
         const s = meta.series;
         chips.push(`<span class="meta-chip series">📚 ${s.name} #${s.book}/${s.total}${s.complete ? '' : ' · ongoing'}</span>`);
       }
+      if (meta.pages) chips.push(`<span class="meta-chip">📖 ${meta.pages} pp</span>`);
       if (meta.pace === 'fast') chips.push('<span class="meta-chip pace-fast">🚀 Fast-paced</span>');
       if (meta.pace === 'slow') chips.push('<span class="meta-chip pace-slow">🐢 Slow-paced</span>');
       if (meta.spice === 'explicit') chips.push('<span class="meta-chip spice-explicit">🌶 Explicit</span>');
@@ -9505,9 +9506,12 @@
             <div style="flex:1;min-width:0;padding-top:4px;">
               <div style="font-size:10px;font-weight:700;letter-spacing:1.8px;text-transform:uppercase;color:rgba(255,255,255,0.5);margin-bottom:8px;">Books Like</div>
               <div style="font-family:'Playfair Display',serif;font-size:21px;font-weight:700;color:#fff;line-height:1.25;margin-bottom:5px;">${p.label}</div>
-              <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:10px;">${meta.author||''}${meta.rating ? ' · ★ ' + meta.rating : ''}${meta.pages ? ' · ' + meta.pages + ' pp' : ''}</div>
-              ${meta.tag ? `<div style="margin-bottom:14px;"><span class="genre-tag ${meta.tagClass||'tag-literary'}" style="font-size:11px;">${meta.tag}</span></div>` : ''}
-              <a href="${goodreadsUrl(p.label, meta.author, BOOK_ISBN[p.key])}" target="_blank" rel="noopener" class="btn-goodreads">${grIcon} Goodreads</a>
+              <div style="font-size:13px;color:rgba(255,255,255,0.7);margin-bottom:10px;">${meta.author||''}</div>
+              <div style="display:flex;flex-wrap:wrap;align-items:center;gap:6px;margin-bottom:14px;">
+                ${meta.rating ? `<span style="font-size:13px;font-weight:600;color:rgba(255,255,255,0.9);">&#9733; ${meta.rating}</span>` : ''}
+                <span class="genre-tag ${meta.tagClass||'tag-literary'}" style="font-size:11px;">${meta.tag||'Fiction'}</span>
+              </div>
+              ${renderBookActions(p.label, meta.author, BOOK_ISBN[p.key] ? [BOOK_ISBN[p.key]] : null)}
             </div>
           </div>
         </div>
