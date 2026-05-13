@@ -27,7 +27,7 @@
   "rewrites": [
     {
       "source": "/books-like/:slug*",
-      "destination": "/index.html"
+      "destination": "/"
     }
   ]
 }
