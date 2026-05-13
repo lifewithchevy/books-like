@@ -23,5 +23,11 @@
       "destination": "/",
       "permanent": true
     }
+  ],
+  "rewrites": [
+    {
+      "source": "/books-like/:slug",
+      "destination": "/index.html"
+    }
   ]
 }

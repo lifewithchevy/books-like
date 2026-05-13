@@ -637,6 +637,41 @@
       color: var(--accent);
       box-shadow: 0 2px 8px rgba(212,168,83,0.18);
     }
+    .btn-share {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 13px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: border-color 0.18s, color 0.18s;
+      font-family: 'Inter', sans-serif;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .btn-share:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-share.copied { border-color: #4caf50; color: #4caf50; }
+    .btn-books-like {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 8px 16px;
+      border-radius: 22px;
+      border: 1.5px solid var(--accent);
+      background: transparent;
+      color: var(--accent);
+      cursor: pointer;
+      transition: background 0.18s, color 0.18s;
+      font-family: 'Inter', sans-serif;
+    }
+    .btn-books-like:hover { background: var(--accent); color: #fff; }
 
     /* Goodreads CTA — solid white pill, clearly interactive, distinct from info tags */
     .btn-goodreads {
@@ -5907,7 +5942,7 @@
       });
     }
 
-    function renderSearchResults(data, userQuery) {
+    function renderSearchResults(data, userQuery, dataKey) {
       const src = data.source;
       const srcTags = src.tags.map(t => `<span class="genre-tag ${t.cls}">${t.label}</span>`).join('');
       const srcAdapted = ''; // adapted info hidden
@@ -5946,8 +5981,15 @@
       } catch(e) { /* defensive — never break rendering on ranker error */ }
 
       const srcCoverId = 'cover-src-' + Math.random().toString(36).substr(2, 9);
+      const _shareSlug = dataKey ? slugify(dataKey) : null;
+      const _shareBtn = _shareSlug
+        ? `<button class="btn-share" onclick="copyBookLink('${_shareSlug}',this)" title="Copy shareable link">&#128279; Share recs</button>`
+        : '';
       return `
-        <div class="section-label">If you like...</div>
+        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0;">
+          <div class="section-label" style="margin-bottom:0;">If you like...</div>
+          ${_shareBtn}
+        </div>
         <div class="book-card" style="border-left: 3px solid var(--accent); margin-bottom: 24px; cursor: default;" onclick="event.stopPropagation()">
           <div class="book-cover-wrap">
             <div class="cover-placeholder">
@@ -10530,10 +10572,14 @@
       setTimeout(() => {
         resultsEl.classList.remove('visible');
         setTimeout(() => {
-          resultsEl.innerHTML = renderSearchResults(data, input);
+          resultsEl.innerHTML = renderSearchResults(data, input, best.dataKey);
           resultsEl.classList.add('visible');
           loadCoversInView();
           window.scrollTo({ top: 0, behavior: 'smooth' });
+          // Update URL to shareable /books-like/[slug]
+          const _slug = slugify(best.dataKey);
+          history.pushState({ booksLike: best.dataKey }, '', '/books-like/' + _slug);
+          updatePageMeta(data.query || data.source.title, _slug);
         }, 100);
       }, 800);
     }
@@ -11009,7 +11055,10 @@
           ${renderMetaChips({ title: titleStr })}
           ${meta.pitch ? `<div class="book-pitch" style="margin-top:12px;margin-bottom:16px;">${meta.pitch}</div>` : '<div style="height:14px;"></div>'}
           ${_bdBuzzHtml}
-          <div style="display:flex;justify-content:flex-start;margin-top:16px;">${_bdGoodreadsCta}</div>
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px;">
+            ${_bdGoodreadsCta}
+            ${searchData[key] ? `<button class="btn-books-like" onclick="navigateToBooksLike('${key.replace(/'/g,"\\'")}')">Books like this &rarr;</button>` : ''}
+          </div>
         </div>`;
 
       // ── Series: other books in the same series ──
@@ -12891,6 +12940,99 @@
     }
 
     // Enter key submits from book input (if dropdown closed), Escape closes dropdown
+    // ===== SHAREABLE URLS =====
+
+    function slugify(str) {
+      return (str || '').toLowerCase()
+        .replace(/['']/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
+
+    function updatePageMeta(title, slug) {
+      document.title = 'Books Like ' + title + ' | 90books';
+      const _ogTitle = document.querySelector('meta[property="og:title"]');
+      const _ogDesc  = document.querySelector('meta[property="og:description"]');
+      const _ogUrl   = document.querySelector('meta[property="og:url"]');
+      const _twTitle = document.querySelector('meta[name="twitter:title"]');
+      const _twDesc  = document.querySelector('meta[name="twitter:description"]');
+      if (_ogTitle) _ogTitle.content = 'Books Like ' + title + ' | 90books';
+      if (_ogDesc)  _ogDesc.content  = 'Curated picks for readers who loved ' + title + '. Find your next read — filtered to books you haven\'t read yet.';
+      if (_ogUrl)   _ogUrl.content   = 'https://90books.com/books-like/' + (slug || slugify(title.toLowerCase()));
+      if (_twTitle) _twTitle.content = 'Books Like ' + title + ' | 90books';
+      if (_twDesc)  _twDesc.content  = 'Curated picks for readers who loved ' + title + '. Find your next read.';
+    }
+
+    function copyBookLink(slug, btn) {
+      const url = 'https://90books.com/books-like/' + slug;
+      navigator.clipboard.writeText(url).then(() => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '&#10003; Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2200);
+      }).catch(() => {
+        // Fallback for older browsers
+        const ta = document.createElement('textarea');
+        ta.value = url;
+        ta.style.position = 'fixed'; ta.style.opacity = '0';
+        document.body.appendChild(ta); ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        const orig = btn.innerHTML;
+        btn.innerHTML = '&#10003; Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => { btn.innerHTML = orig; btn.classList.remove('copied'); }, 2200);
+      });
+    }
+
+    function navigateToBooksLike(key) {
+      const data = searchData[key];
+      if (!data) return;
+      const slug = slugify(key);
+      history.pushState({ booksLike: key }, '', '/books-like/' + slug);
+      const resultsEl = document.getElementById('results');
+      document.getElementById('discoverShelves').style.display = 'none';
+      const _fr = document.getElementById('discover-filtered-results');
+      if (_fr) _fr.style.display = 'none';
+      const _sh = document.getElementById('stationHeader');
+      if (_sh) _sh.style.display = 'none';
+      const _vb = document.getElementById('discoverVibeBar');
+      if (_vb) _vb.style.display = 'none';
+      document.getElementById('resultsWrap').style.display = 'block';
+      if (searchInput) { searchInput.value = data.query || data.source.title; }
+      document.getElementById('clearBtn').style.display = 'flex';
+      resultsEl.innerHTML = renderSearchResults(data, data.query || data.source.title, key);
+      resultsEl.classList.add('visible');
+      updatePageMeta(data.query || data.source.title, slug);
+      loadCoversInView();
+      window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    function routeFromUrl() {
+      const m = window.location.pathname.match(/^\/books-like\/(.+)$/);
+      if (!m) return;
+
+      const rawSlug = decodeURIComponent(m[1]).replace(/\/$/, '');
+      // Convert slug to data key: hyphens → spaces, lowercase
+      const key = rawSlug.replace(/-/g, ' ').toLowerCase().trim();
+
+      // 1. Exact match in searchData
+      let dataKey = searchData[key] ? key : null;
+
+      // 2. Slug match across all searchData keys (handles apostrophes, etc.)
+      if (!dataKey) {
+        dataKey = Object.keys(searchData).find(k => slugify(k) === rawSlug) || null;
+      }
+
+      if (dataKey) {
+        navigateToBooksLike(dataKey);
+      } else if (bookMetadata[key]) {
+        // Book in catalog but no curated recs — show detail page
+        openBookDetail(key);
+      }
+      // else: no match — home page loads normally
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
       document.getElementById('suggestBookInput')?.addEventListener('keydown', e => {
         const resultsVisible = document.getElementById('suggestSearchResults')?.style.display !== 'none';
@@ -12934,6 +13076,9 @@
         window.visualViewport.addEventListener('resize',  _onVPResize);
         window.visualViewport.addEventListener('scroll',  _onVPResize);
       }
+
+      // Route /books-like/[slug] URLs on direct load
+      routeFromUrl();
     });
   </script>
 </body>
