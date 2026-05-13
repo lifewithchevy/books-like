@@ -12,16 +12,16 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>90books — Find Books Like Your Favorites | Personalized Book Recommendations</title>
-  <meta name="description" content="Find books like your favorites. Search any book and get personalized recommendations filtered to what you haven't read yet. Like asking a friend who reads everything.">
+  <meta name="description" content="Type any book and get recommendations from readers who loved it too — filtered to only books you haven't read yet. No algorithms. No fluff. Just good recs.">
   <meta name="keywords" content="books like, similar books, book recommendations, books similar to, what to read next, booktok recommendations, if you liked, books like fourth wing, books like acotar">
   <link rel="canonical" href="https://90books.com/">
   <meta property="og:title" content="90books — Find Books Like Your Favorites">
-  <meta property="og:description" content="Personalized book recommendations based on your Goodreads library. Find your next read in seconds.">
+  <meta property="og:description" content="Type any book, get recs from readers who loved it — filtered to only what you haven't read yet. Connect your Goodreads in 10 seconds.">
   <meta property="og:url" content="https://90books.com/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
   <meta name="twitter:title" content="90books — Find Books Like Your Favorites">
-  <meta name="twitter:description" content="Personalized book recommendations based on your Goodreads library.">
+  <meta name="twitter:description" content="Type any book, get recs from readers who loved it — filtered to only what you haven't read yet.">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script defer src="/_vercel/insights/script.js"></script>
   <style>
@@ -588,6 +588,54 @@
       gap: 8px;
       margin-top: 12px;
       flex-wrap: wrap;
+    }
+
+    /* Vote button — lightweight ghost pill, sits below pitch */
+    .btn-vote {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 13px;
+      border-radius: 20px;
+      border: 1.5px solid var(--border);
+      background: transparent;
+      color: var(--text-dim);
+      cursor: pointer;
+      transition: border-color 0.18s, color 0.18s, background 0.18s;
+      margin-top: 10px;
+      white-space: nowrap;
+    }
+    .btn-vote:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: rgba(212,168,83,0.07);
+    }
+    .btn-vote.voted {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    /* Show-more button */
+    .btn-show-more {
+      display: inline-flex;
+      align-items: center;
+      gap: 6px;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 9px 22px;
+      border-radius: 22px;
+      border: 1.5px solid var(--border);
+      background: var(--surface);
+      color: var(--text-muted);
+      cursor: pointer;
+      transition: border-color 0.18s, color 0.18s, box-shadow 0.18s;
+    }
+    .btn-show-more:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 2px 8px rgba(212,168,83,0.18);
     }
 
     /* Goodreads CTA — solid white pill, clearly interactive, distinct from info tags */
@@ -5658,6 +5706,22 @@
       return rec;
     }
 
+    // ── Rec voting — saves 👍 presses to localStorage('90books_votes') ──
+    function voteRec(btn, title) {
+      const votes = JSON.parse(localStorage.getItem('90books_votes') || '{}');
+      const key = title.toLowerCase().trim();
+      if (votes[key]) {
+        delete votes[key];
+        btn.classList.remove('voted');
+        btn.innerHTML = '👍 Good rec?';
+      } else {
+        votes[key] = { title, ts: Date.now() };
+        btn.classList.add('voted');
+        btn.innerHTML = '👍 Thanks!';
+      }
+      localStorage.setItem('90books_votes', JSON.stringify(votes));
+    }
+
     function renderBookCard(book, showMatch) {
       const adaptedLine = ''; // adapted (Netflix/film) info hidden — keep cards focused on the book itself
       const tbrLine = book.isTbr ? `<div style="margin-top:5px;font-size:11px;font-weight:600;color:var(--success);">&#128204; On your TBR list</div>` : '';
@@ -5673,6 +5737,13 @@
         .replace(/'/g, "\\'");
       // Buzz block (social proof) was moved to the book detail page — keeps list cards
       // simple and curiosity-inducing, with the full signal aggregation surfaced after click.
+      // Vote button — check localStorage for existing vote
+      const _voteKey = (book.title || '').toLowerCase().trim();
+      const _voteTitle = (book.title || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
+      const _votes = JSON.parse(localStorage.getItem('90books_votes') || '{}');
+      const _isVoted = !!_votes[_voteKey];
+      const _voteBtnClass = _isVoted ? 'btn-vote voted' : 'btn-vote';
+      const _voteBtnLabel = _isVoted ? '👍 Thanks!' : '👍 Good rec?';
       return `
         <div class="book-card${book.wildcard ? ' wildcard-card' : ''}" onclick="openBookDetail('${_detailKey}')">
           <div class="book-cover-wrap">
@@ -5699,6 +5770,7 @@
             <div class="book-pitch">${book.pitch}</div>
             ${tbrLine}
             ${adaptedLine}
+            <button class="${_voteBtnClass}" onclick="voteRec(this,'${_voteTitle}');event.stopPropagation()">${_voteBtnLabel}</button>
           </div>
         </div>`;
     }
@@ -5804,14 +5876,33 @@
             ${renderBookActions(displayTitle, src.author)}
           </div>
         </div>
-        ${filteredClosest.length > 0 ? `<div class="section-label">Then read these</div>
-        <div class="book-grid">${filteredClosest.map((b, i) => renderBookCard({ ...b, _bucket: 'closest', _idx: i }, true)).join('')}</div>` : ''}
-        ${filteredSameEnergy.length > 0 ? `<hr class="divider">
-        <div class="section-label">Same vibe, different book</div>
-        <div class="book-grid">${filteredSameEnergy.map((b, i) => renderBookCard({ ...b, _bucket: 'sameEnergy', _idx: i }, true)).join('')}</div>` : ''}
-        ${showWildcard ? `<hr class="divider">
-        <div class="section-label">Hear me out...</div>
-        <div class="book-grid">${renderBookCard({ ...wc, _bucket: 'wildcard', _idx: 0 }, false)}</div>` : ''}`;
+        ${(() => {
+          // Flatten all recs — closest first, then sameEnergy, then wildcard
+          const allRecs = [
+            ...filteredClosest.map((b, i) => ({ ...b, _bucket: 'closest', _idx: i })),
+            ...filteredSameEnergy.map((b, i) => ({ ...b, _bucket: 'sameEnergy', _idx: i })),
+            ...(showWildcard ? [{ ...wc, _bucket: 'wildcard', _idx: 0 }] : [])
+          ];
+          if (allRecs.length === 0) return '';
+          const PER_PAGE = 6;
+          const first = allRecs.slice(0, PER_PAGE);
+          const rest  = allRecs.slice(PER_PAGE);
+          const moreId = 'recs-more-' + Math.random().toString(36).substr(2,6);
+          const btnId  = 'recs-btn-'  + Math.random().toString(36).substr(2,6);
+          let html = `<div class="section-label">Then you&#39;ll love these</div>
+          <div class="book-grid">${first.map(b => renderBookCard(b, true)).join('')}</div>`;
+          if (rest.length > 0) {
+            html += `<div id="${moreId}" style="display:none">
+              <div class="book-grid">${rest.map(b => renderBookCard(b, true)).join('')}</div>
+            </div>
+            <div style="text-align:center;margin:16px 0 28px">
+              <button id="${btnId}" class="btn-show-more" onclick="document.getElementById('${moreId}').style.display='block';this.style.display='none'">
+                Show ${rest.length} more &rarr;
+              </button>
+            </div>`;
+          }
+          return html;
+        })()}`;
     }
 
     function renderMoodBooks(mood) {
@@ -6088,7 +6179,7 @@
       {
         id: 'new',
         label: 'Everyone Is Talking About',
-        description: 'The books dominating BookTok, book clubs, and group chats right now.',
+        description: 'The books readers on Goodreads, Reddit, and book clubs can\'t stop recommending right now.',
         moodKey: null,
         filters: { moods: ['emotional', 'swoony', 'shocking'] },
         accent: '#E84393',
@@ -7169,7 +7260,7 @@
       "fake dating":                       "They agreed it was just pretend. It is not just pretend.",
       "morally gray love interest":        "He's done questionable things. You don't care. That's the problem.",
       "give me smut":                      "Spicy, explicit, and unapologetically so. No slow burn required.",
-      "hockey romance":                    "Ice, tension, and love interests who check people for sport. BookTok's favourite sport romance.",
+      "hockey romance":                    "Ice, tension, and love interests who check people for sport. Reddit's favourite sport romance.",
       "fae / fae court":                   "Bargains, glamour, and fae who are beautiful and deeply dangerous. Enter with caution.",
       "vampire romance":                   "Immortal love interests with centuries of trauma and a very specific type of hunger.",
       "witchy / coven mood":               "Magic, sisterhood, and women who bend the rules of the natural world.",
@@ -7448,7 +7539,7 @@
       const labelEl = document.getElementById('discoverResultsLabel');
       if (labelEl) labelEl.textContent = '🔥 Everyone Is Talking About';
       const descEl = document.getElementById('discoverResultsDesc');
-      if (descEl) descEl.innerHTML = `<p style="margin:0">The books dominating BookTok, book clubs, and group chats right now.</p>`;
+      if (descEl) descEl.innerHTML = `<p style="margin:0">The books readers on Goodreads and Reddit can't put down right now.</p>`;
       // Real viral titles in priority order (BookTok / Goodreads / Google Trends 2024–2025)
       const TRENDING_KEYS = [
         'fourth wing', 'a court of thorns and roses', 'it ends with us',
@@ -7530,11 +7621,11 @@
         <div class="voting-teaser">
           <div class="voting-teaser-icon">🗳️</div>
           <div class="voting-teaser-body">
-            <div class="voting-teaser-title">Picks people can't stop talking about</div>
+            <div class="voting-teaser-title">Picked by readers, not algorithms</div>
             <div class="voting-teaser-desc">
-              We pull signals from BookTok, Reddit, Goodreads, Google trends, and major book awards
-              so you don't have to scroll for hours. <strong>Coming soon:</strong> cast your vote
-              and your favorites can make the list too.
+              These come from Goodreads ratings, r/Fantasy &amp; r/romancebooks threads, and award lists —
+              so you don't have to scroll through 500 comments to find the good ones. Hit <strong>👍 Good rec?</strong> on any book
+              and help shape what makes the list.
             </div>
           </div>
         </div>`;
