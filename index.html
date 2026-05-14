@@ -1099,7 +1099,8 @@
       color: var(--text-dim);
     }
 
-    /* Vibe pill strip — sticky, horizontally scrollable */
+    /* Vibe pill strip — DISABLED. Replaced by 'Discover by Genre' card section. */
+    #discoverVibeBar { display: none !important; }
     .discover-vibe-bar {
       position: sticky;
       top: 61px; /* header only — no tabs bar in merged layout */
@@ -7459,6 +7460,36 @@
       </div>`;
     }
 
+    // Genre browse cards — mirrors the Mood section. Filters by tagClass via discoverSelectGenre().
+    // Colors match the genre palette used elsewhere in the app (Made For You signals, etc.)
+    const GENRE_CARDS = [
+      { label: 'Romantasy',          emoji: '🐉', tagClass: 'tag-romantasy', bg: '#8400E7', desc: 'Fantasy worlds where romance is the engine — fae courts, dragon riders, witches, and the love stories at their core.' },
+      { label: 'Fantasy',            emoji: '⚔️', tagClass: 'tag-fantasy',   bg: '#7C3AED', desc: 'Epic quests, magic systems, and impossible worlds. From sweeping epics to dark academia and everything between.' },
+      { label: 'Romance',            emoji: '💕', tagClass: 'tag-romance',   bg: '#E8115B', desc: 'Contemporary, historical, hockey, fake-dating, slow-burn — love stories of every flavor.' },
+      { label: 'Thriller & Mystery', emoji: '🔪', tagClass: 'tag-thriller',  bg: '#1E3264', desc: 'Twists you don\'t see coming, narrators you can\'t trust, and the kind of stories you finish in one sitting.' },
+      { label: 'Sci-Fi',             emoji: '🚀', tagClass: 'tag-scifi',     bg: '#2D46B9', desc: 'Other planets, other timelines, other futures. Big ideas meet propulsive storytelling.' },
+      { label: 'Literary Fiction',   emoji: '📖', tagClass: 'tag-literary',  bg: '#148A08', desc: 'The kind of books people quote in their Notes app. Beautiful prose, sharp insight, characters who stay with you.' },
+    ];
+
+    function renderGenreShortcuts() {
+      const cards = GENRE_CARDS.map(g => {
+        const safeTag   = g.tagClass.replace(/'/g, "\\'");
+        const safeLabel = g.label.replace(/'/g, "\\'");
+        const safeDesc  = (g.desc || '').replace(/'/g, "\\'");
+        return `<div class="vibe-shortcut-card" style="background:${g.bg}" onclick="discoverSelectGenre('${safeTag}','${g.emoji} ${safeLabel}','${safeDesc}')">
+          <span class="vibe-shortcut-emoji">${g.emoji}</span>
+          <span class="vibe-shortcut-label">${g.label}</span>
+        </div>`;
+      }).join('');
+      return `<div class="shelf-row" data-shelf="genres">
+        <div class="shelf-header">
+          <div class="shelf-title">Discover by Genre</div>
+        </div>
+        <div class="shelf-subtitle">Browse by the genre you're in the mood for — from epic fantasy to slow-burn romance.</div>
+        <div class="shelf-books shortcuts-strip">${cards}</div>
+      </div>`;
+    }
+
     function discoverRunShortcut(prompt, label) {
       _navGo('shortcut', { prompt, label }); // ← push previous view, record this one
       // Record this vibe selection as a taste signal (persisted to localStorage)
@@ -7824,6 +7855,7 @@
       if (!shelvesEl) return;
       let html = renderDiscoverHero();
       html += renderVibeShortcuts();
+      html += renderGenreShortcuts();
       html += renderBooksLikeShelf();
       html += DISCOVER_SHELVES.map(cfg => renderDiscoverShelf(cfg)).join('');
       shelvesEl.innerHTML = html;
