@@ -640,21 +640,24 @@
     .btn-share {
       display: inline-flex;
       align-items: center;
-      gap: 5px;
-      font-size: 12px;
+      gap: 6px;
+      font-size: 13px;
       font-weight: 500;
-      padding: 5px 13px;
-      border-radius: 20px;
+      padding: 9px 22px;
+      border-radius: 22px;
       border: 1.5px solid var(--border);
-      background: transparent;
+      background: var(--surface);
       color: var(--text-muted);
       cursor: pointer;
-      transition: border-color 0.18s, color 0.18s;
+      transition: border-color 0.18s, color 0.18s, box-shadow 0.18s;
       font-family: 'Inter', sans-serif;
       white-space: nowrap;
-      flex-shrink: 0;
     }
-    .btn-share:hover { border-color: var(--accent); color: var(--accent); }
+    .btn-share:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+      box-shadow: 0 2px 8px rgba(212,168,83,0.18);
+    }
     .btn-share.copied { border-color: #4caf50; color: #4caf50; }
     .btn-books-like {
       display: inline-flex;
@@ -6055,14 +6058,15 @@
         <div style="padding:18px 16px 20px;background:var(--surface);border-bottom:1px solid var(--border);">
           ${chips.length ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:${pitch?'12px':'14px'};">${chips.join('')}</div>` : ''}
           ${pitch ? `<div class="book-pitch" style="margin-top:${chips.length?'0':'4px'};margin-bottom:16px;">${pitch}</div>` : ''}
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
-            ${_goodreadsCta}
-            ${_shareBtn}
-          </div>
+          <div style="display:flex;justify-content:flex-start;">${_goodreadsCta}</div>
         </div>
         <div style="padding:24px 0 16px;">
-          <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;padding:0 16px 16px;color:var(--text);">Similar reads</div>
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:0 16px 16px;gap:12px;flex-wrap:wrap;">
+            <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--text);">Similar reads</div>
+            ${_shareBtn}
+          </div>
           ${recsListHtml}
+          ${getSuggestBannerHtml('a book like ' + sourceTitle)}
         </div>`;
     }
 
