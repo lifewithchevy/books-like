@@ -11244,9 +11244,9 @@
       }
 
       // Single canonical recs CTA — sends user to /books-like/[slug] (the one rec page).
-      // We no longer render inline recs here; the dedicated page is the source of truth.
-      const _hasCuratedRecs = !!searchData[key];
-      const _recsCta = _hasCuratedRecs ? `
+      // Shows for any book that has either curated searchData OR enough algorithmic recs.
+      const _hasRecs = !!(searchData[key] || (bookMetadata[key] && getBooksLikeRecs(key, bookMetadata[key], 3).length >= 3));
+      const _recsCta = _hasRecs ? `
         <div style="padding:40px 16px 20px;text-align:center;background:var(--surface);border-top:1px solid var(--border);margin-top:20px;">
           <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.2;">
             Want more Books Like ${escapeHtml(titleStr)}?
@@ -13032,8 +13032,50 @@
       });
     }
 
+    // Build a searchData-compatible object from bookMetadata + algorithmic recs.
+    // Used when a book doesn't have a curated searchData entry but is in bookMetadata.
+    function _buildAlgoSearchData(key) {
+      const meta = bookMetadata[key];
+      if (!meta) return null;
+      const recs = getBooksLikeRecs(key, meta, 9);
+      if (!recs.length) return null;
+      const transformed = recs.map(r => ({
+        title: displayTitle(r.key),
+        author: r.meta.author,
+        rating: r.meta.rating || '—',
+        tag: r.meta.tag || 'Fiction',
+        tagClass: r.meta.tagClass || 'tag-literary',
+        pitch: r.meta.pitch || '',
+        series: r.meta.series,
+        pages: r.meta.pages,
+        pace: r.meta.pace,
+        spice: r.meta.spice,
+        cliffhanger: r.meta.cliffhanger,
+        moods: r.meta.moods,
+        tropes: r.meta.tropes,
+        isbn: (typeof BOOK_ISBN !== 'undefined' && BOOK_ISBN[r.key]) ? [BOOK_ISBN[r.key]] : null
+      }));
+      const title = displayTitle(key);
+      return {
+        query: title,
+        keywords: [],
+        appeal: meta.pitch || '',
+        source: {
+          title,
+          author: meta.author || '',
+          rating: meta.rating || '—',
+          tags: [{ label: meta.tag || 'Fiction', cls: meta.tagClass || 'tag-literary' }],
+          pitch: meta.pitch || ''
+        },
+        closest: transformed.slice(0, 3),
+        sameEnergy: transformed.slice(3, 6),
+        wildcard: transformed[6] || transformed[transformed.length - 1] || { title: '', author: '', rating: '—', tag: 'Fiction', tagClass: 'tag-literary', pitch: '' }
+      };
+    }
+
     function navigateToBooksLike(key) {
-      const data = searchData[key];
+      let data = searchData[key];
+      if (!data) data = _buildAlgoSearchData(key);
       if (!data) return;
       const slug = slugify(key);
       history.pushState({ booksLike: key }, '', '/books-like/' + slug);
@@ -13077,8 +13119,12 @@
       if (dataKey) {
         navigateToBooksLike(dataKey);
       } else if (bookMetadata[key]) {
-        // Book in catalog but no curated recs — show detail page
-        openBookDetail(key);
+        // No curated recs — generate algorithmic recs from bookMetadata
+        navigateToBooksLike(key);
+      } else {
+        // Try slug match across bookMetadata keys too
+        const metaKey = Object.keys(bookMetadata).find(k => slugify(k) === rawSlug);
+        if (metaKey) navigateToBooksLike(metaKey);
       }
       // else: no match — home page loads normally
     }
