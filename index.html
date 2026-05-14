@@ -4,6 +4,14 @@
   <!-- Google tag (gtag.js) -->
   <script async src="https://www.googletagmanager.com/gtag/js?id=G-4V31QNPVV8"></script>
   <script>
+    // Owner mode: visit /?owner=true once per browser to permanently exclude from analytics
+    if (new URLSearchParams(window.location.search).get('owner') === 'true') {
+      localStorage.setItem('va-disable', '1');
+      localStorage.setItem('90books_owner', '1');
+    }
+    if (localStorage.getItem('90books_owner') === '1') {
+      localStorage.setItem('va-disable', '1');
+    }
     window.dataLayer = window.dataLayer || [];
     function gtag(){dataLayer.push(arguments);}
     gtag('js', new Date());
