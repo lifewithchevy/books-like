@@ -5944,13 +5944,12 @@
 
     function renderSearchResults(data, userQuery, dataKey) {
       const src = data.source;
-      const srcTags = src.tags.map(t => `<span class="genre-tag ${t.cls}">${t.label}</span>`).join('');
-      const srcAdapted = ''; // adapted info hidden
       const wc = data.wildcard;
       wc.wildcard = true;
 
-      // Use what the user actually searched as the display title
-      const displayTitle = userQuery || src.title;
+      // Canonical source title — use the curated title, not the user's typed query,
+      // so the hero reads "Books Like A Court of Thorns and Roses" not "Books Like acotar".
+      const sourceTitle = src.title;
 
       // Filter out already-read books and the searched title from recommendations
       const searchedLower = (userQuery || '').toLowerCase();
@@ -5960,16 +5959,10 @@
       const showWildcard = filterBook(wc);
 
       // ── Chip-driven recommendation injection ──
-      // Surface same-author + high-chip-overlap books from the catalog that aren't
-      // in the curated closest list. Up to 2 results, prepended to closest with their
-      // own match % so they read as natural top picks.
       try {
-        // Compute matching tag classes. When a source has tag-romantasy it IS Romantasy
-        // (Fantasy + Romance fused), so we match on tag-romantasy only — not tag-fantasy
-        // separately, which would let pure Fantasy books like The Raven Boys slip through.
         const _allTagClasses = (src.tags || []).map(t => t && t.cls).filter(Boolean);
         const sourceTagClasses = _allTagClasses.includes('tag-romantasy')
-          ? ['tag-romantasy']  // Romantasy is its own genre — match Romantasy books only
+          ? ['tag-romantasy']
           : _allTagClasses;
         const sourceTags = (src.tags || []).map(t => t && t.label).filter(Boolean);
         const alreadyShown = new Set(
@@ -5978,68 +5971,92 @@
         );
         const chipMatches = findChipMatchedRecs(src.title, src.author, sourceTagClasses, sourceTags, alreadyShown, 2);
         if (chipMatches.length > 0) filteredClosest = [...chipMatches, ...filteredClosest];
-      } catch(e) { /* defensive — never break rendering on ranker error */ }
+      } catch(e) { /* defensive */ }
 
-      const srcCoverId = 'cover-src-' + Math.random().toString(36).substr(2, 9);
+      // ── Gradient hero card (matches openStation/openBookDetail visual) ──
+      const meta     = (dataKey && bookMetadata[dataKey]) || {};
+      const heroBg   = (dataKey && BOOK_HERO_BG[dataKey])
+                       || computeHeroBg(meta.tagClass || (src.tags[0] && src.tags[0].cls), meta.moods);
+      const coverUrl = dataKey ? getBookCoverUrl(dataKey) : '';
+      const initial  = (sourceTitle.replace(/^(A |An |The )/i, '')[0] || sourceTitle[0] || '?');
+      const isbns    = (dataKey && BOOK_ISBN[dataKey]) ? [BOOK_ISBN[dataKey]] : null;
+
+      const heroHtml = renderBookHeroCard({
+        eyebrow: 'Recommendations',
+        title: 'Books Like ' + sourceTitle,
+        author: src.author,
+        rating: src.rating,
+        tag: (src.tags[0] && src.tags[0].label) || meta.tag || 'Fiction',
+        tagClass: (src.tags[0] && src.tags[0].cls) || meta.tagClass || 'tag-literary',
+        coverUrl,
+        initial,
+        heroBg,
+      });
+
+      // Chips row — series, pages, pace, spice, cliffhanger, moods, tropes
+      const chips = [];
+      if (meta.series === null) chips.push('<span class="meta-chip standalone">✓ Standalone</span>');
+      else if (meta.series && typeof meta.series === 'object') {
+        const s = meta.series;
+        chips.push(`<span class="meta-chip series">📚 ${s.name} #${s.book}/${s.total}${s.complete ? '' : ' · ongoing'}</span>`);
+      }
+      if (meta.pages) chips.push(`<span class="meta-chip">📖 ${meta.pages} pp</span>`);
+      if (meta.pace === 'fast') chips.push('<span class="meta-chip pace-fast">🚀 Fast-paced</span>');
+      if (meta.pace === 'slow') chips.push('<span class="meta-chip pace-slow">🐢 Slow-paced</span>');
+      if (meta.spice === 'explicit') chips.push('<span class="meta-chip spice-explicit">🌶 Explicit</span>');
+      if (meta.spice === 'steamy')   chips.push('<span class="meta-chip spice-steamy">🌶 Steamy</span>');
+      if (meta.cliffhanger) chips.push('<span class="meta-chip warn">⚠️ Cliffhanger</span>');
+      if (Array.isArray(meta.moods))  meta.moods.slice(0, 2).forEach(m => chips.push(`<span class="meta-chip mood">${m}</span>`));
+      if (Array.isArray(meta.tropes)) meta.tropes.slice(0, 2).forEach(t => chips.push(`<span class="meta-chip trope">${t}</span>`));
+
+      const pitch     = data.appeal || meta.pitch || src.pitch || '';
       const _shareSlug = dataKey ? slugify(dataKey) : null;
       const _shareBtn = _shareSlug
         ? `<button class="btn-share" onclick="copyBookLink('${_shareSlug}',this)" title="Copy shareable link">&#128279; Share recs</button>`
         : '';
+      const _goodreadsCta = renderGoodreadsCta(sourceTitle, src.author, isbns);
+
+      // Flatten all recs — closest first, then sameEnergy, then wildcard
+      const allRecs = [
+        ...filteredClosest.map((b, i) => ({ ...b, _bucket: 'closest', _idx: i })),
+        ...filteredSameEnergy.map((b, i) => ({ ...b, _bucket: 'sameEnergy', _idx: i })),
+        ...(showWildcard ? [{ ...wc, _bucket: 'wildcard', _idx: 0 }] : [])
+      ];
+      const PER_PAGE = 6;
+      const first = allRecs.slice(0, PER_PAGE);
+      const rest  = allRecs.slice(PER_PAGE);
+      const moreId = 'recs-more-' + Math.random().toString(36).substr(2,6);
+      const btnId  = 'recs-btn-'  + Math.random().toString(36).substr(2,6);
+
+      let recsListHtml = '';
+      if (allRecs.length > 0) {
+        recsListHtml = `<div class="book-grid" style="padding:0 16px">${first.map(b => renderBookCard(b, true)).join('')}</div>`;
+        if (rest.length > 0) {
+          recsListHtml += `<div id="${moreId}" style="display:none">
+            <div class="book-grid" style="padding:0 16px">${rest.map(b => renderBookCard(b, true)).join('')}</div>
+          </div>
+          <div style="text-align:center;margin:16px 0 28px">
+            <button id="${btnId}" class="btn-show-more" onclick="document.getElementById('${moreId}').style.display='block';this.style.display='none'">
+              Show ${rest.length} more &rarr;
+            </button>
+          </div>`;
+        }
+      }
+
       return `
-        <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:0;">
-          <div class="section-label" style="margin-bottom:0;">If you like...</div>
-          ${_shareBtn}
-        </div>
-        <div class="book-card" style="border-left: 3px solid var(--accent); margin-bottom: 24px; cursor: default;" onclick="event.stopPropagation()">
-          <div class="book-cover-wrap">
-            <div class="cover-placeholder">
-              <div class="placeholder-icon">&#128214;</div>
-              <div class="placeholder-title">${displayTitle.length > 30 ? displayTitle.substring(0, 27) + '...' : displayTitle}</div>
-            </div>
-            <img id="${srcCoverId}" style="display:none; position:absolute; top:0; left:0;" alt="${displayTitle} cover"
-              onload="this.style.display='block'; this.style.position='relative'; this.previousElementSibling.style.display='none';"
-              onerror="this.style.display='none';">
-          </div>
-          <div class="book-card-content">
-            <div class="book-title">${displayTitle}</div>
-            <div class="book-author">${src.author}</div>
-            <div class="book-meta">
-              <span class="rating"><span class="star">&#9733;</span> ${src.rating} on Goodreads</span>
-              ${srcTags}
-            </div>
-            ${renderMetaChips({ title: displayTitle })}
-            <div class="book-pitch">${data.appeal || src.pitch}</div>
-            ${srcAdapted}
-            ${renderBookActions(displayTitle, src.author)}
+        ${heroHtml}
+        <div style="padding:18px 16px 20px;background:var(--surface);border-bottom:1px solid var(--border);">
+          ${chips.length ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:${pitch?'12px':'14px'};">${chips.join('')}</div>` : ''}
+          ${pitch ? `<div class="book-pitch" style="margin-top:${chips.length?'0':'4px'};margin-bottom:16px;">${pitch}</div>` : ''}
+          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;">
+            ${_goodreadsCta}
+            ${_shareBtn}
           </div>
         </div>
-        ${(() => {
-          // Flatten all recs — closest first, then sameEnergy, then wildcard
-          const allRecs = [
-            ...filteredClosest.map((b, i) => ({ ...b, _bucket: 'closest', _idx: i })),
-            ...filteredSameEnergy.map((b, i) => ({ ...b, _bucket: 'sameEnergy', _idx: i })),
-            ...(showWildcard ? [{ ...wc, _bucket: 'wildcard', _idx: 0 }] : [])
-          ];
-          if (allRecs.length === 0) return '';
-          const PER_PAGE = 6;
-          const first = allRecs.slice(0, PER_PAGE);
-          const rest  = allRecs.slice(PER_PAGE);
-          const moreId = 'recs-more-' + Math.random().toString(36).substr(2,6);
-          const btnId  = 'recs-btn-'  + Math.random().toString(36).substr(2,6);
-          let html = `<div class="section-label">Then you&#39;ll love these</div>
-          <div class="book-grid">${first.map(b => renderBookCard(b, true)).join('')}</div>`;
-          if (rest.length > 0) {
-            html += `<div id="${moreId}" style="display:none">
-              <div class="book-grid">${rest.map(b => renderBookCard(b, true)).join('')}</div>
-            </div>
-            <div style="text-align:center;margin:16px 0 28px">
-              <button id="${btnId}" class="btn-show-more" onclick="document.getElementById('${moreId}').style.display='block';this.style.display='none'">
-                Show ${rest.length} more &rarr;
-              </button>
-            </div>`;
-          }
-          return html;
-        })()}`;
+        <div style="padding:24px 0 16px;">
+          <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;padding:0 16px 16px;color:var(--text);">Similar reads</div>
+          ${recsListHtml}
+        </div>`;
     }
 
     function renderMoodBooks(mood) {
@@ -10776,12 +10793,11 @@
       // Hide vibe pill bar when showing search results
       const _vbSr = document.getElementById('discoverVibeBar');
       if (_vbSr) _vbSr.style.display = 'none';
-      // Restore the outer back row for regular search (openBookDetail hides it)
+      // Hide outer back row — renderSearchResults now renders its own gradient hero with a Back button
       const _outerBack = document.getElementById('resultsWrapBackRow');
-      if (_outerBack) _outerBack.style.display = '';
-      // Restore ← Back button for regular search
+      if (_outerBack) _outerBack.style.display = 'none';
       const rwBack = document.querySelector('#resultsWrap > div:first-child');
-      if (rwBack) rwBack.style.display = '';
+      if (rwBack) rwBack.style.display = 'none';
       document.querySelectorAll('.vibe-pill').forEach(p => p.classList.remove('active'));
       _origShowResults();
     };
@@ -11055,10 +11071,7 @@
           ${renderMetaChips({ title: titleStr })}
           ${meta.pitch ? `<div class="book-pitch" style="margin-top:12px;margin-bottom:16px;">${meta.pitch}</div>` : '<div style="height:14px;"></div>'}
           ${_bdBuzzHtml}
-          <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:16px;">
-            ${_bdGoodreadsCta}
-            ${searchData[key] ? `<button class="btn-books-like" onclick="navigateToBooksLike('${key.replace(/'/g,"\\'")}')">Books like this &rarr;</button>` : ''}
-          </div>
+          <div style="display:flex;justify-content:flex-start;margin-top:16px;">${_bdGoodreadsCta}</div>
         </div>`;
 
       // ── Series: other books in the same series ──
@@ -11195,22 +11208,24 @@
         });
       }
 
-      // Same scoring + filtering as the Books Like station — so the recs on the
-      // book detail page mirror the station page for the same source book.
-      const _finalRecs = getBooksLikeRecs(key, meta, 6);
-
-      let recsHtml = '';
-      if (_finalRecs.length) {
-        recsHtml = `<div class="book-grid">${_finalRecs.map((b, i) => renderBookCard({
-          title:displayTitle(b.key), author:b.meta.author,
-          rating:b.meta.rating||'—', tag:b.meta.tag||'Fiction',
-          tagClass:b.meta.tagClass||'tag-literary', pitch:b.meta.pitch||'',
-          series:b.meta.series, pages:b.meta.pages, pace:b.meta.pace,
-          spice:b.meta.spice, moods:b.meta.moods, tropes:b.meta.tropes,
-          isbn: BOOK_ISBN[b.key] ? [BOOK_ISBN[b.key]] : null,
-          _bucket:'curated', _idx:i
-        }, false)).join('')}</div>`;
-      }
+      // Single canonical recs CTA — sends user to /books-like/[slug] (the one rec page).
+      // We no longer render inline recs here; the dedicated page is the source of truth.
+      const _hasCuratedRecs = !!searchData[key];
+      const _recsCta = _hasCuratedRecs ? `
+        <div style="padding:40px 16px 20px;text-align:center;background:var(--surface);border-top:1px solid var(--border);margin-top:20px;">
+          <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.2;">
+            Want more like ${escapeHtml(titleStr)}?
+          </div>
+          <div style="color:var(--text-muted);font-size:14px;margin-bottom:22px;">
+            See the curated rec list for readers who loved this book.
+          </div>
+          <button onclick="navigateToBooksLike('${key.replace(/'/g,"\\'")}')"
+            style="display:inline-flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:12px 26px;border-radius:24px;border:none;background:var(--accent);color:#fff;cursor:pointer;box-shadow:0 4px 12px rgba(212,168,83,0.28);transition:transform 0.12s,box-shadow 0.12s;"
+            onmouseover="this.style.transform='translateY(-1px)';this.style.boxShadow='0 6px 16px rgba(212,168,83,0.4)'"
+            onmouseout="this.style.transform='';this.style.boxShadow='0 4px 12px rgba(212,168,83,0.28)'">
+            See all recs &rarr;
+          </button>
+        </div>` : '';
 
       resultsEl.innerHTML = `
         <div style="padding-bottom:60px;">
@@ -11218,10 +11233,7 @@
           ${seriesHtml}
           ${authorHtml}
           ${discoveredHtml}
-          ${recsHtml ? `<div style="padding:20px 0 0;border-top:1px solid var(--border);">
-            <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;padding:0 16px 16px;color:var(--text);">Books Like ${titleStr}</div>
-            ${recsHtml}
-          </div>` : ''}
+          ${_recsCta}
         </div>`;
 
       loadCoversInView();
@@ -12999,6 +13011,9 @@
       const _vb = document.getElementById('discoverVibeBar');
       if (_vb) _vb.style.display = 'none';
       document.getElementById('resultsWrap').style.display = 'block';
+      // Hide outer back row — the gradient hero has its own Back button
+      const _ob = document.getElementById('resultsWrapBackRow');
+      if (_ob) _ob.style.display = 'none';
       if (searchInput) { searchInput.value = data.query || data.source.title; }
       document.getElementById('clearBtn').style.display = 'flex';
       resultsEl.innerHTML = renderSearchResults(data, data.query || data.source.title, key);
