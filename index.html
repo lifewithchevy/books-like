@@ -10684,10 +10684,29 @@
       if (dd) dd.innerHTML = '';
     }
 
+    // Reset URL + meta back to home defaults — called when leaving a /books-like/ page
+    function resetUrlToHome() {
+      if (window.location.pathname !== '/') {
+        history.pushState({}, '', '/');
+      }
+      document.title = '90books — Find Books Like Your Favorites | Personalized Book Recommendations';
+      const _ogTitle = document.querySelector('meta[property="og:title"]');
+      const _ogDesc  = document.querySelector('meta[property="og:description"]');
+      const _ogUrl   = document.querySelector('meta[property="og:url"]');
+      const _twTitle = document.querySelector('meta[name="twitter:title"]');
+      const _twDesc  = document.querySelector('meta[name="twitter:description"]');
+      if (_ogTitle) _ogTitle.content = '90books — Find Books Like Your Favorites';
+      if (_ogDesc)  _ogDesc.content  = 'Type any book, get recs from readers who loved it — filtered to only what you haven\'t read yet. Connect your Goodreads in 10 seconds.';
+      if (_ogUrl)   _ogUrl.content   = 'https://90books.com/';
+      if (_twTitle) _twTitle.content = '90books — Find Books Like Your Favorites';
+      if (_twDesc)  _twDesc.content  = 'Type any book, get recs from readers who loved it — filtered to only what you haven\'t read yet.';
+    }
+
     // goHome: close overlay + station + show shelves
     goHome = function() {
       navClearStack();
       closeSearchOverlay();
+      resetUrlToHome();
       // Reset station + results
       document.getElementById('stationHeader').style.display = 'none';
       document.getElementById('resultsWrap').style.display = 'none';
@@ -10866,9 +10885,14 @@
         const restore = _navStack.pop();
         restore(); // _navView/_navParams updated inside restore call via _navGo
         _navRestoring = false;
+        // If we restored to a non-/books-like view, reset the URL
+        if (window.location.pathname.startsWith('/books-like/') && _navView !== 'station' && _navView !== 'search') {
+          resetUrlToHome();
+        }
       } else {
         // Already at base — go home
         navClearStack();
+        resetUrlToHome();
         discoverShowAll();
       }
     }
@@ -13105,6 +13129,18 @@
 
       // Route /books-like/[slug] URLs on direct load
       routeFromUrl();
+
+      // Browser back/forward — re-route based on current URL
+      window.addEventListener('popstate', () => {
+        if (window.location.pathname === '/') {
+          // Returned to home via browser back — restore home UI
+          navClearStack();
+          resetUrlToHome();
+          if (typeof discoverShowAll === 'function') discoverShowAll();
+        } else if (window.location.pathname.startsWith('/books-like/')) {
+          routeFromUrl();
+        }
+      });
     });
   </script>
 </body>
