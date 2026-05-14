@@ -1176,8 +1176,9 @@
        ════════════════════════════════════════════════════════ */
     .discover-hero-shelf {
       position: relative;
-      /* Negative horizontal margin matches .main's horizontal padding (16px desktop) */
-      margin: 0 -16px 8px;
+      /* Negative margins offset .main's padding (20px top, 16px sides) +
+         .discover-shelves padding-top (4px) so the hero hugs the navbar. */
+      margin: -24px -16px 8px;
       width: calc(100% + 32px);
       border-radius: 0;
       overflow: hidden;
@@ -1188,12 +1189,12 @@
       padding: 0 0 0 32px;
       cursor: pointer;
     }
-    /* Match the smaller padding at ≤900px and ≤600px */
+    /* Match the smaller padding at ≤900px (.main pad 16px) and ≤600px (.main pad 10px) */
     @media (max-width: 900px) {
-      .discover-hero-shelf { margin-left: -12px; margin-right: -12px; width: calc(100% + 24px); }
+      .discover-hero-shelf { margin: -20px -12px 8px; width: calc(100% + 24px); }
     }
     @media (max-width: 600px) {
-      .discover-hero-shelf { margin-left: -12px; margin-right: -12px; width: calc(100% + 24px); }
+      .discover-hero-shelf { margin: -14px -12px 8px; width: calc(100% + 24px); }
     }
     /* Blurred book cover fills the full hero — no more empty dark void */
     .discover-hero-bg-blur {
