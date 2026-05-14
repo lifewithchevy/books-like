@@ -5981,13 +5981,20 @@
       const initial  = (sourceTitle.replace(/^(A |An |The )/i, '')[0] || sourceTitle[0] || '?');
       const isbns    = (dataKey && BOOK_ISBN[dataKey]) ? [BOOK_ISBN[dataKey]] : null;
 
+      // Canonical genre: bookMetadata wins (it's the source of truth used on the
+      // detail page and every shelf). Fall back to searchData tags only if there's
+      // no bookMetadata entry — so the same book NEVER shows a different genre
+      // depending on which page you're on.
+      const canonicalTag      = meta.tag      || (src.tags[0] && src.tags[0].label) || 'Fiction';
+      const canonicalTagClass = meta.tagClass || (src.tags[0] && src.tags[0].cls)   || 'tag-literary';
+
       const heroHtml = renderBookHeroCard({
         eyebrow: 'Recommendations',
         title: 'Books Like ' + sourceTitle,
         author: src.author,
         rating: src.rating,
-        tag: (src.tags[0] && src.tags[0].label) || meta.tag || 'Fiction',
-        tagClass: (src.tags[0] && src.tags[0].cls) || meta.tagClass || 'tag-literary',
+        tag: canonicalTag,
+        tagClass: canonicalTagClass,
         coverUrl,
         initial,
         heroBg,
