@@ -5899,7 +5899,7 @@
             ${/* Meta chips (series, pages, spice, cliffhanger, moods, tropes) are NEVER
                 shown on card lists — they live on the book detail page so list cards stay
                 scannable and curiosity-inducing. */ ''}
-            ${book.becauseLiked ? `<div class="because-liked">Because you loved <strong>${escapeHtml(book.becauseLiked)}</strong></div>` : ''}
+            ${'' /* "Because you loved X" label intentionally removed */}
             <div class="book-pitch">${book.pitch}</div>
             ${tbrLine}
             ${adaptedLine}
