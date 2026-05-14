@@ -2596,8 +2596,9 @@
 
         <!-- Filtered results view (shown when a vibe pill is selected) -->
         <div id="discover-filtered-results">
-          <div class="discover-results-header">
+          <div class="discover-results-header" style="display:flex;align-items:center;justify-content:space-between;gap:12px;flex-wrap:wrap;">
             <button class="discover-back-btn" onclick="navBack()">&#8592; Back</button>
+            <button id="discoverFilteredShareBtn" class="btn-share" style="display:none;" onclick="copyCurrentSectionLink(this)" title="Copy shareable link">&#128279; Share this page</button>
           </div>
           <div class="discover-results-label" id="discoverResultsLabel"></div>
           <div class="discover-results-desc" id="discoverResultsDesc"></div>
@@ -7646,6 +7647,9 @@
       document.getElementById('discover-filtered-results').style.display = 'none';
       document.getElementById('discoverShelves').style.display = 'block';
       document.getElementById('resultsWrap').style.display = 'none';
+      // Hide section share button (only relevant on /genre/ or /mood/ pages)
+      const _sb = document.getElementById('discoverFilteredShareBtn');
+      if (_sb) _sb.style.display = 'none';
       // Clear section description
       const _dEl = document.getElementById('discoverResultsDesc');
       if (_dEl) _dEl.innerHTML = '';
@@ -7674,6 +7678,19 @@
 
     function discoverSelectVibe(moodKey, label) {
       _navGo('mood', { moodKey, label });  // ← push previous view, record this one
+      // Push shareable URL like /mood/dark + update meta tags
+      if (moodKey && moodKey !== 'all' && moodKey !== 'personal') {
+        const _mSlug = slugify(moodKey);
+        if (window.location.pathname !== '/mood/' + _mSlug) {
+          history.pushState({ section: 'mood', moodKey }, '', '/mood/' + _mSlug);
+        }
+        if (typeof updateSectionMeta === 'function') {
+          const _cleanLabel = (label || '').replace(/^[^\w]+\s*/, '').trim() || moodKey;
+          updateSectionMeta(_cleanLabel + ' Reads', MOOD_DESCRIPTIONS[moodKey] || '', '/mood/' + _mSlug);
+        }
+        const _sb = document.getElementById('discoverFilteredShareBtn');
+        if (_sb) _sb.style.display = 'inline-flex';
+      }
       // Record this mood selection as a taste signal (persisted to localStorage)
       if (moodKey && moodKey !== 'all' && moodKey !== 'personal') {
         recordVibeInteraction([moodKey], [], null);
@@ -7778,9 +7795,30 @@
       window.scrollTo(0, 0);
     }
 
+    // tagClass <-> URL slug map (for shareable /genre/[slug] URLs)
+    const GENRE_SLUG_MAP = {
+      'tag-romantasy': 'romantasy',
+      'tag-fantasy':   'fantasy',
+      'tag-romance':   'romance',
+      'tag-thriller':  'thriller',
+      'tag-scifi':     'sci-fi',
+      'tag-literary':  'literary',
+    };
+
     // Navigate to a genre-filtered results page (used by hero shelf for the user's top genre)
     function discoverSelectGenre(tagClass, label, description) {
       _navGo('genre', { tagClass, label, description });
+      // Push shareable URL like /genre/fantasy + update page meta tags
+      const _gSlug = GENRE_SLUG_MAP[tagClass];
+      if (_gSlug && window.location.pathname !== '/genre/' + _gSlug) {
+        history.pushState({ section: 'genre', tagClass }, '', '/genre/' + _gSlug);
+      }
+      if (typeof updateSectionMeta === 'function') {
+        const _cleanLabel = (label || '').replace(/^[^\w]+\s*/, '').trim() || tagClass;
+        updateSectionMeta(_cleanLabel + ' Books', description || '', '/genre/' + (_gSlug || ''));
+      }
+      const _sb = document.getElementById('discoverFilteredShareBtn');
+      if (_sb) _sb.style.display = _gSlug ? 'inline-flex' : 'none';
       // Hide vibe pill bar
       const _vb = document.getElementById('discoverVibeBar');
       if (_vb) _vb.style.display = 'none';
@@ -10918,8 +10956,10 @@
         const restore = _navStack.pop();
         restore(); // _navView/_navParams updated inside restore call via _navGo
         _navRestoring = false;
-        // If we restored to a non-/books-like view, reset the URL
-        if (window.location.pathname.startsWith('/books-like/') && _navView !== 'station' && _navView !== 'search') {
+        // If we restored to a view that doesn't match the current section URL, reset
+        const _p = window.location.pathname;
+        const _onSectionUrl = _p.startsWith('/books-like/') || _p.startsWith('/genre/') || _p.startsWith('/mood/');
+        if (_onSectionUrl && _navView !== 'station' && _navView !== 'search' && _navView !== 'mood' && _navView !== 'genre') {
           resetUrlToHome();
         }
       } else {
@@ -13043,6 +13083,42 @@
       if (_twDesc)  _twDesc.content  = 'Curated picks for readers who loved ' + title + '. Find your next read.';
     }
 
+    // Update meta tags for /genre/ and /mood/ section pages
+    function updateSectionMeta(title, description, path) {
+      const fullUrl = 'https://90books.com' + (path || '/');
+      document.title = title + ' | 90books';
+      const _ogTitle = document.querySelector('meta[property="og:title"]');
+      const _ogDesc  = document.querySelector('meta[property="og:description"]');
+      const _ogUrl   = document.querySelector('meta[property="og:url"]');
+      const _twTitle = document.querySelector('meta[name="twitter:title"]');
+      const _twDesc  = document.querySelector('meta[name="twitter:description"]');
+      if (_ogTitle) _ogTitle.content = title + ' | 90books';
+      if (_ogDesc)  _ogDesc.content  = description || ('Hand-picked ' + title.toLowerCase() + ' from readers who actually know.');
+      if (_ogUrl)   _ogUrl.content   = fullUrl;
+      if (_twTitle) _twTitle.content = title + ' | 90books';
+      if (_twDesc)  _twDesc.content  = description || ('Hand-picked ' + title.toLowerCase() + ' from readers who actually know.');
+    }
+
+    // Generic "copy current page URL" used by section share button
+    function copyCurrentSectionLink(btn) {
+      const url = window.location.origin + window.location.pathname;
+      const _restore = (orig) => { btn.innerHTML = orig; btn.classList.remove('copied'); };
+      const _flash = () => {
+        const orig = btn.innerHTML;
+        btn.innerHTML = '&#10003; Copied!';
+        btn.classList.add('copied');
+        setTimeout(() => _restore(orig), 2200);
+      };
+      navigator.clipboard.writeText(url).then(_flash).catch(() => {
+        const ta = document.createElement('textarea');
+        ta.value = url; ta.style.position='fixed'; ta.style.opacity='0';
+        document.body.appendChild(ta); ta.select();
+        document.execCommand('copy');
+        document.body.removeChild(ta);
+        _flash();
+      });
+    }
+
     function copyBookLink(slug, btn) {
       const url = 'https://90books.com/books-like/' + slug;
       navigator.clipboard.writeText(url).then(() => {
@@ -13134,7 +13210,34 @@
     }
 
     function routeFromUrl() {
-      const m = window.location.pathname.match(/^\/books-like\/(.+)$/);
+      const path = window.location.pathname;
+
+      // /genre/[slug] — filter discover by tagClass
+      let gm = path.match(/^\/genre\/(.+)$/);
+      if (gm) {
+        const slug = decodeURIComponent(gm[1]).replace(/\/$/, '');
+        const tagClass = Object.keys(GENRE_SLUG_MAP).find(k => GENRE_SLUG_MAP[k] === slug);
+        if (tagClass) {
+          const card = (typeof GENRE_CARDS !== 'undefined') ? GENRE_CARDS.find(g => g.tagClass === tagClass) : null;
+          const label = card ? (card.emoji + ' ' + card.label) : slug;
+          const desc  = card ? card.desc : '';
+          discoverSelectGenre(tagClass, label, desc);
+        }
+        return;
+      }
+
+      // /mood/[slug] — filter discover by mood
+      let mm = path.match(/^\/mood\/(.+)$/);
+      if (mm) {
+        const slug = decodeURIComponent(mm[1]).replace(/\/$/, '');
+        const moodKey = slug.replace(/-/g, ' ').toLowerCase();
+        // Build a label — capitalize first letter for display
+        const cap = moodKey.replace(/\b\w/g, c => c.toUpperCase());
+        discoverSelectVibe(moodKey, cap);
+        return;
+      }
+
+      const m = path.match(/^\/books-like\/(.+)$/);
       if (!m) return;
 
       const rawSlug = decodeURIComponent(m[1]).replace(/\/$/, '');
@@ -13211,12 +13314,13 @@
 
       // Browser back/forward — re-route based on current URL
       window.addEventListener('popstate', () => {
-        if (window.location.pathname === '/') {
+        const p = window.location.pathname;
+        if (p === '/') {
           // Returned to home via browser back — restore home UI
           navClearStack();
           resetUrlToHome();
           if (typeof discoverShowAll === 'function') discoverShowAll();
-        } else if (window.location.pathname.startsWith('/books-like/')) {
+        } else if (p.startsWith('/books-like/') || p.startsWith('/genre/') || p.startsWith('/mood/')) {
           routeFromUrl();
         }
       });
