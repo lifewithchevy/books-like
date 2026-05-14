@@ -10982,6 +10982,16 @@
       if (!p) return;
       _navGo('station', { idx });          // ← push previous view, record this one
       _currentStationIdx = idx;
+      // Update URL to /books-like/[slug] so page is shareable and browser history works
+      const _stationSlug = slugify(p.key || p.label || '');
+      if (_stationSlug && window.location.pathname !== '/books-like/' + _stationSlug) {
+        history.pushState({ booksLike: p.key }, '', '/books-like/' + _stationSlug);
+        updateSectionMeta(
+          'Books Like ' + (p.label || displayTitle(p.key)),
+          'Find your next read if you loved ' + (p.label || displayTitle(p.key)) + '.',
+          '/books-like/' + _stationSlug
+        );
+      }
       // Record this station interaction to build the user's taste profile
       recordTasteInteraction(p.key);
       trackViewedBook(p.key); // source book is now "known" — don't surface in Made For You
@@ -11104,6 +11114,10 @@
         </div>`;
 
       if (typeof loadCoversInView === 'function') loadCoversInView();
+
+      // Show share button in the results header
+      const _stShareBtn = document.getElementById('discoverFilteredShareBtn');
+      if (_stShareBtn) _stShareBtn.style.display = '';
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
