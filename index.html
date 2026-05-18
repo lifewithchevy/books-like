@@ -4448,15 +4448,6 @@
         moods: ['mysterious', 'tense', 'swoony'], pace: 'fast',
         tropes: ['YA mystery', 'puzzle', 'love triangle']
       },
-      "the atlas six": {
-        author: 'Olivie Blake', rating: '4.0/5',
-        tag: 'Dark Fantasy', tagClass: 'tag-fantasy',
-        pitch: "Six magicians compete for a secret society's ultimate library — where knowledge can reshape reality. Morally gray, intellectually dense, and deliciously competitive. Philosophy as a dark fantasy.",
-        pages: 369, spice: 'steamy', cliffhanger: true,
-        series: { name: 'The Atlas', book: 1, total: 3, complete: true },
-        moods: ['dark', 'mysterious', 'reflective'], pace: 'medium',
-        tropes: ['dark academia', 'magic society', 'morally gray ensemble']
-      },
       "the song of the witches (book 1)": {
         author: 'K.F. Breene', rating: '3.9/5',
         tag: 'Fantasy', tagClass: 'tag-fantasy',
@@ -4552,32 +4543,6 @@
         series: { name: 'Mistborn', book: 2, total: 7, complete: false },
         moods: ['adventurous', 'mysterious', 'tense'], pace: 'medium',
         tropes: ['epic fantasy', 'political intrigue']
-      },
-      "the serpent & the wings of night": {
-        author: 'Carissa Broadbent', rating: '4.3/5',
-        tag: 'Romantasy', tagClass: 'tag-romantasy',
-        pitch: "A human girl raised by the vampire king enters a deadly tournament — and falls for her most dangerous competition. Enemies-to-lovers, vampire romance, dark fantasy: all three at their absolute peak.",
-        pages: 567, spice: 'explicit', cliffhanger: true,
-        series: { name: 'Crowns of Nyaxia', book: 1, total: 4, complete: false },
-        moods: ['dark', 'swoony', 'tense'], pace: 'medium',
-        tropes: ['vampire romance', 'enemies to lovers', 'tournament', 'dark fantasy'],
-        buzz: {
-          summary: 'The indie-published vampire romantasy that went so viral Bramble Books picked it up for a traditional re-release. Tournament arc + slow burn + a love story that wrecks people.',
-          stats: ['🔥 Indie BookTok sensation 2022-2024', '⭐ 4.3 Goodreads (180k+ ratings)', '📚 Re-released by Bramble (Tor) — series ongoing']
-        }
-      },
-      "the serpent and the wings of night": {
-        author: 'Carissa Broadbent', rating: '4.3/5',
-        tag: 'Romantasy', tagClass: 'tag-romantasy',
-        pitch: "A human girl raised by the vampire king enters a deadly tournament — and falls for her most dangerous competition. Enemies-to-lovers, vampire romance, dark fantasy: all three at their absolute peak.",
-        pages: 567, spice: 'explicit', cliffhanger: true,
-        series: { name: 'Crowns of Nyaxia', book: 1, total: 4, complete: false },
-        moods: ['dark', 'swoony', 'tense'], pace: 'medium',
-        tropes: ['vampire romance', 'enemies to lovers', 'tournament', 'dark fantasy'],
-        buzz: {
-          summary: 'The indie-published vampire romantasy that went so viral Bramble Books picked it up for a traditional re-release. Tournament arc + slow burn + a love story that wrecks people.',
-          stats: ['🔥 Indie BookTok sensation 2022-2024', '⭐ 4.3 Goodreads (180k+ ratings)', '📚 Re-released by Bramble (Tor) — series ongoing']
-        }
       },
       "great and precious things": {
         author: 'Rebecca Yarros', rating: '4.1/5',
@@ -6585,7 +6550,23 @@
         }
       } catch(e) {}
       scored.sort((a, b) => b.score - a.score);
-      return scored.slice(0, limit);
+      // Defensive dedup — never return two cards for the same book even if the
+      // underlying data has duplicate or near-duplicate keys (& vs and, punctuation, etc).
+      const _seenTitles = new Set();
+      const _normTitle = (s) => String(s || '').toLowerCase()
+        .replace(/\s*\([^)]*\)\s*/g, ' ')   // strip "(Series, #1)" etc
+        .replace(/\s*:\s*.+$/, '')           // strip ": Subtitle"
+        .replace(/\s*&\s*/g, ' and ')        // "&" → "and"
+        .replace(/[^\w\s]/g, ' ')            // strip remaining punctuation
+        .replace(/\s+/g, ' ').trim();
+      const _deduped = [];
+      for (const b of scored) {
+        const t = _normTitle(displayTitle(b.key));
+        if (!t || _seenTitles.has(t)) continue;
+        _seenTitles.add(t);
+        _deduped.push(b);
+      }
+      return _deduped.slice(0, limit);
     }
 
     // Called when a shelf cover image loads — removes the book if OL returned a 1×1 blank pixel
