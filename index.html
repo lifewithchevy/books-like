@@ -1699,29 +1699,30 @@
     }
     .station-card-cover {
       position: absolute;
-      right: -8px;
-      bottom: -8px;
-      width: 76%;
-      height: 76%;
-      object-fit: cover;
-      border-radius: 8px 0 0 0;
-      box-shadow: -4px -4px 16px rgba(0,0,0,0.45);
-      transform: rotate(4deg);
+      right: 8%;
+      bottom: 8%;
+      width: 60%;
+      height: 80%;
+      object-fit: contain;
+      object-position: bottom right;
+      border-radius: 6px;
+      box-shadow: -4px 4px 16px rgba(0,0,0,0.45);
+      transform: rotate(-3deg);
       transform-origin: bottom right;
     }
     .station-card-cover-fallback {
       position: absolute;
-      right: -8px;
-      bottom: -8px;
-      width: 76%;
-      height: 76%;
-      border-radius: 8px 0 0 0;
+      right: 8%;
+      bottom: 8%;
+      width: 60%;
+      height: 80%;
+      border-radius: 6px;
       display: flex;
       align-items: center;
       justify-content: center;
       background: rgba(255,255,255,0.12);
-      box-shadow: -4px -4px 16px rgba(0,0,0,0.45);
-      transform: rotate(4deg);
+      box-shadow: -4px 4px 16px rgba(0,0,0,0.45);
+      transform: rotate(-3deg);
       transform-origin: bottom right;
       font-family: 'Playfair Display', serif;
       font-size: 36px;
@@ -5118,6 +5119,15 @@
         moods: ['mysterious', 'tense', 'shocking'], pace: 'fast',
         tropes: ['unreliable narrator', 'locked room mystery', 'closed circle', 'paranoia', 'twisty thriller'],
         pitch: "A travel journalist on a luxury cruise hears a woman thrown overboard from the cabin next door. There's just one problem: no one was ever staying in that cabin. The Netflix adaptation made this Ruth Ware's biggest book all over again."
+      },
+      "the housemaid": {
+        author: 'Freida McFadden', rating: '4.3/5',
+        tag: 'Thriller', tagClass: 'tag-thriller',
+        pages: 336, spice: 'sweet', cliffhanger: false,
+        series: { name: 'The Housemaid', book: 1, total: 4, complete: false },
+        moods: ['tense', 'shocking', 'mysterious'], pace: 'fast',
+        tropes: ['domestic thriller', 'unreliable narrator', 'twist ending', 'class tension', 'wealthy family'],
+        pitch: "A woman with a hidden past takes a job as a housemaid for a wealthy couple. The twist ending is what made this BookTok's favorite thriller for two years running. Lifetime adaptation 2025, sequels still rolling."
       }
     };
     // Look up structured meta by title — handles a variety of suffix patterns so sequels
@@ -6402,9 +6412,23 @@
       {
         id: 'quick-reads',
         label: 'Quick Reads',
-        description: 'Under 300 pages. Full story, no filler. Finish in a weekend.',
+        description: 'Tight, addictive reads you can finish in a weekend — high-demand short books on Reddit.',
         moodKey: null,
-        filters: { maxPages: 300 },
+        // Top short reads on r/suggestmeabook "short books" threads + slump-busters.
+        curatedKeys: [
+          'the maid',                          // Cozy mystery, fast read
+          'the midnight library',              // Reflective, propulsive
+          'mexican gothic',                    // Gothic horror, atmospheric
+          'gone girl',                         // Thriller masterclass
+          'verity',                            // Hoover thriller, devourable
+          'the silent patient',                // Twisty, unputdownable
+          'neon gods',                         // Spicy myth retelling
+          'a touch of darkness',               // Hades/Persephone
+          'beach read',                        // Emily Henry comfort
+          'the love hypothesis',               // STEM rom-com
+          'twisted love',                      // Dark romance fast
+          'powerless',                         // YA romantasy
+        ],
         accent: '#0077B6',
         gradients: ['#0077B6','#00B4D8','#023E8A','#0096C7','#005F73'],
       },
@@ -6434,39 +6458,90 @@
       {
         id: 'cozy',
         label: 'Cozy & Comforting',
-        description: 'No villain required. These read like a warm drink on a cold evening — safe, soft, and impossible to put down.',
+        description: 'Books that hug back — top picks from r/cozyreads and BookTok\'s cozy fall lineups.',
         moodKey: 'cozy',
-        filters: { moods: ['cozy', 'hopeful', 'funny'] },
+        curatedKeys: [
+          'legends & lattes',                  // The cozy benchmark
+          'the house in the cerulean sea',     // Found family classic
+          'the thursday murder club',          // Netflix Mirren/Brosnan 2025
+          'beach read',                        // Emily Henry comfort food
+          'people we meet on vacation',        // Netflix Jan 2026 film
+          'funny story',                       // Emily Henry's biggest 2024
+          'the maid',                          // Quirky cozy mystery
+          'the love hypothesis',               // STEM comfort romance
+          'the spanish love deception',        // Fake-dating rom-com
+          'the hating game',                   // Office rom-com classic
+          'icebreaker',                        // Sports rom-com
+          'the seven husbands of evelyn hugo', // Comfort despite the drama
+        ],
         accent: '#E07B39',
         gradients: ['#D4956A','#C47741','#A0522D','#8B4513','#CD853F'],
       },
       {
         id: 'adventurous',
         label: 'Epic Adventures',
-        description: 'Big worlds, impossible odds, and characters who earn every scar.',
+        description: 'Sprawling worlds, brutal stakes, characters who earn every scar — top r/Fantasy demand.',
         moodKey: 'adventurous',
-        filters: { moods: ['adventurous', 'mysterious'] },
+        curatedKeys: [
+          'fourth wing',                       // Dragon-rider war academy
+          'six of crows',                      // Heist crew, top demand
+          'the priory of the orange tree',     // Epic dragon fantasy
+          'red rising',                        // Sci-fi dystopia, brutal
+          'the hunger games',                  // Dystopian classic, prequel hype
+          'throne of glass',                   // SJM assassin epic
+          'the will of the many',              // 2023-24 epic fantasy hit
+          'babel',                             // Dark academia colonial epic
+          'the atlas six',                     // Magic society competition
+          'the cruel prince',                  // Fae politics + tournament
+          'an ember in the ashes',             // Brutal-empire adventure
+          'powerless',                         // YA fantasy competition
+        ],
         accent: '#0077B6',
         gradients: ['#023E8A','#0077B6','#0096C7','#1B4332','#2D6A4F'],
       },
       {
         id: 'reflective',
         label: 'Thought-Provoking Reads',
-        description: 'Books that rewire something in you. Still thinking about them weeks later.',
+        description: 'Books that rewire something in you — r/literature and book club gold.',
         moodKey: 'reflective',
-        filters: { moods: ['reflective', 'emotional', 'hopeful'] },
+        curatedKeys: [
+          'tomorrow, and tomorrow, and tomorrow', // Friendship + creative ambition
+          'the midnight library',              // Existential paths
+          'a little life',                     // Devastating litfic
+          'yellowface',                        // Sharp satire on race + publishing
+          'circe',                             // Myth from a goddess's view
+          'the song of achilles',              // Mythological love
+          'babel',                             // Colonialism + language
+          'the secret history',                // Dark academia
+          'where the crawdads sing',           // Atmospheric mystery + character
+          'normal people',                     // Sally Rooney intimacy
+          'the seven husbands of evelyn hugo', // Identity, ambition
+          'the will of the many',              // Epic with moral weight
+        ],
         accent: '#2D9F6F',
         gradients: ['#1B4332','#2D6A4F','#40916C','#52B788','#1A535C'],
       },
       {
         id: 'bookclub',
         label: 'Book Club Favorites',
-        description: 'Guaranteed conversation-starters. Characters you\'ll still be arguing about at dessert.',
+        description: 'The books your book club won\'t shut up about — top picks from Reese, GMA, and Reddit\'s book club threads.',
         moodKey: null,
-        filters: { moods: ['reflective', 'emotional'], tropes: ['book club'] },
+        curatedKeys: [
+          'the seven husbands of evelyn hugo', // Reese-era book club staple
+          'tomorrow, and tomorrow, and tomorrow', // Friendship + craft
+          'yellowface',                        // Provocative satire
+          'the midnight library',              // Existential favorite
+          'where the crawdads sing',           // Reese book club huge
+          'verity',                            // Hoover thriller surprise
+          'the housemaid',                     // Thriller book club hit
+          'a little life',                     // Long but discussed forever
+          'circe',                             // Mythological reframe
+          'the song of achilles',              // Tear-jerker classic
+          'mexican gothic',                    // Gothic horror book club
+          'normal people',                     // Sally Rooney discussion gold
+        ],
         accent: '#8B5E3C',
         gradients: ['#6B4226','#8B5E3C','#A0522D','#5C3317','#7B3F00'],
-        fallbackFilters: { moods: ['emotional', 'reflective'] },
       },
       {
         id: 'enemies-to-lovers',
