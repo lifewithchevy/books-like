@@ -6378,9 +6378,24 @@
       {
         id: 'new',
         label: 'Everyone Is Talking About',
-        description: 'The books readers on Goodreads, Reddit, and book clubs can\'t stop recommending right now.',
+        description: 'The books Reddit, BookTok, and book clubs can\'t stop recommending right now — adaptations, new releases, viral hits.',
         moodKey: null,
-        filters: { moods: ['emotional', 'swoony', 'shocking'] },
+        // Curated weekly: the books with the highest live demand across r/RomanceBooks,
+        // r/Fantasy, r/suggestmeabook, BookTok, and recent Netflix/Amazon adaptations.
+        curatedKeys: [
+          'onyx storm',                       // Empyrean #3 — freshest release, peak demand
+          'quicksilver',                      // 2024-25 BookTok romantasy explosion
+          'the woman in cabin 10',            // Netflix Oct 2025, 4.5B+ view tier
+          "a good girl's guide to murder",    // Netflix S2 May 2026
+          'people we meet on vacation',       // Netflix film Jan 2026
+          'powerless',                        // Amazon MGM TV adaptation announced
+          'funny story',                      // Emily Henry's biggest 2024 hit
+          'twisted love',                     // Perennial top dark-romance demand
+          'the bridge kingdom',               // Series finale 2026, r/Fantasy active
+          'heartless hunter',                 // Active romantasy duology
+          'from blood and ash',               // Active series, top Reddit consensus
+          'king of wrath',                    // Ana Huang series active 2026
+        ],
         accent: '#E84393',
         gradients: ['#E84393','#FF6B9D','#C44569','#FF3CAC','#784BA0'],
       },
@@ -6398,7 +6413,21 @@
         label: 'Swoony Romance',
         description: 'Slow burns, stolen glances, and love interests who ruin you for real people.',
         moodKey: 'swoony',
-        filters: { moods: ['swoony', 'emotional'] },
+        // Top swoon-factor reads on r/RomanceBooks weekly threads + BookTok consensus.
+        curatedKeys: [
+          'a court of thorns and roses',      // The swoon benchmark
+          'funny story',                       // Emily Henry — current peak
+          'people we meet on vacation',        // Netflix film Jan 2026
+          'the love hypothesis',               // STEM romance evergreen
+          'beach read',                        // Emily Henry classic
+          'icebreaker',                        // Hockey-romance phenomenon
+          'the hating game',                   // Office E2L classic
+          'the spanish love deception',        // Fake dating top demand
+          'the summer i turned pretty',        // Prime Video active
+          'it ends with us',                   // Sustained demand
+          'fourth wing',                       // Romantasy swoon peak
+          'the bridge kingdom',                // Arranged marriage E2L
+        ],
         accent: '#E84393',
         gradients: ['#FF6B9D','#C44569','#FF3CAC','#E84393','#FF8FAB'],
       },
@@ -6444,17 +6473,44 @@
         label: 'Enemies to Lovers',
         description: 'The tension is the point. You already know this is your weakness.',
         moodKey: null,
-        filters: { tropes: ['enemies to lovers'] },
+        // The books r/RomanceBooks recommends every time someone posts "best E2L".
+        curatedKeys: [
+          'a court of thorns and roses',      // The blueprint
+          'fourth wing',                       // Romantasy E2L peak
+          'the cruel prince',                  // YA E2L gold standard
+          'the hating game',                   // Office E2L classic
+          'twisted love',                      // Dark E2L top demand
+          'king of wrath',                     // Billionaire E2L active
+          'the jasad heir',                    // Hidden-identity E2L
+          'heartless hunter',                  // Witch-hunter E2L duology
+          'the serpent and the wings of night',// Tournament E2L
+          'the bridge kingdom',                // Arranged-marriage E2L
+          'from blood and ash',                // Guard-and-charge tension
+          'quicksilver',                       // Fae E2L 2024-25 hit
+        ],
         accent: '#C1121F',
         gradients: ['#5C1A1A','#C1121F','#9B1D2A','#8B0000','#B5200D'],
-        fallbackFilters: { moods: ['tense', 'swoony'] },
       },
       {
         id: 'dark',
         label: 'Dark & Unputdownable',
         description: 'Morally grey characters, impossible choices, and stories that don\'t apologize for going there.',
         moodKey: 'dark',
-        filters: { moods: ['dark', 'tense', 'shocking'] },
+        // Top dark romance + dark fantasy picks from r/RomanceBooks "darkest" threads.
+        curatedKeys: [
+          'haunting adeline',                  // The dark-romance benchmark
+          'verity',                            // Hoover thriller-romance
+          'twisted love',                      // Top Reddit dark E2L
+          'king of wrath',                     // Billionaire dark romance
+          'a touch of darkness',               // Hades/Persephone dark fantasy
+          'neon gods',                         // Greek myth dark romance
+          'the serpent and the wings of night',// Vampire dark fantasy
+          'from blood and ash',                // Dark romantasy active
+          'the foxglove king',                 // Dark gothic romantasy
+          'quicksilver',                       // Dark fae romantasy
+          'heartless hunter',                  // Witch-hunt darkness
+          'the silent patient',                // Psychological dark
+        ],
         accent: '#5A189A',
         gradients: ['#2C1654','#4A1942','#6A0572','#1A1A2E','#16213E'],
       },
@@ -6679,9 +6735,18 @@
     }
 
     function renderDiscoverShelf(config) {
-      let books = filterSeriesForShelf(getBooksForShelf(config.filters, 30));
-      if (books.length < 3 && config.fallbackFilters) {
-        books = filterSeriesForShelf(getBooksForShelf(config.fallbackFilters, 30));
+      let books;
+      if (Array.isArray(config.curatedKeys) && config.curatedKeys.length) {
+        // Curated path — use the exact list of keys in the order provided.
+        // Used for trending/buzz shelves where editorial picks beat filters.
+        books = config.curatedKeys
+          .map(k => ({ key: k, meta: bookMetadata[k] }))
+          .filter(b => b.meta && b.meta.author);
+      } else {
+        books = filterSeriesForShelf(getBooksForShelf(config.filters, 30));
+        if (books.length < 3 && config.fallbackFilters) {
+          books = filterSeriesForShelf(getBooksForShelf(config.fallbackFilters, 30));
+        }
       }
       if (books.length === 0) return '';
       const booksHtml = books.slice(0, 12).map(({ key, meta }, i) => renderShelfBook(key, meta, config.id, i)).join('');
