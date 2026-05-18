@@ -3477,8 +3477,15 @@
       coverCache[key] = url;
       imgEl.src = url;
       imgEl.style.display = 'block';
-      imgEl.style.position = 'relative';
+      // Don't force position:relative — station cards use position:absolute and
+      // overriding it shifts the cover out of the card frame.
+      const isStationCard = imgEl.classList.contains('station-card-cover');
+      if (!isStationCard) imgEl.style.position = 'relative';
       if (imgEl.previousElementSibling) imgEl.previousElementSibling.style.display = 'none';
+      // Station cards: fallback is the NEXT sibling (different DOM order from shelf books)
+      if (isStationCard && imgEl.nextElementSibling) {
+        imgEl.nextElementSibling.style.display = 'none';
+      }
       // Shelf books: also hide the fallback div when a real cover arrives
       if (imgEl.classList.contains('shelf-cover-img')) {
         const fallback = imgEl.closest('.shelf-cover-wrap')?.querySelector('.shelf-cover-fallback');
