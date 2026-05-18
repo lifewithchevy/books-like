@@ -1703,10 +1703,10 @@
       bottom: -8px;
       width: 76%;
       height: 76%;
-      /* contain (not cover) so the full cover is visible — titles often live
-         in the top of the artwork and were being cropped by cover. */
-      object-fit: contain;
-      object-position: bottom right;
+      /* cover (no blank space) but anchored to TOP so the crop hits the bottom
+         author line instead of the title at the top. */
+      object-fit: cover;
+      object-position: top center;
       border-radius: 8px 0 0 0;
       box-shadow: -4px -4px 16px rgba(0,0,0,0.45);
       transform: rotate(4deg);
