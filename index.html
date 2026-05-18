@@ -6397,23 +6397,20 @@
       {
         id: 'new',
         label: 'Everyone Is Talking About',
-        description: 'The books Reddit, BookTok, and book clubs can\'t stop recommending right now — adaptations, new releases, viral hits.',
+        description: 'The books Reddit, BookTok, and book clubs recommend over and over — the all-time most-mentioned reads.',
         moodKey: null,
-        // Curated weekly: the books with the highest live demand across r/RomanceBooks,
-        // r/Fantasy, r/suggestmeabook, BookTok, and recent Netflix/Amazon adaptations.
+        // The books that surface in EVERY "what should I read?" thread across reading
+        // communities — evergreen top mentions, not just current buzz. Update with
+        // care: these are the strongest entry points for new visitors.
         curatedKeys: [
-          'onyx storm',                       // Empyrean #3 — freshest release, peak demand
-          'quicksilver',                      // 2024-25 BookTok romantasy explosion
-          'the woman in cabin 10',            // Netflix Oct 2025, 4.5B+ view tier
-          "a good girl's guide to murder",    // Netflix S2 May 2026
-          'people we meet on vacation',       // Netflix film Jan 2026
-          'powerless',                        // Amazon MGM TV adaptation announced
-          'funny story',                      // Emily Henry's biggest 2024 hit
-          'twisted love',                     // Perennial top dark-romance demand
-          'the bridge kingdom',               // Series finale 2026, r/Fantasy active
-          'heartless hunter',                 // Active romantasy duology
-          'from blood and ash',               // Active series, top Reddit consensus
-          'king of wrath',                    // Ana Huang series active 2026
+          'fourth wing',                       // #1 romantasy mention
+          'a court of thorns and roses',       // #1 fantasy romance mention
+          'it ends with us',                   // Hoover's most-mentioned
+          'the seven husbands of evelyn hugo', // Book club gold standard
+          'verity',                            // Top thriller-romance mention
+          'the song of achilles',              // Top tearjerker mention
+          'the midnight library',              // Top reflective mention
+          'gone girl',                         // Top thriller mention
         ],
         accent: '#E84393',
         gradients: ['#E84393','#FF6B9D','#C44569','#FF3CAC','#784BA0'],
@@ -6440,22 +6437,17 @@
       {
         id: 'swoony',
         label: 'Swoony Romance',
-        description: 'Slow burns, stolen glances, and love interests who ruin you for real people.',
+        description: 'Slow burns, stolen glances, and love interests who ruin you for real people — top r/RomanceBooks picks.',
         moodKey: 'swoony',
-        // Top swoon-factor reads on r/RomanceBooks weekly threads + BookTok consensus.
         curatedKeys: [
           'a court of thorns and roses',      // The swoon benchmark
-          'funny story',                       // Emily Henry — current peak
-          'people we meet on vacation',        // Netflix film Jan 2026
+          'fourth wing',                       // Romantasy swoon peak
           'the love hypothesis',               // STEM romance evergreen
           'beach read',                        // Emily Henry classic
-          'icebreaker',                        // Hockey-romance phenomenon
-          'the hating game',                   // Office E2L classic
-          'the spanish love deception',        // Fake dating top demand
-          'the summer i turned pretty',        // Prime Video active
-          'it ends with us',                   // Sustained demand
-          'fourth wing',                       // Romantasy swoon peak
-          'the bridge kingdom',                // Arranged marriage E2L
+          'the hating game',                   // Office romance classic
+          'funny story',                       // Emily Henry peak
+          'people we meet on vacation',        // Netflix film Jan 2026
+          'from blood and ash',                // Slow-burn-to-inferno romantasy
         ],
         accent: '#E84393',
         gradients: ['#FF6B9D','#C44569','#FF3CAC','#E84393','#FF8FAB'],
@@ -6522,21 +6514,17 @@
       {
         id: 'bookclub',
         label: 'Book Club Favorites',
-        description: 'The books your book club won\'t shut up about — top picks from Reese, GMA, and Reddit\'s book club threads.',
+        description: 'The books your book club won\'t shut up about — Reese, GMA, and r/bookclub consensus.',
         moodKey: null,
         curatedKeys: [
           'the seven husbands of evelyn hugo', // Reese-era book club staple
           'tomorrow, and tomorrow, and tomorrow', // Friendship + craft
+          'where the crawdads sing',           // Reese huge
+          'verity',                            // Hoover thriller surprise
           'yellowface',                        // Provocative satire
           'the midnight library',              // Existential favorite
-          'where the crawdads sing',           // Reese book club huge
-          'verity',                            // Hoover thriller surprise
-          'the housemaid',                     // Thriller book club hit
-          'a little life',                     // Long but discussed forever
+          'a little life',                     // Discussed forever
           'circe',                             // Mythological reframe
-          'the song of achilles',              // Tear-jerker classic
-          'mexican gothic',                    // Gothic horror book club
-          'normal people',                     // Sally Rooney discussion gold
         ],
         accent: '#8B5E3C',
         gradients: ['#6B4226','#8B5E3C','#A0522D','#5C3317','#7B3F00'],
@@ -6544,22 +6532,17 @@
       {
         id: 'enemies-to-lovers',
         label: 'Enemies to Lovers',
-        description: 'The tension is the point. You already know this is your weakness.',
+        description: 'The books r/RomanceBooks recommends every time someone asks for the best enemies-to-lovers.',
         moodKey: null,
-        // The books r/RomanceBooks recommends every time someone posts "best E2L".
         curatedKeys: [
           'a court of thorns and roses',      // The blueprint
           'fourth wing',                       // Romantasy E2L peak
           'the cruel prince',                  // YA E2L gold standard
           'the hating game',                   // Office E2L classic
           'twisted love',                      // Dark E2L top demand
-          'king of wrath',                     // Billionaire E2L active
-          'the jasad heir',                    // Hidden-identity E2L
-          'heartless hunter',                  // Witch-hunter E2L duology
-          'the serpent and the wings of night',// Tournament E2L
           'the bridge kingdom',                // Arranged-marriage E2L
-          'from blood and ash',                // Guard-and-charge tension
-          'quicksilver',                       // Fae E2L 2024-25 hit
+          'the serpent and the wings of night',// Tournament E2L
+          'king of wrath',                     // Billionaire E2L active
         ],
         accent: '#C1121F',
         gradients: ['#5C1A1A','#C1121F','#9B1D2A','#8B0000','#B5200D'],
@@ -6567,22 +6550,17 @@
       {
         id: 'dark',
         label: 'Dark & Unputdownable',
-        description: 'Morally grey characters, impossible choices, and stories that don\'t apologize for going there.',
+        description: 'Morally grey characters, impossible choices, and stories that don\'t apologize — top r/RomanceBooks dark picks.',
         moodKey: 'dark',
-        // Top dark romance + dark fantasy picks from r/RomanceBooks "darkest" threads.
         curatedKeys: [
           'haunting adeline',                  // The dark-romance benchmark
           'verity',                            // Hoover thriller-romance
           'twisted love',                      // Top Reddit dark E2L
-          'king of wrath',                     // Billionaire dark romance
           'a touch of darkness',               // Hades/Persephone dark fantasy
           'neon gods',                         // Greek myth dark romance
           'the serpent and the wings of night',// Vampire dark fantasy
-          'from blood and ash',                // Dark romantasy active
-          'the foxglove king',                 // Dark gothic romantasy
-          'quicksilver',                       // Dark fae romantasy
-          'heartless hunter',                  // Witch-hunt darkness
-          'the silent patient',                // Psychological dark
+          'from blood and ash',                // Dark romantasy peak
+          'the silent patient',                // Psychological dark thriller
         ],
         accent: '#5A189A',
         gradients: ['#2C1654','#4A1942','#6A0572','#1A1A2E','#16213E'],
@@ -6967,18 +6945,20 @@
           gradient: 'linear-gradient(135deg,#1A0518 0%,#4A0E38 55%,#2A0E50 100%)',
           onclick: "discoverSelectTrending()",
         };
-        // Hand-picked viral titles in priority order — only those with reliable covers
+        // All-time most-mentioned books across Reddit (r/RomanceBooks, r/Fantasy,
+        // r/suggestmeabook), BookTok, and Goodreads "what to read" threads.
+        // The first 4 are the hero — kept stable so non-connected users see the
+        // strongest evergreen entry points every visit. The rest are cover backups.
         const TRENDING_KEYS = [
-          'fourth wing',
-          'a court of thorns and roses',
-          'it ends with us',
-          'the seven husbands of evelyn hugo',
-          'the love hypothesis',
-          'funny story',
-          'happy place',
-          'yellowface',
-          'tomorrow, and tomorrow, and tomorrow',
-          'iron flame',
+          'fourth wing',                       // #1 romantasy mention every time
+          'a court of thorns and roses',       // Perennial #1 E2L recommendation
+          'it ends with us',                   // Hoover's most-mentioned ever
+          'the seven husbands of evelyn hugo', // Book club gold standard
+          // Backups (only used if a primary cover fails to load):
+          'verity',
+          'the song of achilles',
+          'the midnight library',
+          'gone girl',
         ];
         picks = TRENDING_KEYS
           .filter(k => bookMetadata[k] && getBookCoverUrl(k))
