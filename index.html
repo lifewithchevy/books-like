@@ -598,33 +598,6 @@
       flex-wrap: wrap;
     }
 
-    /* Vote button — lightweight ghost pill, sits below pitch */
-    .btn-vote {
-      display: inline-flex;
-      align-items: center;
-      gap: 5px;
-      font-size: 12px;
-      font-weight: 500;
-      padding: 5px 13px;
-      border-radius: 20px;
-      border: 1.5px solid var(--border);
-      background: transparent;
-      color: var(--text-dim);
-      cursor: pointer;
-      transition: border-color 0.18s, color 0.18s, background 0.18s;
-      margin-top: 10px;
-      white-space: nowrap;
-    }
-    .btn-vote:hover {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: rgba(212,168,83,0.07);
-    }
-    .btn-vote.voted {
-      background: var(--accent);
-      border-color: var(--accent);
-      color: #fff;
-    }
     /* Show-more button */
     .btn-show-more {
       display: inline-flex;
@@ -5850,22 +5823,6 @@
       return rec;
     }
 
-    // ── Rec voting — saves 👍 presses to localStorage('90books_votes') ──
-    function voteRec(btn, title) {
-      const votes = JSON.parse(localStorage.getItem('90books_votes') || '{}');
-      const key = title.toLowerCase().trim();
-      if (votes[key]) {
-        delete votes[key];
-        btn.classList.remove('voted');
-        btn.innerHTML = '👍 Good rec?';
-      } else {
-        votes[key] = { title, ts: Date.now() };
-        btn.classList.add('voted');
-        btn.innerHTML = '👍 Thanks!';
-      }
-      localStorage.setItem('90books_votes', JSON.stringify(votes));
-    }
-
     function renderBookCard(book, showMatch) {
       const adaptedLine = ''; // adapted (Netflix/film) info hidden — keep cards focused on the book itself
       const tbrLine = book.isTbr ? `<div style="margin-top:5px;font-size:11px;font-weight:600;color:var(--success);">&#128204; On your TBR list</div>` : '';
@@ -5881,13 +5838,6 @@
         .replace(/'/g, "\\'");
       // Buzz block (social proof) was moved to the book detail page — keeps list cards
       // simple and curiosity-inducing, with the full signal aggregation surfaced after click.
-      // Vote button — check localStorage for existing vote
-      const _voteKey = (book.title || '').toLowerCase().trim();
-      const _voteTitle = (book.title || '').replace(/\\/g, '\\\\').replace(/'/g, "\\'");
-      const _votes = JSON.parse(localStorage.getItem('90books_votes') || '{}');
-      const _isVoted = !!_votes[_voteKey];
-      const _voteBtnClass = _isVoted ? 'btn-vote voted' : 'btn-vote';
-      const _voteBtnLabel = _isVoted ? '👍 Thanks!' : '👍 Good rec?';
       return `
         <div class="book-card${book.wildcard ? ' wildcard-card' : ''}" onclick="openBookDetail('${_detailKey}')">
           <div class="book-cover-wrap">
@@ -5914,7 +5864,6 @@
             <div class="book-pitch">${book.pitch}</div>
             ${tbrLine}
             ${adaptedLine}
-            <button class="${_voteBtnClass}" onclick="voteRec(this,'${_voteTitle}');event.stopPropagation()">${_voteBtnLabel}</button>
           </div>
         </div>`;
     }
@@ -7866,18 +7815,16 @@
       window.scrollTo(0, 0);
     }
 
-    // Teaser banner shown on genre/trending pages — hints at the future user-voting feature
-    // and explains how the picks are sourced (Reddit, BookTok, Goodreads, Google, awards).
+    // Teaser banner shown on genre/trending pages — explains how the picks are sourced.
     function renderVotingTeaser() {
       return `
         <div class="voting-teaser">
-          <div class="voting-teaser-icon">🗳️</div>
+          <div class="voting-teaser-icon">📚</div>
           <div class="voting-teaser-body">
             <div class="voting-teaser-title">Picked by readers, not algorithms</div>
             <div class="voting-teaser-desc">
               These come from Goodreads ratings, r/Fantasy &amp; r/romancebooks threads, and award lists —
-              so you don't have to scroll through 500 comments to find the good ones. Hit <strong>👍 Good rec?</strong> on any book
-              and help shape what makes the list.
+              so you don't have to scroll through 500 comments to find the good ones.
             </div>
           </div>
         </div>`;
