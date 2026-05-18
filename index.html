@@ -5471,11 +5471,23 @@
       const sourceLow = norm(sourceTitle);
       const exclude = new Set([...(excludeTitles || [])].map(norm));
       exclude.add(sourceLow);
+      // Series-aware exclusion: if any excluded title belongs to a series, also
+      // exclude every other book from that series so we never recommend e.g.
+      // "A Court of Mist and Fury" when "A Court of Thorns and Roses" is already shown.
+      const excludeSeries = new Set();
+      [...(excludeTitles || []), sourceTitle].forEach(t => {
+        const m = getBookMeta(t);
+        if (m && m.series && m.series.name) excludeSeries.add(m.series.name.toLowerCase());
+      });
       const scored = [];
       for (const cand of catalog) {
         const ck = norm(cand.title);
         if (exclude.has(ck)) continue;
         if (typeof isAlreadyRead === 'function' && isAlreadyRead(cand.title)) continue;
+        // Skip any book whose series is already represented in the existing rec list
+        const candMeta = getBookMeta(cand.title);
+        if (candMeta && candMeta.series && candMeta.series.name
+            && excludeSeries.has(candMeta.series.name.toLowerCase())) continue;
         const result = scoreOverlap(
           cand,
           sourceMeta || { tropes: [], moods: [], spice: null, series: undefined, pace: null },
@@ -5686,7 +5698,32 @@
         c._rank = c.tier * 1000 + c.score + variance * 22;
       });
       pool.sort((a, b) => b._rank - a._rank);
-      return pool.slice(0, limit);
+      // Final pass: dedup by series — never return two books from the same series.
+      // Prefer the earliest book (lowest book number). Walk the ranked pool and
+      // skip any candidate whose series already has a higher-ranked or earlier-book entry.
+      const seriesSeen = new Map(); // seriesName → bookNum already kept
+      const deduped = [];
+      for (const c of pool) {
+        const s = c.meta && c.meta.series;
+        if (!s || typeof s !== 'object' || !s.name) { deduped.push(c); continue; }
+        const sname = s.name.toLowerCase();
+        const bookNum = s.book || 1;
+        if (!seriesSeen.has(sname)) {
+          seriesSeen.set(sname, bookNum);
+          deduped.push(c);
+        } else if (bookNum < seriesSeen.get(sname)) {
+          // Found an earlier book in same series — replace previous entry
+          seriesSeen.set(sname, bookNum);
+          const idx = deduped.findIndex(d => {
+            const ds = d.meta && d.meta.series;
+            return ds && typeof ds === 'object' && ds.name && ds.name.toLowerCase() === sname;
+          });
+          if (idx >= 0) deduped[idx] = c;
+        }
+        // else: later book in same series — skip
+        if (deduped.length >= limit) break;
+      }
+      return deduped.slice(0, limit);
     }
 
     // Shared hero card — keeps Books Like station and book detail visually identical.
@@ -5987,11 +6024,49 @@
       const _goodreadsCta = renderGoodreadsCta(sourceTitle, src.author, isbns);
 
       // Flatten all recs — closest first, then sameEnergy, then wildcard
-      const allRecs = [
+      const allRecsRaw = [
         ...filteredClosest.map((b, i) => ({ ...b, _bucket: 'closest', _idx: i })),
         ...filteredSameEnergy.map((b, i) => ({ ...b, _bucket: 'sameEnergy', _idx: i })),
         ...(showWildcard ? [{ ...wc, _bucket: 'wildcard', _idx: 0 }] : [])
       ];
+      // Final series dedup — never show two books from the same series. If duplicates
+      // exist, prefer the earliest book (book 1 > book 2). Also dedup against the
+      // source book's own series (e.g. don't recommend Iron Flame on Fourth Wing's page,
+      // unless the curated rec explicitly bundles the series like "Empyrean Series").
+      const _sourceSeriesName = (meta && meta.series && meta.series.name) ? meta.series.name.toLowerCase() : null;
+      const _seriesBest = new Map(); // seriesName → { rec, bookNum }
+      const _nonSeries  = [];
+      for (const rec of allRecsRaw) {
+        const recMeta = getBookMeta(rec.title);
+        const sName   = recMeta && recMeta.series && recMeta.series.name ? recMeta.series.name.toLowerCase() : null;
+        const bookNum = recMeta && recMeta.series && recMeta.series.book ? recMeta.series.book : 1;
+        // Skip recs from the source's own series (the searched book is already implied).
+        // Exception: if the rec title contains "Series" (e.g. "The Empyrean Series"), keep it —
+        // it's a curated bundle pointing readers to the sequels.
+        if (sName && _sourceSeriesName && sName === _sourceSeriesName && !/series/i.test(rec.title)) continue;
+        if (!sName) { _nonSeries.push(rec); continue; }
+        const prev = _seriesBest.get(sName);
+        if (!prev || bookNum < prev.bookNum) _seriesBest.set(sName, { rec, bookNum });
+      }
+      // Preserve original order: walk allRecsRaw, emit each rec only if it's the chosen winner for its series.
+      const _emitted = new Set();
+      const allRecs = [];
+      for (const rec of allRecsRaw) {
+        const recMeta = getBookMeta(rec.title);
+        const sName   = recMeta && recMeta.series && recMeta.series.name ? recMeta.series.name.toLowerCase() : null;
+        if (sName && _sourceSeriesName && sName === _sourceSeriesName && !/series/i.test(rec.title)) continue;
+        if (!sName) { allRecs.push(rec); continue; }
+        if (_emitted.has(sName)) continue;
+        const winner = _seriesBest.get(sName);
+        if (winner && winner.rec === rec) {
+          allRecs.push(rec);
+          _emitted.add(sName);
+        } else if (winner) {
+          // Replace this slot with the earliest-book winner so position is preserved
+          allRecs.push(winner.rec);
+          _emitted.add(sName);
+        }
+      }
       const PER_PAGE = 6;
       const first = allRecs.slice(0, PER_PAGE);
       const rest  = allRecs.slice(PER_PAGE);
