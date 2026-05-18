@@ -6397,7 +6397,7 @@
       {
         id: 'new',
         label: 'Everyone Is Talking About',
-        description: 'The books Reddit, BookTok, and book clubs recommend over and over — the all-time most-mentioned reads.',
+        description: 'These come up in every "what should I read?" thread on Reddit. The ones everyone tells you to start with.',
         moodKey: null,
         // The books that surface in EVERY "what should I read?" thread across reading
         // communities — evergreen top mentions, not just current buzz. Update with
@@ -6418,7 +6418,7 @@
       {
         id: 'quick-reads',
         label: 'Quick Reads',
-        description: 'All standalone books — under 330 pages, full story, no series commitment. Finish in a weekend.',
+        description: 'Standalones only. Under 330 pages. No "wait for book 3" energy — full story, done in a weekend.',
         moodKey: null,
         // Verified: every pick is a standalone book (no series) under 330 pages.
         curatedKeys: [
@@ -6437,7 +6437,7 @@
       {
         id: 'swoony',
         label: 'Swoony Romance',
-        description: 'Slow burns, stolen glances, and love interests who ruin you for real people — top r/RomanceBooks picks.',
+        description: 'Slow burns that will physically pain you. Love interests who ruin you for actual men. r/RomanceBooks knows.',
         moodKey: 'swoony',
         curatedKeys: [
           'a court of thorns and roses',      // The swoon benchmark
@@ -6455,7 +6455,7 @@
       {
         id: 'cozy',
         label: 'Cozy & Comforting',
-        description: 'No villains, no stakes — books that hug back. Top picks from r/cozyreads and BookTok\'s cozy lineups.',
+        description: 'No villain required. Read like a warm drink and a blanket — exactly what r/cozyreads keeps recommending.',
         moodKey: 'cozy',
         curatedKeys: [
           'legends & lattes',                  // The cozy fantasy benchmark
@@ -6473,7 +6473,7 @@
       {
         id: 'adventurous',
         label: 'Epic Adventures',
-        description: 'Sprawling worlds, brutal stakes, characters who earn every scar — top r/Fantasy demand.',
+        description: 'Big worlds. Brutal stakes. Characters who earn every scar. The ones r/Fantasy will defend to the death.',
         moodKey: 'adventurous',
         // Strictly adventure/quest epics — dark academia (Babel, Atlas Six) belongs
         // in Thought-Provoking, not here.
@@ -6493,7 +6493,7 @@
       {
         id: 'reflective',
         label: 'Thought-Provoking Reads',
-        description: 'Books that rewire something in you. Literary fiction r/books and r/literature recommend over and over.',
+        description: 'Books that mess you up in the best way. You finish them and just stare at the ceiling for an hour.',
         moodKey: 'reflective',
         // Strictly literary/reflective — Will of the Many moved to Epic Adventures.
         curatedKeys: [
@@ -6514,7 +6514,7 @@
       {
         id: 'bookclub',
         label: 'Book Club Favorites',
-        description: 'The books your book club won\'t shut up about — Reese, GMA, and r/bookclub consensus.',
+        description: 'The ones your book club will not shut up about. Reese, GMA, and r/bookclub all agree on these.',
         moodKey: null,
         curatedKeys: [
           'the seven husbands of evelyn hugo', // Reese-era book club staple
@@ -6532,7 +6532,7 @@
       {
         id: 'enemies-to-lovers',
         label: 'Enemies to Lovers',
-        description: 'The books r/RomanceBooks recommends every time someone asks for the best enemies-to-lovers.',
+        description: 'Every "best enemies-to-lovers?" thread on r/RomanceBooks. These are always the top-voted answers.',
         moodKey: null,
         curatedKeys: [
           'a court of thorns and roses',      // The blueprint
@@ -6550,7 +6550,7 @@
       {
         id: 'dark',
         label: 'Dark & Unputdownable',
-        description: 'Morally grey characters, impossible choices, and stories that don\'t apologize — top r/RomanceBooks dark picks.',
+        description: 'Morally grey everyone. Impossible choices. Stories that don\'t apologize for going there.',
         moodKey: 'dark',
         curatedKeys: [
           'haunting adeline',                  // The dark-romance benchmark
@@ -6980,7 +6980,7 @@
       // Non-personalized users get a generic teaser + a "Connect Goodreads" prompt.
       const subtitle = isPersonal
         ? 'Based on the books you loved, including your most read genre, we find your next favorite book.'
-        : 'See what everyone is reading right now. Connect Goodreads for picks made just for you.';
+        : 'The books real readers can\'t stop recommending. Connect Goodreads for picks tuned to your taste.';
       const ctaLabel = isPersonal ? 'See your next read' : 'See your next read';
       // Secondary CTA only shown for non-GR users — prompts them to connect
       const showConnectCta = !isPersonal;
@@ -7208,7 +7208,7 @@
         <div class="shelf-header">
           <div class="shelf-title">Books Like...</div>
         </div>
-        <div class="shelf-subtitle">Pick a book you love — we'll find its closest matches. Same energy, different story.</div>
+        <div class="shelf-subtitle">Pick a book that wrecked you — we'll find what hits the same.</div>
         <div class="shelf-books">${cards}</div>
       </div>`;
     }
@@ -7641,7 +7641,7 @@
         <div class="shelf-header">
           <div class="shelf-title">Discover by Mood</div>
         </div>
-        <div class="shelf-subtitle">Tell us how you're feeling right now — we'll find the perfect read for exactly that mood.</div>
+        <div class="shelf-subtitle">Tell us the vibe. We'll match the book.</div>
         <div class="shelf-books shortcuts-strip">${cards}</div>
       </div>`;
     }
@@ -7671,7 +7671,7 @@
         <div class="shelf-header">
           <div class="shelf-title">Discover by Genre</div>
         </div>
-        <div class="shelf-subtitle">Browse by the genre you're in the mood for — from epic fantasy to slow-burn romance.</div>
+        <div class="shelf-subtitle">Pick your genre. From epic fantasy to slow-burn romance, your next obsession lives here.</div>
         <div class="shelf-books shortcuts-strip">${cards}</div>
       </div>`;
     }
