@@ -6490,6 +6490,7 @@
       '9781649379795', // In Her Own League — OL returns 1×1 blank pixel
       '9781619630352', // Crown of Midnight — OL returns wrong library card image
       '9781619630369', // Heir of Fire — OL returns Secrets at the Chocolate Mansion (children's book)
+      '9781649376291', // Quicksilver (Callie Hart) — OL returns Neal Stephenson's 2003 sci-fi
     ]);
 
     function getBookCoverUrl(key) {
@@ -7063,15 +7064,20 @@
         const originalIdx = BOOKS_LIKE_ENTRIES.indexOf(p);
         const meta = bookMetadata[p.key] || {};
         const coverUrl = getBookCoverUrl(p.key);
+        const _author = (meta && meta.author) ? meta.author.replace(/'/g, "\\'") : '';
+        const _labelSafe = p.label.replace(/'/g, "\\'");
         const initial = p.label.replace(/^(A |An |The )/i, '')[0] || p.label[0];
         const _cardLight = _heroIsLight(p.bg);
         const _cardText  = _cardLight ? '#0F0F12' : '#FFFFFF';
         const _cardMuted = _cardLight ? 'rgba(15,15,18,0.66)' : 'rgba(255,255,255,0.78)';
+        // If no ISBN cover URL, kick off title+author search immediately rather than
+        // setting src="null" which would briefly attempt a broken request.
+        const _imgSrc = coverUrl || '';
         return `<div class="station-card" onclick="openStation(${originalIdx})" style="background:${p.bg};color:${_cardText};">
           <div class="station-card-art" style="background:${p.bg}">
-            <img class="station-card-cover" src="${coverUrl}" alt="${p.label}"
-              onload="if(this.naturalWidth<50){this.style.display='none';this.nextElementSibling.style.display='flex';fetchCover('${p.label.replace(/'/g,"\\'")}','',this);}"
-              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';fetchCover('${p.label.replace(/'/g,"\\'")}','',this);">
+            <img class="station-card-cover" src="${_imgSrc}" alt="${p.label}" data-title="${p.label}" data-author="${meta && meta.author ? meta.author : ''}"
+              onload="if(this.naturalWidth<50){this.style.display='none';this.nextElementSibling.style.display='flex';fetchCover('${_labelSafe}','${_author}',this);}"
+              onerror="this.style.display='none';this.nextElementSibling.style.display='flex';fetchCover('${_labelSafe}','${_author}',this);">
             <div class="station-card-cover-fallback" style="display:none;color:${_cardText};opacity:0.35;">${initial}</div>
           </div>
           <div class="station-card-meta">
