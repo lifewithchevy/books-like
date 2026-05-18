@@ -5092,6 +5092,32 @@
         moods: ['dark', 'intense', 'emotional', 'tense'], pace: 'fast',
         tropes: ['dark romance', 'forbidden', 'age gap', 'morally gray hero'],
         pitch: "A young woman and the dangerous man who should be off-limits. Skye Warren's most emotionally devastating standalone."
+      },
+      "quicksilver": {
+        author: 'Callie Hart', rating: '4.4/5',
+        tag: 'Romantasy', tagClass: 'tag-romantasy',
+        pages: 736, spice: 'explicit', cliffhanger: true,
+        series: { name: 'Fae & Alchemy', book: 1, total: 4, complete: false },
+        moods: ['dark', 'swoony', 'tense', 'adventurous'], pace: 'medium',
+        tropes: ['enemies to lovers', 'fae court', 'morally grey MMC', 'shadow daddy', 'slow burn'],
+        pitch: "A jeweler accidentally summons a shadow-wielding fae warrior from another world — and finds herself the key to stopping a war she doesn't understand. The 2024 BookTok romantasy explosion that's all anyone in the genre will shut up about."
+      },
+      "icebreaker": {
+        author: 'Hannah Grace', rating: '3.9/5',
+        tag: 'Sports Romance', tagClass: 'tag-romance',
+        pages: 448, spice: 'explicit', cliffhanger: false,
+        series: { name: 'Maple Hills', book: 1, total: 3, complete: false },
+        moods: ['swoony', 'funny', 'hopeful'], pace: 'medium',
+        tropes: ['college romance', 'sports romance', 'forced proximity', 'opposites attract', 'sunshine × grumpy'],
+        pitch: "A figure skater and a hockey captain are forced to share an ice rink — and a lot more than just practice time. The BookTok hockey-romance phenomenon that launched a whole subgenre."
+      },
+      "the woman in cabin 10": {
+        author: 'Ruth Ware', rating: '3.7/5',
+        tag: 'Thriller', tagClass: 'tag-thriller',
+        pages: 340, spice: 'sweet', cliffhanger: false, series: null,
+        moods: ['mysterious', 'tense', 'shocking'], pace: 'fast',
+        tropes: ['unreliable narrator', 'locked room mystery', 'closed circle', 'paranoia', 'twisty thriller'],
+        pitch: "A travel journalist on a luxury cruise hears a woman thrown overboard from the cabin next door. There's just one problem: no one was ever staying in that cabin. The Netflix adaptation made this Ruth Ware's biggest book all over again."
       }
     };
     // Look up structured meta by title — handles a variety of suffix patterns so sequels
@@ -6312,6 +6338,9 @@
       'the kiss of deception':              '9780805099232',
       'heartless':                          '9781250044655',
       "a good girl's guide to murder":      '9781984896360',
+      'quicksilver':                        '9781649376291',
+      'icebreaker':                         '9781668026038',
+      'the woman in cabin 10':              '9781501132957',
       'twisted hate':                       '9781728274881',
       'vicious':                            '9780765335340',
       'five survive':                       '9780593374184',
@@ -6955,6 +6984,16 @@
       'rebel witch':                        '#2D0A3E', // deep purple-black
       'the jasad heir':                     '#8B1A1A', // deep crimson (Egyptian cover tones)
       'the jasad crown':                    '#5C1A1A', // darker crimson
+      'quicksilver':                        '#4B3F7B', // deep purple-silver shadow
+      'icebreaker':                         '#5B89B5', // ice rink blue
+      'the woman in cabin 10':              '#1A2E4A', // deep ocean night
+      "a good girl's guide to murder":      '#5B1F3A', // dark pink/black noir
+      'from blood and ash':                 '#4A0E1F', // blood crimson
+      'powerless':                          '#2A1B3D', // dark royal purple
+      'twisted love':                       '#1A0A0A', // dark possessive black
+      'funny story':                        '#A8C4E0', // light playful blue
+      'the love hypothesis':                '#3A6FA5', // STEM blue
+      'king of wrath':                      '#1F1A24', // dark billionaire charcoal
     };
 
     // Decide whether a given background is light enough to require dark text.
@@ -6977,33 +7016,35 @@
     }
 
     const BOOKS_LIKE_ENTRIES = [
-      // Fast-loading covers first; slow (Google Books only) at the end
+      // Top-demand romantasy
       { label: 'Fourth Wing',                      query: 'Fourth Wing',                       key: 'fourth wing' },
-      { label: 'It Ends With Us',                  query: 'It Ends With Us',                   key: 'it ends with us' },
       { label: 'ACOTAR',                           query: 'ACOTAR',                            key: 'a court of thorns and roses' },
       { label: 'From Blood and Ash',               query: 'From Blood and Ash',                key: 'from blood and ash' },
       { label: 'Powerless',                        query: 'Powerless',                         key: 'powerless' },
+      { label: 'Quicksilver',                      query: 'Quicksilver',                       key: 'quicksilver' },
+      { label: 'The Cruel Prince',                 query: 'The Cruel Prince',                  key: 'the cruel prince' },
+      { label: 'Six of Crows',                     query: 'Six of Crows',                      key: 'six of crows' },
+      // Contemporary + dark romance
+      { label: 'It Ends With Us',                  query: 'It Ends With Us',                   key: 'it ends with us' },
       { label: 'Twisted Love',                     query: 'Twisted Love',                      key: 'twisted love' },
-      { label: 'Verity',                           query: 'Verity',                            key: 'verity' },
       { label: 'Haunting Adeline',                 query: 'Haunting Adeline',                  key: 'haunting adeline' },
-      { label: 'Ugly Love',                        query: 'Ugly Love',                         key: 'ugly love' },
+      { label: 'King of Wrath',                    query: 'King of Wrath',                     key: 'king of wrath' },
+      { label: 'Icebreaker',                       query: 'Icebreaker',                        key: 'icebreaker' },
       { label: 'Funny Story',                      query: 'Funny Story',                       key: 'funny story' },
       { label: 'The Love Hypothesis',              query: 'The Love Hypothesis',               key: 'the love hypothesis' },
+      { label: 'The Summer I Turned Pretty',       query: 'The Summer I Turned Pretty',        key: 'the summer i turned pretty' },
+      // Thriller / mystery
+      { label: 'Verity',                           query: 'Verity',                            key: 'verity' },
       { label: 'Gone Girl',                        query: 'Gone Girl',                         key: 'gone girl' },
       { label: 'The Silent Patient',               query: 'The Silent Patient',                key: 'the silent patient' },
+      { label: 'The Woman in Cabin 10',            query: 'The Woman in Cabin 10',             key: 'the woman in cabin 10' },
+      { label: "A Good Girl's Guide to Murder",    query: "A Good Girl's Guide to Murder",     key: "a good girl's guide to murder" },
+      // Litfic + paranormal
       { label: 'Twilight',                         query: 'Twilight',                          key: 'twilight' },
-      { label: 'Six of Crows',                     query: 'Six of Crows',                      key: 'six of crows' },
-      { label: 'King of Wrath',                    query: 'King of Wrath',                     key: 'king of wrath' },
       { label: 'The Midnight Library',             query: 'The Midnight Library',              key: 'the midnight library' },
-      { label: 'Normal People',                    query: 'Normal People',                     key: 'normal people' },
-      { label: 'The Summer I Turned Pretty',       query: 'The Summer I Turned Pretty',        key: 'the summer i turned pretty' },
-      { label: 'Iron Flame',                       query: 'Iron Flame',                        key: 'iron flame' },
-      { label: 'Onyx Storm',                       query: 'Onyx Storm',                        key: 'onyx storm' },
-      { label: 'People We Meet on Vacation',       query: 'People We Meet on Vacation',        key: 'people we meet on vacation' },
       // Covers load via Google Books JSON API (slower) — placed here so scroll gives time to load
       { label: 'The Seven Husbands of Evelyn Hugo',query: 'The Seven Husbands of Evelyn Hugo', key: 'the seven husbands of evelyn hugo' },
       { label: 'The Housemaid',                    query: 'The Housemaid',                     key: 'the housemaid' },
-      { label: 'The Cruel Prince',                 query: 'The Cruel Prince',                  key: 'the cruel prince' },
     ].map(e => ({ ...e, bg: BOOK_HERO_BG[e.key] || '#1A1A2E' }));
 
     function renderBooksLikeShelf() {
