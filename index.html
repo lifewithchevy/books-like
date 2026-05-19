@@ -6444,15 +6444,18 @@
         label: 'Swoony Reads',
         description: 'Slow burns that will physically pain you. Love interests who ruin you for actual men. The r/RomanceBooks regulars.',
         moodKey: 'swoony',
+        // Data-backed: ACOTAR (47), Fourth Wing (45), IEWU (38), Cruel Prince (13),
+        // FBAA (13), Crescent City (11) all surfaced in cross-shelf analysis.
+        // Funny Story + Hating Game retained as contemporary-romance representatives.
         curatedKeys: [
-          'a court of thorns and roses',      // The swoon benchmark
-          'fourth wing',                       // Romantasy swoon peak
-          'the love hypothesis',               // STEM romance evergreen
-          'beach read',                        // Emily Henry classic
-          'the hating game',                   // Office romance classic
-          'funny story',                       // Emily Henry peak
-          'people we meet on vacation',        // Netflix film Jan 2026
-          'from blood and ash',                // Slow-burn-to-inferno romantasy
+          'a court of thorns and roses',      // 47.1 cross-shelf score
+          'fourth wing',                       // 44.7
+          'it ends with us',                   // 38.2
+          'the cruel prince',                  // 12.7
+          'from blood and ash',                // 12.7
+          'funny story',                       // Contemporary rom-com pick
+          'the hating game',                   // Office E2L classic
+          'the bridge kingdom',                // Arranged-marriage swoon
         ],
         accent: '#E84393',
         gradients: ['#FF6B9D','#C44569','#FF3CAC','#E84393','#FF8FAB'],
@@ -6478,19 +6481,18 @@
       {
         id: 'adventurous',
         label: 'Epic Fantasy',
-        description: 'Big worlds, brutal stakes, characters who earn every scar. The ones r/Fantasy will defend to the death.',
+        description: 'Big worlds, brutal stakes, characters who earn every scar. Cross-referenced against r/Fantasy threads.',
         moodKey: 'adventurous',
-        // Strictly adventure/quest epics — dark academia (Babel, Atlas Six) belongs
-        // in Thought-Provoking, not here.
+        // Ranked by score in the Fourth Wing dataset + most-recommended-ever.
         curatedKeys: [
-          'fourth wing',                       // Dragon-rider war academy
-          'six of crows',                      // Heist crew quest
-          'the priory of the orange tree',     // Epic dragon fantasy
-          'red rising',                        // Sci-fi dystopian war
-          'the hunger games',                  // Dystopian classic
-          'throne of glass',                   // SJM assassin epic
-          'the will of the many',              // Epic fantasy hit
-          'the cruel prince',                  // Fae court adventure
+          'fourth wing',                       // 64.8 score
+          'throne of glass',                   // 43.0
+          'iron flame',                        // 19.1 — Empyrean active
+          'the hunger games',                  // 19.0
+          'red rising',                        // 13.1
+          'the priory of the orange tree',     // 11.4
+          'six of crows',                      // 11.4
+          'the will of the many',              // Epic fantasy hit (low Reddit hit but high rating)
         ],
         accent: '#0077B6',
         gradients: ['#023E8A','#0077B6','#0096C7','#1B4332','#2D6A4F'],
@@ -6500,18 +6502,17 @@
         label: 'Books That Stay With You',
         description: 'They mess you up in the best way. You finish them and just stare at the ceiling for an hour.',
         moodKey: 'reflective',
-        // Strictly literary/reflective — Will of the Many moved to Epic Adventures.
+        // Cross-referenced against real Reddit threads (Song of Achilles, Midnight
+        // Library, Seven Husbands, most-recommended-ever).
         curatedKeys: [
-          'tomorrow, and tomorrow, and tomorrow', // Friendship + creative ambition
-          'a little life',                     // Devastating litfic
-          'yellowface',                        // Race + publishing satire
-          'circe',                             // Myth from a goddess's POV
-          'the song of achilles',              // Mythological tragic love
-          'babel',                             // Colonialism + language
-          'the secret history',                // Dark academia classic
-          'where the crawdads sing',           // Atmospheric character study
-          'normal people',                     // Sally Rooney intimacy
-          'the midnight library',              // Existential paths
+          'the song of achilles',              // 46.6 score — top reflective pick
+          'circe',                             // 37.2
+          'the midnight library',              // 21.5
+          'a little life',                     // 15.0
+          'piranesi',                          // 9.0 — strong sleeper signal
+          'recursion',                         // 8.7 — Blake Crouch mind-bender
+          'normal people',                     // 8.4 — Sally Rooney
+          'the secret history',                // 8.1 — dark academia
         ],
         accent: '#2D9F6F',
         gradients: ['#1B4332','#2D6A4F','#40916C','#52B788','#1A535C'],
@@ -6519,17 +6520,19 @@
       {
         id: 'bookclub',
         label: 'Book Club Reads',
-        description: 'The ones your book club will not shut up about. Reese, GMA, and r/bookclub all agree on these.',
+        description: 'The ones your book club will not shut up about. Cross-referenced against real Reddit threads.',
         moodKey: null,
+        // Ranked by cross-shelf analysis across "most recommended ever", "books
+        // everyone should read", Seven Husbands threads, and Song of Achilles threads.
         curatedKeys: [
-          'the seven husbands of evelyn hugo', // Reese-era book club staple
-          'tomorrow, and tomorrow, and tomorrow', // Friendship + craft
-          'where the crawdads sing',           // Reese huge
-          'verity',                            // Hoover thriller surprise
-          'yellowface',                        // Provocative satire
+          'the seven husbands of evelyn hugo', // 25.4 score across our datasets
+          'the song of achilles',              // 24.7
+          'circe',                             // 20.7
+          'a little life',                     // 13.5
+          'piranesi',                          // 9.6
           'the midnight library',              // Existential favorite
-          'a little life',                     // Discussed forever
-          'circe',                             // Mythological reframe
+          'normal people',                     // 7.4 — Sally Rooney discussion gold
+          'yellowface',                        // R.F. Kuang satire
         ],
         accent: '#8B5E3C',
         gradients: ['#6B4226','#8B5E3C','#A0522D','#5C3317','#7B3F00'],

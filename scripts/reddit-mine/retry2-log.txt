@@ -1,0 +1,41 @@
+↷ skip (already fetched): most-recommended-books-ever
+↷ skip (already fetched): books-everyone-should-read
+↷ skip (already fetched): books-like-fourth-wing
+↷ skip (already fetched): books-like-acotar
+↷ skip (already fetched): books-like-it-ends-with-us
+↷ skip (already fetched): books-like-seven-husbands-evelyn-hugo
+↷ skip (already fetched): books-like-verity
+↷ skip (already fetched): books-like-the-song-of-achilles
+↷ skip (already fetched): books-like-the-midnight-library
+↷ skip (already fetched): books-like-gone-girl
+↷ skip (already fetched): best-enemies-to-lovers
+↷ skip (already fetched): darkest-romance-books
+↷ skip (already fetched): cozy-fantasy
+↷ skip (already fetched): shortest-gripping-standalone
+↷ skip (already fetched): book-club-must-read
+↷ skip (already fetched): epic-fantasy-recommendations
+↷ skip (already fetched): swoon-worthy-romance
+↷ skip (already fetched): literary-fiction-that-changed-me
+
+════════════════════════════════════════
+  ✓ DONE. Data files written to data/
+════════════════════════════════════════
+total 14536
+-rw-r--r--  1 olgaroman  staff   157B May 19 10:49 best-enemies-to-lovers.json
+-rw-r--r--  1 olgaroman  staff   163B May 19 10:49 book-club-must-read.json
+-rw-r--r--  1 olgaroman  staff   986K May 19 10:04 books-everyone-should-read.json
+-rw-r--r--  1 olgaroman  staff   295K May 19 10:06 books-like-acotar.json
+-rw-r--r--  1 olgaroman  staff   1.6M May 19 10:05 books-like-fourth-wing.json
+-rw-r--r--  1 olgaroman  staff   148B May 19 10:49 books-like-gone-girl.json
+-rw-r--r--  1 olgaroman  staff   1.0M May 19 10:46 books-like-it-ends-with-us.json
+-rw-r--r--  1 olgaroman  staff   564K May 19 10:47 books-like-seven-husbands-evelyn-hugo.json
+-rw-r--r--  1 olgaroman  staff   325K May 19 10:48 books-like-the-midnight-library.json
+-rw-r--r--  1 olgaroman  staff   793K May 19 10:48 books-like-the-song-of-achilles.json
+-rw-r--r--  1 olgaroman  staff   496K May 19 10:47 books-like-verity.json
+-rw-r--r--  1 olgaroman  staff   159B May 19 10:49 cozy-fantasy.json
+-rw-r--r--  1 olgaroman  staff   134B May 19 10:49 darkest-romance-books.json
+-rw-r--r--  1 olgaroman  staff   158B May 19 10:49 epic-fantasy-recommendations.json
+-rw-r--r--  1 olgaroman  staff   178B May 19 10:49 literary-fiction-that-changed-me.json
+-rw-r--r--  1 olgaroman  staff   1.0M May 19 10:03 most-recommended-books-ever.json
+-rw-r--r--  1 olgaroman  staff   156B May 19 10:49 shortest-gripping-standalone.json
+-rw-r--r--  1 olgaroman  staff   155B May 19 10:49 swoon-worthy-romance.json
