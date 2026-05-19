@@ -7381,8 +7381,13 @@
               if (meta.tagClass) genreTally[meta.tagClass] = (genreTally[meta.tagClass] || 0) + weight;
             }
           };
-          (grData.ratedBooks?.fiveStars || []).forEach(b => scoreBook(b.title, 5)); // raised 3→5
-          (grData.ratedBooks?.fourStars || []).forEach(b => scoreBook(b.title, 2)); // raised 1→2
+          // Positive signal weighting:
+          //   5★ = 5  (strong love)
+          //   4★ = 2  (clear like)
+          //   3★ = 1  (mild positive — they finished it and didn't hate it)
+          (grData.ratedBooks?.fiveStars  || []).forEach(b => scoreBook(b.title, 5));
+          (grData.ratedBooks?.fourStars  || []).forEach(b => scoreBook(b.title, 2));
+          (grData.ratedBooks?.threeStars || []).forEach(b => scoreBook(b.title, 1));
 
           // Genre-level fill for books outside our catalogue
           const topGenres = detectTopGenres(grData.ratedBooks || { fiveStars: [], fourStars: [] });
@@ -7428,15 +7433,19 @@
           if (meta.tagClass) dislikeGenreTally[meta.tagClass] = (dislikeGenreTally[meta.tagClass] || 0) + weight;
         };
 
-        // 1-star: strong dislike (4 pts), 2-star: mild dislike (1 pt)
+        // Negative signal weighting:
+        //   1★  = 4  (strong dislike)
+        //   2★  = 1  (mild dislike)
+        //   DNF = 4  (couldn't finish — treat as strong dislike)
         (grData.ratedBooks?.oneStars || []).forEach(b => scoreBook(b.title, 4));
         (grData.ratedBooks?.twoStars || []).forEach(b => scoreBook(b.title, 1));
+        (grData.ratedBooks?.dnf      || []).forEach(b => scoreBook(b.title, 4));
 
-        // Genre-level dislike: run detectTopGenres on low-rated corpus
-        // (reuses fiveStars/fourStars params but passes 1★→five, 2★→four for weighting)
+        // Genre-level dislike: run detectTopGenres on low-rated + DNF corpus.
+        // (reuses fiveStars/fourStars params but passes 1★+DNF→five, 2★→four for weighting)
         const dislikedGenres = detectTopGenres({
-          fiveStars: grData.ratedBooks?.oneStars || [],
-          fourStars:  grData.ratedBooks?.twoStars  || [],
+          fiveStars: [...(grData.ratedBooks?.oneStars || []), ...(grData.ratedBooks?.dnf || [])],
+          fourStars: grData.ratedBooks?.twoStars  || [],
         });
         dislikedGenres.forEach(g => {
           (GENRE_TO_MOODS[g.name] || []).forEach(m => {
@@ -11230,12 +11239,17 @@
       trackViewedBook(p.key); // source book is now "known" — don't surface in Made For You
       const meta = bookMetadata[p.key] || {};
 
-      // Pre-seed alreadyRead from GR cache if it's still empty (race condition fix)
+      // Pre-seed alreadyRead from GR cache if it's still empty (race condition fix).
+      // Merges Read shelf + DNF shelf — both are titles we shouldn't recommend back.
       if (alreadyRead.length === 0 && GR_CACHE_KEY) {
         try {
           const _cached = JSON.parse(localStorage.getItem(GR_CACHE_KEY));
-          if (_cached && _cached.d && _cached.d.readTitles && _cached.d.readTitles.length) {
-            alreadyRead = [...new Set([..._cached.d.readTitles])];
+          if (_cached && _cached.d) {
+            const _read = _cached.d.readTitles || [];
+            const _dnf  = (_cached.d.ratedBooks?.dnf || []).map(b => b.title);
+            if (_read.length || _dnf.length) {
+              alreadyRead = [...new Set([..._read, ..._dnf])];
+            }
           }
         } catch(e) {}
       }
@@ -11666,7 +11680,7 @@
     // ===== LIVE GOODREADS DATA =====
     let GOODREADS_USER_ID = '';
     const READING_GOAL = 50;
-    let GR_CACHE_KEY = 'gr_live_v5'; // bumped: now captures 1★/2★ dislike data
+    let GR_CACHE_KEY = 'gr_live_v6'; // bumped: now captures 3★ positive + DNF dislike data
     const GR_CACHE_TTL = 6 * 60 * 60 * 1000; // refresh every 6 hours (manual "Sync now" available)
 
     // Public CORS proxies — used as fallback (and for local dev where /api isn't available)
@@ -11788,7 +11802,7 @@
     // Also captures book_description so we can detect genres from the corpus.
     // Captures all star levels — high-rated for positive signal, low-rated for dislike signal.
     async function fetchRatedBooks() {
-      const fiveStars = [], fourStars = [], twoStars = [], oneStars = [];
+      const fiveStars = [], fourStars = [], threeStars = [], twoStars = [], oneStars = [];
       for (let page = 1; page <= 15; page++) {
         try {
           const xml = await fetchGrShelf('read', page);
@@ -11799,16 +11813,44 @@
             const title = it.querySelector('title')?.textContent?.trim() || '';
             const author = it.querySelector('author_name')?.textContent?.trim() || '';
             const desc = it.querySelector('book_description')?.textContent?.trim() || '';
+            // 5/4/3 star: positive signal (different weights). 2/1 star: negative.
+            // 3★ used to be skipped — adding it back as a weak positive signal since
+            // it still tells us the reader finished the book and liked it enough.
             if      (rating === 5 && title) fiveStars.push({ title, author, desc });
             else if (rating === 4 && title) fourStars.push({ title, author, desc });
+            else if (rating === 3 && title) threeStars.push({ title, author, desc });
             else if (rating === 2 && title) twoStars.push({ title, author, desc });
             else if (rating === 1 && title) oneStars.push({ title, author, desc });
-            // 3-star = neutral, intentionally skipped
           });
           if (items.length < 30) break;
         } catch(e) { break; }
       }
-      return { fiveStars, fourStars, twoStars, oneStars };
+      return { fiveStars, fourStars, threeStars, twoStars, oneStars };
+    }
+
+    // DNF shelf (did-not-finish) — strong negative signal. Same weight as 1★.
+    // Goodreads users name this shelf various ways; try the common variants.
+    async function fetchDnfBooks() {
+      const SHELVES = ['did-not-finish', 'dnf', 'did_not_finish'];
+      const out = [];
+      for (const shelf of SHELVES) {
+        try {
+          for (let page = 1; page <= 3; page++) {
+            const xml = await fetchGrShelf(shelf, page);
+            const items = [...xml.querySelectorAll('item')];
+            if (items.length === 0) break;
+            items.forEach(it => {
+              const title = it.querySelector('title')?.textContent?.trim() || '';
+              const author = it.querySelector('author_name')?.textContent?.trim() || '';
+              const desc = it.querySelector('book_description')?.textContent?.trim() || '';
+              if (title) out.push({ title, author, desc });
+            });
+            if (items.length < 30) break;
+          }
+          if (out.length > 0) break; // Found the shelf, stop trying alternates
+        } catch(e) { /* shelf doesn't exist for this user, try next */ }
+      }
+      return out;
     }
 
     // ===== GENRE DETECTION =====
@@ -11911,11 +11953,15 @@
         let yearRead = 0, totalRating = 0, ratedCount = 0;
         const favorites = [];
 
-        // Kick off TBR and rated-books fetches in parallel with stat collection
-        const [tbrFetched, ratedBooks] = await Promise.all([
+        // Kick off TBR, rated-books, and DNF fetches in parallel with stat collection.
+        // DNF results merge into ratedBooks.dnf as a strong-negative signal so the
+        // taste-vector logic can treat them like 1★ books (filter from recs).
+        const [tbrFetched, ratedBooks, dnfBooks] = await Promise.all([
           fetchTbrBooks(),
-          fetchRatedBooks()
+          fetchRatedBooks(),
+          fetchDnfBooks(),
         ]);
+        ratedBooks.dnf = dnfBooks;
 
         // Count yearly reads + avg rating — scan pages until we stop finding this year's reads
         try {
@@ -12033,9 +12079,12 @@
         }
       }
 
-      // Merge live read titles into alreadyRead so we never recommend them
-      if (data.readTitles && data.readTitles.length > 0) {
-        alreadyRead = [...new Set([...alreadyRead, ...data.readTitles])];
+      // Merge live read titles into alreadyRead so we never recommend them.
+      // DNF (did-not-finish) titles get the same filter — if a reader abandoned
+      // a book, we shouldn't recommend it back to them.
+      const _dnfTitles = (data.ratedBooks?.dnf || []).map(b => b.title);
+      if ((data.readTitles && data.readTitles.length > 0) || _dnfTitles.length > 0) {
+        alreadyRead = [...new Set([...alreadyRead, ...(data.readTitles || []), ..._dnfTitles])];
         // If a station is currently open, re-render it now that we have the full read list
         if (typeof _currentStationIdx === 'number' && _currentStationIdx !== null) {
           openStation(_currentStationIdx);
