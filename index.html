@@ -8125,6 +8125,12 @@
     }
 
     function initDiscoverTab() {
+      // Edge middleware injects a static SEO block (#seo-static-block) into
+      // /books-like/*, /genre/*, /mood/* responses so Googlebot sees the H1
+      // + description on first crawl. Remove it now that the SPA is taking over.
+      const _seoBlock = document.getElementById('seo-static-block');
+      if (_seoBlock) _seoBlock.remove();
+
       // Build vibe pill strip
       const pillsEl = document.getElementById('discoverVibePills');
       if (pillsEl) {

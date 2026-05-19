@@ -134,6 +134,32 @@ function buildMeta(pathname) {
   return null;
 }
 
+// SEO body block — visible to Googlebot before JS hydrates, hidden from
+// users once the SPA takes over. The SPA looks for #seo-static-block and
+// removes it on initDiscoverTab (added to the home init flow).
+function buildSeoBlock(meta) {
+  const safeLabel = escapeHtml(meta.label);
+  let h1Text, bodyHtml;
+  if (meta.pageKind === 'books-like') {
+    h1Text = `Books Like ${safeLabel}`;
+    bodyHtml = `<p>Looking for books like <strong>${safeLabel}</strong>? Here are reader-recommended picks, curated from real Reddit threads, Goodreads ratings, and BookTok consensus. Each pick links to similar books across romantasy, romance, fantasy, and thrillers.</p>`;
+  } else if (meta.pageKind === 'genre') {
+    h1Text = `${safeLabel} Books`;
+    bodyHtml = `<p>The best <strong>${safeLabel.toLowerCase()}</strong> books real readers can't stop recommending. Hand-picked rather than algorithmically generated, with picks cross-referenced against Reddit reader threads.</p>`;
+  } else if (meta.pageKind === 'mood') {
+    h1Text = `${safeLabel} Books`;
+    bodyHtml = `<p>Books for when you're in the mood for something <strong>${safeLabel.toLowerCase()}</strong>. Curated picks from real reader threads — no algorithm slop.</p>`;
+  } else {
+    return '';
+  }
+  // Inline styles so the block looks like a clean fallback if JS never loads.
+  // Hidden visually but indexable via aria-hidden=false; SPA removes it on init.
+  return `<div id="seo-static-block" style="max-width:760px;margin:0 auto;padding:40px 20px;font-family:'Inter',sans-serif;color:#1A1A1A;">
+    <h1 style="font-family:'Playfair Display',serif;font-size:2rem;margin:0 0 16px;">${h1Text}</h1>
+    ${bodyHtml}
+  </div>`;
+}
+
 function jsonLd(meta) {
   // CollectionPage with about reference — tells Google "this is a curated list
   // of recommendations related to <BOOK NAME>". Rich snippets eligible.
@@ -188,6 +214,14 @@ export default async function middleware(request) {
   // Inject JSON-LD just before </head> (canonical was handled above)
   const ld = JSON.stringify(jsonLd(meta));
   html = html.replace(/<\/head>/i, `  <script type="application/ld+json">${ld}</script>\n</head>`);
+
+  // Inject a static SEO block at the start of <body> so Googlebot sees the
+  // page's H1 + description even on first-crawl (when JS hasn't rendered yet).
+  // The block is hidden from real users via JS on load (the SPA hides it
+  // when it takes over). For Google: indexable. For users: a brief skeleton
+  // they barely see before the SPA replaces the page.
+  const seoBlock = buildSeoBlock(meta);
+  html = html.replace(/<body[^>]*>/i, (m) => `${m}\n${seoBlock}`);
 
   return new Response(html, {
     status: 200,
