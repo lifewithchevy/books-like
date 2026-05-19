@@ -6480,8 +6480,8 @@
       },
       {
         id: 'swoony',
-        label: 'Swoony Reads',
-        description: 'Slow burns that will physically pain you. Love interests who ruin you for actual men. The r/RomanceBooks regulars.',
+        label: 'Romance That Wrecks You',
+        description: 'Slow burns that physically pain you. Love interests who ruin you for actual men. The r/RomanceBooks regulars.',
         moodKey: 'swoony',
         // Data-backed: ACOTAR (47), Fourth Wing (45), IEWU (38), Cruel Prince (13),
         // FBAA (13), Crescent City (11) all surfaced in cross-shelf analysis.
@@ -6594,11 +6594,15 @@
         accent: '#C1121F',
         gradients: ['#5C1A1A','#C1121F','#9B1D2A','#8B0000','#B5200D'],
       },
+      // Dark Romance shelf hidden from homepage until we get user feedback.
+      // Keeping config + curated picks so we can re-enable by flipping
+      // hidden:false. The /mood/dark page still works for direct links.
       {
         id: 'dark',
         label: 'Dark Romance',
         description: 'Morally grey everyone. Impossible choices. Stories that don\'t apologize for going there.',
         moodKey: 'dark',
+        hidden: true,
         curatedKeys: [
           'haunting adeline',                  // The dark-romance benchmark
           'verity',                            // Hoover thriller-romance
@@ -6833,6 +6837,9 @@
     }
 
     function renderDiscoverShelf(config) {
+      // Skip shelves explicitly hidden from the homepage (e.g. Dark Romance
+      // while we gauge user feedback). Direct mood/genre URLs still work.
+      if (config.hidden) return '';
       let books;
       if (Array.isArray(config.curatedKeys) && config.curatedKeys.length) {
         // Curated path — use the exact list of keys in the order provided.
