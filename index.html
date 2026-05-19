@@ -5141,6 +5141,23 @@
         moods: ['tense', 'shocking', 'mysterious'], pace: 'fast',
         tropes: ['domestic thriller', 'unreliable narrator', 'twist ending', 'class tension', 'wealthy family'],
         pitch: "A woman with a hidden past takes a job as a housemaid for a wealthy couple. The twist ending is what made this BookTok's favorite thriller for two years running. Lifetime adaptation 2025, sequels still rolling."
+      },
+      "eleanor oliphant is completely fine": {
+        author: 'Gail Honeyman', rating: '4.3/5',
+        tag: 'Literary Fiction', tagClass: 'tag-literary',
+        pages: 327, spice: 'sweet', cliffhanger: false, series: null,
+        moods: ['emotional', 'reflective', 'hopeful', 'funny'], pace: 'medium',
+        tropes: ['unreliable narrator', 'trauma recovery', 'social outcast', 'unlikely friendship'],
+        pitch: "Eleanor Oliphant has a routine, a job, and zero friends. She talks to her mother every Wednesday and orders the same vodka at the same shop. Then she meets Raymond, and everything she's been hiding from starts catching up with her. Costa Book Award winner. The book your book club will fight you to discuss."
+      },
+      "one dark window": {
+        author: 'Rachel Gillig', rating: '4.1/5',
+        tag: 'Romantasy', tagClass: 'tag-romantasy',
+        pages: 432, spice: 'steamy', cliffhanger: true,
+        series: { name: 'The Shepherd King', book: 1, total: 2, complete: true },
+        moods: ['dark', 'mysterious', 'swoony', 'tense'], pace: 'medium',
+        tropes: ['cursed magic', 'morally grey MMC', 'gothic atmosphere', 'tarot cards', 'forbidden love'],
+        pitch: "A young woman hosting a magical creature in her mind teams up with a masked highwayman to break the curse killing her kingdom. Gothic atmosphere, twisty tarot magic, and a slow-burn romance with a love interest who'll absolutely ruin you. The duology BookTok has been recommending nonstop."
       }
     };
     // Look up structured meta by title — handles a variety of suffix patterns so sequels
@@ -6364,6 +6381,8 @@
       'quicksilver':                        '9781649376291',
       'icebreaker':                         '9781668026038',
       'the woman in cabin 10':              '9781501132957',
+      'eleanor oliphant is completely fine':'9780735220683',
+      'one dark window':                    '9780316312691',
       'twisted hate':                       '9781728274881',
       'vicious':                            '9780765335340',
       'five survive':                       '9780593374184',
@@ -6453,7 +6472,7 @@
           'it ends with us',                   // 38.2
           'the cruel prince',                  // 12.7
           'from blood and ash',                // 12.7
-          'funny story',                       // Contemporary rom-com pick
+          'happy place',                       // 🌟 Editor's pick — Emily Henry 5★
           'the hating game',                   // Office E2L classic
           'the bridge kingdom',                // Arranged-marriage swoon
         ],
@@ -6472,8 +6491,8 @@
           'the maid',                          // Quirky cozy mystery
           'beach read',                        // Emily Henry comfort food
           'people we meet on vacation',        // Netflix Jan 2026 film
-          'funny story',                       // Emily Henry rom-com peak
-          'the hating game',                   // Office rom-com classic
+          'book lovers',                       // 🌟 Editor's pick — Emily Henry, perfect cozy romance
+          'funny story',                       // Emily Henry peak
         ],
         accent: '#E07B39',
         gradients: ['#D4956A','#C47741','#A0522D','#8B4513','#CD853F'],
@@ -6509,10 +6528,10 @@
           'circe',                             // 37.2
           'the midnight library',              // 21.5
           'a little life',                     // 15.0
-          'piranesi',                          // 9.0 — strong sleeper signal
+          'the invisible life of addie larue', // 🌟 Editor's pick — V.E. Schwab, modern litfic fav
+          'piranesi',                          // 9.0
           'recursion',                         // 8.7 — Blake Crouch mind-bender
           'normal people',                     // 8.4 — Sally Rooney
-          'the secret history',                // 8.1 — dark academia
         ],
         accent: '#2D9F6F',
         gradients: ['#1B4332','#2D6A4F','#40916C','#52B788','#1A535C'],
@@ -6528,10 +6547,10 @@
           'the seven husbands of evelyn hugo', // 25.4 score across our datasets
           'the song of achilles',              // 24.7
           'circe',                             // 20.7
+          'eleanor oliphant is completely fine', // 🌟 Editor's pick — Costa winner, top book-club rec
           'a little life',                     // 13.5
           'piranesi',                          // 9.6
           'the midnight library',              // Existential favorite
-          'normal people',                     // 7.4 — Sally Rooney discussion gold
           'yellowface',                        // R.F. Kuang satire
         ],
         accent: '#8B5E3C',
@@ -6564,11 +6583,11 @@
           'haunting adeline',                  // The dark-romance benchmark
           'verity',                            // Hoover thriller-romance
           'twisted love',                      // Top Reddit dark E2L
+          'one dark window',                   // 🌟 Editor's pick — Rachel Gillig gothic romantasy
           'a touch of darkness',               // Hades/Persephone dark fantasy
           'neon gods',                         // Greek myth dark romance
           'the serpent and the wings of night',// Vampire dark fantasy
           'from blood and ash',                // Dark romantasy peak
-          'the silent patient',                // Psychological dark thriller
         ],
         accent: '#5A189A',
         gradients: ['#2C1654','#4A1942','#6A0572','#1A1A2E','#16213E'],
@@ -7121,6 +7140,8 @@
       'funny story':                        '#A8C4E0', // light playful blue
       'the love hypothesis':                '#3A6FA5', // STEM blue
       'king of wrath':                      '#1F1A24', // dark billionaire charcoal
+      'eleanor oliphant is completely fine':'#E8B23A', // pale yellow (book cover)
+      'one dark window':                    '#1A0E2A', // gothic deep purple-black
     };
 
     // Decide whether a given background is light enough to require dark text.
