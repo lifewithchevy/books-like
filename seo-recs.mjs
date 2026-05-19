@@ -71,7 +71,7 @@ export const BOOKS_LIKE_RECS = {
   'verity': {
     sourceTitle: 'Verity',
     sourceAuthor: 'Colleen Hoover',
-    sourceAbout: "Verity is Colleen Hoover\'s 2018 psychological thriller. A struggling writer takes a job finishing a bestselling author\'s series, only to find a horrifying manuscript hidden in her office. The "chapter 13 scene" went so viral on BookTok it sold out bookstores nationwide. Amazon MGM adaptation announced.",
+    sourceAbout: "Verity is Colleen Hoover\'s 2018 psychological thriller. A struggling writer takes a job finishing a bestselling author\'s series, only to find a horrifying manuscript hidden in her office. The chapter-13 scene went so viral on BookTok it sold out bookstores nationwide. Amazon MGM adaptation announced.",
     recs: [
       { title: 'It Ends With Us', author: 'Colleen Hoover', why: 'Mentioned in 11 of 20 "books like Verity" threads we pulled from Reddit (112 comments — the strongest signal). CoHo crossover most Verity readers also love.' },
       { title: 'The Silent Patient', author: 'Alex Michaelides', why: '6 of 20 Verity threads on Reddit mention it. A famous painter shoots her husband five times and never speaks again. Her therapist becomes obsessed with making her talk. The ending rewrites everything.' },
