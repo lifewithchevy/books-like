@@ -6938,10 +6938,10 @@
           picks = [...picks, ...extras];
         }
       } else {
-        // Fallback: Everyone Is Talking About — REAL trending books on BookTok / Goodreads / Google
-        // Curated from actual viral titles (Fourth Wing, ACOTAR, IEWU, Evelyn Hugo, etc.)
+        // Fallback: Reader Favorites — the all-time most-recommended books across Reddit,
+        // BookTok, and Goodreads. Stable evergreen entry points for non-GR users.
         config = {
-          title: 'Everyone Is Talking About',
+          title: 'Reader Favorites',
           genreLabel: null,
           gradient: 'linear-gradient(135deg,#1A0518 0%,#4A0E38 55%,#2A0E50 100%)',
           onclick: "discoverSelectTrending()",
@@ -7936,7 +7936,7 @@
       if (typeof loadCoversInView === 'function') loadCoversInView();
     }
 
-    // Navigate to the "Everyone Is Talking About" curated trending page (non-GR users)
+    // Navigate to the "Reader Favorites" curated trending page (non-GR users)
     function discoverSelectTrending() {
       _navGo('trending', {});
       const _vb = document.getElementById('discoverVibeBar');
@@ -7945,9 +7945,9 @@
       const filteredEl = document.getElementById('discover-filtered-results');
       filteredEl.style.display = 'block';
       const labelEl = document.getElementById('discoverResultsLabel');
-      if (labelEl) labelEl.textContent = '🔥 Everyone Is Talking About';
+      if (labelEl) labelEl.textContent = '🔥 Reader Favorites';
       const descEl = document.getElementById('discoverResultsDesc');
-      if (descEl) descEl.innerHTML = `<p style="margin:0">The books readers on Goodreads and Reddit can't put down right now.</p>`;
+      if (descEl) descEl.innerHTML = `<p style="margin:0">The books readers recommend over and over across Reddit, BookTok, and Goodreads.</p>`;
       // Real viral titles in priority order (BookTok / Goodreads / Google Trends 2024–2025)
       const TRENDING_KEYS = [
         'fourth wing', 'a court of thorns and roses', 'it ends with us',
