@@ -1271,22 +1271,26 @@
       .discover-hero-cover:nth-child(2) { height: 175px; }
       .discover-hero-cover:nth-child(3) { height: 162px; }
       .discover-hero-cover.hero-cover-backup { height: 162px; }
+      /* Tighten the hero title on very narrow phones so 'Favorites' fits on one line. */
+      .discover-hero-title { font-size: 50px; letter-spacing: -1px; }
     }
     .discover-hero-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(40px, 8vw, 72px);
+      /* Big, Fable-style display H1. Mobile-first: 56px baseline scales up
+         smoothly with viewport, capped so it stays readable on desktop. */
+      font-size: clamp(56px, 13vw, 96px);
       font-weight: 700;
       color: #fff;
-      line-height: 1.04;
-      margin-bottom: 14px;
-      letter-spacing: -0.8px;
+      line-height: 1.02;
+      margin-bottom: 18px;
+      letter-spacing: -1.2px;
       text-shadow: 0 2px 16px rgba(0,0,0,0.55);
     }
     .discover-hero-subtitle {
-      font-size: 16px;
-      line-height: 1.5;
-      color: rgba(255,255,255,0.85);
-      max-width: 360px;
+      font-size: clamp(15px, 4vw, 17px);
+      line-height: 1.55;
+      color: rgba(255,255,255,0.88);
+      max-width: 380px;
       text-shadow: 0 1px 6px rgba(0,0,0,0.5);
     }
     /* CTA button — signals the hero is clickable */
