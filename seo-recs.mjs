@@ -144,22 +144,60 @@ export const BOOKS_LIKE_RECS = {
     ],
   },
 
-  'gone-girl': {
-    sourceTitle: 'Gone Girl',
-    sourceAuthor: 'Gillian Flynn',
-    sourceAbout: "Gone Girl is Gillian Flynn\'s 2012 thriller that defined a decade of psychological suspense. On their fifth anniversary, Amy disappears and Nick becomes the prime suspect. The twist is legendary. Amy is the most complicated female character in modern fiction. The book that made every reader question every narrator.",
+  'funny-story': {
+    sourceTitle: 'Funny Story',
+    sourceAuthor: 'Emily Henry',
+    sourceAbout: "Funny Story is Emily Henry's 2024 contemporary romance and her sharpest book to date. Daphne gets dumped by her fiance for his childhood best friend. Then she ends up roommates with Miles, who happens to be the ex-boyfriend of the woman who stole her fiance. They decide to fake-date for revenge. Witty, painfully real, and the Emily Henry book BookTok built whole accounts around in 2024.",
     recs: [
-      { title: 'The Silent Patient', author: 'Alex Michaelides', why: 'A famous painter shoots her husband five times and never speaks again. Her therapist becomes obsessed with making her talk. The ending rewrites everything. Direct Gone Girl successor.' },
-      { title: 'Verity', author: 'Colleen Hoover', why: 'Mentioned in 7 of 20 "books like Gone Girl" threads on Reddit. A writer finishing a bestselling author\'s series finds a horrifying manuscript hidden in her office. The unreliable-narrator energy is identical.' },
-      { title: 'The Housemaid', author: 'Freida McFadden', why: 'A woman with a hidden past takes a job as a housemaid for a wealthy couple. Twist ending that earned its BookTok phenomenon status.' },
-      { title: 'The Woman in Cabin 10', author: 'Ruth Ware', why: 'A travel journalist hears a woman thrown overboard. Problem: no one was ever staying in that cabin. Same locked-room paranoia. Netflix adaptation drove resurgence.' },
-      { title: 'Mexican Gothic', author: 'Silvia Moreno-Garcia', why: 'A glamorous 1950s socialite investigates her cousin\'s mysterious illness in a decaying Mexican manor. Atmospheric gothic horror with the same slow-creeping dread.' },
-      { title: 'Recursion', author: 'Blake Crouch', why: 'A neuroscientist accidentally shatters the timeline. Different genre but the same "twist that rewrites everything" structure Gone Girl made famous.' },
+      { title: 'Happy Place', author: 'Emily Henry', why: 'Emily Henry\'s 2023 hit, often paired with Funny Story in every "what should I read next" thread on r/RomanceBooks. A friend group reunites at a Maine cottage where one couple is pretending they didn\'t already break up. Same emotional intelligence, different setup.' },
+      { title: 'Beach Read', author: 'Emily Henry', why: 'Henry\'s breakout and her best slow-burn. Two writers stuck next to each other for a summer make a bet to swap genres. The fake-arrangement-to-real-feelings template that Funny Story refines.' },
+      { title: 'People We Meet on Vacation', author: 'Emily Henry', why: 'Two best friends, ten summer trips, one fight that ended it all. Netflix film adaptation dropped January 2026. The friends-to-lovers angst Funny Story readers chase next.' },
+      { title: 'The Hating Game', author: 'Sally Thorne', why: 'The office enemies-to-lovers blueprint. Two executive assistants who share an office despise each other (or do they?). Same banter-to-feelings pipeline. Reread-able for years.' },
+      { title: 'The Spanish Love Deception', author: 'Elena Armas', why: 'Fake-dating your hot coworker to a wedding in Spain. Combines all the tropes Funny Story flirts with into one extremely satisfying package. r/RomanceBooks regular.' },
+      { title: 'The Love Hypothesis', author: 'Ali Hazelwood', why: 'A PhD candidate fake-dates a brooding professor to convince her best friend her love life is fine. STEM rom-com with the same sharp female lead voice.' },
     ],
     faqs: [
-      { q: 'Is Gone Girl scary?', a: 'It\'s not horror, but it\'s deeply unsettling. The most disturbing part is psychological, not graphic. Most readers find Amy more chilling than any scene.' },
-      { q: 'What are Gillian Flynn\'s other books?', a: 'Sharp Objects (HBO adaptation with Amy Adams) and Dark Places. Both share the dark family-secret DNA. Sharp Objects is the most-recommended next read.' },
-      { q: 'What\'s the modern Gone Girl?', a: 'The Silent Patient by Alex Michaelides is the consensus modern Gone Girl. Same unreliable narrator, same legendary twist.' },
+      { q: 'What\'s Emily Henry\'s best book to start with?', a: 'Beach Read is the consensus answer on r/RomanceBooks. Funny Story is her sharpest, Happy Place her most emotional. People We Meet on Vacation is the easiest entry point. All four work as standalones.' },
+      { q: 'Is Funny Story spicy?', a: 'Yes, but not explicit. Two-to-three on most spice scales. The chemistry is more about banter and emotional intimacy than spice. Compare to Beach Read for similar level.' },
+      { q: 'What should I read after every Emily Henry book?', a: 'Ali Hazelwood, Tessa Bailey, and Elena Armas are the most-recommended next-author crossovers. The Hating Game by Sally Thorne is the consensus single-book pick.' },
+    ],
+  },
+
+  'quicksilver': {
+    sourceTitle: 'Quicksilver',
+    sourceAuthor: 'Callie Hart',
+    sourceAbout: "Quicksilver is Callie Hart's 2024 dark romantasy that became a BookTok obsession. Saeris, a desert thief, accidentally opens a gateway and ends up bound to Kingfisher, a deadly fae warrior with his own agenda. Slow-burn enemies-to-lovers, gorgeous fae court worldbuilding, and 700 pages of pure romantasy momentum. The indie-published phenomenon that finally got a traditional re-release.",
+    recs: [
+      { title: 'A Court of Thorns and Roses', author: 'Sarah J. Maas', why: 'The fae court blueprint Quicksilver builds on. Feyre and Rhysand set the standard for the morally grey fae male and the human woman who refuses to be a victim. Every Quicksilver fan eventually reads ACOTAR.' },
+      { title: 'The Serpent and the Wings of Night', author: 'Carissa Broadbent', why: 'Dark vampire romantasy with the same slow-burn enemies-to-lovers tension. A human enters a deadly tournament where only one survives — and falls for the rival sworn to kill her. The most-recommended Quicksilver readalike on r/Romantasy.' },
+      { title: 'From Blood and Ash', author: 'Jennifer L. Armentrout', why: 'A sheltered Maiden falls for her dangerous guard while everything she believed about her world crumbles. Same chosen-one-in-a-deadly-world arc Quicksilver runs on.' },
+      { title: 'Fourth Wing', author: 'Rebecca Yarros', why: 'The other 2023-2024 romantasy phenomenon. War academy instead of fae court, dragons instead of magical creatures, but the same morally grey love interest and explicit-as-it-gets pacing.' },
+      { title: 'The Cruel Prince', author: 'Holly Black', why: 'The original fae enemies-to-lovers. Jude vs Cardan is the rivalry that defined a generation. If Quicksilver pulled you into fae politics, Black wrote the playbook.' },
+      { title: 'When the Moon Hatched', author: 'Sarah A. Parker', why: 'A bounty hunter who can\'t die teams up with a dragon rider she shouldn\'t trust. Self-pub romantasy with the same lush prose and dragon-bond emotional core.' },
+    ],
+    faqs: [
+      { q: 'Is Quicksilver part of a series?', a: 'Yes — book 1 of the Fae & Alchemy series. Book 2 is out and book 3 is coming. The series is planned for 4 books total. Each book ends on a cliffhanger so the wait between releases is real.' },
+      { q: 'How spicy is Quicksilver?', a: 'Explicit. Multiple detailed scenes. Comparable to From Blood and Ash or Haunting Adeline on most reader spice scales. Not for sweet-romance readers.' },
+      { q: 'What\'s the next book like Quicksilver?', a: 'The Serpent and the Wings of Night by Carissa Broadbent is the consensus next read on r/Romantasy. Same slow burn, same morally grey love interest, same dark fantasy worldbuilding.' },
+    ],
+  },
+
+  'one-dark-window': {
+    sourceTitle: 'One Dark Window',
+    sourceAuthor: 'Rachel Gillig',
+    sourceAbout: "One Dark Window is Rachel Gillig's gothic romantasy duology opener. Elspeth Spindle has a magical creature trapped in her mind — and a curse killing her kingdom. When she teams up with the masked highwayman known only as the Captain, she has to break the curse without losing herself in the process. Tarot magic, gothic atmosphere, and a slow-burn romance with a love interest who will absolutely ruin you. Concludes in Two Twisted Crowns.",
+    recs: [
+      { title: 'The Serpent and the Wings of Night', author: 'Carissa Broadbent', why: 'Same dark gothic atmosphere and slow-burn morally grey love interest. A human enters a vampire competition where only one survives. The most-recommended One Dark Window readalike on r/Romantasy.' },
+      { title: 'Heartless Hunter', author: 'Kristen Ciccarelli', why: 'A witch and the witch-hunter sworn to capture her in a Roaring Twenties-inspired gothic fantasy. Same enemies-to-lovers across magical lines, same atmospheric prose, same complete duology format.' },
+      { title: 'From Blood and Ash', author: 'Jennifer L. Armentrout', why: 'A sheltered Maiden falls for her dangerous guard while everything she believed about her world crumbles. Same dark romantasy with chosen-one stakes that One Dark Window plays in.' },
+      { title: 'A Touch of Darkness', author: 'Scarlett St. Clair', why: 'A modern Hades and Persephone retelling with the same gothic-meets-romance atmosphere. Morally grey love interest, magical bargains, and a heroine who refuses to be reduced to a damsel.' },
+      { title: 'The Cruel Prince', author: 'Holly Black', why: 'The fae-court enemies-to-lovers blueprint Gillig builds on. A mortal girl in the faerie court schemes her way to power. The court intrigue + masked-stranger dynamic translates directly.' },
+      { title: 'A Court of Thorns and Roses', author: 'Sarah J. Maas', why: 'The romantasy foundation every reader eventually returns to. Fae courts, morally grey love interest, and a slow-burn romance that explodes in book 2. If you loved the Captain, Rhysand is waiting.' },
+    ],
+    faqs: [
+      { q: 'Is One Dark Window a complete duology?', a: 'Yes — One Dark Window is book 1, Two Twisted Crowns is book 2 and concludes the story. The duology is complete, which is rare in romantasy. You can binge both without a multi-year wait.' },
+      { q: 'How dark is One Dark Window?', a: 'Atmospherically dark (gothic horror vibes, cursed magic, body horror) rather than dark-romance dark. Spice level is moderate. Tropes lean gothic-romance more than spicy-romance.' },
+      { q: 'What\'s Rachel Gillig\'s next series?', a: 'The Knight and the Moth, releasing 2025-2026. Different world, same gothic-romantasy DNA. Most r/Romantasy readers are pre-ordering on Gillig\'s name alone after the Shepherd King duology stuck the landing.' },
     ],
   },
 };
