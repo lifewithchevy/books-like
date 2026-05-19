@@ -180,12 +180,14 @@ export default async function middleware(request) {
     .replace(/<meta property="og:description"[^>]*>/, `<meta property="og:description" content="${d}">`)
     .replace(/<meta property="og:url"[^>]*>/, `<meta property="og:url" content="${c}">`)
     .replace(/<meta name="twitter:title"[^>]*>/, `<meta name="twitter:title" content="${t}">`)
-    .replace(/<meta name="twitter:description"[^>]*>/, `<meta name="twitter:description" content="${d}">`);
+    .replace(/<meta name="twitter:description"[^>]*>/, `<meta name="twitter:description" content="${d}">`)
+    // Replace the homepage canonical link (rather than appending — avoids
+    // duplicate canonicals which Google ignores or flags).
+    .replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${c}">`);
 
-  // Inject canonical + JSON-LD just before </head>
+  // Inject JSON-LD just before </head> (canonical was handled above)
   const ld = JSON.stringify(jsonLd(meta));
-  const injection = `<link rel="canonical" href="${c}">\n  <script type="application/ld+json">${ld}</script>\n</head>`;
-  html = html.replace(/<\/head>/i, injection);
+  html = html.replace(/<\/head>/i, `  <script type="application/ld+json">${ld}</script>\n</head>`);
 
   return new Response(html, {
     status: 200,
