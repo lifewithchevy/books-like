@@ -11,6 +11,7 @@
 // build rich snippets ("Books Like Fourth Wing — list of 8 books").
 
 import { next } from '@vercel/edge';
+import { BOOKS_LIKE_RECS } from './seo-recs.mjs';
 
 export const config = {
   matcher: ['/books-like/:slug*', '/genre/:slug*', '/mood/:slug*'],
@@ -140,22 +141,64 @@ function buildMeta(pathname) {
 function buildSeoBlock(meta) {
   const safeLabel = escapeHtml(meta.label);
   let h1Text, bodyHtml;
+
   if (meta.pageKind === 'books-like') {
     h1Text = `Books Like ${safeLabel}`;
-    bodyHtml = `<p>Looking for books like <strong>${safeLabel}</strong>? Here are reader-recommended picks, curated from real Reddit threads, Goodreads ratings, and BookTok consensus. Each pick links to similar books across romantasy, romance, fantasy, and thrillers.</p>`;
+
+    // Look up curated rec data for this page. If present, render the full
+    // SEO-optimised block (1500+ words of unique content per page). Otherwise
+    // fall back to the basic block — still better than nothing.
+    const slug = meta.canonical.split('/').pop();
+    const data = BOOKS_LIKE_RECS[slug];
+
+    if (data) {
+      const recsHtml = data.recs.map((r, i) => {
+        const t = escapeHtml(r.title);
+        const a = escapeHtml(r.author);
+        const w = escapeHtml(r.why);
+        const tSlug = r.title.toLowerCase()
+          .replace(/'/g, '')
+          .replace(/[^a-z0-9]+/g, '-')
+          .replace(/^-+|-+$/g, '');
+        return `<article>
+        <h3 style="font-family:'Playfair Display',serif;font-size:1.25rem;margin:24px 0 6px;">${i + 1}. <a href="/books-like/${tSlug}" style="color:inherit;text-decoration:none;">${t}</a></h3>
+        <p style="margin:0 0 4px;color:#555;font-size:0.95rem;">by ${a}</p>
+        <p style="margin:0 0 12px;line-height:1.55;">${w}</p>
+      </article>`;
+      }).join('');
+
+      const faqsHtml = data.faqs.map(f => `<details style="margin:10px 0;border:1px solid #e5e5e5;border-radius:8px;padding:12px 16px;">
+        <summary style="font-weight:600;cursor:pointer;">${escapeHtml(f.q)}</summary>
+        <p style="margin:8px 0 0;line-height:1.55;">${escapeHtml(f.a)}</p>
+      </details>`).join('');
+
+      bodyHtml = `
+      <p style="line-height:1.6;font-size:1.05rem;margin-bottom:24px;">${escapeHtml(data.sourceAbout)}</p>
+
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin:32px 0 8px;">${data.recs.length} books like ${safeLabel}</h2>
+      <p style="color:#666;margin-bottom:16px;">Curated from real reader threads on Reddit (r/RomanceBooks, r/Fantasy, r/suggestmeabook) and cross-referenced against Goodreads and BookTok. Updated regularly.</p>
+      ${recsHtml}
+
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin:40px 0 12px;">Frequently asked questions</h2>
+      ${faqsHtml}
+
+      <p style="margin-top:32px;color:#666;font-size:0.9rem;">Want personalised picks? Connect your Goodreads to filter out books you\'ve already read and get recommendations tuned to your taste.</p>
+    `;
+    } else {
+      bodyHtml = `<p>Looking for books like <strong>${safeLabel}</strong>? Here are reader-recommended picks, curated from real Reddit threads, Goodreads ratings, and BookTok consensus. Each pick links to similar books across romantasy, romance, fantasy, and thrillers.</p>`;
+    }
   } else if (meta.pageKind === 'genre') {
     h1Text = `${safeLabel} Books`;
     bodyHtml = `<p>The best <strong>${safeLabel.toLowerCase()}</strong> books real readers can't stop recommending. Hand-picked rather than algorithmically generated, with picks cross-referenced against Reddit reader threads.</p>`;
   } else if (meta.pageKind === 'mood') {
     h1Text = `${safeLabel} Books`;
-    bodyHtml = `<p>Books for when you're in the mood for something <strong>${safeLabel.toLowerCase()}</strong>. Curated picks from real reader threads — no algorithm slop.</p>`;
+    bodyHtml = `<p>Books for when you're in the mood for something <strong>${safeLabel.toLowerCase()}</strong>. Curated picks from real reader threads, no algorithm slop.</p>`;
   } else {
     return '';
   }
-  // Inline styles so the block looks like a clean fallback if JS never loads.
-  // Hidden visually but indexable via aria-hidden=false; SPA removes it on init.
-  return `<div id="seo-static-block" style="max-width:760px;margin:0 auto;padding:40px 20px;font-family:'Inter',sans-serif;color:#1A1A1A;">
-    <h1 style="font-family:'Playfair Display',serif;font-size:2rem;margin:0 0 16px;">${h1Text}</h1>
+
+  return `<div id="seo-static-block" style="max-width:760px;margin:0 auto;padding:40px 20px;font-family:'Inter',sans-serif;color:#1A1A1A;line-height:1.5;">
+    <h1 style="font-family:'Playfair Display',serif;font-size:2.2rem;margin:0 0 16px;line-height:1.15;">${h1Text}</h1>
     ${bodyHtml}
   </div>`;
 }
@@ -174,6 +217,35 @@ function jsonLd(meta) {
   };
   if (meta.pageKind === 'books-like') {
     base.about = { '@type': 'Book', name: meta.label };
+    // If we have curated rec data, expose the recs as an ItemList for Google
+    // and FAQs as an FAQPage section. Both are rich-snippet eligible.
+    const slug = meta.canonical.split('/').pop();
+    const data = BOOKS_LIKE_RECS[slug];
+    if (data) {
+      base.mainEntity = {
+        '@type': 'ItemList',
+        numberOfItems: data.recs.length,
+        itemListElement: data.recs.map((r, i) => ({
+          '@type': 'ListItem',
+          position: i + 1,
+          item: {
+            '@type': 'Book',
+            name: r.title,
+            author: { '@type': 'Person', name: r.author },
+          },
+        })),
+      };
+      if (data.faqs && data.faqs.length) {
+        base.hasPart = {
+          '@type': 'FAQPage',
+          mainEntity: data.faqs.map(f => ({
+            '@type': 'Question',
+            name: f.q,
+            acceptedAnswer: { '@type': 'Answer', text: f.a },
+          })),
+        };
+      }
+    }
   }
   return base;
 }
