@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+  <title>Romantasy Daily — Guess the Book | 90books</title>
+  <meta name="description" content="A daily romantasy guessing game. One book a day, six guesses, progressive clues. Build your streak." />
+  <meta name="theme-color" content="#160516" />
+  <link rel="canonical" href="https://90books.com/daily" />
+  <meta property="og:title" content="Romantasy Daily — Guess the Book" />
+  <meta property="og:description" content="One romantasy book a day. Six guesses. Build your streak." />
+  <meta property="og:url" content="https://90books.com/daily" />
+  <meta property="og:type" content="website" />
+  <meta name="twitter:card" content="summary" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/daily/styles.css" />
+</head>
+<body>
+  <div class="bg-glow" aria-hidden="true"></div>
+
+  <header class="topbar">
+    <button id="help-btn" class="icon-btn" aria-label="How to play">?</button>
+    <a href="/" class="wordmark">Romantasy <span>Daily</span></a>
+    <button id="stats-btn" class="icon-btn" aria-label="Stats">▤</button>
+  </header>
+
+  <main class="game">
+    <p class="day-label"><span id="day-number"></span></p>
+
+    <section class="clues" id="clues" aria-live="polite"></section>
+
+    <section class="tiles" id="tiles" aria-label="Your guesses">
+      <!-- 6 tile rows rendered by JS -->
+    </section>
+
+    <p class="hint" id="remaining"></p>
+  </main>
+
+  <div class="dock">
+    <form id="guess-form" autocomplete="off">
+      <input
+        type="text"
+        id="guess-input"
+        placeholder="Type a book title…"
+        aria-label="Guess the book"
+        autocapitalize="words"
+        spellcheck="false"
+      />
+      <button type="submit" id="guess-submit" aria-label="Submit guess">→</button>
+    </form>
+  </div>
+
+  <!-- How to play -->
+  <dialog id="help-modal" class="sheet">
+    <form method="dialog" class="sheet-inner">
+      <button class="sheet-close" aria-label="Close">×</button>
+      <h2 class="sheet-title">How to play</h2>
+      <p>One romantasy book per day. <strong>Six guesses.</strong> Each wrong guess unlocks a new clue.</p>
+      <ul class="rules">
+        <li><span class="dot correct"></span> Correct — you got it</li>
+        <li><span class="dot close"></span> Close — same author or series</li>
+        <li><span class="dot wrong"></span> Wrong — try again</li>
+      </ul>
+      <p class="rules-clues">
+        Clues in order: <em>trope · spice &amp; year · cover · three reader quotes (hard → easy)</em>.
+      </p>
+      <p class="rules-clues">
+        Quotes are real reader-submitted highlights from Goodreads. The last quote is the one bookstagram won't shut up about — if you've read it, you'll know.
+      </p>
+      <p>A new book unlocks at midnight UTC. Don't break your streak.</p>
+    </form>
+  </dialog>
+
+  <!-- Stats -->
+  <dialog id="stats-modal" class="sheet">
+    <form method="dialog" class="sheet-inner">
+      <button class="sheet-close" aria-label="Close">×</button>
+      <h2 class="sheet-title">Your stats</h2>
+      <div class="stat-row">
+        <div><span id="stat-played">0</span><small>played</small></div>
+        <div><span id="stat-winpct">0%</span><small>win rate</small></div>
+        <div><span id="stat-streak">0</span><small>🔥 streak</small></div>
+        <div><span id="stat-max">0</span><small>max</small></div>
+      </div>
+      <h3 class="dist-title">Guess distribution</h3>
+      <ul id="stat-dist" class="dist"></ul>
+    </form>
+  </dialog>
+
+  <!-- End-of-day result sheet -->
+  <dialog id="end-modal" class="sheet">
+    <div class="sheet-inner">
+      <button class="sheet-close" aria-label="Close" data-close-end>×</button>
+      <h2 id="end-headline" class="sheet-title"></h2>
+
+      <div class="end-book">
+        <img id="end-cover" alt="" />
+        <div class="end-meta">
+          <p class="end-title" id="end-title"></p>
+          <p class="end-author" id="end-author"></p>
+          <p class="end-year" id="end-year"></p>
+        </div>
+      </div>
+
+      <div class="end-actions">
+        <a id="buy-amazon" class="buy" target="_blank" rel="noopener sponsored">Amazon</a>
+        <a id="buy-bookshop" class="buy" target="_blank" rel="noopener sponsored">Bookshop</a>
+      </div>
+
+      <a id="more-like" class="more-like" href="#">More books like this →</a>
+
+      <div class="end-share">
+        <pre id="share-text" class="share-preview"></pre>
+        <button id="share-btn" class="primary">Share result</button>
+        <span id="share-toast" class="toast" hidden>Copied — paste anywhere</span>
+      </div>
+
+      <p class="next">Next book in <span id="countdown">--:--:--</span></p>
+    </div>
+  </dialog>
+
+  <script src="/daily/app.js" defer></script>
+</body>
+</html>

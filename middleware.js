@@ -160,10 +160,18 @@ function buildSeoBlock(meta) {
           .replace(/'/g, '')
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/^-+|-+$/g, '');
+        // Amazon affiliate link — tag=90books-20.
+        // Prefers direct product page (/dp/<isbn>) when seo-recs.mjs supplies
+        // an ISBN for the rec; falls back to a books-category search otherwise.
+        // rel="nofollow sponsored" per Amazon TOS + Google's affiliate guidance.
+        const amazonUrl = r.isbn
+          ? `https://www.amazon.com/dp/${encodeURIComponent(r.isbn)}/?tag=90books-20`
+          : `https://www.amazon.com/s?k=${encodeURIComponent(r.title + ' ' + r.author)}&i=stripbooks&tag=90books-20`;
         return `<article>
         <h3 style="font-family:'Playfair Display',serif;font-size:1.25rem;margin:24px 0 6px;">${i + 1}. <a href="/books-like/${tSlug}" style="color:inherit;text-decoration:none;">${t}</a></h3>
         <p style="margin:0 0 4px;color:#555;font-size:0.95rem;">by ${a}</p>
         <p style="margin:0 0 12px;line-height:1.55;">${w}</p>
+        <p style="margin:0 0 8px;"><a href="${amazonUrl}" rel="nofollow sponsored" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:12px;background:#1A1A1A;color:#fff;text-decoration:none;">Buy on Amazon →</a></p>
       </article>`;
       }).join('');
 
@@ -176,7 +184,8 @@ function buildSeoBlock(meta) {
       <p style="line-height:1.6;font-size:1.05rem;margin-bottom:24px;">${escapeHtml(data.sourceAbout)}</p>
 
       <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin:32px 0 8px;">${data.recs.length} books like ${safeLabel}</h2>
-      <p style="color:#666;margin-bottom:16px;">Curated from real reader threads on Reddit (r/RomanceBooks, r/Fantasy, r/suggestmeabook) and cross-referenced against Goodreads and BookTok. Updated regularly.</p>
+      <p style="color:#666;margin-bottom:6px;">Curated from real reader threads on Reddit (r/RomanceBooks, r/Fantasy, r/suggestmeabook) and cross-referenced against Goodreads and BookTok. Updated regularly.</p>
+      <p style="color:#999;font-size:0.78rem;margin:0 0 20px;font-style:italic;">As an Amazon Associate, 90books earns from qualifying purchases.</p>
       ${recsHtml}
 
       <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin:40px 0 12px;">Frequently asked questions</h2>
