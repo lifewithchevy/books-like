@@ -19,17 +19,17 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>90books — Find Books Like Your Favorites | Personalized Book Recommendations</title>
-  <meta name="description" content="Type any book and get recommendations from readers who loved it too — filtered to only books you haven't read yet. No algorithms. No fluff. Just good recs.">
-  <meta name="keywords" content="books like, similar books, book recommendations, books similar to, what to read next, booktok recommendations, if you liked, books like fourth wing, books like acotar">
+  <title>90books — Find Your Next Romantasy | Romantasy Book Recommendations</title>
+  <meta name="description" content="The romantasy rec engine. Type any book — Fourth Wing, ACOTAR, Quicksilver — and get picks from real readers who loved it. Curated, not algorithmic.">
+  <meta name="keywords" content="romantasy books, books like fourth wing, books like acotar, books like quicksilver, romantasy recommendations, fantasy romance books, books like iron flame, dragon rider books, fae romance">
   <link rel="canonical" href="https://90books.com/">
-  <meta property="og:title" content="90books — Find Books Like Your Favorites">
-  <meta property="og:description" content="Type any book, get recs from readers who loved it — filtered to only what you haven't read yet. Connect your Goodreads in 10 seconds.">
+  <meta property="og:title" content="90books — Find Your Next Romantasy">
+  <meta property="og:description" content="The romantasy rec engine. Type any book you loved and get curated picks from real readers. Connect Goodreads to filter out what you've already read.">
   <meta property="og:url" content="https://90books.com/">
   <meta property="og:type" content="website">
   <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="90books — Find Books Like Your Favorites">
-  <meta name="twitter:description" content="Type any book, get recs from readers who loved it — filtered to only what you haven't read yet.">
+  <meta name="twitter:title" content="90books — Find Your Next Romantasy">
+  <meta name="twitter:description" content="The romantasy rec engine. Type any book you loved and get curated picks from real readers. Curated, not algorithmic.">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
   <script defer src="/_vercel/insights/script.js"></script>
   <style>
@@ -174,7 +174,7 @@
     .header-search-btn:hover { background: var(--surface2); color: var(--text); }
     .header-search-btn svg { width: 20px; height: 20px; }
 
-    /* Romantasy Daily pill in the in-app header */
+    /* Booky game pill in the in-app header */
     .header-daily-btn {
       display: inline-flex;
       align-items: center;
@@ -2396,16 +2396,16 @@
         <span class="lp-nav-name">90books</span>
       </div>
       <div class="lp-nav-right">
-        <a href="/daily" class="lp-nav-daily">&#127918; Romantasy <em>Daily</em></a>
+        <a href="/booky" class="lp-nav-daily">&#127918; <em>Booky</em></a>
         <button class="lp-nav-browse" onclick="enterGuestMode()">Browse first &rarr;</button>
       </div>
     </nav>
 
     <!-- Daily game ribbon -->
-    <a href="/daily" class="lp-daily-ribbon">
+    <a href="/booky" class="lp-daily-ribbon">
       <span class="lp-daily-ribbon-pill">NEW</span>
       <span class="lp-daily-ribbon-text">
-        <strong>Romantasy Daily</strong> &mdash; today&rsquo;s book in 6 guesses
+        <strong>Booky</strong> &mdash; the daily romantasy book guess in 6 tries
       </span>
       <span class="lp-daily-ribbon-arrow">&rarr;</span>
     </a>
@@ -2562,14 +2562,14 @@
       <div class="logo-icon">90</div>
       <div>
         <h1>90books</h1>
-        <span>Find Your Next Favorite Read</span>
+        <span>Find Your Next Romantasy</span>
       </div>
     </div>
     <div class="header-right">
-      <!-- Romantasy Daily game -->
-      <a href="/daily" class="header-daily-btn" title="Play today's Romantasy Daily">
+      <!-- Booky game -->
+      <a href="/booky" class="header-daily-btn" title="Play Booky — today's romantasy book guess">
         <span class="header-daily-emoji">&#127918;</span>
-        <span class="header-daily-text">Daily</span>
+        <span class="header-daily-text">Booky</span>
       </a>
       <!-- Search icon -->
       <button class="header-search-btn" id="headerSearchBtn" onclick="openSearchOverlay()" title="Search books" aria-label="Search">
@@ -6541,71 +6541,74 @@
     const DISCOVER_SHELVES = [
       {
         id: 'new',
-        label: 'Reader Favorites',
-        description: 'The books readers recommend over and over. The ones that come up in every "what should I read?" thread.',
+        label: 'Romantasy Favorites',
+        description: 'The romantasy books readers recommend over and over. The ones that come up in every r/Romantasy "what should I read?" thread.',
         moodKey: null,
-        // Backed by real Reddit data mined from r/RomanceBooks, r/Fantasy,
-        // r/suggestmeabook, and r/Romantasy threads (May 2026). Each book here
-        // was mentioned in multiple "books everyone should read" / "most
-        // recommended ever" / books-like-X threads across those subs.
+        // Backed by real Reddit data mined from r/Romantasy, r/RomanceBooks, and
+        // r/Fantasy threads (May 2026). Each book here was mentioned in multiple
+        // "best romantasy" / "books like [hit book]" / most-recommended-ever
+        // threads across the romantasy reader community.
         curatedKeys: [
-          'throne of glass',                   // 29 threads (Fourth Wing query) + 16 (recs ever) — Reddit's #1 SJM crossover rec
-          'a court of thorns and roses',       // 29 threads (Fourth Wing query) + 20 (acotar query)
           'fourth wing',                       // 40 threads (its own query) — current peak romantasy
-          'it ends with us',                   // 14 threads (recs ever) + 19 (Fourth Wing query)
-          'the seven husbands of evelyn hugo', // Consistent book-club + Goodreads consensus
-          'the song of achilles',              // Tearjerker that comes up every "made me cry" thread
-          'the midnight library',              // Goodreads Choice + sustained 'changed me' rec
-          'piranesi',                          // 4 threads (recs ever) + 3 (recs ever) — sleeper literary pick
+          'a court of thorns and roses',       // 29 threads (Fourth Wing query) + 20 (acotar query)
+          'throne of glass',                   // 29 threads (Fourth Wing query) — #1 SJM crossover
+          'iron flame',                        // Empyrean #2 — active demand
+          'the cruel prince',                  // YA fae E2L blueprint, 11+ threads
+          'from blood and ash',                // JLA romantasy gateway, 9+ threads
+          'quicksilver',                       // Callie Hart breakout 2024
+          'the bridge kingdom',                // Arranged-marriage romantasy classic
         ],
         accent: '#E84393',
         gradients: ['#E84393','#FF6B9D','#C44569','#FF3CAC','#784BA0'],
       },
+      // Standalones & Duologies — STRICT 1-or-2 books only. Each pick is a
+      // true standalone OR part of a complete duology. No trilogies, no 4+
+      // book series, no "first book of a planned 7-book series" picks.
+      // Verified against actual published series structures.
       {
         id: 'quick-reads',
-        label: 'Short Standalones',
-        description: 'Standalones only. Under 330 pages. No "wait for book 3" energy, full story, done in a weekend.',
+        label: 'Standalones & Duologies',
+        description: 'Romantasy without the 7-book commitment. True standalones and complete duologies — start one this weekend and finish the whole story.',
         moodKey: null,
-        // Verified: every pick is a standalone book (no series) under 330 pages.
         curatedKeys: [
-          'piranesi',                          // 272p — Booker-shortlist gem
-          'normal people',                     // 273p — Sally Rooney
-          'my year of rest and relaxation',    // 289p — Ottessa Moshfegh viral
-          'mexican gothic',                    // 301p — Gothic horror
-          'the midnight library',              // 304p — Bestselling reflective
-          'yellowface',                        // 323p — R.F. Kuang satire
-          'the silent patient',                // 325p — Thriller twist
-          'recursion',                         // 326p — Blake Crouch sci-fi
+          'one dark window',                   // Shepherd King duology (2 books, complete)
+          'heartless hunter',                  // Crimson Moth duology book 1 (2 books, complete)
+          'rebel witch',                       // Crimson Moth duology book 2 (pair with above)
+          'daughter of the moon goddess',      // Celestial Kingdom duology (2 books, complete)
+          'house of salt and sorrows',         // Standalone gothic-fantasy with romance (Erin A. Craig)
+          'the priory of the orange tree',     // Standalone epic fantasy with romance subplots
         ],
-        accent: '#0077B6',
-        gradients: ['#0077B6','#00B4D8','#023E8A','#0096C7','#005F73'],
+        accent: '#7C3AED',
+        gradients: ['#5B21B6','#7C3AED','#9333EA','#A855F7','#4C1D95'],
       },
       {
         id: 'swoony',
         label: 'Romance That Wrecks You',
-        description: 'Slow burns that physically pain you. Love interests who ruin you for actual men. The r/RomanceBooks regulars.',
+        description: 'Romantasy slow burns that physically pain you. Love interests who ruin you for actual men. The r/Romantasy regulars.',
         moodKey: 'swoony',
-        // Data-backed: ACOTAR (47), Fourth Wing (45), IEWU (38), Cruel Prince (13),
-        // FBAA (13), Crescent City (11) all surfaced in cross-shelf analysis.
-        // Funny Story + Hating Game retained as contemporary-romance representatives.
+        // Romantasy-strict in the romantasy-only pivot. Pure-contemporary
+        // romance picks (IEWU, Happy Place, Mile High) removed — those are
+        // romance, not romantasy. Replaced with high-spice romantasy.
         curatedKeys: [
-          'a court of thorns and roses',      // 47.1 cross-shelf score
-          'fourth wing',                       // 44.7
-          'it ends with us',                   // 38.2
-          'the cruel prince',                  // 12.7
-          'from blood and ash',                // 12.7
-          'happy place',                       // 🌟 Editor's pick — Emily Henry 5★
-          'mile high',                         // 🌟 Editor's pick — Liz Tomforde 4★, hockey swoon
-          'the bridge kingdom',                // Arranged-marriage swoon
+          'a court of thorns and roses',      // The romantasy slow-burn benchmark
+          'fourth wing',                       // Xaden + Violet — current peak
+          'iron flame',                        // Empyrean book 2, slow burn deepens
+          'the cruel prince',                  // Cardan + Jude — fae E2L gold
+          'from blood and ash',                // Hawke + Poppy — JLA slow burn
+          'house of earth and blood',          // Hunt + Bryce — Crescent City spice
+          'kingdom of the wicked',             // Wrath + Emilia — Prince of Hell slow burn
+          'the bridge kingdom',                // Aren + Lara — arranged-marriage swoon
         ],
         accent: '#E84393',
         gradients: ['#FF6B9D','#C44569','#FF3CAC','#E84393','#FF8FAB'],
       },
+      // Hidden in romantasy-only pivot: cozy fantasy/mystery/contemporary.
       {
         id: 'cozy',
         label: 'Cozy Reads',
         description: 'No villain required. Reads like a warm drink and a blanket. What r/cozyreads keeps recommending.',
         moodKey: 'cozy',
+        hidden: true,
         curatedKeys: [
           'legends & lattes',                  // The cozy fantasy benchmark
           'the house in the cerulean sea',     // Found family classic
@@ -6622,27 +6625,32 @@
       {
         id: 'adventurous',
         label: 'Epic Fantasy',
-        description: 'Big worlds, brutal stakes, characters who earn every scar. Cross-referenced against r/Fantasy threads.',
+        description: 'Big magical worlds, brutal stakes, characters who earn every scar. Fantasy with romance — no dystopia, no sci-fi.',
         moodKey: 'adventurous',
-        // Ranked by score in the Fourth Wing dataset + most-recommended-ever.
+        // Strict fantasy (per romantasy-only pivot). Dropped The Hunger Games
+        // (dystopian) and Red Rising (sci-fi/space opera) — they're not
+        // fantasy. Replaced with adult urban fantasy + Slavic fantasy with
+        // romance subplots.
         curatedKeys: [
-          'fourth wing',                       // 64.8 score
-          'throne of glass',                   // 43.0
-          'iron flame',                        // 19.1 — Empyrean active
-          'the hunger games',                  // 19.0
-          'red rising',                        // 13.1
-          'the priory of the orange tree',     // 11.4
-          'six of crows',                      // 11.4
-          'the will of the many',              // Epic fantasy hit (low Reddit hit but high rating)
+          'fourth wing',                       // Dragon-rider war academy
+          'throne of glass',                   // Assassin in a magical kingdom
+          'iron flame',                        // Empyrean book 2
+          'house of earth and blood',          // Crescent City — adult urban fantasy
+          'the priory of the orange tree',     // Standalone dragon-epic with romance
+          'six of crows',                      // Fantasy heist crew with romance subplots
+          'the will of the many',              // Roman-inspired epic fantasy
+          'the bear and the nightingale',      // Slavic fantasy with romance
         ],
         accent: '#0077B6',
         gradients: ['#023E8A','#0077B6','#0096C7','#1B4332','#2D6A4F'],
       },
+      // Hidden in romantasy-only pivot: heavily literary fiction.
       {
         id: 'reflective',
         label: 'Books That Stay With You',
         description: 'They mess you up in the best way. You finish them and just stare at the ceiling for an hour.',
         moodKey: 'reflective',
+        hidden: true,
         // Cross-referenced against real Reddit threads (Song of Achilles, Midnight
         // Library, Seven Husbands, most-recommended-ever).
         curatedKeys: [
@@ -6658,11 +6666,13 @@
         accent: '#2D9F6F',
         gradients: ['#1B4332','#2D6A4F','#40916C','#52B788','#1A535C'],
       },
+      // Hidden in romantasy-only pivot: literary book-club picks.
       {
         id: 'bookclub',
         label: 'Book Club Reads',
         description: 'The ones your book club will not shut up about. Cross-referenced against real Reddit threads.',
         moodKey: null,
+        hidden: true,
         // Ranked by cross-shelf analysis across "most recommended ever", "books
         // everyone should read", Seven Husbands threads, and Song of Achilles threads.
         curatedKeys: [
@@ -6681,39 +6691,41 @@
       {
         id: 'enemies-to-lovers',
         label: 'Enemies to Lovers',
-        description: 'Every "best enemies to lovers?" thread on r/RomanceBooks. These are always the top-voted answers.',
+        description: 'Every "best enemies to lovers?" thread on r/Romantasy. The romantasy answers that come up over and over.',
         moodKey: null,
+        // Romantasy-strict. Contemporary E2L picks (Hating Game, Twisted Love,
+        // King of Wrath) removed in the romantasy-only pivot.
         curatedKeys: [
-          'a court of thorns and roses',      // The blueprint
-          'fourth wing',                       // Romantasy E2L peak
-          'the cruel prince',                  // YA E2L gold standard
-          'the hating game',                   // Office E2L classic
-          'twisted love',                      // Dark E2L top demand
-          'the bridge kingdom',                // Arranged-marriage E2L
-          'the serpent and the wings of night',// Tournament E2L
-          'king of wrath',                     // Billionaire E2L active
+          'a court of thorns and roses',      // Feyre + Rhysand — the blueprint
+          'fourth wing',                       // Violet + Xaden — current peak
+          'iron flame',                        // Empyrean book 2 — tension escalates
+          'the cruel prince',                  // Jude + Cardan — YA E2L gold standard
+          'powerless',                         // Paedyn + Kai — YA romantasy E2L
+          'the bridge kingdom',                // Aren + Lara — arranged-marriage E2L
+          'the serpent and the wings of night',// Tournament dark romantasy E2L
+          'kingdom of the wicked',             // Emilia + Wrath — Prince of Hell E2L
         ],
         accent: '#C1121F',
         gradients: ['#5C1A1A','#C1121F','#9B1D2A','#8B0000','#B5200D'],
       },
-      // Dark Romance shelf hidden from homepage until we get user feedback.
-      // Keeping config + curated picks so we can re-enable by flipping
-      // hidden:false. The /mood/dark page still works for direct links.
+      // Dark Romantasy — strictly fantasy-with-romance picks. The contemporary
+      // dark-romance picks (Haunting Adeline, Twisted Love, The Risk, Verity)
+      // are excluded in the romantasy-only pivot — those are dark romance, not
+      // dark romantasy.
       {
         id: 'dark',
-        label: 'Dark Romance',
-        description: 'Morally grey everyone. Impossible choices. Stories that don\'t apologize for going there.',
+        label: 'Dark Romantasy',
+        description: 'Morally grey everyone. Cursed magic. Stories that don\'t apologize for going there. Real fantasy worlds — no contemporary dark romance here.',
         moodKey: 'dark',
-        hidden: true,
         curatedKeys: [
-          'haunting adeline',                  // The dark-romance benchmark
-          'verity',                            // Hoover thriller-romance
-          'twisted love',                      // Top Reddit dark E2L
-          'the risk',                          // 🌟 Editor's pick — S.T. Abby, female anti-hero
-          'one dark window',                   // 🌟 Editor's pick — Rachel Gillig gothic romantasy
-          'a touch of darkness',               // Hades/Persephone dark fantasy
-          'neon gods',                         // Greek myth dark romance
-          'the serpent and the wings of night',// Vampire dark fantasy
+          'one dark window',                   // Gothic romantasy benchmark
+          'a touch of darkness',               // Hades/Persephone dark mythology romantasy
+          'the serpent and the wings of night',// Vampire dark romantasy
+          'neon gods',                         // Greek myth dark romantasy
+          'kingdom of the wicked',             // Prince of Hell dark romantasy
+          'the wicked king',                   // Cruel Prince book 2 — fae court at its darkest
+          'iron flame',                        // Empyrean darkens significantly in book 2
+          'a kingdom of flesh and fire',       // FBAA book 2 — slow descent into dark
         ],
         accent: '#5A189A',
         gradients: ['#2C1654','#4A1942','#6A0572','#1A1A2E','#16213E'],
@@ -7093,10 +7105,11 @@
           picks = [...picks, ...extras];
         }
       } else {
-        // Fallback: Reader Favorites — the all-time most-recommended books across Reddit,
-        // BookTok, and Goodreads. Stable evergreen entry points for non-GR users.
+        // Fallback: Romantasy Favorites — the most-recommended romantasy across
+        // Reddit (r/Romantasy), BookTok, and Goodreads. Stable evergreen entry
+        // points for non-GR users coming in cold.
         config = {
-          title: 'Reader Favorites',
+          title: 'Romantasy Favorites',
           genreLabel: null,
           gradient: 'linear-gradient(135deg,#1A0518 0%,#4A0E38 55%,#2A0E50 100%)',
           onclick: "discoverSelectTrending()",
@@ -7107,14 +7120,14 @@
         // strongest evergreen entry points every visit. The rest are cover backups.
         const TRENDING_KEYS = [
           'fourth wing',                       // #1 romantasy mention every time
-          'a court of thorns and roses',       // Perennial #1 E2L recommendation
-          'it ends with us',                   // Hoover's most-mentioned ever
-          'the seven husbands of evelyn hugo', // Book club gold standard
+          'a court of thorns and roses',       // Perennial #1 romantasy E2L
+          'iron flame',                        // Empyrean book 2 — active demand
+          'quicksilver',                       // Callie Hart, breakout 2024 romantasy
           // Backups (only used if a primary cover fails to load):
-          'verity',
-          'the song of achilles',
-          'the midnight library',
-          'gone girl',
+          'the cruel prince',
+          'from blood and ash',
+          'throne of glass',
+          'the bridge kingdom',
         ];
         picks = TRENDING_KEYS
           .filter(k => bookMetadata[k] && getBookCoverUrl(k))
@@ -7202,32 +7215,32 @@
       { label: 'Tense',       id: 'tense',         emoji: '😰', mood: 'tense' },
     ];
 
-    // Shortcut vibe cards — shown inside shelves area as a browseable row
-    // Excludes moods already covered by VIBE_PILLS (cozy, dark, etc.)
-    // Colors inspired by Spotify's bold Browse category palette
+    // Shortcut vibe cards — romantasy-only in the romantasy-focused pivot.
+    // Dropped contemporary romance (fake dating, hockey, mature characters),
+    // cozy/literary (books that healed me, feel like a hug, therapy), and
+    // generic self-help (put myself first). Added romantasy-core tropes
+    // (enemies to lovers, fated mates, dark academia, court intrigue).
     const SHORTCUT_VIBES = [
       { label: 'Recommend based on what I like', emoji: '✨', prompt: 'personal',                          bg: '#1E3264' },
       { label: 'Get me out of my reading slump', emoji: '🚀', prompt: 'get me out of my reading slump',   bg: '#E8115B' },
       { label: 'I need to escape reality',       emoji: '🐉', prompt: 'i need to escape reality',         bg: '#2D46B9' },
-      { label: "It's time to put myself first",  emoji: '🌱', prompt: "it's time to put myself first",    bg: '#148A08' },
       { label: 'I need a bingeable book series', emoji: '📖', prompt: 'i need a bingeable book series',   bg: '#8400E7' },
-      { label: 'Books that feel like a hug',     emoji: '🤗', prompt: 'books that feel like a hug',       bg: '#C05621' },
-      { label: 'A book that healed me',          emoji: '💚', prompt: 'a book that healed me',            bg: '#027252' },
-      { label: 'Like going to therapy but fun',  emoji: '💆', prompt: 'like going to therapy but fun',    bg: '#477D95' },
       { label: '100% worth the hype',            emoji: '⭐', prompt: '100% worth the hype',              bg: '#E07B39' },
       { label: 'More than 4 stars',              emoji: '🌟', prompt: 'more than 4 stars',               bg: '#C88C26' },
-      { label: 'Romance with mature characters', emoji: '🥂', prompt: 'romance with mature characters',   bg: '#DC148C' },
-      { label: 'I want a strong female lead',    emoji: '💪', prompt: 'i want a strong female lead',      bg: '#6A0572' },
-      { label: 'Dark and twisty thriller',       emoji: '🔪', prompt: 'dark and twisty thriller',         bg: '#1A1A2E' },
+      { label: 'Strong female lead',             emoji: '💪', prompt: 'i want a strong female lead',      bg: '#6A0572' },
+      { label: 'Dragon riders',                  emoji: '🐉', prompt: 'dragon riders',                    bg: '#1A1A2E' },
       { label: 'Slow burn that ruins you',       emoji: '🔥', prompt: 'slow burn that ruins you',         bg: '#E61E32' },
+      { label: 'Enemies to lovers',              emoji: '⚔️', prompt: 'enemies to lovers',                bg: '#C1121F' },
+      { label: 'Fated mates',                    emoji: '🌙', prompt: 'fated mates',                      bg: '#3D0070' },
       { label: 'Found family',                   emoji: '🏡', prompt: 'found family',                     bg: '#3D5A80' },
-      { label: 'Fake dating',                    emoji: '💋', prompt: 'fake dating',                      bg: '#E8115B' },
       { label: 'Morally gray love interest',     emoji: '😈', prompt: 'morally gray love interest',       bg: '#4A0E8F' },
       { label: 'Give me smut',                   emoji: '🌶️', prompt: 'give me smut',                    bg: '#8C1932' },
-      { label: 'Hockey romance',                 emoji: '🏒', prompt: 'hockey romance',                   bg: '#1E3264' },
       { label: 'Fae / fae court',                emoji: '🧚', prompt: 'fae / fae court',                  bg: '#7C3AED' },
-      { label: 'Vampire romance',                emoji: '🧛', prompt: 'vampire romance',                   bg: '#560319' },
+      { label: 'Vampire romance',                emoji: '🧛', prompt: 'vampire romance',                  bg: '#560319' },
       { label: 'Witchy / coven vibes',           emoji: '🔮', prompt: 'witchy / coven mood',             bg: '#240046' },
+      { label: 'Dark academia',                  emoji: '🕯️', prompt: 'dark academia',                   bg: '#1A1A2E' },
+      { label: 'Gothic romantasy',               emoji: '🦇', prompt: 'gothic romantasy',                 bg: '#2C1654' },
+      { label: 'Court intrigue',                 emoji: '👑', prompt: 'court intrigue',                   bg: '#5B1A2A' },
     ];
 
     // Trope & quick-read shortcuts — shown in their own section below Books Like
@@ -7808,9 +7821,9 @@
       }).join('');
       return `<div class="shelf-row" data-shelf="shortcuts">
         <div class="shelf-header">
-          <div class="shelf-title">Discover by Mood</div>
+          <div class="shelf-title">Discover by Vibe</div>
         </div>
-        <div class="shelf-subtitle">Tell us the vibe. We'll match the book.</div>
+        <div class="shelf-subtitle">Tell us the romantasy you're in the mood for. We'll match the book.</div>
         <div class="shelf-books shortcuts-strip">${cards}</div>
       </div>`;
     }
@@ -8077,7 +8090,13 @@
         descEl.innerHTML = `<p style="margin:0">${shelfCfg.description}</p>`;
       }
 
-      const books = getBooksForShelf({ moods: [moodKey] }, 24);
+      // Romantasy-only pivot: mood pages filter to romantasy first.
+      // If <8 results, fall back to all genres so the page doesn't feel empty
+      // (rare on dark/swoony/adventurous moods which are romantasy-heavy).
+      let books = getBooksForShelf({ moods: [moodKey], tagClass: 'tag-romantasy' }, 24);
+      if (books.length < 8) {
+        books = getBooksForShelf({ moods: [moodKey] }, 24);
+      }
       const grid = document.getElementById('discover-books-grid');
       if (!grid) return;
 
@@ -8085,7 +8104,7 @@
         grid.innerHTML = `<div style="text-align:center;padding:60px 16px 40px">
           <div style="font-size:40px;margin-bottom:16px">📚</div>
           <div style="font-size:17px;font-family:'Playfair Display',serif;color:var(--text)">No matches yet</div>
-          <div style="font-size:13px;color:var(--text-muted);margin-top:8px">Try another mood</div>
+          <div style="font-size:13px;color:var(--text-muted);margin-top:8px">Try another vibe</div>
         </div>`;
         return;
       }
@@ -8104,7 +8123,7 @@
       if (typeof loadCoversInView === 'function') loadCoversInView();
     }
 
-    // Navigate to the "Reader Favorites" curated trending page (non-GR users)
+    // Navigate to the "Romantasy Favorites" curated trending page (non-GR users)
     function discoverSelectTrending() {
       _navGo('trending', {});
       const _vb = document.getElementById('discoverVibeBar');
@@ -8113,7 +8132,7 @@
       const filteredEl = document.getElementById('discover-filtered-results');
       filteredEl.style.display = 'block';
       const labelEl = document.getElementById('discoverResultsLabel');
-      if (labelEl) labelEl.textContent = '🔥 Reader Favorites';
+      if (labelEl) labelEl.textContent = '🐉 Romantasy Favorites';
       const descEl = document.getElementById('discoverResultsDesc');
       if (descEl) descEl.innerHTML = `<p style="margin:0">The books readers recommend over and over across Reddit, BookTok, and Goodreads.</p>`;
       // Real viral titles in priority order (BookTok / Goodreads / Google Trends 2024–2025)
@@ -8251,7 +8270,10 @@
       if (!shelvesEl) return;
       let html = renderDiscoverHero();
       html += renderVibeShortcuts();
-      html += renderGenreShortcuts();
+      // Discover by Genre removed in romantasy-only pivot — multi-genre browse
+      // doesn't fit a romantasy product. The /genre/* SEO pages still exist for
+      // inbound Google traffic, but the homepage doesn't promote them.
+      // html += renderGenreShortcuts();
       html += renderBooksLikeShelf();
       html += DISCOVER_SHELVES.map(cfg => renderDiscoverShelf(cfg)).join('');
       shelvesEl.innerHTML = html;
@@ -11117,17 +11139,17 @@
       if (window.location.pathname !== '/') {
         history.pushState({}, '', '/');
       }
-      document.title = '90books — Find Books Like Your Favorites | Personalized Book Recommendations';
+      document.title = '90books — Find Your Next Romantasy | Romantasy Book Recommendations';
       const _ogTitle = document.querySelector('meta[property="og:title"]');
       const _ogDesc  = document.querySelector('meta[property="og:description"]');
       const _ogUrl   = document.querySelector('meta[property="og:url"]');
       const _twTitle = document.querySelector('meta[name="twitter:title"]');
       const _twDesc  = document.querySelector('meta[name="twitter:description"]');
-      if (_ogTitle) _ogTitle.content = '90books — Find Books Like Your Favorites';
-      if (_ogDesc)  _ogDesc.content  = 'Type any book, get recs from readers who loved it — filtered to only what you haven\'t read yet. Connect your Goodreads in 10 seconds.';
+      if (_ogTitle) _ogTitle.content = '90books — Find Your Next Romantasy';
+      if (_ogDesc)  _ogDesc.content  = 'The romantasy rec engine. Type any book you loved and get curated picks from real readers. Connect Goodreads to filter out what you\'ve already read.';
       if (_ogUrl)   _ogUrl.content   = 'https://90books.com/';
-      if (_twTitle) _twTitle.content = '90books — Find Books Like Your Favorites';
-      if (_twDesc)  _twDesc.content  = 'Type any book, get recs from readers who loved it — filtered to only what you haven\'t read yet.';
+      if (_twTitle) _twTitle.content = '90books — Find Your Next Romantasy';
+      if (_twDesc)  _twDesc.content  = 'The romantasy rec engine. Type any book you loved and get curated picks from real readers.';
     }
 
     // goHome: close overlay + station + show shelves
@@ -13427,8 +13449,8 @@
 
     async function shareApp() {
       const shareData = {
-        title: '90books — Find Your Next Favorite Read',
-        text: "Try 90books — it's like Spotify for books. Get recs based on your taste, not algorithms 📚",
+        title: '90books — Find Your Next Romantasy',
+        text: "Try 90books — the romantasy rec engine. Curated picks from real readers, not algorithms 🐉",
         url: 'https://90books.com',
       };
       try {

@@ -21,6 +21,8 @@ export const config = {
 // falls back to a generic title-case conversion.
 const BOOK_TITLES = {
   'fourth-wing': 'Fourth Wing',
+  'iron-flame': 'Iron Flame',
+  'crescent-city': 'Crescent City',
   'a-court-of-thorns-and-roses': 'A Court of Thorns and Roses',
   'it-ends-with-us': 'It Ends With Us',
   'verity': 'Verity',
@@ -113,6 +115,16 @@ function buildMeta(pathname) {
   if ((m = pathname.match(/^\/genre\/([^\/]+)\/?$/))) {
     const slug = m[1];
     const genre = GENRE_LABELS[slug] || slugToTitle(slug);
+    // Romantasy gets bespoke copy because it's the flagship genre.
+    if (slug === 'romantasy') {
+      return {
+        title: 'Romantasy Books — The Best Reads for 2026 | 90books',
+        description: 'The best romantasy books real readers can\'t stop recommending. Fourth Wing, ACOTAR, Quicksilver, and every breakout the r/Romantasy community is binging. Curated, not algorithmic.',
+        canonical: `https://90books.com/genre/${slug}`,
+        pageKind: 'genre',
+        label: genre,
+      };
+    }
     return {
       title: `${genre} Books | 90books`,
       description: `The best ${genre.toLowerCase()} books real readers can't stop recommending. Hand-picked, cross-referenced against Reddit threads.`,

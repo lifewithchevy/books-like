@@ -55,6 +55,35 @@ body {
     radial-gradient(ellipse 80% 50% at 50% 100%, rgba(139, 63, 211, 0.12), transparent 70%);
 }
 
+/* Slim "back to 90books" bar above the game's topbar. Intentionally subtle
+   — the game is the focus, this is escape hatch only. */
+.home-bar {
+  width: 100%;
+  max-width: var(--max);
+  display: flex;
+  align-items: center;
+  padding: 14px 16px 0;
+  position: relative;
+  z-index: 1;
+}
+.home-link {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  font-family: var(--font-sans, 'Inter', sans-serif);
+  font-size: 13px;
+  font-weight: 500;
+  letter-spacing: 0.2px;
+  color: var(--ink-dim);
+  text-decoration: none;
+  padding: 6px 10px;
+  margin-left: -10px;
+  border-radius: 8px;
+  transition: color 0.15s, background 0.15s;
+}
+.home-link:hover { color: var(--ink); background: rgba(255, 255, 255, 0.04); }
+.home-link span { font-size: 14px; line-height: 1; }
+
 .topbar {
   width: 100%;
   max-width: var(--max);
@@ -66,14 +95,23 @@ body {
   z-index: 1;
 }
 
+/* Wordmark serves as the semantic <h1> for /booky — required for SEO crawlers
+   to identify the page topic. Reset h1 default margins so the topbar grid
+   alignment stays clean. */
 .wordmark {
   font-family: var(--font-serif);
   font-weight: 500;
   font-size: 22px;
   text-align: center;
   color: var(--ink);
-  text-decoration: none;
   letter-spacing: 0.5px;
+  margin: 0;
+  padding: 0;
+  line-height: 1;
+}
+.wordmark a {
+  color: inherit;
+  text-decoration: none;
 }
 .wordmark span {
   font-style: italic;

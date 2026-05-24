@@ -1,10 +1,14 @@
-// Romantasy Daily — Wordle-style game loop.
+// Booky — Wordle-style daily romantasy book guessing game.
 // Single static page. No backend. LocalStorage only.
+//
+// Note: LocalStorage keys keep the `_daily_` prefix from the pre-rename era
+// so existing user streaks/stats survive. Don't rename them without a
+// migration; users would lose their history.
 
 const MAX_GUESSES = 6;
 const STATE_KEY = '90books_daily_state_v1';
 const STATS_KEY = '90books_daily_stats_v1';
-const SITE_URL = '90books.com/daily';
+const SITE_URL = '90books.com/booky';
 
 // Clue reveal order: medium → hard → easy. Cover de-blurs across clues 3→6.
 // Quotes graded hard → medium → easy so the iconic line lands on guess 6.
@@ -20,7 +24,7 @@ const $ = (id) => document.getElementById(id);
 
 (async function init() {
   try {
-    DATA = await fetch('/daily/books.json', { cache: 'no-store' }).then(r => r.json());
+    DATA = await fetch('/booky/books.json', { cache: 'no-store' }).then(r => r.json());
   } catch {
     return showFatal("Couldn't load today's book. Try refreshing.");
   }
@@ -28,7 +32,7 @@ const $ = (id) => document.getElementById(id);
   DAY = computeDayNumber(DATA.epoch);
   if (DAY < 1 || DAY > DATA.queue.length) {
     return showFatal(DAY < 1
-      ? "Romantasy Daily hasn't launched yet — come back soon!"
+      ? "Booky hasn't launched yet — come back soon!"
       : 'Out of books in the queue — new ones loading soon!');
   }
   BOOK = DATA.queue[DAY - 1];
@@ -40,7 +44,7 @@ const $ = (id) => document.getElementById(id);
     saveState();
   }
 
-  $('day-number').textContent = `Daily · No. ${DAY}`;
+  $('day-number').textContent = `Daily · No. ${DAY}`; // "Daily" here is the descriptor, not the brand
   renderTiles();
   bindUI();
   render();
@@ -356,7 +360,7 @@ function showEndScreen(animate) {
 }
 
 function buildShareString() {
-  const header = `📚 Romantasy Daily #${DAY}`;
+  const header = `📚 Booky #${DAY}`;
   let scoreLine;
   if (STATE.status === 'won') {
     const streak = STATS.currentStreak > 1 ? ` 🔥${STATS.currentStreak}` : '';
@@ -435,7 +439,7 @@ function tickCountdown() {
 
 function showFatal(msg) {
   document.body.innerHTML = `<main style="padding:40px 20px;max-width:480px;margin:0 auto;text-align:center;color:#f6ecf3;font-family:system-ui">
-    <h1 style="font-size:22px;font-family:'Cormorant Garamond',serif">Romantasy <em style="color:#f8b6da">Daily</em></h1>
+    <h1 style="font-size:22px;font-family:'Cormorant Garamond',serif">Booky</h1>
     <p style="color:#b09ab8;margin-top:14px">${msg}</p>
     <p style="margin-top:20px"><a href="/" style="color:#f8b6da">← Back to 90books</a></p>
   </main>`;

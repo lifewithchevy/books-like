@@ -22,6 +22,16 @@
       "source": "/books-like/",
       "destination": "/",
       "permanent": true
+    },
+    {
+      "source": "/daily",
+      "destination": "/booky",
+      "permanent": true
+    },
+    {
+      "source": "/daily/:path*",
+      "destination": "/booky/:path*",
+      "permanent": true
     }
   ],
   "rewrites": [
