@@ -217,8 +217,17 @@ function buildClue(kind) {
       const img = document.createElement('img');
       img.src = BOOK.cover;
       img.alt = '';
-      img.onerror = () => { img.style.display = 'none'; };
       img.style.filter = `blur(${currentBlurPx()}px)`;
+      // If the cover URL fails (some Kindle-only ASINs), swap to a neutral
+      // placeholder so the clue card never looks broken. Generic enough not
+      // to spoil the answer.
+      img.onerror = () => {
+        img.style.display = 'none';
+        const fallback = document.createElement('div');
+        fallback.className = 'cover-fallback';
+        fallback.innerHTML = '<span>📕</span><small>Cover unavailable</small>';
+        node.appendChild(fallback);
+      };
       node.appendChild(img);
       break;
     }
