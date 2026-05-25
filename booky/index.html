@@ -2,83 +2,104 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
-  <title>Booky — The Daily Romantasy Book Guessing Game | 90books</title>
-  <meta name="description" content="Booky is the daily romantasy book guessing game. One book a day, six guesses, progressive clues. Build your streak." />
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+  <title>Booky — The Daily Romantasy Word Game | 90books</title>
+  <meta name="description" content="Booky — the daily romantasy word game. Guess the 5-letter word in 6 tries. New word every day. Build your streak." />
   <meta name="theme-color" content="#160516" />
   <link rel="canonical" href="https://90books.com/booky" />
-  <meta property="og:title" content="Booky — Daily Romantasy Book Guessing Game" />
-  <meta property="og:description" content="One romantasy book a day. Six guesses. Build your streak." />
+  <meta property="og:title" content="Booky — The Daily Romantasy Word Game" />
+  <meta property="og:description" content="Guess the romantasy word in 6 tries. New word every day." />
   <meta property="og:url" content="https://90books.com/booky" />
   <meta property="og:type" content="website" />
   <meta name="twitter:card" content="summary" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="/booky/styles.css?v=3" />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="/booky/styles.css?v=4" />
 </head>
 <body>
   <div class="bg-glow" aria-hidden="true"></div>
 
-  <!-- Exit-to-home link. Booky lives at /booky/ as a standalone page, so an
-       explicit way back to the main app matters. Sits above the game topbar
-       so it never competes with the help/stats icons. -->
-  <nav class="home-bar" aria-label="Site navigation">
-    <a href="/" class="home-link" aria-label="Back to 90books">
-      <span aria-hidden="true">←</span> 90books
-    </a>
-  </nav>
-
   <header class="topbar">
     <button id="help-btn" class="icon-btn" aria-label="How to play">?</button>
-    <h1 class="wordmark"><a href="/booky">Booky</a></h1>
+    <h1 class="wordmark"><a href="/">Booky</a></h1>
     <button id="stats-btn" class="icon-btn" aria-label="Stats">▤</button>
   </header>
 
-  <main class="game">
-    <p class="day-label"><span id="day-number"></span></p>
+  <p class="day-label"><span id="day-number"></span></p>
 
-    <section class="clues" id="clues" aria-live="polite"></section>
-
-    <section class="tiles" id="tiles" aria-label="Your guesses">
-      <!-- 6 tile rows rendered by JS -->
-    </section>
-
-    <p class="hint" id="remaining"></p>
+  <!-- 6 rows × 5 tiles -->
+  <main class="board-wrap">
+    <section class="board" id="board" aria-label="Booky board"></section>
   </main>
 
-  <div class="dock">
-    <form id="guess-form" autocomplete="off">
-      <input
-        type="text"
-        id="guess-input"
-        placeholder="Type a book title…"
-        aria-label="Guess the book"
-        autocapitalize="words"
-        spellcheck="false"
-      />
-      <button type="submit" id="guess-submit" aria-label="Submit guess">→</button>
-    </form>
-  </div>
+  <!-- On-screen keyboard -->
+  <section class="keyboard" id="keyboard" aria-label="Keyboard">
+    <div class="kb-row" data-row="0">
+      <button class="kb-key" data-key="Q">Q</button>
+      <button class="kb-key" data-key="W">W</button>
+      <button class="kb-key" data-key="E">E</button>
+      <button class="kb-key" data-key="R">R</button>
+      <button class="kb-key" data-key="T">T</button>
+      <button class="kb-key" data-key="Y">Y</button>
+      <button class="kb-key" data-key="U">U</button>
+      <button class="kb-key" data-key="I">I</button>
+      <button class="kb-key" data-key="O">O</button>
+      <button class="kb-key" data-key="P">P</button>
+    </div>
+    <div class="kb-row" data-row="1">
+      <button class="kb-key" data-key="A">A</button>
+      <button class="kb-key" data-key="S">S</button>
+      <button class="kb-key" data-key="D">D</button>
+      <button class="kb-key" data-key="F">F</button>
+      <button class="kb-key" data-key="G">G</button>
+      <button class="kb-key" data-key="H">H</button>
+      <button class="kb-key" data-key="J">J</button>
+      <button class="kb-key" data-key="K">K</button>
+      <button class="kb-key" data-key="L">L</button>
+    </div>
+    <div class="kb-row" data-row="2">
+      <button class="kb-key kb-wide" data-key="ENTER">Enter</button>
+      <button class="kb-key" data-key="Z">Z</button>
+      <button class="kb-key" data-key="X">X</button>
+      <button class="kb-key" data-key="C">C</button>
+      <button class="kb-key" data-key="V">V</button>
+      <button class="kb-key" data-key="B">B</button>
+      <button class="kb-key" data-key="N">N</button>
+      <button class="kb-key" data-key="M">M</button>
+      <button class="kb-key kb-wide" data-key="BACK" aria-label="Delete">⌫</button>
+    </div>
+  </section>
 
-  <!-- How to play -->
+  <!-- Help -->
   <dialog id="help-modal" class="sheet">
     <form method="dialog" class="sheet-inner">
       <button class="sheet-close" aria-label="Close">×</button>
-      <h2 class="sheet-title">How to play Booky</h2>
-      <p>One romantasy book per day. <strong>Six guesses.</strong> Each wrong guess unlocks a new clue.</p>
+      <h2 class="sheet-title">How to play</h2>
+      <p>Guess the <strong>Booky</strong> in 6 tries.</p>
       <ul class="rules">
-        <li><span class="dot correct"></span> Correct — you got it</li>
-        <li><span class="dot close"></span> Close — same author or series</li>
-        <li><span class="dot wrong"></span> Wrong — try again</li>
+        <li>Each guess must be a 5-letter word.</li>
+        <li>The tile colors will change to show how close your guess was.</li>
       </ul>
-      <p class="rules-clues">
-        Each wrong guess unlocks a new clue. The last one is the line bookstagram won't shut up about — if you've read it, you'll know.
-      </p>
-      <p class="rules-clues">
-        Reader quotes are pulled from real Goodreads highlights.
-      </p>
-      <p>A new book unlocks at midnight UTC. Don't break your streak.</p>
+      <p class="rules-clues"><em>Today's word is romantasy-coded.</em> Think fae, dragons, fated mates, sharp blades, the usual.</p>
+
+      <h3 class="examples-title">Examples</h3>
+      <div class="ex-row">
+        <span class="ex-tile correct">F</span><span class="ex-tile">A</span><span class="ex-tile">T</span><span class="ex-tile">E</span><span class="ex-tile">D</span>
+      </div>
+      <p class="ex-desc"><strong>F</strong> is in the word and in the right spot.</p>
+
+      <div class="ex-row">
+        <span class="ex-tile">C</span><span class="ex-tile present">O</span><span class="ex-tile">U</span><span class="ex-tile">R</span><span class="ex-tile">T</span>
+      </div>
+      <p class="ex-desc"><strong>O</strong> is in the word but in the wrong spot.</p>
+
+      <div class="ex-row">
+        <span class="ex-tile">B</span><span class="ex-tile">L</span><span class="ex-tile">A</span><span class="ex-tile absent">D</span><span class="ex-tile">E</span>
+      </div>
+      <p class="ex-desc"><strong>D</strong> is not in the word.</p>
+
+      <p class="footnote">A new word unlocks at midnight UTC. Don't break your streak.</p>
     </form>
   </dialog>
 
@@ -86,10 +107,10 @@
   <dialog id="stats-modal" class="sheet">
     <form method="dialog" class="sheet-inner">
       <button class="sheet-close" aria-label="Close">×</button>
-      <h2 class="sheet-title">Your stats</h2>
+      <h2 class="sheet-title">Statistics</h2>
       <div class="stat-row">
         <div><span id="stat-played">0</span><small>played</small></div>
-        <div><span id="stat-winpct">0%</span><small>win rate</small></div>
+        <div><span id="stat-winpct">0</span><small>win %</small></div>
         <div><span id="stat-streak">0</span><small>🔥 streak</small></div>
         <div><span id="stat-max">0</span><small>max</small></div>
       </div>
@@ -98,27 +119,12 @@
     </form>
   </dialog>
 
-  <!-- End-of-day result sheet -->
+  <!-- End result sheet -->
   <dialog id="end-modal" class="sheet">
     <div class="sheet-inner">
       <button class="sheet-close" aria-label="Close" data-close-end>×</button>
       <h2 id="end-headline" class="sheet-title"></h2>
-
-      <div class="end-book">
-        <img id="end-cover" alt="" />
-        <div class="end-meta">
-          <p class="end-title" id="end-title"></p>
-          <p class="end-author" id="end-author"></p>
-          <p class="end-year" id="end-year"></p>
-        </div>
-      </div>
-
-      <div class="end-actions">
-        <a id="buy-amazon" class="buy" target="_blank" rel="noopener sponsored">Amazon</a>
-        <a id="buy-bookshop" class="buy" target="_blank" rel="noopener sponsored">Bookshop</a>
-      </div>
-
-      <a id="more-like" class="more-like" href="#">More books like this →</a>
+      <p id="end-word" class="end-word"></p>
 
       <div class="end-share">
         <pre id="share-text" class="share-preview"></pre>
@@ -126,10 +132,13 @@
         <span id="share-toast" class="toast" hidden>Copied — paste anywhere</span>
       </div>
 
-      <p class="next">Next book in <span id="countdown">--:--:--</span></p>
+      <p class="next">Next word in <span id="countdown">--:--:--</span></p>
     </div>
   </dialog>
 
-  <script src="/booky/app.js?v=3" defer></script>
+  <!-- Floating toast (invalid guess, etc.) -->
+  <div id="floating-toast" class="float-toast" hidden></div>
+
+  <script src="/booky/app.js?v=4" defer></script>
 </body>
 </html>

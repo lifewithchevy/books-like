@@ -1,43 +1,38 @@
-// Booky — Wordle-style daily romantasy book guessing game.
+// Booky — daily romantasy word game. Wordle clone with a curated word list.
 // Single static page. No backend. LocalStorage only.
-//
-// Note: LocalStorage keys keep the `_daily_` prefix from the pre-rename era
-// so existing user streaks/stats survive. Don't rename them without a
-// migration; users would lose their history.
 
+const WORD_LEN = 5;
 const MAX_GUESSES = 6;
-const STATE_KEY = '90books_daily_state_v1';
-const STATS_KEY = '90books_daily_stats_v1';
+const STATE_KEY = '90books_booky_word_v1';
+const STATS_KEY = '90books_booky_word_stats_v1';
 const SITE_URL = '90books.com/booky';
 
-// Clue reveal order: each clue narrows the answer further.
-// Two tropes early, then three quotes graded hard → easy so the iconic
-// line lands on guess 6. Clue cards show only "Clue N" — no descriptors
-// (avoids telegraphing difficulty or clue type).
-const CLUE_ORDER = ['trope', 'spiceYear', 'tropeTwo', 'quoteHard', 'quoteMedium', 'quoteEasy'];
-
-let DATA = null;
-let BOOK = null;
-let DAY = null;
+let DATA = null;       // { epoch, queue }
+let ANSWER = null;     // today's word, uppercase
+let DAY = null;        // 1-indexed day number
 let STATE = null;
 let STATS = null;
+let CURRENT = '';      // letters being typed for current guess
+let LOCKED = false;    // true once game ends (no more input)
+let FLIPPING = false;  // true while a row's tiles are flipping
 
 const $ = (id) => document.getElementById(id);
 
+// ---- Boot ----
 (async function init() {
   try {
-    DATA = await fetch('/booky/books.json', { cache: 'no-store' }).then(r => r.json());
+    DATA = await fetch('/booky/words.json?v=4', { cache: 'no-store' }).then(r => r.json());
   } catch {
-    return showFatal("Couldn't load today's book. Try refreshing.");
+    return showFatal("Couldn't load today's word. Try refreshing.");
   }
 
   DAY = computeDayNumber(DATA.epoch);
   if (DAY < 1 || DAY > DATA.queue.length) {
     return showFatal(DAY < 1
       ? "Booky hasn't launched yet — come back soon!"
-      : 'Out of books in the queue — new ones loading soon!');
+      : "Out of words — new ones loading soon!");
   }
-  BOOK = DATA.queue[DAY - 1];
+  ANSWER = DATA.queue[DAY - 1].toUpperCase();
 
   STATS = loadStats();
   STATE = loadState();
@@ -46,12 +41,22 @@ const $ = (id) => document.getElementById(id);
     saveState();
   }
 
-  $('day-number').textContent = `Daily · No. ${DAY}`; // "Daily" here is the descriptor, not the brand
-  renderTiles();
+  $('day-number').textContent = `No. ${DAY}`;
+  buildBoard();
+  paintBoardFromState();
+  paintKeyboardFromState();
   bindUI();
-  render();
 
-  if (STATE.status !== 'playing') showEndScreen(false);
+  if (STATE.status !== 'playing') {
+    LOCKED = true;
+    showEndScreen();
+  }
+
+  // First-time visitor: show help
+  if (!localStorage.getItem('90books_booky_seen_help_v1')) {
+    localStorage.setItem('90books_booky_seen_help_v1', '1');
+    setTimeout(() => $('help-modal').showModal(), 400);
+  }
 })();
 
 function computeDayNumber(epochStr) {
@@ -61,19 +66,15 @@ function computeDayNumber(epochStr) {
 }
 
 // ---- State ----
-
 function freshState() {
   return {
     dayNumber: DAY,
-    guesses: [],
-    status: 'playing',
-    revealedCount: 1
+    guesses: [],   // ['FATED', ...]
+    status: 'playing' // | 'won' | 'lost'
   };
 }
-
 function loadState() {
-  try { return JSON.parse(localStorage.getItem(STATE_KEY)); }
-  catch { return null; }
+  try { return JSON.parse(localStorage.getItem(STATE_KEY)); } catch { return null; }
 }
 function saveState() { localStorage.setItem(STATE_KEY, JSON.stringify(STATE)); }
 
@@ -94,7 +95,6 @@ function recordFinish() {
   if (STATE.statsRecorded) return;
   STATE.statsRecorded = true;
   saveState();
-
   STATS.played += 1;
   if (STATE.status === 'won') {
     STATS.wins += 1;
@@ -110,161 +110,135 @@ function recordFinish() {
   saveStats();
 }
 
-// ---- Matching ----
+// ---- Wordle evaluation ----
+// Standard double-letter handling:
+// 1. Mark exact matches (correct).
+// 2. For remaining guess letters, look them up against unmatched answer letters
+//    (present) — each answer letter can only be matched once.
+function evaluate(guess, answer) {
+  const result = new Array(WORD_LEN).fill('absent');
+  const used = new Array(WORD_LEN).fill(false);
 
-function normalize(s) {
-  return s.toLowerCase()
-    .normalize('NFD').replace(/[̀-ͯ]/g, '')
-    .replace(/[^\w\s]/g, ' ')
-    .replace(/\b(the|a|an)\b/g, ' ')
-    .replace(/\s+/g, ' ')
-    .trim();
-}
-
-function scoreGuess(text) {
-  const g = normalize(text);
-  if (!g) return null;
-  const titleN = normalize(BOOK.title);
-  const aliasN = (BOOK.aliases || []).map(normalize);
-  if (g === titleN || aliasN.includes(g)) return 'correct';
-
-  const matched = DATA.queue.find(b => {
-    const cands = [normalize(b.title), ...(b.aliases || []).map(normalize)];
-    return cands.includes(g);
-  });
-  if (matched) {
-    if (normalize(matched.author) === normalize(BOOK.author)) return 'close';
-    if (matched.series && BOOK.series &&
-        normalize(matched.series) === normalize(BOOK.series)) return 'close';
+  // Pass 1: correct
+  for (let i = 0; i < WORD_LEN; i++) {
+    if (guess[i] === answer[i]) {
+      result[i] = 'correct';
+      used[i] = true;
+    }
   }
-  return 'wrong';
-}
-
-// ---- Render ----
-
-function renderTiles() {
-  const el = $('tiles');
-  el.innerHTML = '';
-  for (let i = 0; i < MAX_GUESSES; i++) {
-    const tile = document.createElement('div');
-    tile.className = 'tile empty';
-    tile.dataset.idx = i;
-    tile.innerHTML = `<span class="tile-dot"></span><span class="tile-text">—</span>`;
-    el.appendChild(tile);
-  }
-}
-
-function render() {
-  renderClues();
-  paintTiles();
-  renderHint();
-}
-
-function paintTiles(justRevealedIdx = -1) {
-  const tiles = $('tiles').children;
-  for (let i = 0; i < MAX_GUESSES; i++) {
-    const tile = tiles[i];
-    const g = STATE.guesses[i];
-    tile.className = 'tile';
-    if (g) {
-      tile.classList.add('filled', g.result);
-      tile.querySelector('.tile-text').textContent = g.text;
-      if (i === justRevealedIdx) {
-        // restart animation
-        tile.style.animation = 'none';
-        // eslint-disable-next-line no-unused-expressions
-        tile.offsetHeight;
-        tile.style.animation = '';
+  // Pass 2: present
+  for (let i = 0; i < WORD_LEN; i++) {
+    if (result[i] === 'correct') continue;
+    for (let j = 0; j < WORD_LEN; j++) {
+      if (used[j]) continue;
+      if (guess[i] === answer[j]) {
+        result[i] = 'present';
+        used[j] = true;
+        break;
       }
-    } else if (i === STATE.guesses.length && STATE.status === 'playing') {
-      tile.classList.add('empty', 'active');
-      tile.querySelector('.tile-text').textContent = '—';
-    } else {
-      tile.classList.add('empty');
-      tile.querySelector('.tile-text').textContent = '—';
     }
   }
+  return result;
 }
 
-function renderClues() {
-  const el = $('clues');
+// ---- Board rendering ----
+function buildBoard() {
+  const el = $('board');
   el.innerHTML = '';
-  const count = Math.min(STATE.revealedCount, CLUE_ORDER.length);
-  for (let i = 0; i < count; i++) el.appendChild(buildClue(CLUE_ORDER[i]));
-}
-
-function buildClue(kind) {
-  const node = document.createElement('div');
-  node.className = 'clue';
-  const label = document.createElement('span');
-  label.className = 'clue-label';
-
-  switch (kind) {
-    case 'trope':
-      label.textContent = 'Clue 1';
-      node.appendChild(label);
-      node.appendChild(p(BOOK.clues.trope));
-      break;
-    case 'spiceYear': {
-      label.textContent = 'Clue 2';
-      node.appendChild(label);
-      const spice = '🌶️'.repeat(BOOK.clues.spice) || '—';
-      node.appendChild(p(`${spice}  ·  Published ${BOOK.clues.year}`));
-      break;
+  for (let r = 0; r < MAX_GUESSES; r++) {
+    const row = document.createElement('div');
+    row.className = 'brow';
+    row.dataset.row = r;
+    for (let c = 0; c < WORD_LEN; c++) {
+      const tile = document.createElement('div');
+      tile.className = 'tile';
+      tile.dataset.row = r;
+      tile.dataset.col = c;
+      row.appendChild(tile);
     }
-    case 'tropeTwo':
-      label.textContent = 'Clue 3';
-      node.appendChild(label);
-      node.appendChild(p(BOOK.clues.tropeTwo || BOOK.clues.trope));
-      break;
-    case 'quoteHard':
-      label.textContent = 'Clue 4';
-      node.appendChild(label);
-      node.appendChild(quoteEl(BOOK.clues.quotes.hard));
-      break;
-    case 'quoteMedium':
-      label.textContent = 'Clue 5';
-      node.appendChild(label);
-      node.appendChild(quoteEl(BOOK.clues.quotes.medium));
-      break;
-    case 'quoteEasy':
-      label.textContent = 'Clue 6';
-      node.appendChild(label);
-      node.appendChild(quoteEl(BOOK.clues.quotes.easy));
-      break;
+    el.appendChild(row);
   }
-  return node;
 }
 
-function quoteEl(q) {
-  const wrap = document.createElement('div');
-  const text = document.createElement('p');
-  text.className = 'quote-text';
-  text.textContent = `"${q.text}"`;
-  const attr = document.createElement('p');
-  attr.className = 'quote-attr';
-  attr.textContent = `via Goodreads · ${q.likes.toLocaleString()} likes`;
-  wrap.append(text, attr);
-  return wrap;
+function paintBoardFromState() {
+  // Repaint all submitted guesses (instant, no animation)
+  for (let r = 0; r < STATE.guesses.length; r++) {
+    const guess = STATE.guesses[r];
+    const result = evaluate(guess, ANSWER);
+    paintRow(r, guess, result, false);
+  }
+  // Repaint current in-progress buffer (if any)
+  paintCurrent();
 }
 
-function p(text) {
-  const el = document.createElement('p');
-  el.textContent = text;
-  return el;
+function paintRow(r, guess, result, animate) {
+  const row = $('board').children[r];
+  for (let c = 0; c < WORD_LEN; c++) {
+    const tile = row.children[c];
+    tile.textContent = guess[c];
+    if (animate) {
+      setTimeout(() => {
+        tile.classList.add('revealed', result[c]);
+      }, c * 280);
+    } else {
+      tile.classList.add('revealed', result[c]);
+    }
+  }
 }
 
-function renderHint() {
-  const left = MAX_GUESSES - STATE.guesses.length;
-  $('remaining').textContent = STATE.status === 'playing'
-    ? `${left} ${left === 1 ? 'guess' : 'guesses'} left`
-    : '';
+function paintCurrent() {
+  if (LOCKED) return;
+  const r = STATE.guesses.length;
+  if (r >= MAX_GUESSES) return;
+  const row = $('board').children[r];
+  for (let c = 0; c < WORD_LEN; c++) {
+    const tile = row.children[c];
+    const ch = CURRENT[c] || '';
+    tile.textContent = ch;
+    tile.classList.toggle('filled', !!ch);
+  }
 }
 
-// ---- UI binding ----
+function paintKeyboardFromState() {
+  // For each letter, apply the strongest known state across all guesses.
+  // Strength: correct > present > absent.
+  const best = {};
+  const strength = { correct: 3, present: 2, absent: 1 };
+  for (const guess of STATE.guesses) {
+    const result = evaluate(guess, ANSWER);
+    for (let i = 0; i < WORD_LEN; i++) {
+      const ch = guess[i];
+      const s = result[i];
+      if (!best[ch] || strength[s] > strength[best[ch]]) best[ch] = s;
+    }
+  }
+  document.querySelectorAll('.kb-key').forEach(btn => {
+    const k = btn.dataset.key;
+    if (k === 'ENTER' || k === 'BACK') return;
+    btn.classList.remove('correct', 'present', 'absent');
+    if (best[k]) btn.classList.add(best[k]);
+  });
+}
 
+// ---- Input ----
 function bindUI() {
-  $('guess-form').addEventListener('submit', onSubmitGuess);
+  // On-screen keyboard
+  document.querySelectorAll('.kb-key').forEach(btn => {
+    btn.addEventListener('click', (e) => {
+      e.preventDefault();
+      handleKey(btn.dataset.key);
+    });
+  });
+
+  // Hardware keyboard
+  document.addEventListener('keydown', (e) => {
+    if (e.metaKey || e.ctrlKey || e.altKey) return;
+    const k = e.key;
+    if (k === 'Enter')           { handleKey('ENTER'); e.preventDefault(); }
+    else if (k === 'Backspace')  { handleKey('BACK');  e.preventDefault(); }
+    else if (/^[a-zA-Z]$/.test(k)) { handleKey(k.toUpperCase()); }
+  });
+
   $('help-btn').addEventListener('click', () => $('help-modal').showModal());
   $('stats-btn').addEventListener('click', () => {
     renderStatsModal();
@@ -275,69 +249,90 @@ function bindUI() {
     e.preventDefault();
     $('end-modal').close();
   });
-
-  // First-time visitor: show help
-  if (!localStorage.getItem('90books_daily_seen_help_v1')) {
-    localStorage.setItem('90books_daily_seen_help_v1', '1');
-    setTimeout(() => $('help-modal').showModal(), 500);
-  }
 }
 
-function onSubmitGuess(e) {
-  e.preventDefault();
-  if (STATE.status !== 'playing') return;
-  const input = $('guess-input');
-  const raw = input.value.trim();
-  if (!raw) return;
-  const result = scoreGuess(raw);
-  if (result === null) return;
+function handleKey(k) {
+  if (LOCKED || FLIPPING) return;
+  if (k === 'ENTER')      return submitGuess();
+  if (k === 'BACK')       return backspace();
+  if (/^[A-Z]$/.test(k))  return addLetter(k);
+}
 
-  STATE.guesses.push({ text: raw, result });
-  input.value = '';
+function addLetter(letter) {
+  if (CURRENT.length >= WORD_LEN) return;
+  CURRENT += letter;
+  paintCurrent();
+}
 
-  if (result === 'correct') {
-    STATE.status = 'won';
-    STATE.revealedCount = CLUE_ORDER.length;
-  } else if (STATE.guesses.length >= MAX_GUESSES) {
-    STATE.status = 'lost';
-    STATE.revealedCount = CLUE_ORDER.length;
-  } else {
-    STATE.revealedCount = Math.min(STATE.guesses.length + 1, CLUE_ORDER.length);
+function backspace() {
+  if (CURRENT.length === 0) return;
+  CURRENT = CURRENT.slice(0, -1);
+  paintCurrent();
+}
+
+function submitGuess() {
+  if (CURRENT.length < WORD_LEN) {
+    return shake('Not enough letters');
   }
-  saveState();
-  renderClues();
-  paintTiles(STATE.guesses.length - 1);
-  renderHint();
+  // No dictionary check for v1 — accept any 5-letter string.
 
-  if (STATE.status !== 'playing') {
-    // Wait for tile flip animation before showing end sheet
-    setTimeout(() => showEndScreen(true), 750);
+  const r = STATE.guesses.length;
+  const guess = CURRENT;
+  CURRENT = '';
+  STATE.guesses.push(guess);
+  const result = evaluate(guess, ANSWER);
+
+  // Animate reveal, then update state + keyboard
+  FLIPPING = true;
+  paintRow(r, guess, result, true);
+
+  const revealTotal = (WORD_LEN - 1) * 280 + 550; // last tile finishes flipping
+  setTimeout(() => {
+    paintKeyboardFromState();
+    FLIPPING = false;
+
+    if (guess === ANSWER) {
+      STATE.status = 'won';
+    } else if (STATE.guesses.length >= MAX_GUESSES) {
+      STATE.status = 'lost';
+    }
+    saveState();
+
+    if (STATE.status !== 'playing') {
+      LOCKED = true;
+      setTimeout(showEndScreen, 400);
+    }
+  }, revealTotal);
+}
+
+function shake(message) {
+  const r = STATE.guesses.length;
+  const row = $('board').children[r];
+  if (row) {
+    row.classList.add('shake');
+    setTimeout(() => row.classList.remove('shake'), 450);
   }
+  showToast(message);
+}
+
+let toastTimer = null;
+function showToast(msg) {
+  const t = $('floating-toast');
+  t.textContent = msg;
+  t.hidden = false;
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.hidden = true; }, 1600);
 }
 
 // ---- End screen ----
-
-function showEndScreen(animate) {
+function showEndScreen() {
   recordFinish();
-
   $('end-headline').textContent = STATE.status === 'won'
     ? `Solved in ${STATE.guesses.length}/${MAX_GUESSES} 🔥`
     : `So close.`;
-  $('end-title').textContent = BOOK.title;
-  $('end-author').textContent = BOOK.author + (BOOK.series ? ` · ${BOOK.series}` : '');
-  $('end-year').textContent = BOOK.clues.year;
-  const cover = $('end-cover');
-  cover.src = BOOK.cover;
-  cover.alt = `${BOOK.title} cover`;
-  cover.onerror = () => { cover.style.visibility = 'hidden'; };
-
-  $('buy-amazon').href = BOOK.affiliate?.amazon || '#';
-  $('buy-bookshop').href = BOOK.affiliate?.bookshop || '#';
-  $('more-like').href = `/books-like/${BOOK.booksLikeSlug || BOOK.slug}`;
+  $('end-word').textContent = ANSWER;
   $('share-text').textContent = buildShareString();
-
-  renderStatsModal(); // also seed stats values
-
+  renderStatsModal();
   $('end-modal').showModal();
   tickCountdown();
   if (!window.__countdownTicker) {
@@ -354,19 +349,17 @@ function buildShareString() {
   } else {
     scoreLine = `🥀 X/${MAX_GUESSES}`;
   }
-  const cells = [];
-  for (let i = 0; i < MAX_GUESSES; i++) {
-    if (i >= STATE.guesses.length) { cells.push('⬛'); continue; }
-    const r = STATE.guesses[i].result;
-    cells.push(r === 'correct' ? '🟣' : r === 'close' ? '🟡' : '⚪');
-  }
-  return `${header}\n${scoreLine}\n${cells.join('')}\n${SITE_URL}`;
+  const rows = STATE.guesses.map(g => {
+    const r = evaluate(g, ANSWER);
+    return r.map(s => s === 'correct' ? '🟪' : s === 'present' ? '🟨' : '⬛').join('');
+  });
+  return `${header}\n${scoreLine}\n${rows.join('\n')}\n${SITE_URL}`;
 }
 
 function renderStatsModal() {
   $('stat-played').textContent = STATS.played;
   $('stat-winpct').textContent = STATS.played
-    ? `${Math.round(100 * STATS.wins / STATS.played)}%` : '0%';
+    ? Math.round(100 * STATS.wins / STATS.played) : 0;
   $('stat-streak').textContent = STATS.currentStreak;
   $('stat-max').textContent = STATS.maxStreak;
   renderDistribution();
@@ -386,9 +379,7 @@ function renderDistribution() {
     bar.className = 'bar' + (key === todayKey ? ' today' : '');
     bar.style.width = `${Math.max(8, (count / max) * 100)}%`;
     bar.textContent = count > 0 ? count : '';
-    const num = document.createElement('span');
-    num.textContent = '';
-    li.append(label, bar, num);
+    li.append(label, bar);
     ul.appendChild(li);
   }
 }
@@ -425,7 +416,7 @@ function tickCountdown() {
 
 function showFatal(msg) {
   document.body.innerHTML = `<main style="padding:40px 20px;max-width:480px;margin:0 auto;text-align:center;color:#f6ecf3;font-family:system-ui">
-    <h1 style="font-size:22px;font-family:'Cormorant Garamond',serif">Booky</h1>
+    <h1 style="font-size:26px;font-family:'Cormorant Garamond',serif">Booky</h1>
     <p style="color:#b09ab8;margin-top:14px">${msg}</p>
     <p style="margin-top:20px"><a href="/" style="color:#f8b6da">← Back to 90books</a></p>
   </main>`;
