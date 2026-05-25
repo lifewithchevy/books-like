@@ -104,12 +104,32 @@ function buildMeta(pathname) {
   if ((m = pathname.match(/^\/books-like\/([^\/]+)\/?$/))) {
     const slug = m[1];
     const bookTitle = BOOK_TITLES[slug] || slugToTitle(slug);
+    // Some books have widely-used abbreviations (ACOTAR, TOG, FBAA, etc.). When
+    // present, weave them into the title and meta so the page ranks for both
+    // the full title AND the abbreviation. We don't create separate URLs for
+    // the abbreviations — that would be duplicate content. Instead, we 301
+    // redirect /books-like/acotar (etc.) to the canonical URL (vercel.json).
+    // Map of widely-used abbreviations. Only include slugs where we have full
+    // SEO content (otherwise we'd promise the abbreviation in title but deliver
+    // a thin page). Each entry should also have a 301 alias in vercel.json.
+    const BOOK_ALIASES = {
+      'a-court-of-thorns-and-roses': 'ACOTAR',
+      'from-blood-and-ash': 'FBAA',
+      'a-good-girls-guide-to-murder': 'AGGGTM',
+    };
+    const alias = BOOK_ALIASES[slug];
+    const titleStr = alias
+      ? `Books Like ${bookTitle} (${alias}) | 90books`
+      : `Books Like ${bookTitle} | 90books`;
+    const descStr = alias
+      ? `If you loved ${bookTitle} (${alias}), you'll love these. Curated recommendations from real readers, cross-referenced against Reddit. No algorithms.`
+      : `If you loved ${bookTitle}, you'll love these. Curated recommendations from real readers, cross-referenced against Reddit. No algorithms.`;
     return {
-      title: `Books Like ${bookTitle} | 90books`,
-      description: `If you loved ${bookTitle}, you'll love these. Curated recommendations from real readers, cross-referenced against Reddit. No algorithms.`,
+      title: titleStr,
+      description: descStr,
       canonical: `https://90books.com/books-like/${slug}`,
       pageKind: 'books-like',
-      label: bookTitle,
+      label: alias ? `${bookTitle} (${alias})` : bookTitle,
     };
   }
   if ((m = pathname.match(/^\/genre\/([^\/]+)\/?$/))) {

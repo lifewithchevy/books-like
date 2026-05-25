@@ -2413,9 +2413,9 @@
     <!-- Hero -->
     <section class="lp-hero">
       <div class="lp-hero-text">
-        <div class="lp-pretitle">&#10024; Personalized book recommendations</div>
-        <h1 class="lp-headline">Your next favorite book is out there. Let&rsquo;s find it.</h1>
-        <p class="lp-sub">Connect your Goodreads in 10 seconds and get picks tailored to your taste &mdash; filtered to only books you haven&rsquo;t read yet.</p>
+        <div class="lp-pretitle">&#10024; Personalized romantasy recommendations</div>
+        <h1 class="lp-headline">Your next favorite romantasy is out there. Let&rsquo;s find it.</h1>
+        <p class="lp-sub">Connect your Goodreads in 10 seconds and get romantasy picks tailored to your taste &mdash; filtered to only books you haven&rsquo;t read yet.</p>
         <div class="lp-ctas">
           <button class="lp-btn-primary" onclick="openConnectModal()">&#10024; Connect Goodreads &mdash; it&rsquo;s free</button>
           <button class="lp-btn-ghost" onclick="enterGuestMode()">Browse without account &rarr;</button>
@@ -2423,13 +2423,17 @@
       </div>
       <div class="lp-hero-visual">
         <div class="lp-books-fan">
+          <!-- Romantasy-only lineup. 5 different series, 5 different authors.
+               Visually distinct covers (gold dragon, blue starry, fae emerald,
+               silver liquid, dark crown) so the fan reads as varied without
+               leaving the genre. -->
           <img class="lp-book b1" src="https://covers.openlibrary.org/b/isbn/9781649374042-M.jpg" alt="Fourth Wing">
-          <img class="lp-book b2" src="https://covers.openlibrary.org/b/isbn/9780062060624-M.jpg" alt="Song of Achilles">
-          <img class="lp-book b3" src="https://covers.openlibrary.org/b/isbn/9780525559474-M.jpg" alt="Midnight Library">
-          <img class="lp-book b4" src="https://covers.openlibrary.org/b/isbn/9781538724736-M.jpg" alt="Verity">
-          <img class="lp-book b5" src="https://covers.openlibrary.org/b/isbn/9781501110368-M.jpg" alt="It Ends with Us">
+          <img class="lp-book b2" src="https://covers.openlibrary.org/b/isbn/9781635575576-M.jpg" alt="A Court of Mist and Fury">
+          <img class="lp-book b3" src="https://covers.openlibrary.org/b/isbn/9780316310277-M.jpg" alt="The Cruel Prince">
+          <img class="lp-book b4" src="https://covers.openlibrary.org/b/isbn/9781399751285-M.jpg" alt="Quicksilver">
+          <img class="lp-book b5" src="https://covers.openlibrary.org/b/isbn/9781952457760-M.jpg" alt="From Blood and Ash">
         </div>
-        <div class="lp-visual-label">Books you&rsquo;ll love &mdash; none you&rsquo;ve read</div>
+        <div class="lp-visual-label">Romantasy you&rsquo;ll love &mdash; none you&rsquo;ve read</div>
       </div>
     </section>
 
@@ -2483,7 +2487,7 @@
 
     <!-- Bottom CTA -->
     <section class="lp-bottom">
-      <h2 class="lp-bottom-title">Ready to find your next read?</h2>
+      <h2 class="lp-bottom-title">Ready to find your next romantasy?</h2>
       <p class="lp-bottom-sub">Connect your Goodreads in 10 seconds. Free, always.</p>
       <button class="lp-btn-primary lp-btn-large" onclick="openConnectModal()">&#10024; Connect Goodreads &mdash; it&rsquo;s free</button>
       <button class="lp-btn-ghost lp-ghost-light" onclick="enterGuestMode()">Browse without account &rarr;</button>
@@ -7148,7 +7152,7 @@
       // Generic subtitle for personalized users — mentions their top genre but keeps copy universal.
       // Non-personalized users get a generic teaser + a "Connect Goodreads" prompt.
       const subtitle = isPersonal
-        ? 'Based on the books you loved, including your most read genre, we find your next favorite book.'
+        ? 'Based on the books you loved, including your most read genre, we find your next favorite romantasy.'
         : 'The books real readers can\'t stop recommending. Connect Goodreads and we\'ll tune picks to your taste and skip everything on your Read shelf.';
       const ctaLabel = isPersonal ? 'See your next read' : 'See your next read';
       // Secondary CTA only shown for non-GR users — prompts them to connect
@@ -7308,35 +7312,28 @@
     }
 
     const BOOKS_LIKE_ENTRIES = [
-      // Top-demand romantasy
-      { label: 'Fourth Wing',                      query: 'Fourth Wing',                       key: 'fourth wing' },
-      { label: 'ACOTAR',                           query: 'ACOTAR',                            key: 'a court of thorns and roses' },
-      { label: 'From Blood and Ash',               query: 'From Blood and Ash',                key: 'from blood and ash' },
-      { label: 'Powerless',                        query: 'Powerless',                         key: 'powerless' },
-      { label: 'Quicksilver',                      query: 'Quicksilver',                       key: 'quicksilver' },
-      { label: 'The Cruel Prince',                 query: 'The Cruel Prince',                  key: 'the cruel prince' },
-      { label: 'Six of Crows',                     query: 'Six of Crows',                      key: 'six of crows' },
-      // Contemporary + dark romance
-      { label: 'It Ends With Us',                  query: 'It Ends With Us',                   key: 'it ends with us' },
-      { label: 'Twisted Love',                     query: 'Twisted Love',                      key: 'twisted love' },
-      { label: 'Haunting Adeline',                 query: 'Haunting Adeline',                  key: 'haunting adeline' },
-      { label: 'King of Wrath',                    query: 'King of Wrath',                     key: 'king of wrath' },
-      { label: 'Icebreaker',                       query: 'Icebreaker',                        key: 'icebreaker' },
-      { label: 'Funny Story',                      query: 'Funny Story',                       key: 'funny story' },
-      { label: 'The Love Hypothesis',              query: 'The Love Hypothesis',               key: 'the love hypothesis' },
-      { label: 'The Summer I Turned Pretty',       query: 'The Summer I Turned Pretty',        key: 'the summer i turned pretty' },
-      // Thriller / mystery
-      { label: 'Verity',                           query: 'Verity',                            key: 'verity' },
-      { label: 'Gone Girl',                        query: 'Gone Girl',                         key: 'gone girl' },
-      { label: 'The Silent Patient',               query: 'The Silent Patient',                key: 'the silent patient' },
-      { label: 'The Woman in Cabin 10',            query: 'The Woman in Cabin 10',             key: 'the woman in cabin 10' },
-      { label: "A Good Girl's Guide to Murder",    query: "A Good Girl's Guide to Murder",     key: "a good girl's guide to murder" },
-      // Litfic + paranormal
-      { label: 'Twilight',                         query: 'Twilight',                          key: 'twilight' },
-      { label: 'The Midnight Library',             query: 'The Midnight Library',              key: 'the midnight library' },
-      // Covers load via Google Books JSON API (slower) — placed here so scroll gives time to load
-      { label: 'The Seven Husbands of Evelyn Hugo',query: 'The Seven Husbands of Evelyn Hugo', key: 'the seven husbands of evelyn hugo' },
-      { label: 'The Housemaid',                    query: 'The Housemaid',                     key: 'the housemaid' },
+      // Romantasy-only — strict fantasy + romance entries, ordered by Reddit/
+      // BookTok mention frequency. Contemporary romance (IEWU, Twisted Love,
+      // Haunting Adeline, King of Wrath, Icebreaker, Funny Story, Love
+      // Hypothesis, TSITP), thrillers (Verity, Silent Patient, Cabin 10,
+      // AGGGTM, Gone Girl, Housemaid), literary (Evelyn Hugo, Midnight
+      // Library), and paranormal romance (Twilight) all dropped from this
+      // shelf to match the romantasy-only product positioning. Their
+      // /books-like/ SEO pages stay live for inbound Google traffic.
+      { label: 'Fourth Wing',           query: 'Fourth Wing',                  key: 'fourth wing' },
+      { label: 'ACOTAR',                query: 'ACOTAR',                       key: 'a court of thorns and roses' },
+      { label: 'Iron Flame',            query: 'Iron Flame',                   key: 'iron flame' },
+      { label: 'Crescent City',         query: 'Crescent City',                key: 'house of earth and blood' },
+      { label: 'From Blood and Ash',    query: 'From Blood and Ash',           key: 'from blood and ash' },
+      { label: 'Throne of Glass',       query: 'Throne of Glass',              key: 'throne of glass' },
+      { label: 'The Cruel Prince',      query: 'The Cruel Prince',             key: 'the cruel prince' },
+      { label: 'Quicksilver',           query: 'Quicksilver',                  key: 'quicksilver' },
+      { label: 'One Dark Window',       query: 'One Dark Window',              key: 'one dark window' },
+      { label: 'Powerless',             query: 'Powerless',                    key: 'powerless' },
+      { label: 'The Bridge Kingdom',    query: 'The Bridge Kingdom',           key: 'the bridge kingdom' },
+      { label: 'Heartless Hunter',      query: 'Heartless Hunter',             key: 'heartless hunter' },
+      { label: 'The Jasad Heir',        query: 'The Jasad Heir',               key: 'the jasad heir' },
+      { label: 'Six of Crows',          query: 'Six of Crows',                 key: 'six of crows' },
     ].map(e => ({ ...e, bg: BOOK_HERO_BG[e.key] || '#1A1A2E' }));
 
     function renderBooksLikeShelf() {
@@ -7381,7 +7378,7 @@
         <div class="shelf-header">
           <div class="shelf-title">Books Like...</div>
         </div>
-        <div class="shelf-subtitle">Pick a book that wrecked you. We'll find what hits the same.</div>
+        <div class="shelf-subtitle">Pick a romantasy that wrecked you. We'll find what hits the same.</div>
         <div class="shelf-books">${cards}</div>
       </div>`;
     }
@@ -7984,7 +7981,13 @@
       const filters = PROMPT_TO_FILTERS[key] || PROMPT_TO_FILTERS[prompt] || null;
       let books = [];
       if (filters && (filters.moods?.length || filters.tropes?.length || filters.spice?.length || filters.pace || filters.minRating || filters.series)) {
-        books = getBooksForShelf(filters, 24);
+        // Romantasy-only pivot: filter to romantasy first. If <8 results,
+        // fall back to all genres so the page doesn't feel empty (rare for
+        // most vibes since the catalogue is romantasy-heavy already).
+        books = getBooksForShelf({ ...filters, tagClass: 'tag-romantasy' }, 24);
+        if (books.length < 8) {
+          books = getBooksForShelf(filters, 24);
+        }
       }
       // Fallback: run legacy searchByMood path
       if (books.length === 0) {
@@ -8134,16 +8137,18 @@
       const labelEl = document.getElementById('discoverResultsLabel');
       if (labelEl) labelEl.textContent = '🐉 Romantasy Favorites';
       const descEl = document.getElementById('discoverResultsDesc');
-      if (descEl) descEl.innerHTML = `<p style="margin:0">The books readers recommend over and over across Reddit, BookTok, and Goodreads.</p>`;
-      // Real viral titles in priority order (BookTok / Goodreads / Google Trends 2024–2025)
+      if (descEl) descEl.innerHTML = `<p style="margin:0">The romantasy books readers recommend over and over across r/Romantasy, BookTok, and Goodreads.</p>`;
+      // Romantasy-only — strictly fantasy + romance. Ordered by Reddit/BookTok
+      // mention frequency in 2024–2026 (Fourth Wing era + ACOTAR evergreen).
       const TRENDING_KEYS = [
-        'fourth wing', 'a court of thorns and roses', 'it ends with us',
-        'the seven husbands of evelyn hugo', 'iron flame', 'the love hypothesis',
-        'funny story', 'happy place', 'yellowface', 'tomorrow, and tomorrow, and tomorrow',
-        'verity', 'people we meet on vacation', 'book lovers', 'red, white & royal blue',
-        'the song of achilles', 'circe', 'beach read', 'one true loves',
-        'before we were strangers', 'the silent patient', 'the maid', 'normal people',
-        'piranesi', 'the midnight library',
+        'fourth wing', 'a court of thorns and roses', 'iron flame',
+        'a court of mist and fury', 'the cruel prince', 'from blood and ash',
+        'throne of glass', 'quicksilver', 'one dark window',
+        'the bridge kingdom', 'house of earth and blood', 'heartless hunter',
+        'the jasad heir', 'powerless', 'the wicked king', 'crown of midnight',
+        'kingdom of the wicked', 'a kingdom of flesh and fire', 'onyx storm',
+        'the serpent and the wings of night', 'daughter of the moon goddess',
+        'rebel witch', 'the foxglove king', 'when the moon hatched',
       ];
       const seen = new Set();
       const trending = TRENDING_KEYS
@@ -9743,7 +9748,7 @@
       if (q.length >= 2) {
         html += `<div class="dropdown-item dd-search-for${selectedIdx === 0 ? ' active' : ''}" data-key="__search__" data-label="${q.replace(/"/g, '&quot;')}" data-idx="0">
           <div class="dd-title">🔍 Search for <strong style="color:var(--accent-light)">"${q}"</strong></div>
-          <div class="dd-sub">Find your next favorite book</div>
+          <div class="dd-sub">Find your next favorite romantasy</div>
         </div>`;
       }
 

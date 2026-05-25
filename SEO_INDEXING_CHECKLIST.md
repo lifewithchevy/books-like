@@ -14,7 +14,7 @@ Track manual "Request Indexing" submissions in Google Search Console. Sitemap su
 
 - [x] `https://90books.com/` — homepage
 - [x] `https://90books.com/genre/romantasy` — flagship genre page
-- [ ] `https://90books.com/daily` — daily game
+- [ ] `https://90books.com/booky` — Booky daily romantasy game (formerly /daily — now 301 redirects)
 - [x] `https://90books.com/books-like/fourth-wing` — 4,400 searches/mo
 - [x] `https://90books.com/books-like/a-court-of-thorns-and-roses` — 5,400 searches/mo
 - [ ] `https://90books.com/books-like/iron-flame` — Empyrean book 2
