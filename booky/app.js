@@ -10,9 +10,11 @@ const STATE_KEY = '90books_daily_state_v1';
 const STATS_KEY = '90books_daily_stats_v1';
 const SITE_URL = '90books.com/booky';
 
-// Clue reveal order: medium → hard → easy. Cover de-blurs across clues 3→6.
-// Quotes graded hard → medium → easy so the iconic line lands on guess 6.
-const CLUE_ORDER = ['trope', 'spiceYear', 'cover', 'quoteHard', 'quoteMedium', 'quoteEasy'];
+// Clue reveal order: each clue narrows the answer further.
+// Two tropes early, then three quotes graded hard → easy so the iconic
+// line lands on guess 6. Clue cards show only "Clue N" — no descriptors
+// (avoids telegraphing difficulty or clue type).
+const CLUE_ORDER = ['trope', 'spiceYear', 'tropeTwo', 'quoteHard', 'quoteMedium', 'quoteEasy'];
 
 let DATA = null;
 let BOOK = null;
@@ -199,50 +201,34 @@ function buildClue(kind) {
 
   switch (kind) {
     case 'trope':
-      label.textContent = 'Clue 1 · Trope';
+      label.textContent = 'Clue 1';
       node.appendChild(label);
       node.appendChild(p(BOOK.clues.trope));
       break;
     case 'spiceYear': {
-      label.textContent = 'Clue 2 · Spice & year';
+      label.textContent = 'Clue 2';
       node.appendChild(label);
       const spice = '🌶️'.repeat(BOOK.clues.spice) || '—';
       node.appendChild(p(`${spice}  ·  Published ${BOOK.clues.year}`));
       break;
     }
-    case 'cover': {
-      node.classList.add('clue-cover');
-      label.textContent = 'Clue 3 · Cover';
+    case 'tropeTwo':
+      label.textContent = 'Clue 3';
       node.appendChild(label);
-      const img = document.createElement('img');
-      img.src = BOOK.cover;
-      img.alt = '';
-      img.style.filter = `blur(${currentBlurPx()}px)`;
-      // If the cover URL fails (some Kindle-only ASINs), swap to a neutral
-      // placeholder so the clue card never looks broken. Generic enough not
-      // to spoil the answer.
-      img.onerror = () => {
-        img.style.display = 'none';
-        const fallback = document.createElement('div');
-        fallback.className = 'cover-fallback';
-        fallback.innerHTML = '<span>📕</span><small>Cover unavailable</small>';
-        node.appendChild(fallback);
-      };
-      node.appendChild(img);
+      node.appendChild(p(BOOK.clues.tropeTwo || BOOK.clues.trope));
       break;
-    }
     case 'quoteHard':
-      label.textContent = 'Clue 4 · Reader quote (hard)';
+      label.textContent = 'Clue 4';
       node.appendChild(label);
       node.appendChild(quoteEl(BOOK.clues.quotes.hard));
       break;
     case 'quoteMedium':
-      label.textContent = 'Clue 5 · Reader quote (medium)';
+      label.textContent = 'Clue 5';
       node.appendChild(label);
       node.appendChild(quoteEl(BOOK.clues.quotes.medium));
       break;
     case 'quoteEasy':
-      label.textContent = 'Clue 6 · Reader quote (easy)';
+      label.textContent = 'Clue 6';
       node.appendChild(label);
       node.appendChild(quoteEl(BOOK.clues.quotes.easy));
       break;
@@ -266,15 +252,6 @@ function p(text) {
   const el = document.createElement('p');
   el.textContent = text;
   return el;
-}
-
-function currentBlurPx() {
-  // Cover appears at revealedCount 3 and de-blurs across rounds 3 → 6.
-  const r = STATE.revealedCount;
-  if (r >= 6) return 0;
-  if (r >= 5) return 5;
-  if (r >= 4) return 11;
-  return 18;
 }
 
 function renderHint() {
