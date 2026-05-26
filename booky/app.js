@@ -406,20 +406,17 @@ function showEndScreen() {
   const tries = STATE.guesses.length;
 
   // Big celebration header
-  const badgeIcon = $('celebration-badge');
   const title = $('end-headline');
   const sub = $('end-subtitle');
 
   if (won) {
     title.textContent = 'Congrats!';
     sub.textContent = `Solved in ${tries}/${MAX_GUESSES}`;
-    badgeIcon.textContent = '⭐';
     $('celebration').classList.remove('lost');
     $('celebration').classList.add('won');
   } else {
     title.textContent = "Tomorrow's another word.";
     sub.textContent = `The word was`;
-    badgeIcon.textContent = '🥀';
     $('celebration').classList.remove('won');
     $('celebration').classList.add('lost');
   }
