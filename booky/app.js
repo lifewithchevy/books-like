@@ -15,13 +15,21 @@ let STATS = null;
 let CURRENT = '';      // letters being typed for current guess
 let LOCKED = false;    // true once game ends (no more input)
 let FLIPPING = false;  // true while a row's tiles are flipping
+let DICT = null;       // Set<string> of accepted 5-letter words (uppercase)
 
 const $ = (id) => document.getElementById(id);
 
 // ---- Boot ----
 (async function init() {
   try {
-    DATA = await fetch('/booky/words.json?v=4', { cache: 'no-store' }).then(r => r.json());
+    // Pull queue + dictionary in parallel. Dictionary is large (~80KB) but
+    // only loaded once — browser caches it. The Set lookup is O(1).
+    const [data, dictList] = await Promise.all([
+      fetch('/booky/words.json?v=4',     { cache: 'no-store' }).then(r => r.json()),
+      fetch('/booky/dictionary.json?v=1', { cache: 'force-cache' }).then(r => r.json()),
+    ]);
+    DATA = data;
+    DICT = new Set(dictList);
   } catch {
     return showFatal("Couldn't load today's word. Try refreshing.");
   }
@@ -321,7 +329,12 @@ function submitGuess() {
   if (CURRENT.length < WORD_LEN) {
     return shake('Not enough letters');
   }
-  // No dictionary check for v1 — accept any 5-letter string.
+  // Wordle-style dictionary check: only accept real 5-letter words.
+  // The today's-word answer is always in DICT, so checking the guess against
+  // DICT covers both correct guesses and any other valid word the player tries.
+  if (DICT && !DICT.has(CURRENT)) {
+    return shake('Not in word list');
+  }
 
   const r = STATE.guesses.length;
   const guess = CURRENT;
