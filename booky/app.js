@@ -411,9 +411,7 @@ function showEndScreen() {
   const sub = $('end-subtitle');
 
   if (won) {
-    // Headline language ramps with tries — guess-1 is a moonshot
-    const wow = ['Genius!', 'Magnificent!', 'Impressive!', 'Splendid!', 'Great!', 'Phew!'][tries - 1];
-    title.textContent = wow;
+    title.textContent = 'Congrats!';
     sub.textContent = `Solved in ${tries}/${MAX_GUESSES}`;
     badgeIcon.textContent = '⭐';
     $('celebration').classList.remove('lost');
