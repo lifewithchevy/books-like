@@ -11,21 +11,25 @@
       ]
     },
     {
+      "source": "/:path+.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)",
+      "headers": [
+        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+      ]
+    },
+    {
       "source": "/booky",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=60, must-revalidate" }
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" },
+        { "key": "CDN-Cache-Control", "value": "no-store" },
+        { "key": "Vercel-CDN-Cache-Control", "value": "no-store" }
       ]
     },
     {
       "source": "/booky/(.*)",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=0, s-maxage=60, must-revalidate" }
-      ]
-    },
-    {
-      "source": "/:path+.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)",
-      "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=31536000, immutable" }
+        { "key": "Cache-Control", "value": "no-store, no-cache, must-revalidate, max-age=0" },
+        { "key": "CDN-Cache-Control", "value": "no-store" },
+        { "key": "Vercel-CDN-Cache-Control", "value": "no-store" }
       ]
     }
   ],
