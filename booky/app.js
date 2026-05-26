@@ -67,10 +67,19 @@ const $ = (id) => document.getElementById(id);
   }
 })();
 
+// Day number is based on the user's LOCAL calendar date — same as Wordle.
+// Each user gets the same word as everyone else on the same date, but the
+// rollover happens at their local midnight, not at a fixed UTC moment.
+// Travel across timezones can shift day numbers by ±1 for some users on
+// the boundary — acceptable edge case; Wordle behaves the same way.
 function computeDayNumber(epochStr) {
   const [y, m, d] = epochStr.split('-').map(Number);
-  const epochMs = Date.UTC(y, m - 1, d);
-  return Math.floor((Date.now() - epochMs) / 86_400_000) + 1;
+  // Local midnight on the epoch date
+  const epochLocal = new Date(y, m - 1, d, 0, 0, 0).getTime();
+  // Local midnight today
+  const now = new Date();
+  const todayLocal = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0).getTime();
+  return Math.floor((todayLocal - epochLocal) / 86_400_000) + 1;
 }
 
 // ---- State ----
@@ -545,10 +554,11 @@ async function onShare() {
 }
 
 function tickCountdown() {
+  // Count down to the user's next LOCAL midnight — when the next word drops
+  // for them. Matches the local-date day-number computation above so the
+  // countdown hitting 00:00:00 is exactly when DAY increments.
   const now = new Date();
-  const next = new Date(Date.UTC(
-    now.getUTCFullYear(), now.getUTCMonth(), now.getUTCDate() + 1, 0, 0, 0
-  ));
+  const next = new Date(now.getFullYear(), now.getMonth(), now.getDate() + 1, 0, 0, 0);
   let ms = next - now;
   const h = Math.floor(ms / 3_600_000); ms -= h * 3_600_000;
   const m = Math.floor(ms / 60_000);    ms -= m * 60_000;
