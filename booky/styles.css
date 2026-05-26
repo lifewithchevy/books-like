@@ -1,4 +1,5 @@
 :root {
+  /* Dark mode (default) */
   --bg: #160516;
   --bg-2: #221127;
   --bg-3: #2d1834;
@@ -7,6 +8,7 @@
   --ink-faint: #6f5a78;
   --accent: #d946a8;
   --accent-2: #f8b6da;
+  --accent-dark: #b13386;   /* darker magenta for gradients */
 
   /* Tile / letter states */
   --absent: #3a2842;
@@ -15,11 +17,69 @@
 
   /* Keyboard key default bg */
   --key-bg: #3a213e;
+  --key-bg-active: #2d1834;
 
   --border: #3a213e;
+  --backdrop: rgba(8, 2, 10, 0.78);
+
+  /* Glow gradient stops */
+  --glow-1: rgba(217, 70, 168, 0.16);
+  --glow-2: rgba(139, 63, 211, 0.10);
+
+  /* Shared shadows */
+  --shadow-accent: rgba(217, 70, 168, 0.30);
+  --shadow-correct: rgba(147, 51, 217, 0.45);
+
+  /* Streak card gradient + glow */
+  --streak-bg-from: rgba(217, 70, 168, 0.15);
+  --streak-bg-to:   rgba(139, 63, 211, 0.18);
+  --streak-border:  rgba(217, 70, 168, 0.35);
+  --streak-icon-shadow: rgba(217, 70, 168, 0.5);
+
+  /* Progress bar trough */
+  --trough: rgba(0, 0, 0, 0.3);
 
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+}
+
+@media (prefers-color-scheme: light) {
+  :root {
+    /* Light mode — cream/pink palette preserves romantasy feel.
+       Accents shift darker so they hit contrast against the light bg. */
+    --bg: #fff8fb;
+    --bg-2: #fdeef5;
+    --bg-3: #f6dfe9;
+    --ink: #2a0a26;
+    --ink-dim: #6a4a6c;
+    --ink-faint: #a587a9;
+    --accent: #c8398f;
+    --accent-2: #8e2c75;    /* darker than --accent so it reads on light bg */
+    --accent-dark: #9a2670;
+
+    --absent: #c8b8cc;      /* light gray-purple */
+    --present: #d4a017;     /* gold stays bold enough for white text */
+    --correct: #8b3fd3;     /* purple still works on light */
+
+    --key-bg: #ebdde9;
+    --key-bg-active: #d8c4db;
+
+    --border: #ead4e2;
+    --backdrop: rgba(40, 20, 50, 0.32);
+
+    --glow-1: rgba(217, 70, 168, 0.10);
+    --glow-2: rgba(139, 63, 211, 0.06);
+
+    --shadow-accent: rgba(200, 57, 143, 0.22);
+    --shadow-correct: rgba(139, 63, 211, 0.32);
+
+    --streak-bg-from: rgba(200, 57, 143, 0.10);
+    --streak-bg-to:   rgba(139, 63, 211, 0.10);
+    --streak-border:  rgba(200, 57, 143, 0.30);
+    --streak-icon-shadow: rgba(200, 57, 143, 0.35);
+
+    --trough: rgba(42, 10, 38, 0.15);
+  }
 }
 
 * { box-sizing: border-box; }
@@ -49,8 +109,8 @@ body {
   pointer-events: none;
   z-index: 0;
   background:
-    radial-gradient(ellipse 60% 40% at 50% 0%, rgba(217, 70, 168, 0.16), transparent 70%),
-    radial-gradient(ellipse 80% 50% at 50% 100%, rgba(139, 63, 211, 0.10), transparent 70%);
+    radial-gradient(ellipse 60% 40% at 50% 0%, var(--glow-1), transparent 70%),
+    radial-gradient(ellipse 80% 50% at 50% 100%, var(--glow-2), transparent 70%);
 }
 
 /* Slim back-to-90books row above the game topbar */
@@ -174,7 +234,7 @@ body {
   color: #fff;
   animation: flip 0.55s ease forwards;
 }
-.tile.correct { background: var(--correct); box-shadow: 0 0 14px rgba(147, 51, 217, 0.45); }
+.tile.correct { background: var(--correct); box-shadow: 0 0 14px var(--shadow-correct); }
 .tile.present { background: var(--present); }
 .tile.absent  { background: var(--absent); }
 
@@ -229,7 +289,7 @@ body {
   text-transform: uppercase;
   transition: background 0.15s, transform 0.05s;
 }
-.kb-key:active { transform: scale(0.96); background: var(--bg-3); }
+.kb-key:active { transform: scale(0.96); background: var(--key-bg-active); }
 .kb-wide { flex: 1.6; font-size: 11px; letter-spacing: 0.5px; }
 
 /* Keyboard letter state after evaluation */
@@ -252,7 +312,7 @@ body {
   animation: sheetIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .sheet::backdrop {
-  background: rgba(8, 2, 10, 0.78);
+  background: var(--backdrop);
   backdrop-filter: blur(6px);
 }
 @keyframes sheetIn {
@@ -420,8 +480,8 @@ body {
 }
 /* Streak badge card on win screen */
 .streak-card {
-  background: linear-gradient(135deg, rgba(217, 70, 168, 0.15), rgba(139, 63, 211, 0.18));
-  border: 1px solid rgba(217, 70, 168, 0.35);
+  background: linear-gradient(135deg, var(--streak-bg-from), var(--streak-bg-to));
+  border: 1px solid var(--streak-border);
   border-radius: 10px;
   padding: 9px 12px;
   margin: 0 0 8px;
@@ -432,7 +492,7 @@ body {
 .streak-badge-icon {
   font-size: 24px; line-height: 1;
   flex-shrink: 0;
-  filter: drop-shadow(0 3px 8px rgba(217, 70, 168, 0.5));
+  filter: drop-shadow(0 3px 8px var(--streak-icon-shadow));
 }
 .streak-badge-text { flex: 1; min-width: 0; }
 .streak-badge-name {
@@ -450,7 +510,7 @@ body {
 }
 .streak-progress { margin-top: 8px; }
 .streak-progress-bar {
-  background: rgba(0,0,0,0.3);
+  background: var(--trough);
   border-radius: 3px;
   height: 5px;
   overflow: hidden;
@@ -568,7 +628,7 @@ body {
 }
 .primary {
   width: 100%;
-  background: linear-gradient(135deg, var(--accent), #b13386);
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
   border: none;
   color: white;
   font-weight: 600;
@@ -577,7 +637,7 @@ body {
   cursor: pointer;
   font-size: 14px;
   font-family: var(--font-sans);
-  box-shadow: 0 6px 20px rgba(217, 70, 168, 0.3);
+  box-shadow: 0 6px 20px var(--shadow-accent);
 }
 .primary:active { transform: scale(0.98); }
 .toast {
