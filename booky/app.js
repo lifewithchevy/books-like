@@ -49,7 +49,6 @@ const $ = (id) => document.getElementById(id);
     saveState();
   }
 
-  $('day-number').textContent = `No. ${DAY}`;
   buildBoard();
   paintBoardFromState();
   paintKeyboardFromState();

@@ -174,17 +174,6 @@ body {
 }
 .icon-btn:hover { border-color: var(--accent); color: var(--ink); }
 
-.day-label {
-  text-align: center;
-  margin: 0;
-  padding: 0 0 4px;
-  color: var(--ink-faint);
-  font-size: 10px;
-  letter-spacing: 2.5px;
-  text-transform: uppercase;
-  flex-shrink: 0;
-}
-
 /* Board — 6 rows × 5 tiles. Wrapped so it can center vertically in the
    remaining flex space without forcing tile rows to stretch. */
 .board-wrap {
