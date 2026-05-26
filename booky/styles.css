@@ -222,7 +222,7 @@ body {
   max-width: 440px;
   margin: auto;
   border-radius: 14px;
-  max-height: 86vh;
+  max-height: 96vh;
   overflow-y: auto;
   animation: sheetIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
@@ -234,7 +234,7 @@ body {
   from { opacity: 0; transform: translateY(20px); }
   to   { opacity: 1; transform: translateY(0); }
 }
-.sheet-inner { padding: 22px 22px 26px; position: relative; }
+.sheet-inner { padding: 16px 20px 18px; position: relative; }
 .sheet-close {
   position: absolute;
   top: 12px; right: 12px;
@@ -358,13 +358,13 @@ body {
 /* End sheet — celebration block */
 .celebration {
   text-align: center;
-  padding: 4px 0 16px;
+  padding: 2px 0 8px;
 }
 .celebration-title {
   font-family: var(--font-serif);
   font-weight: 600;
-  font-size: 36px;
-  margin: 0 0 4px;
+  font-size: 28px;
+  margin: 0 0 2px;
   letter-spacing: 0.5px;
   background: linear-gradient(135deg, #f8b6da, #d946a8 60%, #8b3fd3);
   -webkit-background-clip: text;
@@ -377,7 +377,7 @@ body {
   color: var(--ink);
 }
 .celebration-sub {
-  font-size: 14px;
+  font-size: 13px;
   color: var(--ink-dim);
   margin: 0;
   letter-spacing: 0.5px;
@@ -385,79 +385,79 @@ body {
 
 .end-word {
   font-family: var(--font-serif);
-  font-size: 32px;
+  font-size: 24px;
   font-weight: 600;
   text-align: center;
-  letter-spacing: 6px;
+  letter-spacing: 5px;
   color: var(--accent-2);
-  margin: 0 0 18px;
+  margin: 0 0 10px;
   text-transform: uppercase;
 }
 /* Streak badge card on win screen */
 .streak-card {
   background: linear-gradient(135deg, rgba(217, 70, 168, 0.15), rgba(139, 63, 211, 0.18));
   border: 1px solid rgba(217, 70, 168, 0.35);
-  border-radius: 12px;
-  padding: 14px 16px;
-  margin: 4px 0 14px;
+  border-radius: 10px;
+  padding: 9px 12px;
+  margin: 0 0 8px;
 }
 .streak-badge-row {
-  display: flex; align-items: center; gap: 14px;
+  display: flex; align-items: center; gap: 12px;
 }
 .streak-badge-icon {
-  font-size: 34px; line-height: 1;
+  font-size: 24px; line-height: 1;
   flex-shrink: 0;
-  filter: drop-shadow(0 4px 10px rgba(217, 70, 168, 0.5));
+  filter: drop-shadow(0 3px 8px rgba(217, 70, 168, 0.5));
 }
 .streak-badge-text { flex: 1; min-width: 0; }
 .streak-badge-name {
   font-family: var(--font-serif);
   font-weight: 600;
-  font-size: 17px;
+  font-size: 15px;
   color: var(--accent-2);
   letter-spacing: 0.3px;
   line-height: 1.2;
 }
 .streak-badge-sub {
-  font-size: 12px;
+  font-size: 11px;
   color: var(--ink-dim);
   margin-top: 2px;
 }
-.streak-progress { margin-top: 12px; }
+.streak-progress { margin-top: 8px; }
 .streak-progress-bar {
   background: rgba(0,0,0,0.3);
-  border-radius: 4px;
-  height: 6px;
+  border-radius: 3px;
+  height: 5px;
   overflow: hidden;
 }
 .streak-progress-fill {
   height: 100%;
   background: linear-gradient(90deg, var(--accent), var(--correct));
-  border-radius: 4px;
+  border-radius: 3px;
   transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
 .streak-progress-label {
-  margin-top: 6px;
-  font-size: 11px;
+  margin-top: 4px;
+  font-size: 10px;
   color: var(--ink-faint);
   letter-spacing: 0.5px;
   text-align: right;
 }
 
-/* Mini stats row above share */
+/* Mini stats row */
 .mini-stats {
   display: grid;
   grid-template-columns: repeat(3, 1fr);
-  gap: 8px;
+  gap: 6px;
   text-align: center;
-  padding: 4px 0 12px;
+  padding: 0 0 8px;
   border-bottom: 1px solid var(--border);
-  margin-bottom: 12px;
+  margin-bottom: 8px;
 }
 .mini-stats > div { display: flex; flex-direction: column; }
 .mini-stats span {
   font-family: var(--font-serif);
-  font-size: 22px;
+  font-size: 20px;
   font-weight: 600;
   color: var(--ink);
 }
@@ -466,21 +466,21 @@ body {
   font-size: 10px;
   letter-spacing: 1.2px;
   text-transform: uppercase;
-  margin-top: 2px;
+  margin-top: 1px;
 }
 
 /* Email reminder form */
 .reminder-form {
-  margin-top: 16px;
-  padding-top: 14px;
+  margin-top: 10px;
+  padding-top: 8px;
   border-top: 1px solid var(--border);
 }
 .reminder-pitch {
-  font-size: 13px;
+  font-size: 12px;
   color: var(--ink-dim);
-  margin: 0 0 10px;
+  margin: 0 0 6px;
   text-align: center;
-  line-height: 1.4;
+  line-height: 1.35;
 }
 .reminder-row {
   display: grid;
@@ -492,9 +492,9 @@ body {
   border: 1px solid var(--border);
   border-radius: 8px;
   color: var(--ink);
-  padding: 11px 14px;
+  padding: 9px 12px;
   font-family: var(--font-sans);
-  font-size: 14px;
+  font-size: 13px;
   outline: none;
   min-width: 0;
   transition: border-color 0.15s;
@@ -527,17 +527,17 @@ body {
 .reminder-success { color: var(--accent-2); }
 .reminder-error   { color: #ff8aa3; }
 
-.end-share { padding-top: 6px; }
+.end-share { padding-top: 2px; }
 .share-preview {
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 8px;
-  padding: 14px 16px;
+  padding: 10px 12px;
   font-family: "SF Mono", ui-monospace, monospace;
-  font-size: 14px;
-  line-height: 1.55;
+  font-size: 12px;
+  line-height: 1.45;
   white-space: pre;
-  margin: 0 0 10px;
+  margin: 0 0 8px;
   color: var(--ink);
   overflow-x: auto;
 }
@@ -547,10 +547,10 @@ body {
   border: none;
   color: white;
   font-weight: 600;
-  padding: 13px;
-  border-radius: 12px;
+  padding: 10px;
+  border-radius: 10px;
   cursor: pointer;
-  font-size: 15px;
+  font-size: 14px;
   font-family: var(--font-sans);
   box-shadow: 0 6px 20px rgba(217, 70, 168, 0.3);
 }
@@ -565,8 +565,8 @@ body {
 .next {
   text-align: center;
   color: var(--ink-faint);
-  font-size: 12px;
-  margin: 14px 0 0;
+  font-size: 11px;
+  margin: 0 0 8px;
 }
 .next span {
   font-family: "SF Mono", ui-monospace, monospace;

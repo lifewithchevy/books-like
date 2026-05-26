@@ -133,10 +133,17 @@
 
       <p id="end-word" class="end-word"></p>
 
+      <!-- Mini stats row -->
+      <div class="mini-stats">
+        <div><span id="end-stat-streak">0</span><small>🔥 streak</small></div>
+        <div><span id="end-stat-played">0</span><small>played</small></div>
+        <div><span id="end-stat-winpct">0%</span><small>win rate</small></div>
+      </div>
+
       <!-- Streak callout: badge earned + progress to next milestone -->
       <div class="streak-card" id="streak-card" hidden>
         <div class="streak-badge-row">
-          <div class="streak-badge-icon" id="streak-badge-icon">🌱</div>
+          <div class="streak-badge-icon" id="streak-badge-icon">✨</div>
           <div class="streak-badge-text">
             <div class="streak-badge-name" id="streak-badge-name"></div>
             <div class="streak-badge-sub" id="streak-badge-sub"></div>
@@ -146,13 +153,6 @@
           <div class="streak-progress-bar"><div class="streak-progress-fill" id="streak-progress-fill"></div></div>
           <div class="streak-progress-label" id="streak-progress-label"></div>
         </div>
-      </div>
-
-      <!-- Mini stats row -->
-      <div class="mini-stats">
-        <div><span id="end-stat-streak">0</span><small>🔥 streak</small></div>
-        <div><span id="end-stat-played">0</span><small>played</small></div>
-        <div><span id="end-stat-winpct">0%</span><small>win rate</small></div>
       </div>
 
       <p class="next">Next word in <span id="countdown">--:--:--</span></p>
