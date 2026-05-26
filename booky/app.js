@@ -249,6 +249,53 @@ function bindUI() {
     e.preventDefault();
     $('end-modal').close();
   });
+  $('reminder-form').addEventListener('submit', onReminderSubmit);
+}
+
+async function onReminderSubmit(e) {
+  e.preventDefault();
+  const input = $('reminder-email');
+  const btn = $('reminder-submit');
+  const toast = $('reminder-toast');
+  const email = (input.value || '').trim();
+
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    toast.textContent = 'Please enter a valid email.';
+    toast.className = 'reminder-toast reminder-error';
+    toast.hidden = false;
+    return;
+  }
+
+  btn.disabled = true;
+  btn.textContent = 'Saving…';
+
+  try {
+    const res = await fetch('/api/booky-subscribe', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        email,
+        source: 'win-screen',
+        streak: STATS.currentStreak,
+      }),
+    });
+    if (!res.ok) throw new Error('subscribe-failed');
+    localStorage.setItem('90books_booky_reminder_sub', email);
+    toast.textContent = "✓ You're in. We'll nudge you when the new word drops.";
+    toast.className = 'reminder-toast reminder-success';
+    toast.hidden = false;
+    // Hide the form after success, leave only the toast visible
+    setTimeout(() => {
+      $('reminder-form').querySelector('.reminder-row').style.display = 'none';
+      $('reminder-form').querySelector('.reminder-pitch').style.display = 'none';
+    }, 600);
+  } catch {
+    toast.textContent = "Couldn't save right now. Try again later?";
+    toast.className = 'reminder-toast reminder-error';
+    toast.hidden = false;
+    btn.disabled = false;
+    btn.textContent = 'Remind me';
+  }
 }
 
 function handleKey(k) {
@@ -324,15 +371,103 @@ function showToast(msg) {
   toastTimer = setTimeout(() => { t.hidden = true; }, 1600);
 }
 
+// ---- Badge milestones ----
+// Tiered streak rewards. Each tier is hit at `at` days of current streak.
+// Order matters — listed ascending so we can find the "earned" and "next" tiers.
+const BADGES = [
+  { at: 1,    icon: '🌱', name: 'Sprout',  blurb: 'First win. Welcome.' },
+  { at: 3,    icon: '🌹', name: 'Bloom',   blurb: '3 days in a row.' },
+  { at: 7,    icon: '🔥', name: 'Spark',   blurb: 'A full week of Booky.' },
+  { at: 14,   icon: '✨', name: 'Glimmer', blurb: 'Two weeks strong.' },
+  { at: 30,   icon: '👑', name: 'Crown',   blurb: 'A month of romantasy.' },
+  { at: 60,   icon: '🗡️', name: 'Blade',   blurb: 'Sharp. Two months.' },
+  { at: 100,  icon: '🐉', name: 'Dragon',  blurb: '100 days. The real ones know.' },
+  { at: 200,  icon: '🥀', name: 'Thorn',   blurb: '200 days. Devoted.' },
+  { at: 365,  icon: '💫', name: 'Fated',   blurb: 'One year. Cosmic.' },
+  { at: 1000, icon: '🌌', name: 'Legend',  blurb: '1000 days. You are the lore.' },
+];
+
+function badgeForStreak(streak) {
+  let earned = null;
+  let next = null;
+  for (const b of BADGES) {
+    if (streak >= b.at) earned = b;
+    else { next = b; break; }
+  }
+  return { earned, next };
+}
+
 // ---- End screen ----
 function showEndScreen() {
   recordFinish();
-  $('end-headline').textContent = STATE.status === 'won'
-    ? `Solved in ${STATE.guesses.length}/${MAX_GUESSES} 🔥`
-    : `So close.`;
+
+  const won = STATE.status === 'won';
+  const tries = STATE.guesses.length;
+
+  // Big celebration header
+  const badgeIcon = $('celebration-badge');
+  const title = $('end-headline');
+  const sub = $('end-subtitle');
+
+  if (won) {
+    // Headline language ramps with tries — guess-1 is a moonshot
+    const wow = ['Genius!', 'Magnificent!', 'Impressive!', 'Splendid!', 'Great!', 'Phew!'][tries - 1];
+    title.textContent = wow;
+    sub.textContent = `Solved in ${tries}/${MAX_GUESSES}`;
+    badgeIcon.textContent = '⭐';
+    $('celebration').classList.remove('lost');
+    $('celebration').classList.add('won');
+  } else {
+    title.textContent = "Tomorrow's another word.";
+    sub.textContent = `The word was`;
+    badgeIcon.textContent = '🥀';
+    $('celebration').classList.remove('won');
+    $('celebration').classList.add('lost');
+  }
+
   $('end-word').textContent = ANSWER;
   $('share-text').textContent = buildShareString();
+
+  // Mini stats row
+  $('end-stat-streak').textContent = STATS.currentStreak;
+  $('end-stat-played').textContent = STATS.played;
+  $('end-stat-winpct').textContent = STATS.played
+    ? `${Math.round(100 * STATS.wins / STATS.played)}%`
+    : '0%';
+
+  // Streak badge card — shown on win only
+  const card = $('streak-card');
+  if (won && STATS.currentStreak >= 1) {
+    const { earned, next } = badgeForStreak(STATS.currentStreak);
+    if (earned) {
+      $('streak-badge-icon').textContent = earned.icon;
+      $('streak-badge-name').textContent = `${earned.name} · ${STATS.currentStreak}-day streak`;
+      $('streak-badge-sub').textContent = earned.blurb;
+    }
+    if (next) {
+      const remaining = next.at - STATS.currentStreak;
+      const span = next.at - (earned ? earned.at : 0);
+      const progressed = STATS.currentStreak - (earned ? earned.at : 0);
+      const pct = Math.max(4, Math.min(100, (progressed / span) * 100));
+      $('streak-progress-fill').style.width = `${pct}%`;
+      $('streak-progress-label').textContent =
+        `${remaining} day${remaining === 1 ? '' : 's'} to ${next.icon} ${next.name}`;
+      $('streak-progress').hidden = false;
+    } else {
+      $('streak-progress').hidden = true;
+    }
+    card.hidden = false;
+  } else {
+    card.hidden = true;
+  }
+
+  // Mirror to legacy stats modal (still accessible via the ▤ icon)
   renderStatsModal();
+
+  // Reminder form — only show if user hasn't already subscribed
+  const subscribed = localStorage.getItem('90books_booky_reminder_sub');
+  $('reminder-form').style.display = subscribed ? 'none' : 'block';
+
   $('end-modal').showModal();
   tickCountdown();
   if (!window.__countdownTicker) {

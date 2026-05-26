@@ -355,7 +355,47 @@ body {
   background: linear-gradient(90deg, var(--accent), var(--correct));
 }
 
-/* End sheet */
+/* End sheet — celebration block */
+.celebration {
+  text-align: center;
+  padding: 4px 0 16px;
+}
+.celebration-badge {
+  font-size: 56px;
+  line-height: 1;
+  margin-bottom: 10px;
+  display: inline-block;
+  filter: drop-shadow(0 6px 18px rgba(217, 70, 168, 0.45));
+  animation: celebPop 0.7s cubic-bezier(0.2, 1.2, 0.4, 1);
+}
+@keyframes celebPop {
+  0%   { transform: scale(0.4) rotate(-12deg); opacity: 0; }
+  60%  { transform: scale(1.15) rotate(6deg);  opacity: 1; }
+  100% { transform: scale(1) rotate(0deg);     opacity: 1; }
+}
+.celebration-title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 36px;
+  margin: 0 0 4px;
+  letter-spacing: 0.5px;
+  background: linear-gradient(135deg, #f8b6da, #d946a8 60%, #8b3fd3);
+  -webkit-background-clip: text;
+  background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+.celebration.lost .celebration-title {
+  background: none;
+  -webkit-text-fill-color: var(--ink);
+  color: var(--ink);
+}
+.celebration-sub {
+  font-size: 14px;
+  color: var(--ink-dim);
+  margin: 0;
+  letter-spacing: 0.5px;
+}
+
 .end-word {
   font-family: var(--font-serif);
   font-size: 32px;
@@ -366,6 +406,140 @@ body {
   margin: 0 0 18px;
   text-transform: uppercase;
 }
+/* Streak badge card on win screen */
+.streak-card {
+  background: linear-gradient(135deg, rgba(217, 70, 168, 0.15), rgba(139, 63, 211, 0.18));
+  border: 1px solid rgba(217, 70, 168, 0.35);
+  border-radius: 12px;
+  padding: 14px 16px;
+  margin: 4px 0 14px;
+}
+.streak-badge-row {
+  display: flex; align-items: center; gap: 14px;
+}
+.streak-badge-icon {
+  font-size: 34px; line-height: 1;
+  flex-shrink: 0;
+  filter: drop-shadow(0 4px 10px rgba(217, 70, 168, 0.5));
+}
+.streak-badge-text { flex: 1; min-width: 0; }
+.streak-badge-name {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 17px;
+  color: var(--accent-2);
+  letter-spacing: 0.3px;
+  line-height: 1.2;
+}
+.streak-badge-sub {
+  font-size: 12px;
+  color: var(--ink-dim);
+  margin-top: 2px;
+}
+.streak-progress { margin-top: 12px; }
+.streak-progress-bar {
+  background: rgba(0,0,0,0.3);
+  border-radius: 4px;
+  height: 6px;
+  overflow: hidden;
+}
+.streak-progress-fill {
+  height: 100%;
+  background: linear-gradient(90deg, var(--accent), var(--correct));
+  border-radius: 4px;
+  transition: width 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+.streak-progress-label {
+  margin-top: 6px;
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.5px;
+  text-align: right;
+}
+
+/* Mini stats row above share */
+.mini-stats {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+  text-align: center;
+  padding: 4px 0 12px;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 12px;
+}
+.mini-stats > div { display: flex; flex-direction: column; }
+.mini-stats span {
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 600;
+  color: var(--ink);
+}
+.mini-stats small {
+  color: var(--ink-faint);
+  font-size: 10px;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  margin-top: 2px;
+}
+
+/* Email reminder form */
+.reminder-form {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
+.reminder-pitch {
+  font-size: 13px;
+  color: var(--ink-dim);
+  margin: 0 0 10px;
+  text-align: center;
+  line-height: 1.4;
+}
+.reminder-row {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 8px;
+}
+#reminder-email {
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  color: var(--ink);
+  padding: 11px 14px;
+  font-family: var(--font-sans);
+  font-size: 14px;
+  outline: none;
+  min-width: 0;
+  transition: border-color 0.15s;
+}
+#reminder-email:focus { border-color: var(--accent); }
+#reminder-email::placeholder { color: var(--ink-faint); }
+#reminder-submit {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  color: var(--ink);
+  padding: 0 16px;
+  border-radius: 8px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  transition: background 0.15s, border-color 0.15s;
+}
+#reminder-submit:hover:not(:disabled) {
+  background: var(--accent);
+  border-color: var(--accent);
+}
+#reminder-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+.reminder-toast {
+  margin: 10px 0 0;
+  text-align: center;
+  font-size: 13px;
+  line-height: 1.4;
+}
+.reminder-success { color: var(--accent-2); }
+.reminder-error   { color: #ff8aa3; }
+
 .end-share { padding-top: 6px; }
 .share-preview {
   background: var(--bg);

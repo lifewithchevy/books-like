@@ -124,14 +124,61 @@
   <dialog id="end-modal" class="sheet">
     <div class="sheet-inner">
       <button class="sheet-close" aria-label="Close" data-close-end>×</button>
-      <h2 id="end-headline" class="sheet-title"></h2>
+
+      <!-- Hero celebration -->
+      <div class="celebration" id="celebration">
+        <div class="celebration-badge" id="celebration-badge" aria-hidden="true">⭐</div>
+        <h2 id="end-headline" class="celebration-title"></h2>
+        <p id="end-subtitle" class="celebration-sub"></p>
+      </div>
+
       <p id="end-word" class="end-word"></p>
+
+      <!-- Streak callout: badge earned + progress to next milestone -->
+      <div class="streak-card" id="streak-card" hidden>
+        <div class="streak-badge-row">
+          <div class="streak-badge-icon" id="streak-badge-icon">🌱</div>
+          <div class="streak-badge-text">
+            <div class="streak-badge-name" id="streak-badge-name"></div>
+            <div class="streak-badge-sub" id="streak-badge-sub"></div>
+          </div>
+        </div>
+        <div class="streak-progress" id="streak-progress" hidden>
+          <div class="streak-progress-bar"><div class="streak-progress-fill" id="streak-progress-fill"></div></div>
+          <div class="streak-progress-label" id="streak-progress-label"></div>
+        </div>
+      </div>
+
+      <!-- Mini stats row -->
+      <div class="mini-stats">
+        <div><span id="end-stat-streak">0</span><small>🔥 streak</small></div>
+        <div><span id="end-stat-played">0</span><small>played</small></div>
+        <div><span id="end-stat-winpct">0%</span><small>win rate</small></div>
+      </div>
 
       <div class="end-share">
         <pre id="share-text" class="share-preview"></pre>
         <button id="share-btn" class="primary">Share result</button>
         <span id="share-toast" class="toast" hidden>Copied — paste anywhere</span>
       </div>
+
+      <!-- Email reminder capture -->
+      <form id="reminder-form" class="reminder-form" novalidate>
+        <p class="reminder-pitch">📩 Don't break the streak. Get a reminder when tomorrow's word drops.</p>
+        <div class="reminder-row">
+          <input
+            type="email"
+            id="reminder-email"
+            placeholder="your@email.com"
+            aria-label="Email for daily reminders"
+            autocomplete="email"
+            inputmode="email"
+            required
+          />
+          <button type="submit" id="reminder-submit">Remind me</button>
+        </div>
+        <p class="reminder-toast" id="reminder-toast" hidden></p>
+      </form>
 
       <p class="next">Next word in <span id="countdown">--:--:--</span></p>
     </div>
