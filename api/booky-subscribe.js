@@ -1,17 +1,16 @@
 // api/booky-subscribe.js — collects email signups for Booky daily reminders.
-// Storage: same Airtable base as feedback, separate table.
+//
+// Storage tiers (tried in order):
+//   1. Resend audience       (preferred — built for email sending later)
+//   2. Airtable BookyReminders (fallback if Resend env not set)
+//   3. console.log + 200      (final fallback so UI never bounces)
 //
 // Env vars (set in Vercel dashboard → Settings → Environment Variables):
-//   AIRTABLE_API_KEY            — Personal Access Token (data:records:write)
-//   AIRTABLE_BASE_ID            — e.g. appXXXXXXXXXXXXXX
-//   AIRTABLE_BOOKY_TABLE        — table name, default "BookyReminders"
-//
-// Expected table fields (case-sensitive in Airtable):
-//   Email          — single-line text
-//   SignedUpAt     — date/datetime
-//   Source         — single-line text (e.g. "win-screen")
-//   CurrentStreak  — number (optional, just for context)
-//   UserAgent      — single-line text (optional)
+//   RESEND_API_KEY         — sk_xxx from resend.com/api-keys
+//   RESEND_AUDIENCE_ID     — uuid from resend.com/audiences
+//   AIRTABLE_API_KEY       — (legacy fallback) Personal Access Token
+//   AIRTABLE_BASE_ID       — (legacy fallback) appXXXXXXXXXXXXXX
+//   AIRTABLE_BOOKY_TABLE   — (legacy fallback) defaults to "BookyReminders"
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -26,65 +25,102 @@ module.exports = async (req, res) => {
 
   const { email, source, streak } = req.body || {};
 
-  // Basic email shape check (server-side; client also validates)
-  if (!email || typeof email !== 'string' || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
+  if (!email || typeof email !== 'string' ||
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
     res.status(400).json({ error: 'Valid email required' });
     return;
   }
 
+  const cleanEmail = email.trim().toLowerCase();
+  const ctx = {
+    source: (source || 'unknown').slice(0, 60),
+    streak: Number.isFinite(streak) ? streak : null,
+    ua: (req.headers['user-agent'] || '').slice(0, 200),
+  };
+
+  // ---- Tier 1: Resend audience ----
+  const RESEND_API_KEY     = process.env.RESEND_API_KEY;
+  const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID;
+  if (RESEND_API_KEY && RESEND_AUDIENCE_ID) {
+    try {
+      const r = await fetch(
+        `https://api.resend.com/audiences/${RESEND_AUDIENCE_ID}/contacts`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${RESEND_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: cleanEmail,
+            unsubscribed: false,
+          }),
+        }
+      );
+
+      // Resend returns 422 when the contact already exists — treat as success
+      if (r.ok || r.status === 422) {
+        res.status(200).json({ ok: true, stored: 'resend' });
+        return;
+      }
+
+      const txt = await r.text();
+      console.error('[booky-subscribe] Resend error', r.status, txt);
+      // fall through to next tier
+    } catch (err) {
+      console.error('[booky-subscribe] Resend exception:', err);
+      // fall through
+    }
+  }
+
+  // ---- Tier 2: Airtable fallback ----
   const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
   const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;
   const AIRTABLE_TABLE   = process.env.AIRTABLE_BOOKY_TABLE || 'BookyReminders';
 
-  // Graceful degradation: if Airtable isn't wired up yet, succeed so the UI
-  // doesn't break — we'll still see what's coming in via logs.
-  if (!AIRTABLE_API_KEY || !AIRTABLE_BASE_ID) {
-    console.log('[booky-subscribe] No Airtable configured — received:', {
-      email: email.trim(),
-      source: (source || 'unknown').trim(),
-      streak: Number.isFinite(streak) ? streak : null,
-    });
-    res.status(200).json({ ok: true, stored: false });
-    return;
-  }
+  if (AIRTABLE_API_KEY && AIRTABLE_BASE_ID) {
+    try {
+      const r = await fetch(
+        `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE)}`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${AIRTABLE_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            typecast: true,
+            records: [{
+              fields: {
+                Email: cleanEmail,
+                SignedUpAt: new Date().toISOString(),
+                Source: ctx.source,
+                CurrentStreak: ctx.streak,
+                UserAgent: ctx.ua,
+              },
+            }],
+          }),
+        }
+      );
 
-  try {
-    const r = await fetch(
-      `https://api.airtable.com/v0/${AIRTABLE_BASE_ID}/${encodeURIComponent(AIRTABLE_TABLE)}`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${AIRTABLE_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          // typecast lets Airtable coerce date strings into datetime fields,
-          // and allows new option values for any single-select fields.
-          typecast: true,
-          records: [{
-            fields: {
-              Email: email.trim().toLowerCase(),
-              SignedUpAt: new Date().toISOString(),
-              Source: (source || 'unknown').slice(0, 60),
-              CurrentStreak: Number.isFinite(streak) ? streak : null,
-              UserAgent: (req.headers['user-agent'] || '').slice(0, 200),
-            },
-          }],
-        }),
+      if (r.ok) {
+        res.status(200).json({ ok: true, stored: 'airtable' });
+        return;
       }
-    );
-
-    if (!r.ok) {
       const txt = await r.text();
-      console.error('[booky-subscribe] Airtable error:', r.status, txt);
-      // Don't reveal Airtable internals to the client
-      res.status(500).json({ error: 'Could not save signup' });
-      return;
+      console.error('[booky-subscribe] Airtable error', r.status, txt);
+      // fall through to logging
+    } catch (err) {
+      console.error('[booky-subscribe] Airtable exception:', err);
     }
-
-    res.status(200).json({ ok: true, stored: true });
-  } catch (err) {
-    console.error('[booky-subscribe] Exception:', err);
-    res.status(500).json({ error: 'Could not save signup' });
   }
+
+  // ---- Tier 3: log-only graceful degradation ----
+  // Always succeed so the UI never shows an error — captures the signup in
+  // Vercel function logs while storage is being set up.
+  console.log('[booky-subscribe] No storage configured — captured signup:', {
+    email: cleanEmail,
+    ...ctx,
+  });
+  res.status(200).json({ ok: true, stored: 'log-only' });
 };
