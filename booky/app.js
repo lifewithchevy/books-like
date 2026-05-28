@@ -517,6 +517,7 @@ renderStatsModal();
 // Reminder form — only show if user hasn't already subscribed
 const subscribed = localStorage.getItem('90books_booky_reminder_sub');
 $('reminder-form').style.display = subscribed ? 'none' : 'block';
+$('reminder-active').hidden = !subscribed;
 
 $('end-modal').showModal();
 tickCountdown();
@@ -577,10 +578,16 @@ won: STATE.status === 'won',
 guesses_used: STATE.guesses.length,
 streak: STATS.currentStreak,
 });
+const btn = $('share-btn');
 const text = $('share-text').textContent;
 try {
 await navigator.clipboard.writeText(text);
-showToast('Copied — paste anywhere 📋');
+btn.textContent = 'Copied ✓';
+btn.style.background = 'linear-gradient(135deg,#7c3aed,#5b21b6)';
+setTimeout(() => {
+btn.textContent = 'Share result';
+btn.style.background = '';
+}, 2000);
 } catch {
 const range = document.createRange();
 range.selectNodeContents($('share-text'));
