@@ -729,6 +729,85 @@
     .btn-goodreads-cta:hover { color: var(--text); border-bottom-color: var(--text); }
     .btn-goodreads-cta svg { width: 13px; height: 13px; flex-shrink: 0; opacity: 0.7; }
 
+    /* Share button — sits next to Goodreads CTA below the book hero. Same
+       subtle text-link style as Goodreads so neither competes with the
+       primary "Buy on Amazon" black button. */
+    .btn-share-cta {
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
+      font-size: 13px;
+      font-weight: 500;
+      padding: 2px 0;
+      text-decoration: none;
+      transition: color 0.18s;
+      cursor: pointer;
+      color: var(--text-muted);
+      background: transparent;
+      border: none;
+      border-bottom: 1px dotted var(--text-muted);
+      border-radius: 0;
+    }
+    .btn-share-cta:hover { color: var(--text); border-bottom-color: var(--text); }
+
+    /* Share-platform modal */
+    .share-modal-backdrop {
+      position: fixed; inset: 0;
+      background: rgba(0,0,0,0.55);
+      display: none;
+      align-items: center; justify-content: center;
+      z-index: 9999;
+      animation: shareFadeIn 0.18s ease;
+    }
+    .share-modal-backdrop.open { display: flex; }
+    @keyframes shareFadeIn { from { opacity: 0; } to { opacity: 1; } }
+    .share-modal {
+      background: #fff;
+      border-radius: 16px;
+      padding: 22px 22px 16px;
+      width: min(360px, calc(100vw - 32px));
+      box-shadow: 0 24px 48px rgba(0,0,0,0.18);
+      font-family: 'Inter', sans-serif;
+    }
+    .share-modal-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 18px;
+    }
+    .share-modal-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 20px; font-weight: 700; color: #1A1A1A;
+      margin: 0;
+    }
+    .share-modal-close {
+      width: 34px; height: 34px; border-radius: 50%;
+      border: 1.5px solid #e0e0e0; background: #fff;
+      cursor: pointer; font-size: 18px; color: #555;
+      display: inline-flex; align-items: center; justify-content: center;
+      transition: border-color 0.15s, color 0.15s;
+    }
+    .share-modal-close:hover { border-color: #1A1A1A; color: #1A1A1A; }
+    .share-options { display: flex; flex-direction: column; gap: 4px; }
+    .share-option {
+      display: flex; align-items: center; gap: 14px;
+      padding: 12px 14px; border-radius: 10px;
+      border: none; background: transparent;
+      font-family: 'Inter', sans-serif; font-size: 15px; font-weight: 500;
+      color: #1A1A1A; cursor: pointer; text-align: left;
+      transition: background 0.12s;
+    }
+    .share-option:hover { background: #f4f4f4; }
+    .share-option-icon {
+      width: 28px; height: 28px; border-radius: 50%;
+      display: inline-flex; align-items: center; justify-content: center;
+      color: #fff; font-size: 14px; font-weight: 700; flex-shrink: 0;
+    }
+    .share-option-icon.reddit    { background: #FF4500; }
+    .share-option-icon.twitter   { background: #000000; }
+    .share-option-icon.pinterest { background: #E60023; }
+    .share-option-icon.facebook  { background: #1877F2; }
+    .share-option-icon.copy      { background: #555;   }
+    .share-option.copied .share-option-icon.copy { background: #4caf50; }
+
     /* Amazon affiliate CTA — primary action on book detail. Matches the site's
        main CTA pattern (.lp-btn-primary): black background, white text, 12px
        radius. This is the buying moment — it should look like the buy button.
@@ -2687,6 +2766,38 @@
 
     </div>
 
+  </div>
+
+  <!-- ===== SHARE MODAL ===== -->
+  <div id="shareModalBackdrop" class="share-modal-backdrop" onclick="if(event.target===this)closeShareModal()">
+    <div class="share-modal" role="dialog" aria-modal="true" aria-labelledby="shareModalTitle">
+      <div class="share-modal-header">
+        <h3 class="share-modal-title" id="shareModalTitle">Share</h3>
+        <button class="share-modal-close" onclick="closeShareModal()" aria-label="Close">&times;</button>
+      </div>
+      <div class="share-options">
+        <button class="share-option" data-share="reddit" type="button">
+          <span class="share-option-icon reddit">R</span>
+          <span class="share-option-label">Reddit</span>
+        </button>
+        <button class="share-option" data-share="twitter" type="button">
+          <span class="share-option-icon twitter">𝕏</span>
+          <span class="share-option-label">X (Twitter)</span>
+        </button>
+        <button class="share-option" data-share="pinterest" type="button">
+          <span class="share-option-icon pinterest">P</span>
+          <span class="share-option-label">Pinterest</span>
+        </button>
+        <button class="share-option" data-share="facebook" type="button">
+          <span class="share-option-icon facebook">f</span>
+          <span class="share-option-label">Facebook</span>
+        </button>
+        <button class="share-option" data-share="copy" type="button">
+          <span class="share-option-icon copy">&#128279;</span>
+          <span class="share-option-label">Copy link</span>
+        </button>
+      </div>
+    </div>
   </div>
 
   <!-- ===== PROFILE DRAWER ===== -->
@@ -5720,6 +5831,53 @@
       return `<a href="${goodreadsUrl(title, author, isbn13 || isbn10)}" target="_blank" rel="noopener" class="btn-goodreads-cta">More on Goodreads &rarr;</a>`;
     }
 
+    // Share CTA — opens a modal with platform options (Reddit, Twitter,
+    // Pinterest, Facebook, Copy URL). Reddit is featured first because that's
+    // where the 90books audience lives.
+    function renderShareCta(title) {
+      const safeT = (title || document.title).replace(/'/g, "\\'");
+      return `<button class="btn-share-cta" onclick="openShareModal('${safeT}')">Share &rarr;</button>`;
+    }
+    function openShareModal(title) {
+      const url = window.location.origin + window.location.pathname;
+      const u = encodeURIComponent(url);
+      const t = encodeURIComponent(title || document.title || 'Check this out');
+      const shares = {
+        reddit:    `https://www.reddit.com/submit?url=${u}&title=${t}`,
+        twitter:   `https://twitter.com/intent/tweet?url=${u}&text=${t}`,
+        pinterest: `https://pinterest.com/pin/create/button/?url=${u}&description=${t}`,
+        facebook:  `https://www.facebook.com/sharer/sharer.php?u=${u}`,
+      };
+      const backdrop = document.getElementById('shareModalBackdrop');
+      const titleEl = document.getElementById('shareModalSubject');
+      if (titleEl) titleEl.textContent = title || '';
+      backdrop.dataset.url = url;
+      backdrop.querySelectorAll('[data-share]').forEach(btn => {
+        const k = btn.getAttribute('data-share');
+        if (shares[k]) btn.onclick = (e) => { e.preventDefault(); window.open(shares[k], '_blank', 'noopener,width=600,height=560'); };
+      });
+      const copyBtn = backdrop.querySelector('[data-share="copy"]');
+      if (copyBtn) {
+        copyBtn.classList.remove('copied');
+        copyBtn.querySelector('.share-option-label').textContent = 'Copy link';
+        copyBtn.onclick = (e) => {
+          e.preventDefault();
+          navigator.clipboard.writeText(url).then(() => {
+            copyBtn.classList.add('copied');
+            copyBtn.querySelector('.share-option-label').textContent = 'Copied!';
+            setTimeout(() => closeShareModal(), 900);
+          });
+        };
+      }
+      backdrop.classList.add('open');
+      document.body.style.overflow = 'hidden';
+    }
+    function closeShareModal() {
+      const backdrop = document.getElementById('shareModalBackdrop');
+      if (backdrop) backdrop.classList.remove('open');
+      document.body.style.overflow = '';
+    }
+
     // Amazon affiliate URL. Prefer direct product pages (/dp/<isbn>) when we
     // have an ISBN — Amazon accepts both ISBN-13 and ISBN-10 in this URL and
     // resolves them to the canonical product page. Falls back to a books-only
@@ -6173,8 +6331,11 @@
 
       const pitch     = data.appeal || meta.pitch || src.pitch || '';
       const _shareSlug = dataKey ? slugify(dataKey) : null;
+      // Share button — opens the multi-platform modal (Reddit, X, Pinterest,
+      // Facebook, Copy link). Same pill style + position used on Books Like
+      // pages so the share affordance reads as one consistent UI primitive.
       const _shareBtn = _shareSlug
-        ? `<button class="btn-share" onclick="copyBookLink('${_shareSlug}',this)" title="Copy shareable link">&#128279; Share recs</button>`
+        ? `<button class="btn-share" onclick="openShareModal('${sourceTitle.replace(/'/g,"\\'")}')" title="Share this page">&#128279; Share</button>`
         : '';
       const _goodreadsCta = renderGoodreadsCta(sourceTitle, src.author, isbns);
 
@@ -11489,24 +11650,32 @@
         heroBg: _stHeroBg,
       });
       const _stGoodreadsCta = renderGoodreadsCta(p.label, meta.author, BOOK_ISBN[p.key] ? [BOOK_ISBN[p.key]] : null);
+      // Single share-button system — same pill style + same top-right corner
+      // position as the book-detail page. Opens the multi-platform modal.
+      const _stShareBtnPill = `<button class="btn-share" onclick="openShareModal('Books Like ${p.label.replace(/'/g,"\\'")}')" title="Share this page">&#128279; Share</button>`;
 
       grid.innerHTML = `
         ${_stHeroHtml}
         <div style="padding:18px 16px 20px;background:var(--surface);border-bottom:1px solid var(--border);">
           ${chips.length ? `<div style="display:flex;flex-wrap:wrap;gap:6px;margin-bottom:${meta.pitch?'12px':'14px'};">${chips.join('')}</div>` : ''}
           ${meta.pitch ? `<div class="book-pitch" style="margin-top:${chips.length?'0':'4px'};margin-bottom:16px;">${escapeHtml(meta.pitch)}</div>` : ''}
-          <div style="display:flex;justify-content:flex-start;">${_stGoodreadsCta}</div>
+          <div class="book-cta-row">${_stGoodreadsCta}</div>
         </div>
-        <div style="padding:16px 0 72px;">
+        <div style="padding:24px 0 16px;">
+          <div style="display:flex;align-items:center;justify-content:space-between;padding:0 16px 16px;gap:12px;flex-wrap:wrap;">
+            <div style="font-family:'Playfair Display',serif;font-size:18px;font-weight:700;color:var(--text);">Similar reads</div>
+            ${_stShareBtnPill}
+          </div>
           ${recCardsHtml}
           ${getSuggestBannerHtml('a book like ' + p.label)}
         </div>`;
 
       if (typeof loadCoversInView === 'function') loadCoversInView();
 
-      // Show share button in the results header
+      // Top "Share this page" button hidden — share CTA now lives inline
+      // below the hero (next to Goodreads), which is the natural read order.
       const _stShareBtn = document.getElementById('discoverFilteredShareBtn');
-      if (_stShareBtn) _stShareBtn.style.display = '';
+      if (_stShareBtn) _stShareBtn.style.display = 'none';
 
       window.scrollTo({ top: 0, behavior: 'smooth' });
     }
@@ -11577,6 +11746,10 @@
           <div class="book-buzz-summary">${escapeHtml(_bdBuzz.summary || '')}</div>
           ${Array.isArray(_bdBuzz.stats) && _bdBuzz.stats.length ? `<div class="book-buzz-stats">${_bdBuzz.stats.map(s => `<span class="book-buzz-pill">${escapeHtml(s)}</span>`).join('')}</div>` : ''}
         </div>` : '';
+      // Share button — same pill style + top-right position used on Books Like
+      // pages, so the share affordance reads as one consistent UI primitive.
+      const _bdShareBtnPill = `<button class="btn-share" onclick="openShareModal('${titleStr.replace(/'/g,"\\'")}')" title="Share this page">&#128279; Share</button>`;
+
       const heroHtml = `
         ${_bdHero}
         <div style="padding:18px 16px 20px;background:var(--surface);border-bottom:1px solid var(--border);">
@@ -11585,6 +11758,9 @@
           ${_bdBuzzHtml}
           <div class="book-cta-row">${_bdAmazonCta}${_bdGoodreadsCta}</div>
           <div class="affiliate-disclosure">As an Amazon Associate, 90books earns from qualifying purchases.</div>
+        </div>
+        <div style="display:flex;justify-content:flex-end;padding:16px 16px 0;">
+          ${_bdShareBtnPill}
         </div>`;
 
       // ── Series: other books in the same series ──
