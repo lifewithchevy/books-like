@@ -580,9 +580,7 @@ streak: STATS.currentStreak,
 const text = $('share-text').textContent;
 try {
 await navigator.clipboard.writeText(text);
-const t = $('share-toast');
-t.hidden = false;
-setTimeout(() => { t.hidden = true; }, 2000);
+showToast('Copied — paste anywhere 📋');
 } catch {
 const range = document.createRange();
 range.selectNodeContents($('share-text'));
