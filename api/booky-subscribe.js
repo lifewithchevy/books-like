@@ -54,6 +54,8 @@ module.exports = async (req, res) => {
           body: JSON.stringify({
             email: cleanEmail,
             unsubscribed: false,
+            // first_name stores the streak count (internal field — never shown in emails)
+            first_name: ctx.streak != null ? String(ctx.streak) : '0',
           }),
         }
       );

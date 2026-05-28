@@ -133,6 +133,17 @@ STATS.currentStreak = 0;
 STATS.lastPlayedDay = DAY;
 saveStats();
 
+// Keep subscriber's streak fresh in Resend so daily email is personalized.
+// Fire-and-forget — never block or show errors to the player.
+const subEmail = localStorage.getItem('90books_booky_reminder_sub');
+if (subEmail) {
+fetch('/api/booky-update-streak', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ email: subEmail, streak: STATS.currentStreak }),
+}).catch(() => {});
+}
+
 // PostHog: game complete (fires once per game via statsRecorded guard above)
 posthog.capture('booky_game_complete', {
 word_number: DAY,

@@ -1,17 +1,18 @@
-// api/booky-send.js — daily Booky reminder broadcast.
+// api/booky-send.js — daily Booky reminder (personalized per subscriber).
 // Triggered by Vercel Cron (see vercel.json) once a day.
 //
 // Flow:
 //   1. Verify the request came from Vercel Cron (Bearer ${CRON_SECRET})
-//   2. Create a Resend broadcast for the Booky Daily audience
-//   3. Immediately send it
+//   2. Fetch all active subscribers from Resend audience
+//   3. Send each subscriber a personalized email showing their streak
+//
+// Streak is stored in contact.first_name as a string number (internal only).
 //
 // Env vars:
 //   RESEND_API_KEY          — sk_xxx from resend.com/api-keys
 //   RESEND_AUDIENCE_ID      — uuid from resend.com/audiences
 //   RESEND_FROM             — verified sender, e.g. "Booky <booky@90books.com>"
 //   CRON_SECRET             — random string, Vercel auto-attaches as Bearer
-//                             (set in Vercel dashboard → Cron → Secret)
 
 module.exports = async (req, res) => {
   // ---- Auth: only allow Vercel Cron (or manual via x-debug-key=CRON_SECRET) ----
@@ -36,15 +37,96 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const subject = "Today's Booky is ready 📚";
   const playUrl = 'https://90books.com/booky';
   const today   = new Date().toLocaleDateString('en-US', {
     weekday: 'long', month: 'long', day: 'numeric',
   });
 
-  // Plain HTML email. Light-bg for max compatibility across mail clients.
-  // Resend automatically appends an unsubscribe link via {{{RESEND_UNSUBSCRIBE_URL}}}.
-  const html = `<!doctype html>
+  // ---- 1. Fetch all active subscribers ----
+  let subscribers = [];
+  try {
+    const r = await fetch(
+      `https://api.resend.com/audiences/${RESEND_AUDIENCE_ID}/contacts`,
+      { headers: { Authorization: `Bearer ${RESEND_API_KEY}` } }
+    );
+    if (!r.ok) {
+      const txt = await r.text();
+      console.error('[booky-send] failed to fetch contacts', r.status, txt);
+      res.status(500).json({ error: 'failed to fetch contacts', detail: txt });
+      return;
+    }
+    const data = await r.json();
+    subscribers = (data.data || []).filter(c => !c.unsubscribed);
+  } catch (err) {
+    console.error('[booky-send] fetch contacts exception:', err);
+    res.status(500).json({ error: 'exception fetching contacts', detail: String(err) });
+    return;
+  }
+
+  if (subscribers.length === 0) {
+    console.log('[booky-send] no active subscribers, nothing to send');
+    res.status(200).json({ ok: true, sent: 0 });
+    return;
+  }
+
+  // ---- 2. Send personalized email to each subscriber ----
+  let sent = 0;
+  let failed = 0;
+
+  for (const contact of subscribers) {
+    // streak stored in first_name as a string (set by booky-subscribe + booky-update-streak)
+    const streak = parseInt(contact.first_name, 10) || 0;
+    const hasStreak = streak >= 2;
+
+    const subject = hasStreak
+      ? `🔥 Day ${streak} — don't lose it now`
+      : `Today's Booky is ready 📚`;
+
+    const headline = hasStreak
+      ? `Your 🔥${streak}-day streak is waiting.`
+      : `Today's word is waiting.`;
+
+    const subline = hasStreak
+      ? `Six guesses. Don't break your ${streak}-day streak.`
+      : `Six guesses. Don't break the streak.`;
+
+    const html = buildHtml({ subject, headline, subline, today, playUrl });
+
+    try {
+      const r = await fetch('https://api.resend.com/emails', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${RESEND_API_KEY}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify({
+          from: RESEND_FROM,
+          to: contact.email,
+          subject,
+          html,
+          tags: [{ name: 'type', value: 'booky-daily' }],
+        }),
+      });
+
+      if (r.ok) {
+        sent++;
+      } else {
+        const txt = await r.text();
+        console.error('[booky-send] failed for', contact.email, r.status, txt);
+        failed++;
+      }
+    } catch (err) {
+      console.error('[booky-send] exception for', contact.email, err);
+      failed++;
+    }
+  }
+
+  console.log(`[booky-send] done — sent: ${sent}, failed: ${failed}`);
+  res.status(200).json({ ok: true, sent, failed, total: subscribers.length });
+};
+
+function buildHtml({ subject, headline, subline, today, playUrl }) {
+  return `<!doctype html>
 <html lang="en">
 <head><meta charset="utf-8"><title>${subject}</title></head>
 <body style="margin:0;padding:0;background:#fff8fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,sans-serif;color:#2a0a26;">
@@ -54,8 +136,8 @@ module.exports = async (req, res) => {
         <tr><td align="center">
           <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;color:#c8398f;margin:0 0 4px;letter-spacing:0.5px;">Booky</p>
           <p style="margin:0 0 24px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;">${today}</p>
-          <p style="margin:0 0 24px;font-size:17px;line-height:1.5;color:#2a0a26;">Today's word is waiting.</p>
-          <p style="margin:0 0 24px;font-size:14px;line-height:1.5;color:#6a4a6c;">Six guesses. Don't break the streak.</p>
+          <p style="margin:0 0 12px;font-size:18px;line-height:1.5;color:#2a0a26;font-weight:600;">${headline}</p>
+          <p style="margin:0 0 24px;font-size:14px;line-height:1.5;color:#6a4a6c;">${subline}</p>
           <a href="${playUrl}" style="display:inline-block;background:linear-gradient(135deg,#c8398f,#9a2670);color:#ffffff;text-decoration:none;font-weight:600;padding:13px 28px;border-radius:10px;font-size:15px;">Play today's Booky →</a>
         </td></tr>
         <tr><td align="center" style="padding-top:32px;">
@@ -69,60 +151,4 @@ module.exports = async (req, res) => {
   </table>
 </body>
 </html>`;
-
-  try {
-    // Step 1 — create draft broadcast
-    const createR = await fetch('https://api.resend.com/broadcasts', {
-      method: 'POST',
-      headers: {
-        Authorization: `Bearer ${RESEND_API_KEY}`,
-        'Content-Type': 'application/json',
-      },
-      body: JSON.stringify({
-        audience_id: RESEND_AUDIENCE_ID,
-        from: RESEND_FROM,
-        subject,
-        html,
-      }),
-    });
-
-    if (!createR.ok) {
-      const txt = await createR.text();
-      console.error('[booky-send] broadcast create failed', createR.status, txt);
-      res.status(500).json({ error: 'broadcast create failed', detail: txt });
-      return;
-    }
-    const created = await createR.json();
-    const broadcastId = created?.data?.id || created?.id;
-    if (!broadcastId) {
-      res.status(500).json({ error: 'no broadcast id returned', payload: created });
-      return;
-    }
-
-    // Step 2 — send immediately
-    const sendR = await fetch(
-      `https://api.resend.com/broadcasts/${broadcastId}/send`,
-      {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${RESEND_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({}),
-      }
-    );
-
-    if (!sendR.ok) {
-      const txt = await sendR.text();
-      console.error('[booky-send] broadcast send failed', sendR.status, txt);
-      res.status(500).json({ error: 'broadcast send failed', detail: txt });
-      return;
-    }
-
-    console.log('[booky-send] broadcast sent', broadcastId);
-    res.status(200).json({ ok: true, broadcastId });
-  } catch (err) {
-    console.error('[booky-send] exception:', err);
-    res.status(500).json({ error: 'exception', detail: String(err) });
-  }
-};
+}
