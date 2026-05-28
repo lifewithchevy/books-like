@@ -62,6 +62,29 @@ module.exports = async (req, res) => {
 
       // Resend returns 422 when the contact already exists — treat as success
       if (r.ok || r.status === 422) {
+        // Send welcome email only for brand-new signups (r.ok), not re-subscribes (422)
+        if (r.ok) {
+          const RESEND_FROM = process.env.RESEND_FROM || 'Booky <booky@90books.com>';
+          try {
+            await fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${RESEND_API_KEY}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                from: RESEND_FROM,
+                to: cleanEmail,
+                subject: '✨ You\'re in — Booky will nudge you',
+                text: "Tomorrow's word drops at midnight. Don't break your streak. — Booky 📚",
+                html: "<p>Tomorrow's word drops at midnight. Don't break your streak.</p><p>— Booky 📚</p>",
+              }),
+            });
+          } catch (err) {
+            // Welcome email failure is non-fatal — contact is already saved
+            console.error('[booky-subscribe] Welcome email failed:', err);
+          }
+        }
         res.status(200).json({ ok: true, stored: 'resend' });
         return;
       }
