@@ -76,8 +76,60 @@ module.exports = async (req, res) => {
                 from: RESEND_FROM,
                 to: cleanEmail,
                 subject: '✨ You\'re in — Booky will nudge you',
-                text: "Tomorrow's word drops at midnight. Don't break your streak. — Booky 📚",
-                html: "<p>Tomorrow's word drops at midnight. Don't break your streak.</p><p>— Booky 📚</p>",
+                text: "Don't break your streak.\n\nA new word drops at midnight — we'll remind you before you forget.\n\nPlay now: https://90books.com/booky\n\n— Booky 📚",
+                html: `<!DOCTYPE html>
+<html lang="en">
+<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
+<body style="margin:0;padding:0;background-color:#f5eef8;font-family:Georgia,serif;">
+<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f5eef8;">
+<tr><td align="center" style="padding:32px 16px;">
+<table width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;">
+
+  <!-- Header -->
+  <tr>
+    <td style="background-color:#160516;border-radius:12px 12px 0 0;padding:28px 24px 20px;text-align:center;">
+      <div style="font-family:Georgia,'Times New Roman',serif;font-size:30px;font-weight:600;color:#f2c4dc;letter-spacing:3px;">Booky</div>
+      <div style="font-family:Arial,sans-serif;font-size:10px;color:#9b6b8a;letter-spacing:2px;margin-top:4px;text-transform:uppercase;">The Daily Romantasy Word Game</div>
+    </td>
+  </tr>
+
+  <!-- Tiles -->
+  <tr>
+    <td style="background-color:#1e0a1e;padding:20px 24px;text-align:center;">
+      <table cellpadding="0" cellspacing="5" style="margin:0 auto;">
+        <tr>
+          <td style="width:46px;height:46px;background-color:#538d4e;border-radius:5px;text-align:center;vertical-align:middle;font-family:Arial,sans-serif;font-size:20px;font-weight:800;color:#ffffff;line-height:46px;">F</td>
+          <td style="width:46px;height:46px;background-color:#538d4e;border-radius:5px;text-align:center;vertical-align:middle;font-family:Arial,sans-serif;font-size:20px;font-weight:800;color:#ffffff;line-height:46px;">A</td>
+          <td style="width:46px;height:46px;background-color:#538d4e;border-radius:5px;text-align:center;vertical-align:middle;font-family:Arial,sans-serif;font-size:20px;font-weight:800;color:#ffffff;line-height:46px;">T</td>
+          <td style="width:46px;height:46px;background-color:#538d4e;border-radius:5px;text-align:center;vertical-align:middle;font-family:Arial,sans-serif;font-size:20px;font-weight:800;color:#ffffff;line-height:46px;">E</td>
+          <td style="width:46px;height:46px;background-color:#538d4e;border-radius:5px;text-align:center;vertical-align:middle;font-family:Arial,sans-serif;font-size:20px;font-weight:800;color:#ffffff;line-height:46px;">D</td>
+        </tr>
+      </table>
+      <div style="font-family:Arial,sans-serif;font-size:12px;color:#7a4a6a;margin-top:12px;letter-spacing:0.5px;">fated mates await 🔥</div>
+    </td>
+  </tr>
+
+  <!-- Body -->
+  <tr>
+    <td style="background-color:#ffffff;padding:32px 40px;text-align:center;">
+      <p style="margin:0 0 6px;font-family:Georgia,serif;font-size:22px;color:#160516;font-weight:600;line-height:1.3;">Don't break your streak.</p>
+      <p style="margin:0 0 28px;font-family:Arial,sans-serif;font-size:14px;color:#888888;line-height:1.7;">A new word drops at midnight.<br>We'll nudge you before you forget.</p>
+      <a href="https://90books.com/booky" style="display:inline-block;background-color:#160516;color:#f2c4dc;text-decoration:none;padding:13px 36px;border-radius:6px;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:0.5px;">Play tomorrow's word →</a>
+    </td>
+  </tr>
+
+  <!-- Footer -->
+  <tr>
+    <td style="background-color:#faf5fc;border-radius:0 0 12px 12px;padding:16px 40px;text-align:center;border-top:1px solid #edd5f0;">
+      <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;color:#bbbbbb;line-height:1.6;">You signed up for daily Booky reminders at 90books.com/booky</p>
+    </td>
+  </tr>
+
+</table>
+</td></tr>
+</table>
+</body>
+</html>`,
               }),
             });
           } catch (err) {
