@@ -514,6 +514,20 @@ card.hidden = true;
 // Mirror to legacy stats modal (still accessible via the ▤ icon)
 renderStatsModal();
 
+// Book recommendation card
+const bookRec = DATA.wordBooks?.[ANSWER];
+const recEl = $('book-rec');
+if (bookRec) {
+$('book-rec-cover').src = bookRec.cover;
+$('book-rec-cover').alt = bookRec.title;
+$('book-rec-title').textContent = bookRec.title;
+$('book-rec-author').textContent = bookRec.author;
+$('book-rec-link').href = `https://90books.com/books-like/${bookRec.slug}`;
+recEl.hidden = false;
+} else {
+recEl.hidden = true;
+}
+
 // Reminder form — only show if user hasn't already subscribed
 const subscribed = localStorage.getItem('90books_booky_reminder_sub');
 $('reminder-form').style.display = subscribed ? 'none' : 'block';
