@@ -330,7 +330,7 @@ posthog.capture('email_signup_completed', {
 source: 'booky_endscreen',
 word_number_at_signup: DAY,
 });
-toast.textContent = "✓ You're in. We'll nudge you when the new word drops.";
+toast.textContent = "✓ You're in. We'll nudge you every evening before your streak resets.";
 toast.className = 'reminder-toast reminder-success';
 toast.hidden = false;
 // Hide the form after success, leave only the toast visible
