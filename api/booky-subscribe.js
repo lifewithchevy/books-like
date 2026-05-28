@@ -79,15 +79,32 @@ module.exports = async (req, res) => {
                 text: "Don't break your streak.\n\nA new word drops at midnight — we'll remind you before you forget.\n\nPlay Booky: https://90books.com/booky\n\n— Booky 📚",
                 html: `<!DOCTYPE html>
 <html lang="en">
-<head><meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1"></head>
-<body style="margin:0;padding:0;background-color:#f5eef8;font-family:Georgia,serif;">
-<table width="100%" cellpadding="0" cellspacing="0" style="background-color:#f5eef8;">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="color-scheme" content="light dark">
+<style>
+  /* Dark mode overrides — supported in Apple Mail, iOS Mail, Gmail iOS/Android */
+  @media (prefers-color-scheme: dark) {
+    .bky-wrap  { background-color: #160516 !important; }
+    .bky-hdr   { background-color: #2d0a2d !important; }
+    .bky-body  { background-color: #1f0a1f !important; }
+    .bky-foot  { background-color: #2a082a !important; border-top-color: #4a1a4a !important; }
+    .bky-h1    { color: #f5eef8 !important; }
+    .bky-sub   { color: #ccaacc !important; }
+    .bky-btn   { background-color: #9333d9 !important; color: #ffffff !important; }
+    .bky-ftxt  { color: #886688 !important; }
+  }
+</style>
+</head>
+<body style="margin:0;padding:0;background-color:#f5eef8;font-family:Georgia,serif;" class="bky-wrap">
+<table width="100%" cellpadding="0" cellspacing="0" class="bky-wrap" style="background-color:#f5eef8;">
 <tr><td align="center" style="padding:32px 16px;">
 <table width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;">
 
   <!-- Header: BOOKY as purple correct tiles -->
   <tr>
-    <td style="background-color:#160516;border-radius:12px 12px 0 0;padding:32px 24px 28px;text-align:center;">
+    <td class="bky-hdr" style="background-color:#f0e4f8;border-radius:12px 12px 0 0;padding:32px 24px 28px;text-align:center;">
       <table cellpadding="0" cellspacing="6" style="margin:0 auto;">
         <tr>
           <td style="width:50px;height:50px;background-color:#9333d9;border-radius:5px;text-align:center;vertical-align:middle;font-family:Arial,sans-serif;font-size:22px;font-weight:800;color:#ffffff;line-height:50px;">B</td>
@@ -102,17 +119,17 @@ module.exports = async (req, res) => {
 
   <!-- Body -->
   <tr>
-    <td style="background-color:#ffffff;padding:36px 40px;text-align:center;">
-      <p style="margin:0 0 6px;font-family:Georgia,serif;font-size:22px;color:#160516;font-weight:600;line-height:1.3;">Don't break your streak.</p>
-      <p style="margin:0 0 28px;font-family:Arial,sans-serif;font-size:14px;color:#888888;line-height:1.7;">A new word drops at midnight.<br>We'll remind you before you forget.</p>
-      <a href="https://90books.com/booky" style="display:inline-block;background-color:#160516;color:#f2c4dc;text-decoration:none;padding:13px 36px;border-radius:6px;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:0.5px;">Play Booky</a>
+    <td class="bky-body" style="background-color:#ffffff;padding:36px 40px;text-align:center;">
+      <p class="bky-h1" style="margin:0 0 6px;font-family:Georgia,serif;font-size:22px;color:#160516;font-weight:600;line-height:1.3;">Don't break your streak.</p>
+      <p class="bky-sub" style="margin:0 0 28px;font-family:Arial,sans-serif;font-size:14px;color:#888888;line-height:1.7;">A new word drops at midnight.<br>We'll remind you before you forget.</p>
+      <a href="https://90books.com/booky" class="bky-btn" style="display:inline-block;background-color:#160516;color:#f2c4dc;text-decoration:none;padding:13px 36px;border-radius:6px;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:0.5px;">Play Booky</a>
     </td>
   </tr>
 
   <!-- Footer -->
   <tr>
-    <td style="background-color:#faf5fc;border-radius:0 0 12px 12px;padding:16px 40px;text-align:center;border-top:1px solid #edd5f0;">
-      <p style="margin:0;font-family:Arial,sans-serif;font-size:11px;color:#bbbbbb;line-height:1.6;">You signed up for daily Booky reminders at 90books.com/booky</p>
+    <td class="bky-foot" style="background-color:#faf5fc;border-radius:0 0 12px 12px;padding:16px 40px;text-align:center;border-top:1px solid #edd5f0;">
+      <p class="bky-ftxt" style="margin:0;font-family:Arial,sans-serif;font-size:11px;color:#bbbbbb;line-height:1.6;">You signed up for daily Booky reminders at 90books.com/booky</p>
     </td>
   </tr>
 
