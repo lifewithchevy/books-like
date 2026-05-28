@@ -7,6 +7,20 @@ const STATE_KEY = '90books_booky_word_v1';
 const STATS_KEY = '90books_booky_word_stats_v1';
 const SITE_URL = '90books.com/booky';
 
+// Slugs that have fully curated recommendation pages on 90books.com.
+// Only show a clickable link on the end screen for these — the rest show
+// the book title as plain text (still sparks curiosity, no broken landing).
+const CURATED_SLUGS = new Set([
+  'fourth-wing',
+  'a-court-of-thorns-and-roses',
+  'iron-flame',
+  'from-blood-and-ash',
+  'the-cruel-prince',
+  'six-of-crows',
+  'quicksilver',
+  'the-bridge-kingdom',
+]);
+
 let DATA = null; // { epoch, queue }
 let ANSWER = null; // today's word, uppercase
 let DAY = null; // 1-indexed day number
@@ -518,12 +532,26 @@ renderStatsModal();
 const bookRec = DATA.wordBooks?.[ANSWER];
 const recEl = $('book-rec');
 if (bookRec) {
-$('book-rec-title').textContent = bookRec.title;
-$('book-rec-author').textContent = bookRec.author;
-$('book-rec-link').href = `https://90books.com/books-like/${bookRec.slug}`;
-recEl.hidden = false;
+  const isCurated = CURATED_SLUGS.has(bookRec.slug);
+  const linkEl = $('book-rec-link');
+  $('book-rec-title').textContent = bookRec.title;
+  $('book-rec-author').textContent = bookRec.author;
+  if (isCurated) {
+    // Curated page exists → full clickable link with arrow
+    linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
+    linkEl.style.pointerEvents = '';
+    linkEl.style.cursor = '';
+    linkEl.querySelector('.book-rec-arrow').hidden = false;
+  } else {
+    // No curated page yet → show title/author as plain text, no link
+    linkEl.removeAttribute('href');
+    linkEl.style.pointerEvents = 'none';
+    linkEl.style.cursor = 'default';
+    linkEl.querySelector('.book-rec-arrow').hidden = true;
+  }
+  recEl.hidden = false;
 } else {
-recEl.hidden = true;
+  recEl.hidden = true;
 }
 
 // Reminder form — only show if user hasn't already subscribed
