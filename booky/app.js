@@ -518,8 +518,6 @@ renderStatsModal();
 const bookRec = DATA.wordBooks?.[ANSWER];
 const recEl = $('book-rec');
 if (bookRec) {
-$('book-rec-cover').src = bookRec.cover;
-$('book-rec-cover').alt = bookRec.title;
 $('book-rec-title').textContent = bookRec.title;
 $('book-rec-author').textContent = bookRec.author;
 $('book-rec-link').href = `https://90books.com/books-like/${bookRec.slug}`;
@@ -553,7 +551,9 @@ const rows = STATE.guesses.map(g => {
 const r = evaluate(g, ANSWER);
 return r.map(s => s === 'correct' ? '🟪' : s === 'present' ? '🟨' : '⬛').join('');
 });
-return `${header}\n${scoreLine}\n${rows.join('\n')}\n${SITE_URL}`;
+const bookRec = DATA.wordBooks?.[ANSWER];
+const bookLine = bookRec ? `\n📖 Reminded us of: ${bookRec.title}` : '';
+return `${header}\n${scoreLine}\n${rows.join('\n')}${bookLine}\n${SITE_URL}`;
 }
 
 function renderStatsModal() {
