@@ -64,7 +64,8 @@ module.exports = async (req, res) => {
       if (r.ok || r.status === 422) {
         // Send welcome email only for brand-new signups (r.ok), not re-subscribes (422)
         if (r.ok) {
-          const RESEND_FROM = process.env.RESEND_FROM || 'Booky <booky@90books.com>';
+          const RESEND_FROM = process.env.RESEND_FROM || 'Olga from Booky <hello@90books.com>';
+          const UNSUBSCRIBE  = '<mailto:hello@90books.com?subject=unsubscribe>';
           try {
             await fetch('https://api.resend.com/emails', {
               method: 'POST',
@@ -75,8 +76,24 @@ module.exports = async (req, res) => {
               body: JSON.stringify({
                 from: RESEND_FROM,
                 to: cleanEmail,
-                subject: '✨ You\'re in, Booky will remind you',
-                text: "Don't break your streak.\n\nA new word drops at midnight — we'll remind you before you forget.\n\nPlay Booky: https://90books.com/booky\n\n— Booky 📚",
+                reply_to: 'hello@90books.com',
+                subject: "you're in — Booky will remind you 📚",
+                headers: {
+                  'List-Unsubscribe': UNSUBSCRIBE,
+                  'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+                },
+                text: `hey, you're in.
+
+a new Booky word drops at midnight — I'll send you a nudge so you don't miss it and break your streak.
+
+play today's word: https://90books.com/booky
+
+reply "hi" or drag this to Primary so tomorrow's reminder doesn't get buried.
+
+— Olga from Booky 📚
+
+---
+you signed up at 90books.com/booky · reply to unsubscribe`,
                 html: `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -84,58 +101,31 @@ module.exports = async (req, res) => {
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="color-scheme" content="light dark">
 <style>
-  /* Dark mode overrides — supported in Apple Mail, iOS Mail, Gmail iOS/Android */
+  body { margin:0; padding:0; background:#ffffff; font-family:Georgia,serif; font-size:16px; line-height:1.7; color:#1a1a1a; }
+  .wrap { max-width:520px; margin:0 auto; padding:36px 24px; }
+  p { margin:0 0 18px; }
+  a { color:#9333d9; }
+  .footer { margin-top:36px; font-size:12px; color:#aaaaaa; font-family:Arial,sans-serif; line-height:1.6; }
+  .footer a { color:#aaaaaa; }
   @media (prefers-color-scheme: dark) {
-    .bky-wrap  { background-color: #160516 !important; }
-    .bky-hdr   { background-color: #2d0a2d !important; }
-    .bky-body  { background-color: #1f0a1f !important; }
-    .bky-foot  { background-color: #2a082a !important; border-top-color: #4a1a4a !important; }
-    .bky-h1    { color: #f5eef8 !important; }
-    .bky-sub   { color: #ccaacc !important; }
-    .bky-btn   { background-color: #9333d9 !important; color: #ffffff !important; }
-    .bky-ftxt  { color: #886688 !important; }
+    body { background:#160516 !important; color:#f0e4f8 !important; }
+    .footer { color:#886688 !important; }
+    .footer a { color:#886688 !important; }
   }
 </style>
 </head>
-<body style="margin:0;padding:0;background-color:#f5eef8;font-family:Georgia,serif;" class="bky-wrap">
-<table width="100%" cellpadding="0" cellspacing="0" class="bky-wrap" style="background-color:#f5eef8;">
-<tr><td align="center" style="padding:32px 16px;">
-<table width="480" cellpadding="0" cellspacing="0" style="max-width:480px;width:100%;">
-
-  <!-- Header: BOOKY as purple correct tiles -->
-  <tr>
-    <td class="bky-hdr" style="background-color:#f0e4f8;border-radius:12px 12px 0 0;padding:32px 24px 28px;text-align:center;">
-      <table cellpadding="0" cellspacing="6" style="margin:0 auto;">
-        <tr>
-          <td style="width:50px;height:50px;background-color:#9333d9;border-radius:5px;text-align:center;vertical-align:middle;font-family:Arial,sans-serif;font-size:22px;font-weight:800;color:#ffffff;line-height:50px;">B</td>
-          <td style="width:50px;height:50px;background-color:#9333d9;border-radius:5px;text-align:center;vertical-align:middle;font-family:Arial,sans-serif;font-size:22px;font-weight:800;color:#ffffff;line-height:50px;">O</td>
-          <td style="width:50px;height:50px;background-color:#9333d9;border-radius:5px;text-align:center;vertical-align:middle;font-family:Arial,sans-serif;font-size:22px;font-weight:800;color:#ffffff;line-height:50px;">O</td>
-          <td style="width:50px;height:50px;background-color:#9333d9;border-radius:5px;text-align:center;vertical-align:middle;font-family:Arial,sans-serif;font-size:22px;font-weight:800;color:#ffffff;line-height:50px;">K</td>
-          <td style="width:50px;height:50px;background-color:#9333d9;border-radius:5px;text-align:center;vertical-align:middle;font-family:Arial,sans-serif;font-size:22px;font-weight:800;color:#ffffff;line-height:50px;">Y</td>
-        </tr>
-      </table>
-    </td>
-  </tr>
-
-  <!-- Body -->
-  <tr>
-    <td class="bky-body" style="background-color:#ffffff;padding:36px 40px;text-align:center;">
-      <p class="bky-h1" style="margin:0 0 6px;font-family:Georgia,serif;font-size:22px;color:#160516;font-weight:600;line-height:1.3;">Don't break your streak.</p>
-      <p class="bky-sub" style="margin:0 0 28px;font-family:Arial,sans-serif;font-size:14px;color:#888888;line-height:1.7;">A new word drops at midnight.<br>We'll remind you before you forget.</p>
-      <a href="https://90books.com/booky" class="bky-btn" style="display:inline-block;background-color:#160516;color:#f2c4dc;text-decoration:none;padding:13px 36px;border-radius:6px;font-family:Arial,sans-serif;font-size:14px;font-weight:700;letter-spacing:0.5px;">Play Booky</a>
-    </td>
-  </tr>
-
-  <!-- Footer -->
-  <tr>
-    <td class="bky-foot" style="background-color:#faf5fc;border-radius:0 0 12px 12px;padding:16px 40px;text-align:center;border-top:1px solid #edd5f0;">
-      <p class="bky-ftxt" style="margin:0;font-family:Arial,sans-serif;font-size:11px;color:#bbbbbb;line-height:1.6;">You signed up for daily Booky reminders at 90books.com/booky</p>
-    </td>
-  </tr>
-
-</table>
-</td></tr>
-</table>
+<body>
+<div class="wrap">
+  <p>hey, you're in. 📚</p>
+  <p>a new Booky word drops at midnight — I'll send you a nudge so you don't miss it and break your streak.</p>
+  <p><a href="https://90books.com/booky">play today's word →</a></p>
+  <p>reply "hi" or drag this to Primary so tomorrow's reminder doesn't get buried.</p>
+  <p>— Olga from Booky</p>
+  <p class="footer">
+    you signed up at 90books.com/booky<br>
+    <a href="mailto:hello@90books.com?subject=unsubscribe">unsubscribe</a>
+  </p>
+</div>
 </body>
 </html>`,
               }),
