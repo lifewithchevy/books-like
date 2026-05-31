@@ -77,20 +77,20 @@ module.exports = async (req, res) => {
                 from: RESEND_FROM,
                 to: cleanEmail,
                 reply_to: 'hello@90books.com',
-                subject: "you're in — Booky will remind you 📚",
+                subject: "you're in, Booky will remind you 📚",
                 headers: {
                   'List-Unsubscribe': UNSUBSCRIBE,
                   'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
                 },
-                text: `hey, you're in.
+                text: `okay you're in. 📚
 
-a new Booky word drops at midnight — I'll send you a nudge so you don't miss it and break your streak.
+new word drops every midnight. i'll ping you so you don't lose your streak (losing it is genuinely painful, ask me how i know).
 
 play today's word: https://90books.com/booky
 
-reply "hi" or drag this to Primary so tomorrow's reminder doesn't get buried.
+reply "hi" or drag this to Primary so tomorrow's word doesn't get buried in promos.
 
-— Olga from Booky 📚
+olga from booky
 
 ---
 you signed up at 90books.com/booky · reply to unsubscribe`,
@@ -116,11 +116,11 @@ you signed up at 90books.com/booky · reply to unsubscribe`,
 </head>
 <body>
 <div class="wrap">
-  <p>hey, you're in. 📚</p>
-  <p>a new Booky word drops at midnight — I'll send you a nudge so you don't miss it and break your streak.</p>
+  <p>okay you're in. 📚</p>
+  <p>new word drops every midnight. i'll ping you so you don't lose your streak (losing it is genuinely painful, ask me how i know).</p>
   <p><a href="https://90books.com/booky">play today's word →</a></p>
-  <p>reply "hi" or drag this to Primary so tomorrow's reminder doesn't get buried.</p>
-  <p>— Olga from Booky</p>
+  <p>reply "hi" or drag this to Primary so tomorrow's word doesn't get buried in promos.</p>
+  <p>olga from booky</p>
   <p class="footer">
     you signed up at 90books.com/booky<br>
     <a href="mailto:hello@90books.com?subject=unsubscribe">unsubscribe</a>
