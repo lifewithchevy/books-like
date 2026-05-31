@@ -84,7 +84,7 @@ module.exports = async (req, res) => {
                 },
                 text: `okay you're in. 📚
 
-new word drops every midnight. i'll ping you so you don't lose your streak (losing it is genuinely painful, ask me how i know).
+new word drops every midnight. i'll remind you around 7pm so you don't lose your streak.
 
 play today's word: https://90books.com/booky
 
@@ -117,7 +117,7 @@ you signed up at 90books.com/booky · reply to unsubscribe`,
 <body>
 <div class="wrap">
   <p>okay you're in. 📚</p>
-  <p>new word drops every midnight. i'll ping you so you don't lose your streak (losing it is genuinely painful, ask me how i know).</p>
+  <p>new word drops every midnight. i'll remind you around 7pm so you don't lose your streak.</p>
   <p><a href="https://90books.com/booky">play today's word →</a></p>
   <p>reply "hi" or drag this to Primary so tomorrow's word doesn't get buried in promos.</p>
   <p>olga from booky</p>
