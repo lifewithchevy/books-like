@@ -580,8 +580,11 @@ const r = evaluate(g, ANSWER);
 return r.map(s => s === 'correct' ? '🟪' : s === 'present' ? '🟨' : '⬛').join('');
 });
 const bookRec = DATA.wordBooks?.[ANSWER];
-const bookLine = bookRec ? `\n📖 From: ${bookRec.title}` : '';
-return `${header}\n${scoreLine}\n${rows.join('\n')}${bookLine}\n${SITE_URL}`;
+const bookLine = bookRec ? `📖 From: ${bookRec.title}` : null;
+// Two trailing spaces before every \n = Reddit hard break; invisible on all other platforms
+const HB = '  \n';
+const lines = [header, scoreLine, ...rows, ...(bookLine ? [bookLine] : []), SITE_URL];
+return lines.join(HB);
 }
 
 function renderStatsModal() {
