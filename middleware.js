@@ -1,14 +1,14 @@
-// Vercel Edge Middleware — per-URL SEO meta tags.
+// Vercel Edge Middleware, per-URL SEO meta tags.
 //
 // The site is a SPA (one index.html serving every route via Vercel rewrites).
-// Google indexes whatever HTML it sees in the FIRST response — and renders JS
+// Google indexes whatever HTML it sees in the FIRST response, and renders JS
 // only sometimes. So we intercept the response for /books-like/[slug],
 // /genre/[slug], and /mood/[slug] and rewrite <title>, <meta description>,
 // <meta og:*>, <meta twitter:*> + canonical link inline. Same JS bundle ships
 // after; client-side updateSectionMeta still works for soft-nav.
 //
 // Bonus: also injects a JSON-LD ItemList describing the page so Google can
-// build rich snippets ("Books Like Fourth Wing — list of 8 books").
+// build rich snippets ("Books Like Fourth Wing, list of 8 books").
 
 import { next } from '@vercel/edge';
 import { BOOKS_LIKE_RECS } from './seo-recs.mjs';
@@ -99,6 +99,13 @@ function escapeHtml(s) {
     .replace(/"/g, '&quot;');
 }
 
+// Universal "how recs work" FAQ, appended to every books-like page's FAQ block
+// (visible + FAQPage JSON-LD). Mirrors the in-app "How these picks are chosen" note.
+const HOW_CHOSEN_FAQ = {
+  q: 'How are these book recommendations chosen?',
+  a: "It starts with what romantasy readers actually recommend to each other, the books that come up again and again in Reddit threads (r/Romantasy, r/fantasyromance), Goodreads 'readers also enjoyed,' and BookTok. For popular titles those lists are hand-curated with a reason for each pick; for everything else, 90books matches on tropes, pace, spice and vibe. Connect your Goodreads and books you've already read get filtered out. Affiliate buy links support the site but never affect which books are recommended.",
+};
+
 function buildMeta(pathname) {
   let m;
   if ((m = pathname.match(/^\/books-like\/([^\/]+)\/?$/))) {
@@ -107,7 +114,7 @@ function buildMeta(pathname) {
     // Some books have widely-used abbreviations (ACOTAR, TOG, FBAA, etc.). When
     // present, weave them into the title and meta so the page ranks for both
     // the full title AND the abbreviation. We don't create separate URLs for
-    // the abbreviations — that would be duplicate content. Instead, we 301
+    // the abbreviations, that would be duplicate content. Instead, we 301
     // redirect /books-like/acotar (etc.) to the canonical URL (vercel.json).
     // Map of widely-used abbreviations. Only include slugs where we have full
     // SEO content (otherwise we'd promise the abbreviation in title but deliver
@@ -116,6 +123,7 @@ function buildMeta(pathname) {
       'a-court-of-thorns-and-roses': 'ACOTAR',
       'from-blood-and-ash': 'FBAA',
       'a-good-girls-guide-to-murder': 'AGGGTM',
+      'house-of-earth-and-blood': 'Crescent City',
     };
     const alias = BOOK_ALIASES[slug];
     const titleStr = alias
@@ -138,7 +146,7 @@ function buildMeta(pathname) {
     // Romantasy gets bespoke copy because it's the flagship genre.
     if (slug === 'romantasy') {
       return {
-        title: 'Romantasy Books — The Best Reads for 2026 | 90books',
+        title: 'Romantasy Books, The Best Reads for 2026 | 90books',
         description: 'The best romantasy books real readers can\'t stop recommending. Fourth Wing, ACOTAR, Quicksilver, and every breakout the r/Romantasy community is binging. Curated, not algorithmic.',
         canonical: `https://90books.com/genre/${slug}`,
         pageKind: 'genre',
@@ -167,7 +175,7 @@ function buildMeta(pathname) {
   return null;
 }
 
-// SEO body block — visible to Googlebot before JS hydrates, hidden from
+// SEO body block, visible to Googlebot before JS hydrates, hidden from
 // users once the SPA takes over. The SPA looks for #seo-static-block and
 // removes it on initDiscoverTab (added to the home init flow).
 function buildSeoBlock(meta) {
@@ -179,7 +187,7 @@ function buildSeoBlock(meta) {
 
     // Look up curated rec data for this page. If present, render the full
     // SEO-optimised block (1500+ words of unique content per page). Otherwise
-    // fall back to the basic block — still better than nothing.
+    // fall back to the basic block, still better than nothing.
     const slug = meta.canonical.split('/').pop();
     const data = BOOKS_LIKE_RECS[slug];
 
@@ -192,7 +200,7 @@ function buildSeoBlock(meta) {
           .replace(/'/g, '')
           .replace(/[^a-z0-9]+/g, '-')
           .replace(/^-+|-+$/g, '');
-        // Amazon affiliate link — tag=90books-20.
+        // Amazon affiliate link, tag=90books-20.
         // Prefers direct product page (/dp/<isbn>) when seo-recs.mjs supplies
         // an ISBN for the rec; falls back to a books-category search otherwise.
         // rel="nofollow sponsored" per Amazon TOS + Google's affiliate guidance.
@@ -203,11 +211,11 @@ function buildSeoBlock(meta) {
         <h3 style="font-family:'Playfair Display',serif;font-size:1.25rem;margin:24px 0 6px;">${i + 1}. <a href="/books-like/${tSlug}" style="color:inherit;text-decoration:none;">${t}</a></h3>
         <p style="margin:0 0 4px;color:#555;font-size:0.95rem;">by ${a}</p>
         <p style="margin:0 0 12px;line-height:1.55;">${w}</p>
-        <p style="margin:0 0 8px;"><a href="${amazonUrl}" rel="nofollow sponsored" target="_blank" style="display:inline-flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:12px;background:#1A1A1A;color:#fff;text-decoration:none;">Buy on Amazon →</a></p>
+        <p style="margin:0 0 8px;"><a href="${amazonUrl}" rel="nofollow sponsored" target="_blank" onclick="window.trackAffiliateClick&&window.trackAffiliateClick('${t.replace(/'/g, "\\'")}','amazon')" style="display:inline-flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;font-size:14px;font-weight:600;padding:12px 22px;border-radius:12px;background:#1A1A1A;color:#fff;text-decoration:none;">Buy on Amazon →</a></p>
       </article>`;
       }).join('');
 
-      const faqsHtml = data.faqs.map(f => `<details style="margin:10px 0;border:1px solid #e5e5e5;border-radius:8px;padding:12px 16px;">
+      const faqsHtml = [...data.faqs, HOW_CHOSEN_FAQ].map(f => `<details style="margin:10px 0;border:1px solid #e5e5e5;border-radius:8px;padding:12px 16px;">
         <summary style="font-weight:600;cursor:pointer;">${escapeHtml(f.q)}</summary>
         <p style="margin:8px 0 0;line-height:1.55;">${escapeHtml(f.a)}</p>
       </details>`).join('');
@@ -216,14 +224,27 @@ function buildSeoBlock(meta) {
       <p style="line-height:1.6;font-size:1.05rem;margin-bottom:24px;">${escapeHtml(data.sourceAbout)}</p>
 
       <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin:32px 0 8px;">${data.recs.length} books like ${safeLabel}</h2>
-      <p style="color:#666;margin-bottom:6px;">Curated from real reader threads on Reddit (r/RomanceBooks, r/Fantasy, r/suggestmeabook) and cross-referenced against Goodreads and BookTok. Updated regularly.</p>
+      <p style="color:#666;margin-bottom:6px;">Curated from real reader threads on Reddit (r/Romantasy, r/RomanceBooks, r/Fantasy) and cross-referenced against Goodreads and BookTok. Updated regularly.</p>
       <p style="color:#999;font-size:0.78rem;margin:0 0 20px;font-style:italic;">As an Amazon Associate, 90books earns from qualifying purchases.</p>
       ${recsHtml}
 
       <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin:40px 0 12px;">Frequently asked questions</h2>
       ${faqsHtml}
 
-      <p style="margin-top:32px;color:#666;font-size:0.9rem;">Want personalised picks? Connect your Goodreads to filter out books you\'ve already read and get recommendations tuned to your taste.</p>
+      <!-- Booky callout, middle-of-page hook so Reddit traffic loops back into
+           the daily game. Pinned only on books-like pages (highest-intent surface). -->
+      <a href="/booky" style="display:block;margin:40px 0 24px;padding:20px 22px;background:linear-gradient(135deg,#3D0070 0%,#8400E7 100%);color:#fff;text-decoration:none;border-radius:14px;font-family:'Inter',sans-serif;box-shadow:0 6px 20px rgba(132,0,231,0.18);">
+        <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
+          <div style="font-size:34px;line-height:1;">🎮</div>
+          <div style="flex:1;min-width:200px;">
+            <div style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;margin-bottom:4px;">Play today's Booky</div>
+            <div style="font-size:0.95rem;opacity:0.92;line-height:1.45;">Guess today's romantasy in 6 tries. New book every day. Build your streak.</div>
+          </div>
+          <div style="font-size:1.4rem;line-height:1;opacity:0.85;">→</div>
+        </div>
+      </a>
+
+      <p style="margin-top:24px;color:#666;font-size:0.9rem;">Want personalised picks? Connect your Goodreads to filter out books you\'ve already read and get recommendations tuned to your taste.</p>
     `;
     } else {
       bodyHtml = `<p>Looking for books like <strong>${safeLabel}</strong>? Here are reader-recommended picks, curated from real Reddit threads, Goodreads ratings, and BookTok consensus. Each pick links to similar books across romantasy, romance, fantasy, and thrillers.</p>`;
@@ -245,7 +266,7 @@ function buildSeoBlock(meta) {
 }
 
 function jsonLd(meta) {
-  // CollectionPage with about reference — tells Google "this is a curated list
+  // CollectionPage with about reference, tells Google "this is a curated list
   // of recommendations related to <BOOK NAME>". Rich snippets eligible.
   const base = {
     '@context': 'https://schema.org',
@@ -276,16 +297,14 @@ function jsonLd(meta) {
           },
         })),
       };
-      if (data.faqs && data.faqs.length) {
-        base.hasPart = {
-          '@type': 'FAQPage',
-          mainEntity: data.faqs.map(f => ({
-            '@type': 'Question',
-            name: f.q,
-            acceptedAnswer: { '@type': 'Answer', text: f.a },
-          })),
-        };
-      }
+      base.hasPart = {
+        '@type': 'FAQPage',
+        mainEntity: [...(data.faqs || []), HOW_CHOSEN_FAQ].map(f => ({
+          '@type': 'Question',
+          name: f.q,
+          acceptedAnswer: { '@type': 'Answer', text: f.a },
+        })),
+      };
     }
   }
   return base;
@@ -320,7 +339,7 @@ export default async function middleware(request) {
     .replace(/<meta property="og:url"[^>]*>/, `<meta property="og:url" content="${c}">`)
     .replace(/<meta name="twitter:title"[^>]*>/, `<meta name="twitter:title" content="${t}">`)
     .replace(/<meta name="twitter:description"[^>]*>/, `<meta name="twitter:description" content="${d}">`)
-    // Replace the homepage canonical link (rather than appending — avoids
+    // Replace the homepage canonical link (rather than appending, avoids
     // duplicate canonicals which Google ignores or flags).
     .replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${c}">`);
 
