@@ -49,6 +49,25 @@ export const BOOKS_LIKE_RECS = {
     ],
   },
 
+  'a-court-of-mist-and-fury': {
+    sourceTitle: 'A Court of Mist and Fury',
+    sourceAuthor: 'Sarah J. Maas',
+    sourceAbout: "Ask r/Romantasy where the genre's obsession really starts and the answer is ACOMAF, book 2 of the ACOTAR series. It picks up with Feyre alive but coming apart at the seams, trapped by a bargain that keeps pulling her to the Night Court and the High Lord everyone warned her about. What unfolds is the healing arc, the found family, and the slowest of slow burns that readers credit with breaking the genre wide open. Rhysand is the love interest half of romantasy is still trying to recreate, the kind who treats the heroine like a partner instead of a prize. The consensus is that book 1 is the setup and this is the payoff, so push through ACOTAR for the book that turned a solid series into a phenomenon.",
+    recs: [
+      { title: 'From Blood and Ash', author: 'Jennifer L. Armentrout', why: 'Poppy is the Chosen, sheltered behind a veil and forbidden from human connection, and her guard Hawke is everything she shouldn\'t want. The other slow-burn-to-inferno everyone recommends in the same breath as ACOMAF: same fated-mates ache, same spice climb, same world-flipping reveal.' , isbn: '9781952457760' },
+      { title: 'The Serpent and the Wings of Night', author: 'Carissa Broadbent', why: 'Oraya, a human raised among vampires, enters a deadly trial and ends up allied with the morally grey rival she should kill. A love interest who respects her strength and a slow burn that pays off hard. The "I should hate you but we\'re in this together" tension ACOMAF fans live for.' , isbn: '9781728295336' },
+      { title: 'Fourth Wing', author: 'Rebecca Yarros', why: 'Violet is forced into a war college where dragons choose their riders and cadets die daily, and Xaden is the dangerous upperclassman who would burn the world down for her. If you loved Feyre finding her power beside a partner who never tries to shrink her, this hits the exact same note. Dragons, banter, found family.' , isbn: '9781649374042' },
+      { title: 'A Touch of Darkness', author: 'Scarlett St. Clair', why: 'Persephone, a goddess hiding among mortals with powers she can barely control, strikes a reckless bargain with Hades and tumbles into an obsession that remakes them both. Fated, morally grey, and steamy, the dark-bargain energy ACOMAF readers crave.' , isbn: '9781949673296' },
+      { title: 'The Bridge Kingdom', author: 'Danielle L. Jensen', why: 'Lara is trained her whole life to destroy the Bridge Kingdom from within, then marries its king and finds he isn\'t what she was told. Enemies-to-lovers with real political stakes and a partnership of equals, the slow-burn "I should hate you" tension ACOMAF readers chase.' , isbn: '9781734506204' },
+      { title: 'House of Earth and Blood', author: 'Sarah J. Maas', why: 'Same author going grown-up and modern: a murder mystery in a neon city, a slow-burn partnership, and a found-family gut-punch. If it was the Inner Circle you fell for, Bryce and her crew are waiting.' , isbn: '9781635574043' },
+    ],
+    faqs: [
+      { q: 'Do I have to read ACOTAR before A Court of Mist and Fury?', a: 'Yes, ACOMAF is book 2 and picks up directly after ACOTAR. Read book 1 first even though most readers agree ACOMAF is where the series truly takes off.' },
+      { q: 'Is ACOMAF better than ACOTAR?', a: 'The r/Romantasy consensus is a resounding yes. ACOMAF introduces the Night Court, the found family, and the slow-burn romance readers credit with making the whole series a phenomenon.' },
+      { q: 'What should I read after A Court of Silver Flames?', a: 'A Court of Silver Flames (book 4, Nesta\'s story) is the next ACOTAR book. For a non-Maas readalike, From Blood and Ash is the consensus pick.' },
+    ],
+  },
+
   'it-ends-with-us': {
     sourceTitle: 'It Ends With Us',
     sourceAuthor: 'Colleen Hoover',

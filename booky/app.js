@@ -13,6 +13,7 @@ const SITE_URL = '90books.com/booky';
 const CURATED_SLUGS = new Set([
   'fourth-wing',
   'a-court-of-thorns-and-roses',
+  'a-court-of-mist-and-fury',
   'iron-flame',
   'from-blood-and-ash',
   'the-cruel-prince',
