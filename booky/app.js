@@ -318,14 +318,14 @@ const toast = $('reminder-toast');
 const email = (input.value || '').trim();
 
 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-toast.textContent = 'Please enter a valid email.';
+toast.textContent = 'hmm, that email looks off. mind checking it?';
 toast.className = 'reminder-toast reminder-error';
 toast.hidden = false;
 return;
 }
 
 btn.disabled = true;
-btn.textContent = 'Saving…';
+btn.textContent = 'saving…';
 
 try {
 const res = await fetch('/api/booky-subscribe', {
@@ -344,20 +344,22 @@ posthog.capture('email_signup_completed', {
 source: 'booky_endscreen',
 word_number_at_signup: DAY,
 });
-toast.textContent = "✓ You're in. We'll nudge you every evening before your streak resets.";
+toast.textContent = "you're in. we'll ping you the second tomorrow's word is live.";
 toast.className = 'reminder-toast reminder-success';
 toast.hidden = false;
-// Hide the form after success, leave only the toast visible
+// Stop the attention pulse and collapse the form, leaving only the toast
+$('reminder-form').classList.remove('reminder-highlight');
 setTimeout(() => {
 $('reminder-form').querySelector('.reminder-row').style.display = 'none';
 $('reminder-form').querySelector('.reminder-pitch').style.display = 'none';
+$('reminder-form').querySelector('.reminder-headline').style.display = 'none';
 }, 600);
 } catch {
-toast.textContent = "Couldn't save right now. Try again later?";
+toast.textContent = "couldn't save right now. try again in a sec?";
 toast.className = 'reminder-toast reminder-error';
 toast.hidden = false;
 btn.disabled = false;
-btn.textContent = 'Remind me';
+btn.textContent = 'remind me';
 }
 }
 
@@ -556,11 +558,22 @@ if (bookRec) {
 
 // Reminder form — only show if user hasn't already subscribed
 const subscribed = localStorage.getItem('90books_booky_reminder_sub');
-$('reminder-form').style.display = subscribed ? 'none' : 'block';
+const reminderForm = $('reminder-form');
+reminderForm.style.display = subscribed ? 'none' : 'block';
 $('reminder-active').hidden = !subscribed;
 
 $('end-modal').showModal();
 tickCountdown();
+
+// After the win celebration settles, gently pulse + scroll the email card
+// into view once (no popup). Peak emotional moment = best time to ask.
+if (won && !subscribed) {
+  reminderForm.classList.remove('reminder-highlight');
+  setTimeout(() => {
+    reminderForm.classList.add('reminder-highlight');
+    reminderForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 1400);
+}
 if (!window.__countdownTicker) {
 window.__countdownTicker = setInterval(tickCountdown, 1000);
 }

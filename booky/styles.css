@@ -543,11 +543,24 @@ body {
   margin-top: 1px;
 }
 
-/* Email reminder form */
-.reminder-form {
-  margin-top: 10px;
-  padding-top: 8px;
-  border-top: 1px solid var(--border);
+/* Email reminder card — its own bordered card, like the streak card */
+.reminder-card {
+  margin-top: 12px;
+  padding: 14px 14px 13px;
+  border: 1px solid var(--streak-border);
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--streak-bg-from), var(--streak-bg-to));
+}
+/* One-time attention pulse fired after the win celebration settles */
+.reminder-card.reminder-highlight {
+  animation: reminderPulse 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) 2;
+}
+@keyframes reminderPulse {
+  0%, 100% { box-shadow: 0 0 0 0 rgba(147, 51, 217, 0); border-color: var(--streak-border); }
+  50%      { box-shadow: 0 0 0 4px rgba(147, 51, 217, 0.22); border-color: var(--accent); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .reminder-card.reminder-highlight { animation: none; }
 }
 .reminder-active {
   margin: 10px 0 0;
@@ -557,12 +570,21 @@ body {
   color: var(--ink-dim);
   text-align: center;
 }
+.reminder-headline {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--accent-2);
+  margin: 0 0 4px;
+  text-align: center;
+  letter-spacing: 0.3px;
+}
 .reminder-pitch {
   font-size: 12px;
   color: var(--ink-dim);
-  margin: 0 0 6px;
+  margin: 0 0 10px;
   text-align: center;
-  line-height: 1.35;
+  line-height: 1.4;
 }
 .reminder-row {
   display: grid;
