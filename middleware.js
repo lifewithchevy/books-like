@@ -359,7 +359,10 @@ export default async function middleware(request) {
     status: 200,
     headers: {
       'content-type': 'text/html; charset=utf-8',
-      'cache-control': 'public, max-age=300, s-maxage=3600',
+      // Browser revalidates every load; CDN serves instantly but refreshes
+      // within 60s. Prevents a just-deployed/curated page from serving a stale
+      // SPA shell (which would fall back to the homepage under the right URL).
+      'cache-control': 'public, max-age=0, must-revalidate, s-maxage=60, stale-while-revalidate=86400',
       'x-edge-middleware': '90books-seo',
     },
   });
