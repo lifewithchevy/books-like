@@ -40,6 +40,11 @@
       "permanent": true
     },
     {
+      "source": "/books-like/crescent-city",
+      "destination": "/books-like/house-of-earth-and-blood",
+      "permanent": true
+    },
+    {
       "source": "/daily",
       "destination": "/booky",
       "permanent": true
@@ -63,6 +68,11 @@
       "source": "/books-like/agggtm",
       "destination": "/books-like/a-good-girls-guide-to-murder",
       "permanent": true
+    },
+    {
+      "source": "/books-like/powerless",
+      "destination": "/",
+      "permanent": false
     }
   ],
   "rewrites": [
@@ -82,7 +92,7 @@
   "crons": [
     {
       "path": "/api/booky-send",
-      "schedule": "0 0 * * *"
+      "schedule": "0 23 * * *"
     }
   ]
 }
