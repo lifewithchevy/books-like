@@ -492,7 +492,6 @@ $('celebration').classList.add('lost');
 }
 
 $('end-word').textContent = ANSWER;
-$('share-text').textContent = buildShareString();
 
 // Mini stats row
 $('end-stat-streak').textContent = STATS.currentStreak;
@@ -637,7 +636,16 @@ guesses_used: STATE.guesses.length,
 streak: STATS.currentStreak,
 });
 const btn = $('share-btn');
-const text = $('share-text').textContent;
+const text = buildShareString();
+// Mobile: native share sheet (best for virality). Desktop: copy to clipboard.
+if (navigator.share && /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+try {
+await navigator.share({ text });
+return;
+} catch {
+// user cancelled or share failed — fall through to clipboard
+}
+}
 try {
 await navigator.clipboard.writeText(text);
 btn.textContent = 'Copied ✓';
@@ -647,11 +655,8 @@ btn.textContent = 'Share result';
 btn.style.background = '';
 }, 2000);
 } catch {
-const range = document.createRange();
-range.selectNodeContents($('share-text'));
-const sel = window.getSelection();
-sel.removeAllRanges();
-sel.addRange(range);
+// Last resort: surface the text so the user can copy it manually
+window.prompt('Copy your result:', text);
 }
 }
 
