@@ -344,7 +344,7 @@ posthog.capture('email_signup_completed', {
 source: 'booky_endscreen',
 word_number_at_signup: DAY,
 });
-toast.textContent = "you're in. we'll ping you the second tomorrow's word is live.";
+toast.textContent = "you're in. we'll email you a reminder for tomorrow's word.";
 toast.className = 'reminder-toast reminder-success';
 toast.hidden = false;
 // Stop the attention pulse and collapse the form, leaving only the toast
