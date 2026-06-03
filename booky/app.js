@@ -642,11 +642,14 @@ won: STATE.status === 'won',
 guesses_used: STATE.guesses.length,
 streak: STATS.currentStreak,
 };
-// Wordle behavior: native share sheet when available (one tap to send).
+// Wordle behavior: native share sheet on TOUCH devices only (one tap to
+// send). Desktop browsers also expose navigator.share, but the OS share
+// sheet there is clunky and unexpected, so desktop copies to clipboard
+// like Wordle does. Pointer check is more reliable than UA-sniffing.
 // Pass { text } ONLY — adding a url: field makes some targets (iMessage)
-// drop the emoji grid and share just the link, killing the share mechanic.
-// The site URL already lives inside the text.
-if (navigator.share) {
+// drop the emoji grid and share just the link. The URL lives in the text.
+const isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
+if (navigator.share && isTouch) {
 try {
 await navigator.share({ text });
 showShareToast("shared! thanks for spreading the word 💜");
