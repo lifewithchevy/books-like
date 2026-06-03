@@ -10,16 +10,22 @@ const SITE_URL = '90books.com/booky';
 // Slugs that have fully curated recommendation pages on 90books.com.
 // Only show a clickable link on the end screen for these — the rest show
 // the book title as plain text (still sparks curiosity, no broken landing).
+// Must exactly match the books that have a hand-curated /books-like/ page in
+// index.html searchData. If a daily word points to a book NOT in this set, the
+// end-screen shows the title/author as plain text (no link), never a thin page.
+// Keep this in sync whenever a new page is curated just-in-time for a daily word.
 const CURATED_SLUGS = new Set([
-  'fourth-wing',
-  'a-court-of-thorns-and-roses',
   'a-court-of-mist-and-fury',
-  'iron-flame',
+  'a-court-of-thorns-and-roses',
+  'fourth-wing',
   'from-blood-and-ash',
-  'the-cruel-prince',
-  'six-of-crows',
+  'gild',
+  'house-of-earth-and-blood',
   'quicksilver',
   'the-bridge-kingdom',
+  'the-cruel-prince',
+  'the-serpent-and-the-wings-of-night',
+  'throne-of-glass',
 ]);
 
 let DATA = null; // { epoch, queue }
@@ -629,36 +635,51 @@ ul.appendChild(li);
 }
 
 async function onShare() {
-// PostHog: share clicked
-posthog.capture('booky_share_clicked', {
+const text = buildShareString();
+const props = {
 word_number: DAY,
 won: STATE.status === 'won',
 guesses_used: STATE.guesses.length,
 streak: STATS.currentStreak,
-});
-const btn = $('share-btn');
-const text = buildShareString();
-// Mobile: native share sheet (best for virality). Desktop: copy to clipboard.
-if (navigator.share && /Mobi|Android|iPhone|iPad|iPod/i.test(navigator.userAgent)) {
+};
+// Wordle behavior: native share sheet when available (one tap to send).
+// Pass { text } ONLY — adding a url: field makes some targets (iMessage)
+// drop the emoji grid and share just the link, killing the share mechanic.
+// The site URL already lives inside the text.
+if (navigator.share) {
 try {
 await navigator.share({ text });
+showShareToast("shared! thanks for spreading the word 💜");
+posthog.capture('booky_share_clicked', { ...props, method: 'native' });
 return;
 } catch {
 // user cancelled or share failed — fall through to clipboard
 }
 }
+// Desktop / no Share API: copy to clipboard
 try {
 await navigator.clipboard.writeText(text);
-btn.textContent = 'Copied ✓';
-btn.style.background = 'linear-gradient(135deg,#7c3aed,#5b21b6)';
-setTimeout(() => {
-btn.textContent = 'Share result';
-btn.style.background = '';
-}, 2000);
+showShareToast("copied! paste it anywhere 📋");
+posthog.capture('booky_share_clicked', { ...props, method: 'clipboard' });
 } catch {
 // Last resort: surface the text so the user can copy it manually
 window.prompt('Copy your result:', text);
 }
+}
+
+function showShareToast(msg) {
+const t = $('share-toast');
+if (!t) return;
+t.textContent = msg;
+t.hidden = false;
+void t.offsetWidth; // force reflow so the transition plays on re-trigger
+t.classList.add('show');
+clearTimeout(t._timer);
+t._timer = setTimeout(() => {
+t.classList.remove('show');
+// let the fade-out finish before removing from layout
+setTimeout(() => { t.hidden = true; }, 260);
+}, 2500);
 }
 
 function tickCountdown() {

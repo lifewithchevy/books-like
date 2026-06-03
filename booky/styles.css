@@ -692,6 +692,25 @@ body {
   color: var(--accent-2);
   font-size: 13px;
 }
+/* Share confirmation toast — subtle fade + rise (no display rule so the
+   hidden attribute still removes it from layout when not showing). */
+.share-toast {
+  text-align: center;
+  margin-top: 10px;
+  color: var(--accent-2);
+  font-size: 13px;
+  font-weight: 600;
+  opacity: 0;
+  transform: translateY(6px);
+  transition: opacity 0.25s ease, transform 0.25s ease;
+}
+.share-toast.show {
+  opacity: 1;
+  transform: translateY(0);
+}
+@media (prefers-reduced-motion: reduce) {
+  .share-toast { transition: none; }
+}
 .next {
   text-align: center;
   color: var(--ink-faint);
