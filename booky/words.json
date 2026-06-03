@@ -22,7 +22,7 @@
     "VENOM",
     "ROYAL",
     "MANOR",
-    "BLAZE",
+    "CARDS",
     "DREAM",
     "WORLD",
     "STEEL",
@@ -71,7 +71,7 @@
     "GLASS",
     "ALTAR",
     "MERCY",
-    "CARDS"
+    "BLAZE"
   ],
   "wordBooks": {
     "COURT": { "slug": "a-court-of-thorns-and-roses", "title": "A Court of Thorns and Roses", "author": "Sarah J. Maas", "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg" },
