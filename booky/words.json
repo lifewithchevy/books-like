@@ -70,7 +70,8 @@
     "QUEEN",
     "GLASS",
     "ALTAR",
-    "MERCY"
+    "MERCY",
+    "CARDS"
   ],
   "wordBooks": {
     "COURT": { "slug": "a-court-of-thorns-and-roses", "title": "A Court of Thorns and Roses", "author": "Sarah J. Maas", "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg" },
@@ -98,6 +99,7 @@
     "OATHS": { "slug": "from-blood-and-ash", "title": "From Blood and Ash", "author": "Jennifer L. Armentrout", "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg" },
     "SWORD": { "slug": "throne-of-glass", "title": "Throne of Glass", "author": "Sarah J. Maas", "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg" },
     "MERCY": { "slug": "the-serpent-and-the-wings-of-night", "title": "The Serpent and the Wings of Night", "author": "Carissa Broadbent", "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg" },
+    "CARDS": { "slug": "one-dark-window", "title": "One Dark Window", "author": "Rachel Gillig", "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg" },
     "VENOM": { "slug": "the-serpent-and-the-wings-of-night", "title": "The Serpent and the Wings of Night", "author": "Carissa Broadbent", "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg" },
     "RUNES": { "slug": "quicksilver", "title": "Quicksilver", "author": "Callie Hart", "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg" },
     "TEETH": { "slug": "the-serpent-and-the-wings-of-night", "title": "The Serpent and the Wings of Night", "author": "Carissa Broadbent", "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg" },
