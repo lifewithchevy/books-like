@@ -21,6 +21,7 @@ const CURATED_SLUGS = new Set([
   'from-blood-and-ash',
   'gild',
   'house-of-earth-and-blood',
+  'one-dark-window',
   'quicksilver',
   'the-bridge-kingdom',
   'the-cruel-prince',
