@@ -37,7 +37,8 @@ module.exports = async (req, res) => {
     return;
   }
 
-  const playUrl = 'https://90books.com/booky';
+  // UTM-tagged so PostHog attributes return plays to the daily reminder email.
+  const playUrl = 'https://90books.com/booky?utm_source=reminder_email&utm_medium=email&utm_campaign=daily_reminder';
   const today   = new Date().toLocaleDateString('en-US', {
     weekday: 'long', month: 'long', day: 'numeric',
   });
