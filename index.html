@@ -13277,6 +13277,14 @@
         const user = { goodreadsId: userId, name, connectedAt: Date.now() };
         saveUser(user);
 
+        // PostHog: a successful Goodreads connect. source_page tells us where the
+        // integration actually gets used (lets us judge if it's worth maintaining).
+        try {
+          if (typeof posthog !== 'undefined' && posthog.capture) {
+            posthog.capture('goodreads_connected', { source_page: window.location.pathname || '/' });
+          }
+        } catch (e) { /* analytics never blocks the connect flow */ }
+
         // Show success
         document.getElementById('connectStep2').style.display = 'none';
         document.getElementById('connectStep3').style.display = '';
