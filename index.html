@@ -3971,6 +3971,13 @@
         return;
       }
 
+      // Hardcoded override wins, skip the rate-limited OL/Google chain entirely
+      const _ovKey = title.toLowerCase().replace(/['']/g, "'");
+      if (typeof COVER_OVERRIDES !== 'undefined' && COVER_OVERRIDES[_ovKey]) {
+        _applyCoverToEl(key, imgEl, COVER_OVERRIDES[_ovKey]);
+        return;
+      }
+
       coverLoadingCount++;
 
       const titleKey = title.toLowerCase().replace(/['']/g, "'");
@@ -7515,8 +7522,19 @@
       '9781649376291', // Quicksilver (Callie Hart), OL returns Neal Stephenson's 2003 sci-fi
     ]);
 
+    // Explicit cover URLs for titles the OpenLibrary/Google Books chain can't resolve
+    // reliably (OL lacks the edition or returns the wrong book, Google Books gets
+    // rate-limited). Same canonical covers the daily Booky game uses (booky/books.json
+    // + words.json), so the cover matches across the whole site.
+    const COVER_OVERRIDES = {
+      'the serpent and the wings of night': 'https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg',
+      'the serpent & the wings of night':   'https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg',
+    };
+
     function getBookCoverUrl(key) {
-      const isbn = BOOK_ISBN[key.toLowerCase()];
+      const k = key.toLowerCase();
+      if (COVER_OVERRIDES[k]) return COVER_OVERRIDES[k];
+      const isbn = BOOK_ISBN[k];
       if (!isbn) return null;
       if (BAD_ISBN_COVERS.has(isbn)) return null; // force title-search fallback
       // ?default=false → 404 (not a placeholder image) when OL has no cover, so the
