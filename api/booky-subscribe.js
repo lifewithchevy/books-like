@@ -93,7 +93,7 @@ reply "hi" or drag this to Primary so tomorrow's word doesn't get buried in prom
 olga from booky
 
 ---
-you signed up at 90books.com/booky · reply to unsubscribe`,
+Booky by 90books · you signed up at 90books.com/booky · reply to unsubscribe`,
                 html: `<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -122,7 +122,7 @@ you signed up at 90books.com/booky · reply to unsubscribe`,
   <p>reply "hi" or drag this to Primary so tomorrow's word doesn't get buried in promos.</p>
   <p>olga from booky</p>
   <p class="footer">
-    you signed up at 90books.com/booky<br>
+    Booky by 90books · you signed up at 90books.com/booky<br>
     <a href="mailto:hello@90books.com?subject=unsubscribe">unsubscribe</a>
   </p>
 </div>

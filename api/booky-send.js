@@ -148,7 +148,7 @@ function buildHtml({ subject, headline, subline, today, playUrl }) {
         </td></tr>
         <tr><td align="center" style="padding-top:32px;">
           <p style="margin:0;font-size:11px;color:#a587a9;line-height:1.5;">
-            You're getting this because you signed up for daily reminders at <a href="${playUrl}" style="color:#c8398f;text-decoration:none;">90books.com/booky</a>.<br>
+            Booky by 90books · you signed up for daily reminders at <a href="${playUrl}" style="color:#c8398f;text-decoration:none;">90books.com/booky</a>.<br>
             <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#a587a9;text-decoration:underline;">Unsubscribe</a>
           </p>
         </td></tr>
