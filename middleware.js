@@ -237,7 +237,7 @@ function buildSeoBlock(meta) {
         <div style="display:flex;align-items:center;gap:14px;flex-wrap:wrap;">
           <div style="font-size:34px;line-height:1;">🎮</div>
           <div style="flex:1;min-width:200px;">
-            <div style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;margin-bottom:4px;">Play today's Booky</div>
+            <div style="font-family:'Playfair Display',serif;font-size:1.25rem;font-weight:700;margin-bottom:4px;">Play Booky, the daily romantasy word game</div>
             <div style="font-size:0.95rem;opacity:0.92;line-height:1.45;">Guess today's romantasy in 6 tries. New book every day. Build your streak.</div>
           </div>
           <div style="font-size:1.4rem;line-height:1;opacity:0.85;">→</div>
