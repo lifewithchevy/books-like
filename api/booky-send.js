@@ -141,6 +141,11 @@ function buildHtml({ subject, headline, subline, today, playUrl }) {
           <p style="margin:0 0 24px;font-size:14px;line-height:1.5;color:#6a4a6c;">${subline}</p>
           <a href="${playUrl}" style="display:inline-block;background:linear-gradient(135deg,#c8398f,#9a2670);color:#ffffff;text-decoration:none;font-weight:600;padding:13px 28px;border-radius:10px;font-size:15px;">Play today's Booky →</a>
         </td></tr>
+        <tr><td align="center" style="padding-top:24px;">
+          <p style="margin:0;font-size:13px;line-height:1.5;color:#6a4a6c;">
+            Know a reader who'd love this? Send them <a href="https://90books.com/booky?utm_source=reminder_email&utm_medium=email&utm_campaign=friend_referral" style="color:#c8398f;text-decoration:none;">90books.com/booky</a>
+          </p>
+        </td></tr>
         <tr><td align="center" style="padding-top:32px;">
           <p style="margin:0;font-size:11px;color:#a587a9;line-height:1.5;">
             You're getting this because you signed up for daily reminders at <a href="${playUrl}" style="color:#c8398f;text-decoration:none;">90books.com/booky</a>.<br>
