@@ -3366,8 +3366,7 @@
           { title: "Serpent & Dove", author: "Shelby Mahurin", rating: "4.0/5", tag: "Romantasy", tagClass: "tag-romantasy", match: "86%", pitch: "A witch forced to marry the witch hunter who'd light her pyre, both keeping secrets that could get the other killed. Same hidden-magic, sleeping-with-the-enemy tension as One Dark Window, with French-flavored gothic and real banter." },
           { title: "Gild", author: "Raven Kennedy", rating: "4.0/5", tag: "Romantasy", tagClass: "tag-romantasy", match: "84%", pitch: "Lush and dark, a heroine trapped in a glittering nightmare. Same gothic-fairytale unease, dialed toward dark romance." },
           { title: "A Touch of Darkness", author: "Scarlett St. Clair", rating: "3.9/5", tag: "Romantasy", tagClass: "tag-romantasy", match: "82%", pitch: "If it was the forbidden, dangerous pull that grabbed you, the Hades-and-Persephone bargain here delivers. Darker romance, higher heat." }
-        ],
-        wildcard: { title: "Divine Rivals", author: "Rebecca Ross", rating: "4.2/5", tags: [{label:"Romantasy",cls:"tag-romantasy"}], pitch: "For the gorgeous-prose, slow-burn side of why you love One Dark Window. Rival writers trading letters through a little magic while a war between gods rages, enemies-to-lovers that aches. More atmospheric than gothic, but the writing is the draw." }
+        ]
       },
       "evelyn hugo": {
         query: "The Seven Husbands of Evelyn Hugo",
@@ -6847,7 +6846,7 @@
     function renderSearchResults(data, userQuery, dataKey) {
       const src = data.source;
       const wc = data.wildcard;
-      wc.wildcard = true;
+      if (wc) wc.wildcard = true; // wildcard is optional, a curated entry can omit it
 
       // Canonical source title, use the curated title, not the user's typed query,
       // so the hero reads "Books Like A Court of Thorns and Roses" not "Books Like acotar".
@@ -6858,7 +6857,7 @@
       const filterBook = b => !isAlreadyRead(b.title) && !b.title.toLowerCase().includes(searchedLower) && !searchedLower.includes(b.title.toLowerCase());
       let filteredClosest = data.closest.filter(filterBook);
       const filteredSameEnergy = data.sameEnergy.filter(filterBook);
-      const showWildcard = filterBook(wc);
+      const showWildcard = wc ? filterBook(wc) : false;
 
       // ── Chip-driven recommendation injection ──
       // Skipped for hand-curated entries (e.g. From Blood and Ash) so the exact
