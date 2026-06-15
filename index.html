@@ -6211,6 +6211,22 @@
 
     // Render the meta-chip strip for a book card. Uses curated DB if available,
     // otherwise falls back to heuristic chips derived from existing book data.
+    // Spice chip, rendered for EVERY book so the level is always visible, even
+    // when it's barely any. Low tiers use the cream icon, hotter tiers the pepper;
+    // the colour (blue, pink, red) encodes the level. Returns '' for unknown values.
+    function spiceChip(spice) {
+      const MAP = {
+        'closed door': ['spice-sweet',    '&#127846;', 'Closed door'],
+        'sweet':       ['spice-sweet',    '&#127846;', 'Sweet'],
+        'spicy':       ['spice-steamy',   '&#127798;', 'Spicy'],
+        'steamy':      ['spice-steamy',   '&#127798;', 'Steamy'],
+        'very spicy':  ['spice-explicit', '&#127798;', 'Very spicy'],
+        'explicit':    ['spice-explicit', '&#127798;', 'Explicit'],
+      };
+      const m = MAP[(spice || '').toLowerCase()];
+      return m ? `<span class="meta-chip ${m[0]}">${m[1]} ${m[2]}</span>` : '';
+    }
+
     function renderMetaChips(book) {
       const meta = getBookMeta(book && book.title);
       if (!meta) return deriveMetaChips(book);
@@ -6229,9 +6245,7 @@
       if (meta.pace === 'slow') chips.push(`<span class="meta-chip pace-slow">&#128012; Slow-paced</span>`);
       if (meta.pace === 'fast') chips.push(`<span class="meta-chip pace-fast">&#128640; Fast-paced</span>`);
       // ── Spice ──
-      if (meta.spice === 'sweet')    chips.push(`<span class="meta-chip spice-sweet">&#127846; Sweet</span>`);
-      if (meta.spice === 'steamy')   chips.push(`<span class="meta-chip spice-steamy">&#127798; Steamy</span>`);
-      if (meta.spice === 'explicit') chips.push(`<span class="meta-chip spice-explicit">&#127798; Explicit</span>`);
+      { const _sc = spiceChip(meta.spice); if (_sc) chips.push(_sc); }
       // ── Cliffhanger ──
       if (meta.cliffhanger) chips.push(`<span class="meta-chip warn">&#9888;&#65039; Cliffhanger</span>`);
       // ── Moods (pink, up to 2) ──
@@ -6933,8 +6947,7 @@
       if (meta.pages) chips.push(`<span class="meta-chip">📖 ${meta.pages} pp</span>`);
       if (meta.pace === 'fast') chips.push('<span class="meta-chip pace-fast">🚀 Fast-paced</span>');
       if (meta.pace === 'slow') chips.push('<span class="meta-chip pace-slow">🐢 Slow-paced</span>');
-      if (meta.spice === 'explicit') chips.push('<span class="meta-chip spice-explicit">🌶 Explicit</span>');
-      if (meta.spice === 'steamy')   chips.push('<span class="meta-chip spice-steamy">🌶 Steamy</span>');
+      { const _sc = spiceChip(meta.spice); if (_sc) chips.push(_sc); }
       if (meta.cliffhanger) chips.push('<span class="meta-chip warn">⚠️ Cliffhanger</span>');
       if (Array.isArray(meta.moods))  meta.moods.slice(0, 2).forEach(m => chips.push(`<span class="meta-chip mood">${m}</span>`));
       if (Array.isArray(meta.tropes)) meta.tropes.slice(0, 2).forEach(t => chips.push(`<span class="meta-chip trope">${t}</span>`));
@@ -12251,8 +12264,7 @@
       if (meta.pages) chips.push(`<span class="meta-chip">📖 ${meta.pages} pp</span>`);
       if (meta.pace === 'fast') chips.push('<span class="meta-chip pace-fast">🚀 Fast-paced</span>');
       if (meta.pace === 'slow') chips.push('<span class="meta-chip pace-slow">🐢 Slow-paced</span>');
-      if (meta.spice === 'explicit') chips.push('<span class="meta-chip spice-explicit">🌶 Explicit</span>');
-      if (meta.spice === 'steamy')   chips.push('<span class="meta-chip spice-steamy">🌶 Steamy</span>');
+      { const _sc = spiceChip(meta.spice); if (_sc) chips.push(_sc); }
       if (meta.cliffhanger) chips.push('<span class="meta-chip warn">⚠️ Cliffhanger</span>');
       if (Array.isArray(meta.moods)) meta.moods.slice(0, 2).forEach(m => chips.push(`<span class="meta-chip mood">${m}</span>`));
       if (Array.isArray(meta.tropes)) meta.tropes.slice(0, 2).forEach(t => chips.push(`<span class="meta-chip trope">${t}</span>`));
