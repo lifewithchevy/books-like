@@ -26,12 +26,12 @@
     "DREAM",
     "WORLD",
     "STEEL",
-    "STORM",
-    "KNIFE",
-    "CROWS",
-    "BONDS",
-    "ANGST",
-    "SWOON",
+    "CADET",
+    "POPPY",
+    "QUEEN",
+    "AELIN",
+    "HUMAN",
+    "OTTER",
     "GRACE",
     "FAERY",
     "MAGIC",
@@ -67,7 +67,7 @@
     "YIELD",
     "SIREN",
     "FLESH",
-    "QUEEN",
+    "CROWS",
     "GLASS",
     "ALTAR",
     "MERCY",
@@ -89,7 +89,7 @@
     "GHOUL",
     "HEIST",
     "PRIDE",
-    "HUMAN",
+    "ADORE",
     "MOONS",
     "LANCE",
     "VOWED",
@@ -129,7 +129,7 @@
     "REGAL",
     "HEXED",
     "CORAL",
-    "CADET",
+    "STORM",
     "GLAZE",
     "FLOOD",
     "GLOOM",
@@ -339,12 +339,6 @@
       "author": "Holly Black",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
     },
-    "KNIFE": {
-      "slug": "throne-of-glass",
-      "title": "Throne of Glass",
-      "author": "Sarah J. Maas",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
-    },
     "MAGIC": {
       "slug": "quicksilver",
       "title": "Quicksilver",
@@ -477,12 +471,6 @@
       "author": "Callie Hart",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
     },
-    "BONDS": {
-      "slug": "from-blood-and-ash",
-      "title": "From Blood and Ash",
-      "author": "Jennifer L. Armentrout",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
-    },
     "EARTH": {
       "slug": "house-of-earth-and-blood",
       "title": "House of Earth and Blood",
@@ -566,18 +554,6 @@
       "title": "From Blood and Ash",
       "author": "Jennifer L. Armentrout",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
-    },
-    "SWOON": {
-      "slug": "assistant-to-the-villain",
-      "title": "Assistant to the Villain",
-      "author": "Hannah Nicole Maehrer",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649377118.01.LZZZZZZZ.jpg"
-    },
-    "ANGST": {
-      "slug": "a-court-of-mist-and-fury",
-      "title": "A Court of Mist and Fury",
-      "author": "Sarah J. Maas",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
     },
     "STORM": {
       "slug": "fourth-wing",
@@ -1640,6 +1616,30 @@
       "title": "Throne of Glass",
       "author": "Sarah J. Maas",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "POPPY": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "AELIN": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "OTTER": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+    },
+    "ADORE": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
     }
   }
 }
