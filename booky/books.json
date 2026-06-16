@@ -1,0 +1,558 @@
+{
+  "epoch": "2026-05-23",
+  "queue": [
+    {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "series": "The Empyrean",
+      "aliases": [
+        "iron flame",
+        "the empyrean 2",
+        "empyrean book 2"
+      ],
+      "clues": {
+        "trope": "Enemies-to-lovers with dragons and military academy stakes.",
+        "spice": 4,
+        "year": 2023,
+        "quotes": {
+          "hard": {
+            "text": "I think I liked you better before you decided that feelings were something we need to discuss.",
+            "likes": 195
+          },
+          "medium": {
+            "text": "Because love, at its root, is hope. Hope for tomorrow. Hope for what could be.",
+            "likes": 509
+          },
+          "easy": {
+            "text": "My house. My chair. My woman.",
+            "likes": 822
+          }
+        },
+        "tropeTwo": "Bonded dragons · forbidden love · secret rebellion brewing inside the war college."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "iron-flame",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/1649374178?tag=YOURTAG-20",
+        "bookshop": "https://bookshop.org/p/books/iron-flame-rebecca-yarros/19825396"
+      }
+    },
+    {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "series": "A Court of Thorns and Roses",
+      "aliases": [
+        "a court of mist and fury",
+        "acomaf",
+        "acotar 2",
+        "court of mist and fury"
+      ],
+      "clues": {
+        "trope": "Fated mates, found family, slow-burn second-chance romance set across seven fae courts.",
+        "spice": 4,
+        "year": 2016,
+        "quotes": {
+          "hard": {
+            "text": "There are good days and hard days for me — even now. Don't let the hard days win.",
+            "likes": 3703
+          },
+          "medium": {
+            "text": "I am broken and healing, but every piece of my heart belongs to you.",
+            "likes": 2604
+          },
+          "easy": {
+            "text": "To the stars who listen — and the dreams that are answered.",
+            "likes": 4906
+          }
+        },
+        "tropeTwo": "Wings made of starlight · Inner Circle found family · slow-burn touch starvation."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "a-court-of-thorns-and-roses",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/1635575583?tag=YOURTAG-20",
+        "bookshop": "https://bookshop.org/p/books/a-court-of-mist-and-fury-sarah-j-maas/6601985"
+      }
+    },
+    {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "series": "The Fae & Alchemy",
+      "aliases": [
+        "quicksilver",
+        "quicksilver callie hart"
+      ],
+      "clues": {
+        "trope": "Human alchemist abducted to a frozen fae realm by a brooding warrior king.",
+        "spice": 5,
+        "year": 2024,
+        "quotes": {
+          "hard": {
+            "text": "For those who live their nightmares, so that others may have their dreams.",
+            "likes": 106
+          },
+          "medium": {
+            "text": "I don't want bright and happy. I want real.",
+            "likes": 111
+          },
+          "easy": {
+            "text": "You should call her Majesty.",
+            "likes": 227
+          }
+        },
+        "tropeTwo": "Bonded across realms · frozen mountain kingdom · alchemy that bends metal."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "quicksilver",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/1538774194?tag=YOURTAG-20",
+        "bookshop": "[TODO: verify bookshop link]"
+      }
+    },
+    {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "series": "The Empyrean",
+      "aliases": [
+        "fourth wing",
+        "the empyrean 1",
+        "empyrean book 1"
+      ],
+      "clues": {
+        "trope": "Enemies-to-lovers war college where students bond dragons — or die trying.",
+        "spice": 4,
+        "year": 2023,
+        "quotes": {
+          "hard": {
+            "text": "Lies are comforting. Truth is painful.",
+            "likes": 747
+          },
+          "medium": {
+            "text": "Hope is a fickle, dangerous thing. It steals your focus and aims it toward possibilities instead of probabilities.",
+            "likes": 986
+          },
+          "easy": {
+            "text": "A dragon without its rider is a tragedy. A rider without their dragon is dead.",
+            "likes": 2016
+          }
+        },
+        "tropeTwo": "Dragons who choose · grumpy/sunshine adjacent · death-or-glory parapet of doom."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "fourth-wing",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/1649374046?tag=YOURTAG-20",
+        "bookshop": "[TODO: verify bookshop link]"
+      }
+    },
+    {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "series": "A Court of Thorns and Roses",
+      "aliases": [
+        "a court of thorns and roses",
+        "acotar",
+        "acotar 1",
+        "court of thorns and roses"
+      ],
+      "clues": {
+        "trope": "Beauty-and-the-Beast retelling with high fae courts and a deadly bargain.",
+        "spice": 3,
+        "year": 2015,
+        "quotes": {
+          "hard": {
+            "text": "I was as unburdened as a piece of dandelion fluff, and he was the wind that stirred me about the world.",
+            "likes": 635
+          },
+          "medium": {
+            "text": "I love you, he whispered, and kissed my brow. Thorns and all.",
+            "likes": 1329
+          },
+          "easy": {
+            "text": "Don't feel bad for one moment about doing what brings you joy.",
+            "likes": 3853
+          }
+        },
+        "tropeTwo": "Masked High Lord · mortal-to-fae transformation · a curse that breaks only at love."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "a-court-of-thorns-and-roses",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/1635575567?tag=YOURTAG-20",
+        "bookshop": "[TODO: verify bookshop link]"
+      }
+    },
+    {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "series": "The Folk of the Air",
+      "aliases": [
+        "the cruel prince",
+        "cruel prince",
+        "folk of the air 1"
+      ],
+      "clues": {
+        "trope": "Mortal girl raised in Faerie wages a political war against the prince who torments her at court.",
+        "spice": 1,
+        "year": 2018,
+        "quotes": {
+          "hard": {
+            "text": "Nice things don't happen in storybooks.",
+            "likes": 914
+          },
+          "medium": {
+            "text": "Most of all, I hate you because I think of you. Often. It's disgusting, and I can't stop.",
+            "likes": 3882
+          },
+          "easy": {
+            "text": "If I cannot be better than them, I will become so much worse.",
+            "likes": 4967
+          }
+        },
+        "tropeTwo": "Faerie court politics · poison tolerance · enemies who become co-conspirators."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "the-cruel-prince",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/0316310271?tag=YOURTAG-20",
+        "bookshop": "[TODO: verify bookshop link]"
+      }
+    },
+    {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "series": "Blood and Ash",
+      "aliases": [
+        "from blood and ash",
+        "fbaa",
+        "blood and ash 1"
+      ],
+      "clues": {
+        "trope": "The chosen Maiden, forbidden to be touched, falls for the guard sworn to protect her.",
+        "spice": 4,
+        "year": 2020,
+        "quotes": {
+          "hard": {
+            "text": "When you listen to me, I think the stars will fall.",
+            "likes": 278
+          },
+          "medium": {
+            "text": "Fear and bravery are often one and the same. It either makes you a warrior or a coward.",
+            "likes": 619
+          },
+          "easy": {
+            "text": "You're an absolutely stunning, murderous little creature.",
+            "likes": 760
+          }
+        },
+        "tropeTwo": "Forbidden touch · sworn personal guard · prophecy weighing on the heroine."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "from-blood-and-ash",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/1952457009?tag=YOURTAG-20",
+        "bookshop": "[TODO: verify bookshop link]"
+      }
+    },
+    {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "series": "Crescent City",
+      "aliases": [
+        "house of earth and blood",
+        "crescent city",
+        "crescent city 1",
+        "hoeab"
+      ],
+      "clues": {
+        "trope": "Half-fae party girl and a notorious fallen angel hunt the demon murdering her closest friends.",
+        "spice": 5,
+        "year": 2020,
+        "quotes": {
+          "hard": {
+            "text": "Memento Mori. Remember that you will die.",
+            "likes": 519
+          },
+          "medium": {
+            "text": "I've got you. Sweetheart, I've got you.",
+            "likes": 412
+          },
+          "easy": {
+            "text": "Through love, all is possible.",
+            "likes": 1412
+          }
+        },
+        "tropeTwo": "Wolves, vampires, witches, angels · murder mystery · slow-burn revelation."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "house-of-earth-and-blood",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/1635574048?tag=YOURTAG-20",
+        "bookshop": "[TODO: verify bookshop link]"
+      }
+    },
+    {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "series": "Throne of Glass",
+      "aliases": [
+        "throne of glass",
+        "tog",
+        "tog 1"
+      ],
+      "clues": {
+        "trope": "Teen assassin pulled from a death camp to compete to become a tyrant king's champion. Two princes notice.",
+        "spice": 2,
+        "year": 2012,
+        "quotes": {
+          "hard": {
+            "text": "We all bear scars. Mine just happen to be more visible than most.",
+            "likes": 4299
+          },
+          "medium": {
+            "text": "You could rattle the stars, she whispered. You could do anything, if only you dared.",
+            "likes": 8694
+          },
+          "easy": {
+            "text": "Libraries were full of ideas — perhaps the most dangerous and powerful of all weapons.",
+            "likes": 10975
+          }
+        },
+        "tropeTwo": "Tournament of killers · castle of glass · ancient evil stirring underground."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "throne-of-glass",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/1619630346?tag=YOURTAG-20",
+        "bookshop": "[TODO: verify bookshop link]"
+      }
+    },
+    {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "series": "Crowns of Nyaxia",
+      "aliases": [
+        "the serpent and the wings of night",
+        "tsatwon",
+        "crowns of nyaxia 1"
+      ],
+      "clues": {
+        "trope": "Human princess adopted by a vampire king enters a brutal trial against the prince of a rival House.",
+        "spice": 4,
+        "year": 2022,
+        "quotes": {
+          "hard": {
+            "text": "A dead lover can never break your heart.",
+            "likes": 128
+          },
+          "medium": {
+            "text": "Death isn't frightening when weighed against an insignificant existence.",
+            "likes": 174
+          },
+          "easy": {
+            "text": "Never trust. Never yield. Always guard your heart.",
+            "likes": 108
+          }
+        },
+        "tropeTwo": "Vampire kingdoms at war · god-given trials · enemies forced into alliance."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "the-serpent-and-the-wings-of-night",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/1957779004?tag=YOURTAG-20",
+        "bookshop": "[TODO: verify bookshop link]"
+      }
+    },
+    {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "series": "The Bridge Kingdom",
+      "aliases": [
+        "the bridge kingdom",
+        "bridge kingdom"
+      ],
+      "clues": {
+        "trope": "Trained-since-childhood princess sent as a spy-bride to the enemy king she's meant to destroy.",
+        "spice": 4,
+        "year": 2018,
+        "quotes": {
+          "hard": {
+            "text": "Alive isn't living.",
+            "likes": 63
+          },
+          "medium": {
+            "text": "This man might be a hunter. But he was mistaken if he believed she was prey.",
+            "likes": 71
+          },
+          "easy": {
+            "text": "Even if I'm a goddamned fool for it, there will never be anyone but you.",
+            "likes": 93
+          }
+        },
+        "tropeTwo": "Arranged marriage as cover · island fortress · spy who sees through every lie."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "the-bridge-kingdom",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/1733090312?tag=YOURTAG-20",
+        "bookshop": "[TODO: verify bookshop link]"
+      }
+    },
+    {
+      "slug": "a-touch-of-darkness",
+      "title": "A Touch of Darkness",
+      "author": "Scarlett St. Clair",
+      "series": "Hades x Persephone",
+      "aliases": [
+        "a touch of darkness",
+        "touch of darkness",
+        "hades x persephone 1"
+      ],
+      "clues": {
+        "trope": "Persephone and Hades retelling set in a modern city ruled by the Olympian gods.",
+        "spice": 5,
+        "year": 2019,
+        "quotes": {
+          "hard": {
+            "text": "He was beautiful in a dark way — in a way that promised heartbreak.",
+            "likes": 34
+          },
+          "medium": {
+            "text": "I have waited lifetimes for you.",
+            "likes": 45
+          },
+          "easy": {
+            "text": "Respect could build an empire. Trust could make it unbreakable. Love could make it last forever.",
+            "likes": 189
+          }
+        },
+        "tropeTwo": "Modern Olympus · soul-binding contract · god of the dead with a soft spot."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1949673294.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "a-touch-of-darkness",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/1949673294?tag=YOURTAG-20",
+        "bookshop": "[TODO: verify bookshop link]"
+      }
+    },
+    {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "series": "The Plated Prisoner",
+      "aliases": [
+        "gild",
+        "plated prisoner 1",
+        "the plated prisoner 1"
+      ],
+      "clues": {
+        "trope": "Captive 'gold-touched' favorite of a Midas-cursed king learns her gilded cage is the smallest of her prisons.",
+        "spice": 4,
+        "year": 2020,
+        "quotes": {
+          "hard": {
+            "text": "But memory and time aren't friends. They reject each other, they hurry in opposite directions.",
+            "likes": 47
+          },
+          "medium": {
+            "text": "It's the arrogance of men, to think so little of women. And it'll be their downfall too.",
+            "likes": 117
+          },
+          "easy": {
+            "text": "A cage is a cage, no matter how gilded.",
+            "likes": 141
+          }
+        },
+        "tropeTwo": "Midas curse · captive favorite · power hidden under all the gold leaf."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "gild",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/1464224416?tag=YOURTAG-20",
+        "bookshop": "[TODO: verify bookshop link]"
+      }
+    },
+    {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "series": "Wicked Games",
+      "aliases": [
+        "phantasma"
+      ],
+      "clues": {
+        "trope": "Sister enters a haunted-mansion tournament where the prize is a single wish — and the host is the most beautiful demon she's ever met.",
+        "spice": 4,
+        "year": 2024,
+        "quotes": {
+          "hard": {
+            "text": "The dark is for people who are too cowardly to face their actions in the light.",
+            "likes": 35
+          },
+          "medium": {
+            "text": "In all the darkness, in all the loneliness, you have been my one source of light.",
+            "likes": 72
+          },
+          "easy": {
+            "text": "In a different life, in a fair one, I would've kept you until my eternal soul withered away to dust.",
+            "likes": 132
+          }
+        },
+        "tropeTwo": "Haunted-mansion competition · seven rooms of horror · sinfully charming demon host."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "phantasma",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/0593818962?tag=YOURTAG-20",
+        "bookshop": "[TODO: verify bookshop link]"
+      }
+    },
+    {
+      "slug": "assistant-to-the-villain",
+      "title": "Assistant to the Villain",
+      "author": "Hannah Nicole Maehrer",
+      "series": "Assistant to the Villain",
+      "aliases": [
+        "assistant to the villain",
+        "atv"
+      ],
+      "clues": {
+        "trope": "Cheerful young woman becomes personal assistant to the kingdom's evil overlord. He is, against his will, smitten.",
+        "spice": 2,
+        "year": 2023,
+        "quotes": {
+          "hard": {
+            "text": "I feel like my life keeps happening to me, rather than me living it.",
+            "likes": 112
+          },
+          "medium": {
+            "text": "We're all monsters in the end. At least mine lives in the light.",
+            "likes": 176
+          },
+          "easy": {
+            "text": "You just can't kill people and be pretty. It's confusing.",
+            "likes": 182
+          }
+        },
+        "tropeTwo": "Workplace romance · evil overlord with a soft side · cheerful protagonist with a body count."
+      },
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649377118.01.LZZZZZZZ.jpg",
+      "booksLikeSlug": "assistant-to-the-villain",
+      "affiliate": {
+        "amazon": "https://www.amazon.com/dp/1649377118?tag=YOURTAG-20",
+        "bookshop": "[TODO: verify bookshop link]"
+      }
+    }
+  ]
+}

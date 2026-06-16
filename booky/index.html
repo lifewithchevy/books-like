@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<!-- build: booky-v17 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+<title>Booky: The Daily Romantasy Word Game | 90books</title>
+<meta name="description" content="Booky, the daily romantasy word game. Guess the 5-letter word in 6 tries. New word every day. Build your streak." />
+<meta name="theme-color" content="#160516" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#fff8fb" media="(prefers-color-scheme: light)" />
+<link rel="canonical" href="https://90books.com/booky" />
+<meta property="og:title" content="Booky: The Daily Romantasy Word Game" />
+<meta property="og:description" content="Booky, the daily romantasy word game. Guess the word in 6 tries, new one every day." />
+<meta property="og:url" content="https://90books.com/booky" />
+<meta property="og:type" content="website" />
+<meta name="twitter:card" content="summary" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/booky/styles.css?v=9" />
+<!-- PostHog analytics -->
+<script>
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+  posthog.init('phc_kGtxS8YTvuNDKihCv5h8bP4wJyW3cnpdeRaTeqo5wedr', {
+    api_host: 'https://us.i.posthog.com',
+    person_profiles: 'identified_only',
+  });
+</script>
+</head>
+<body>
+<div class="bg-glow" aria-hidden="true"></div>
+
+<!-- Back to 90books — slim row above the game's topbar so it never
+competes with the Booky wordmark or the help/stats icons. -->
+<nav class="home-bar" aria-label="Back to 90books">
+<a href="/" class="home-link">
+<span aria-hidden="true">←</span> 90books
+</a>
+</nav>
+
+<header class="topbar">
+<button id="help-btn" class="icon-btn" aria-label="How to play">?</button>
+<h1 class="wordmark"><a href="/">Booky</a></h1>
+<button id="stats-btn" class="icon-btn" aria-label="Stats">▤</button>
+</header>
+
+<!-- 6 rows × 5 tiles -->
+<main class="board-wrap">
+<section class="board" id="board" aria-label="Booky board"></section>
+</main>
+
+<!-- On-screen keyboard -->
+<section class="keyboard" id="keyboard" aria-label="Keyboard">
+<div class="kb-row" data-row="0">
+<button class="kb-key" data-key="Q">Q</button>
+<button class="kb-key" data-key="W">W</button>
+<button class="kb-key" data-key="E">E</button>
+<button class="kb-key" data-key="R">R</button>
+<button class="kb-key" data-key="T">T</button>
+<button class="kb-key" data-key="Y">Y</button>
+<button class="kb-key" data-key="U">U</button>
+<button class="kb-key" data-key="I">I</button>
+<button class="kb-key" data-key="O">O</button>
+<button class="kb-key" data-key="P">P</button>
+</div>
+<div class="kb-row" data-row="1">
+<button class="kb-key" data-key="A">A</button>
+<button class="kb-key" data-key="S">S</button>
+<button class="kb-key" data-key="D">D</button>
+<button class="kb-key" data-key="F">F</button>
+<button class="kb-key" data-key="G">G</button>
+<button class="kb-key" data-key="H">H</button>
+<button class="kb-key" data-key="J">J</button>
+<button class="kb-key" data-key="K">K</button>
+<button class="kb-key" data-key="L">L</button>
+</div>
+<div class="kb-row" data-row="2">
+<button class="kb-key kb-wide" data-key="ENTER">Enter</button>
+<button class="kb-key" data-key="Z">Z</button>
+<button class="kb-key" data-key="X">X</button>
+<button class="kb-key" data-key="C">C</button>
+<button class="kb-key" data-key="V">V</button>
+<button class="kb-key" data-key="B">B</button>
+<button class="kb-key" data-key="N">N</button>
+<button class="kb-key" data-key="M">M</button>
+<button class="kb-key kb-wide" data-key="BACK" aria-label="Delete">⌫</button>
+</div>
+</section>
+
+<!-- Help -->
+<dialog id="help-modal" class="sheet">
+<form method="dialog" class="sheet-inner">
+<button class="sheet-close" aria-label="Close">×</button>
+<h2 class="sheet-title">How to play</h2>
+<p>Guess the <strong>Booky</strong> in 6 tries.</p>
+<ul class="rules">
+<li>Each guess must be a 5-letter word.</li>
+<li>The tile colors will change to show how close your guess was.</li>
+</ul>
+<p class="rules-clues"><em>Today's word is romantasy-coded.</em> Think fae, dragons, fated mates, sharp blades, the usual.</p>
+
+<h3 class="examples-title">Examples</h3>
+<div class="ex-row">
+<span class="ex-tile correct">F</span><span class="ex-tile">A</span><span class="ex-tile">T</span><span class="ex-tile">E</span><span class="ex-tile">D</span>
+</div>
+<p class="ex-desc"><strong>F</strong> is in the word and in the right spot.</p>
+
+<div class="ex-row">
+<span class="ex-tile">C</span><span class="ex-tile present">O</span><span class="ex-tile">U</span><span class="ex-tile">R</span><span class="ex-tile">T</span>
+</div>
+<p class="ex-desc"><strong>O</strong> is in the word but in the wrong spot.</p>
+
+<div class="ex-row">
+<span class="ex-tile">B</span><span class="ex-tile">L</span><span class="ex-tile">A</span><span class="ex-tile absent">D</span><span class="ex-tile">E</span>
+</div>
+<p class="ex-desc"><strong>D</strong> is not in the word.</p>
+
+<p class="footnote">A new word unlocks at midnight UTC. Don't break your streak.</p>
+</form>
+</dialog>
+
+<!-- Stats -->
+<dialog id="stats-modal" class="sheet">
+<form method="dialog" class="sheet-inner">
+<button class="sheet-close" aria-label="Close">×</button>
+<h2 class="sheet-title">Statistics</h2>
+<div class="stat-row">
+<div><span id="stat-played">0</span><small>played</small></div>
+<div><span id="stat-winpct">0</span><small>win %</small></div>
+<div><span id="stat-streak">0</span><small>🔥 streak</small></div>
+<div><span id="stat-max">0</span><small>max</small></div>
+</div>
+<h3 class="dist-title">Guess distribution</h3>
+<ul id="stat-dist" class="dist"></ul>
+</form>
+</dialog>
+
+<!-- End result sheet -->
+<dialog id="end-modal" class="sheet">
+<div class="sheet-inner">
+<button class="sheet-close" aria-label="Close" data-close-end>×</button>
+
+<!-- Hero celebration -->
+<div class="celebration" id="celebration">
+<h2 id="end-headline" class="celebration-title"></h2>
+<p id="end-subtitle" class="celebration-sub"></p>
+</div>
+
+<p id="end-word" class="end-word"></p>
+
+<!-- Mini stats row -->
+<div class="mini-stats">
+<div><span id="end-stat-streak">0</span><small>🔥 streak</small></div>
+<div><span id="end-stat-played">0</span><small>played</small></div>
+<div><span id="end-stat-winpct">0%</span><small>win rate</small></div>
+</div>
+
+<!-- Streak callout: badge earned + progress to next milestone -->
+<div class="streak-card" id="streak-card" hidden>
+<div class="streak-badge-row">
+<div class="streak-badge-icon" id="streak-badge-icon">✨</div>
+<div class="streak-badge-text">
+<div class="streak-badge-name" id="streak-badge-name"></div>
+<div class="streak-badge-sub" id="streak-badge-sub"></div>
+</div>
+</div>
+<div class="streak-progress" id="streak-progress" hidden>
+<div class="streak-progress-bar"><div class="streak-progress-fill" id="streak-progress-fill"></div></div>
+<div class="streak-progress-label" id="streak-progress-label"></div>
+</div>
+</div>
+
+<p class="next">Next word in <span id="countdown">--:--:--</span></p>
+
+<!-- Book recommendation -->
+<div id="book-rec" class="book-rec" hidden>
+<p class="book-rec-label">📚 Today's word is from…</p>
+<a id="book-rec-link" href="#" class="book-rec-text-link" target="_blank" rel="noopener">
+<span id="book-rec-title"></span><span class="book-rec-arrow"> →</span>
+<span id="book-rec-author" class="book-rec-byline"></span>
+</a>
+</div>
+
+<div class="end-share">
+<button id="share-btn" class="primary">Share result</button>
+<div id="share-toast" class="share-toast" role="status" aria-live="polite" hidden></div>
+</div>
+
+<!-- Email reminder capture -->
+<form id="reminder-form" class="reminder-card" novalidate>
+<p class="reminder-headline">don't lose your 🔥 streak</p>
+<p class="reminder-pitch">i'll email you a reminder for tomorrow's word, so your streak stays alive.</p>
+<div class="reminder-row">
+<input
+type="email"
+id="reminder-email"
+placeholder="your@email.com"
+aria-label="Email for daily reminders"
+autocomplete="email"
+inputmode="email"
+required
+/>
+<button type="submit" id="reminder-submit">remind me</button>
+</div>
+<p class="reminder-toast" id="reminder-toast" hidden></p>
+</form>
+<!-- Shown when already subscribed -->
+<p id="reminder-active" class="reminder-active" hidden>📩 Daily reminders on</p>
+</div>
+</dialog>
+
+<!-- Floating toast (invalid guess, etc.) -->
+<div id="floating-toast" class="float-toast" hidden></div>
+
+<script src="/booky/app.js?v=16" defer></script>
+</body>
+</html>

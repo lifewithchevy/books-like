@@ -5782,7 +5782,7 @@
       "weavingshaw": {
         author: 'Heba Al-Wasity', rating: '4.2/5',
         tag: 'Romantasy', tagClass: 'tag-romantasy',
-        pages: 480, spice: 'closed door', cliffhanger: true,
+        pages: 480, spice: 'sweet', cliffhanger: true,
         series: { name: 'Weavingshaw', book: 1, total: 3, complete: false },
         moods: ['dark', 'atmospheric', 'mysterious', 'tense'], pace: 'medium',
         tropes: [],
@@ -6215,16 +6215,21 @@
     // when it's barely any. Low tiers use the cream icon, hotter tiers the pepper;
     // the colour (blue, pink, red) encodes the level. Returns '' for unknown values.
     function spiceChip(spice) {
+      // Reader-style steam scale: a 1-to-5 pepper rating plus the plain terms
+      // readers actually use on r/Romantasy and r/fantasyromance. More peppers =
+      // hotter. Always shows a level (even level 1) for consistency across books.
       const MAP = {
-        'closed door': ['spice-sweet',    '&#127846;', 'Closed door'],
-        'sweet':       ['spice-sweet',    '&#127846;', 'Sweet'],
-        'spicy':       ['spice-steamy',   '&#127798;', 'Spicy'],
-        'steamy':      ['spice-steamy',   '&#127798;', 'Steamy'],
-        'very spicy':  ['spice-explicit', '&#127798;', 'Very spicy'],
-        'explicit':    ['spice-explicit', '&#127798;', 'Explicit'],
+        'sweet':       ['spice-sweet',    1, 'Sweet'],        // kisses and yearning
+        'closed door': ['spice-sweet',    2, 'Closed door'],  // fade to black
+        'steamy':      ['spice-steamy',   3, 'Steamy'],       // open door
+        'spicy':       ['spice-steamy',   3, 'Steamy'],       // alias of steamy
+        'explicit':    ['spice-explicit', 4, 'Explicit'],     // on the page
+        'very spicy':  ['spice-explicit', 5, 'Scorching'],    // explicit and frequent
       };
       const m = MAP[(spice || '').toLowerCase()];
-      return m ? `<span class="meta-chip ${m[0]}">${m[1]} ${m[2]}</span>` : '';
+      if (!m) return '';
+      const peppers = '&#127798;'.repeat(m[1]);
+      return `<span class="meta-chip ${m[0]}" title="Steam level ${m[1]} of 5">${peppers} ${m[2]}</span>`;
     }
 
     function renderMetaChips(book) {

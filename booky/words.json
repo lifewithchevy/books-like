@@ -1,0 +1,1645 @@
+{
+  "epoch": "2026-05-25",
+  "_comment": "Curated 5-letter words from the romantasy lexicon. Order = daily sequence. wordBooks maps each word to a related book shown on the end screen.",
+  "queue": [
+    "COURT",
+    "BLADE",
+    "FLAME",
+    "MATES",
+    "DEMON",
+    "CROWN",
+    "SPICE",
+    "RIDER",
+    "BEAST",
+    "NESTA",
+    "ROSES",
+    "ANGEL",
+    "CURSE",
+    "STARS",
+    "THORN",
+    "NIGHT",
+    "WINGS",
+    "VENOM",
+    "ROYAL",
+    "MANOR",
+    "CARDS",
+    "DREAM",
+    "WORLD",
+    "STEEL",
+    "STORM",
+    "KNIFE",
+    "CROWS",
+    "BONDS",
+    "ANGST",
+    "SWOON",
+    "GRACE",
+    "FAERY",
+    "MAGIC",
+    "SWORN",
+    "SMOKE",
+    "NYMPH",
+    "SCARS",
+    "CRAVE",
+    "HEART",
+    "AMBER",
+    "VALOR",
+    "TEETH",
+    "BRAVE",
+    "DREAD",
+    "SWORD",
+    "ASHES",
+    "GLEAM",
+    "RAVEN",
+    "REALM",
+    "BOUND",
+    "POWER",
+    "OATHS",
+    "FEYRE",
+    "EARTH",
+    "EMBER",
+    "CRUEL",
+    "SHADE",
+    "HAUNT",
+    "FERAL",
+    "TRIAL",
+    "FATED",
+    "RUNES",
+    "YIELD",
+    "SIREN",
+    "FLESH",
+    "QUEEN",
+    "GLASS",
+    "ALTAR",
+    "MERCY",
+    "BLAZE",
+    "VINES",
+    "FANGS",
+    "LUNAR",
+    "SABER",
+    "ASHEN",
+    "QUILL",
+    "SIGIL",
+    "KNAVE",
+    "CRYPT",
+    "GILDS",
+    "SILKS",
+    "BRIDE",
+    "TAROT",
+    "FIERY",
+    "GHOUL",
+    "HEIST",
+    "PRIDE",
+    "HUMAN",
+    "MOONS",
+    "LANCE",
+    "VOWED",
+    "FLINT",
+    "HALOS",
+    "ROGUE",
+    "GHOST",
+    "TOPAZ",
+    "ELVES",
+    "SPIES",
+    "MISTS",
+    "FLARE",
+    "SPOOK",
+    "VAULT",
+    "ANGER",
+    "PETAL",
+    "RIVER",
+    "PARRY",
+    "CHAIN",
+    "SPARK",
+    "OMENS",
+    "GUILE",
+    "DUSKY",
+    "OPALS",
+    "PIXIE",
+    "TIDES",
+    "HEXES",
+    "COALS",
+    "EERIE",
+    "CACHE",
+    "TAMED",
+    "SIGHS",
+    "SCION",
+    "IRONS",
+    "FORGE",
+    "PRISM",
+    "REGAL",
+    "HEXED",
+    "CORAL",
+    "CADET",
+    "GLAZE",
+    "FLOOD",
+    "GLOOM",
+    "SINGE",
+    "MOTHS",
+    "ALLEY",
+    "BRIAR",
+    "VEILS",
+    "ARMOR",
+    "RELIC",
+    "STEED",
+    "GLYPH",
+    "NOBLE",
+    "COBRA",
+    "PEARL",
+    "SHEEN",
+    "MOATS",
+    "MURKY",
+    "ROARS",
+    "GRAVE",
+    "THIEF",
+    "GLADE",
+    "CREST",
+    "GUARD",
+    "CREED",
+    "REINS",
+    "BLOOM",
+    "MASKS",
+    "CLAWS",
+    "SPELL",
+    "CLOAK",
+    "REIGN",
+    "KINGS",
+    "HOUND",
+    "FROST",
+    "PREYS",
+    "JEWEL",
+    "FAIRY",
+    "ENVOY",
+    "DIRGE",
+    "CHARS",
+    "SOULS",
+    "GREED",
+    "FLORA",
+    "GLINT",
+    "SIEGE",
+    "DEITY",
+    "SCALE",
+    "SLEEK",
+    "TRICK",
+    "STALK",
+    "BRASS",
+    "GNOME",
+    "TRUCE",
+    "SOOTH",
+    "SMOKY",
+    "CHILL",
+    "BRIBE",
+    "GROVE",
+    "COVEN",
+    "HEIRS",
+    "SAINT",
+    "TALON",
+    "CHIME",
+    "SPITE",
+    "LURED",
+    "HONEY",
+    "SYLPH",
+    "WAVES",
+    "TOMBS",
+    "SCALD",
+    "FEARS",
+    "SNEAK",
+    "HONOR",
+    "COMET",
+    "REBEL",
+    "FAITH",
+    "CLIFF",
+    "ELFIN",
+    "BITES",
+    "CAGED",
+    "MIRTH",
+    "SHORE",
+    "WIDOW",
+    "SEARS",
+    "MOANS",
+    "LOOTS",
+    "SCENT",
+    "GLOWS",
+    "FIGHT",
+    "BONES",
+    "LEDGE",
+    "LIARS",
+    "PROWL",
+    "DOVES",
+    "GAUZE",
+    "COAST",
+    "SOOTY",
+    "GLARE",
+    "CREPT",
+    "COINS",
+    "ROOTS",
+    "SHINE",
+    "SWORE",
+    "WRATH"
+  ],
+  "wordBooks": {
+    "COURT": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "BLADE": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "FLAME": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg"
+    },
+    "MATES": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "DEMON": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+    },
+    "CROWN": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "SPICE": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "RIDER": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "BEAST": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "NESTA": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575595.01.LZZZZZZZ.jpg"
+    },
+    "ROSES": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "THORN": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "ANGEL": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+    },
+    "CURSE": {
+      "slug": "a-touch-of-darkness",
+      "title": "A Touch of Darkness",
+      "author": "Scarlett St. Clair",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1949673294.01.LZZZZZZZ.jpg"
+    },
+    "BLOOD": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "HEART": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "QUEEN": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "KNIFE": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "MAGIC": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "POWER": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "BOUND": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "TRIAL": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "OATHS": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "SWORD": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "MERCY": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "CARDS": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg"
+    },
+    "VENOM": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "RUNES": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "TEETH": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "ASHES": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "AMBER": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg"
+    },
+    "WINGS": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "FATED": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "GLASS": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "BRAVE": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "SMOKE": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg"
+    },
+    "YIELD": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "CRUEL": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "FAERY": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "WORLD": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "BONDS": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "EARTH": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+    },
+    "ROYAL": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg"
+    },
+    "FEYRE": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "FLESH": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "CROWS": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg"
+    },
+    "HAUNT": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg"
+    },
+    "GLEAM": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg"
+    },
+    "SHADE": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "EMBER": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg"
+    },
+    "BLAZE": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg"
+    },
+    "RAVEN": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "SIREN": {
+      "slug": "a-touch-of-darkness",
+      "title": "A Touch of Darkness",
+      "author": "Scarlett St. Clair",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1949673294.01.LZZZZZZZ.jpg"
+    },
+    "NYMPH": {
+      "slug": "a-touch-of-darkness",
+      "title": "A Touch of Darkness",
+      "author": "Scarlett St. Clair",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1949673294.01.LZZZZZZZ.jpg"
+    },
+    "SWORN": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "SWOON": {
+      "slug": "assistant-to-the-villain",
+      "title": "Assistant to the Villain",
+      "author": "Hannah Nicole Maehrer",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649377118.01.LZZZZZZZ.jpg"
+    },
+    "ANGST": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "STORM": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "NIGHT": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "REALM": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "DREAM": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "STEEL": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "VALOR": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "SCARS": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "CRAVE": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "MANOR": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "DREAD": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "GRACE": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "STARS": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "FERAL": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "ALTAR": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "FANGS": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "CADET": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "BLOOM": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "MASKS": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "CLAWS": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "SPELL": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "CLOAK": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "REIGN": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "KINGS": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "WRATH": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "VINES": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "LUNAR": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "SABER": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "ASHEN": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "QUILL": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "SIGIL": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+    },
+    "KNAVE": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "CRYPT": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "GILDS": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg"
+    },
+    "SILKS": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "BRIDE": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg"
+    },
+    "TAROT": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg"
+    },
+    "FIERY": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg"
+    },
+    "GHOUL": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg"
+    },
+    "HEIST": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg"
+    },
+    "PRIDE": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575595.01.LZZZZZZZ.jpg"
+    },
+    "HUMAN": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "MOONS": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "LANCE": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "VOWED": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "FLINT": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "HALOS": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+    },
+    "ROGUE": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "GHOST": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "TOPAZ": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg"
+    },
+    "ELVES": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "SPIES": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg"
+    },
+    "MISTS": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg"
+    },
+    "FLARE": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg"
+    },
+    "SPOOK": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg"
+    },
+    "VAULT": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg"
+    },
+    "ANGER": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575595.01.LZZZZZZZ.jpg"
+    },
+    "PETAL": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "RIVER": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "PARRY": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "CHAIN": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "SPARK": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "OMENS": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+    },
+    "GUILE": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "DUSKY": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "OPALS": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg"
+    },
+    "PIXIE": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "TIDES": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg"
+    },
+    "HEXES": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg"
+    },
+    "COALS": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg"
+    },
+    "EERIE": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg"
+    },
+    "CACHE": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg"
+    },
+    "TAMED": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "SIGHS": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "SCION": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "IRONS": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "FORGE": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "PRISM": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+    },
+    "REGAL": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "HEXED": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "CORAL": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg"
+    },
+    "GLAZE": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "FLOOD": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg"
+    },
+    "GLOOM": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg"
+    },
+    "SINGE": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg"
+    },
+    "MOTHS": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg"
+    },
+    "ALLEY": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg"
+    },
+    "BRIAR": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "VEILS": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "ARMOR": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "RELIC": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "STEED": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "GLYPH": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+    },
+    "NOBLE": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "COBRA": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "PEARL": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg"
+    },
+    "SHEEN": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "MOATS": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg"
+    },
+    "MURKY": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg"
+    },
+    "ROARS": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg"
+    },
+    "GRAVE": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg"
+    },
+    "THIEF": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg"
+    },
+    "GLADE": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "CREST": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "GUARD": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "CREED": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "REINS": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "HOUND": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+    },
+    "FROST": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "PREYS": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "JEWEL": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg"
+    },
+    "FAIRY": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "ENVOY": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg"
+    },
+    "DIRGE": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg"
+    },
+    "CHARS": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg"
+    },
+    "SOULS": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg"
+    },
+    "GREED": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg"
+    },
+    "FLORA": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "GLINT": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "SIEGE": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "DEITY": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "SCALE": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "SLEEK": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+    },
+    "TRICK": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "STALK": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "BRASS": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg"
+    },
+    "GNOME": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "TRUCE": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg"
+    },
+    "SOOTH": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg"
+    },
+    "SMOKY": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg"
+    },
+    "CHILL": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg"
+    },
+    "BRIBE": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg"
+    },
+    "GROVE": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "COVEN": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "HEIRS": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "SAINT": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "TALON": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "CHIME": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+    },
+    "SPITE": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "LURED": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "HONEY": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg"
+    },
+    "SYLPH": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "WAVES": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg"
+    },
+    "TOMBS": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg"
+    },
+    "SCALD": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg"
+    },
+    "FEARS": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg"
+    },
+    "SNEAK": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg"
+    },
+    "HONOR": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "COMET": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "REBEL": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "FAITH": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "CLIFF": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "ELFIN": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "BITES": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "CAGED": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg"
+    },
+    "MIRTH": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "SHORE": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg"
+    },
+    "WIDOW": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg"
+    },
+    "SEARS": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg"
+    },
+    "MOANS": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg"
+    },
+    "LOOTS": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg"
+    },
+    "SCENT": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "GLOWS": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "FIGHT": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "BONES": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "LEDGE": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "LIARS": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
+    },
+    "PROWL": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+    },
+    "DOVES": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg"
+    },
+    "GAUZE": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "COAST": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg"
+    },
+    "SOOTY": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg"
+    },
+    "GLARE": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg"
+    },
+    "CREPT": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg"
+    },
+    "COINS": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg"
+    },
+    "ROOTS": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "SHINE": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "SWORE": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    }
+  }
+}
