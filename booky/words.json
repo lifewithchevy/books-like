@@ -131,7 +131,7 @@
     "CORAL",
     "TAIRN",
     "GLAZE",
-    "FLOOD",
+    "XADEN",
     "GLOOM",
     "SINGE",
     "MOTHS",
@@ -1035,12 +1035,6 @@
       "author": "Callie Hart",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
     },
-    "FLOOD": {
-      "slug": "the-bridge-kingdom",
-      "title": "The Bridge Kingdom",
-      "author": "Danielle L. Jensen",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg"
-    },
     "GLOOM": {
       "slug": "one-dark-window",
       "title": "One Dark Window",
@@ -1636,6 +1630,12 @@
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
     },
     "TAIRN": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
+    },
+    "XADEN": {
       "slug": "fourth-wing",
       "title": "Fourth Wing",
       "author": "Rebecca Yarros",
