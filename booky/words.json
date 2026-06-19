@@ -129,7 +129,7 @@
     "REGAL",
     "HEXED",
     "CORAL",
-    "STORM",
+    "TAIRN",
     "GLAZE",
     "FLOOD",
     "GLOOM",
@@ -554,12 +554,6 @@
       "title": "From Blood and Ash",
       "author": "Jennifer L. Armentrout",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
-    },
-    "STORM": {
-      "slug": "fourth-wing",
-      "title": "Fourth Wing",
-      "author": "Rebecca Yarros",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
     },
     "NIGHT": {
       "slug": "the-serpent-and-the-wings-of-night",
@@ -1640,6 +1634,12 @@
       "title": "A Court of Thorns and Roses",
       "author": "Sarah J. Maas",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "TAIRN": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
     }
   }
 }
