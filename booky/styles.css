@@ -159,6 +159,16 @@ body {
   margin: 0;
 }
 .wordmark a { color: var(--ink); text-decoration: none; }
+.puzzle-no {
+  display: block;
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin-top: 2px;
+}
 
 .icon-btn {
   width: 32px; height: 32px;
@@ -455,6 +465,15 @@ body {
   color: var(--ink-dim);
   margin: 0;
   letter-spacing: 0.5px;
+}
+.end-puzzle-no {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.5px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 0 0 6px;
 }
 
 .end-word {

@@ -76,6 +76,9 @@ paintBoardFromState();
 paintKeyboardFromState();
 bindUI();
 
+// Show today's puzzle number in the header (e.g. "#23")
+$('puzzle-no').textContent = '#' + DAY;
+
 // PostHog: fire game_start only on a fresh game (no guesses yet today)
 if (STATE.guesses.length === 0 && STATE.status === 'playing') {
 posthog.capture('booky_game_start', {
@@ -500,6 +503,7 @@ $('celebration').classList.add('lost');
 }
 
 $('end-word').textContent = ANSWER;
+$('end-puzzle-no').textContent = 'Booky #' + DAY;
 
 // Mini stats row
 $('end-stat-streak').textContent = STATS.currentStreak;
