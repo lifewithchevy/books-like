@@ -496,8 +496,7 @@ $('celebration').classList.remove('lost');
 $('celebration').classList.add('won');
 } else {
 title.textContent = "Tomorrow's another word.";
-sub.textContent = 'the word was';
-sub.hidden = false;
+sub.hidden = true;   // the answer now reveals in the book card below
 $('celebration').classList.remove('won');
 $('celebration').classList.add('lost');
 }
