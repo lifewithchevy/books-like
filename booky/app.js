@@ -545,22 +545,36 @@ renderStatsModal();
 const bookRec = DATA.wordBooks?.[ANSWER];
 const recEl = $('book-rec');
 if (bookRec) {
-  const isCurated = CURATED_SLUGS.has(bookRec.slug);
   const linkEl = $('book-rec-link');
   $('book-rec-title').textContent = bookRec.title;
   $('book-rec-author').textContent = bookRec.author;
-  if (isCurated) {
-    // Curated page exists → full clickable link with arrow
+  const arrow = linkEl.querySelector('.book-rec-arrow');
+  if (bookRec.buyUrl) {
+    // Featured book with no curated page → link straight to the buy page.
+    // Here the reveal link IS the affiliate buy click, so track it as one.
+    linkEl.href = bookRec.buyUrl;
+    linkEl.style.pointerEvents = '';
+    linkEl.style.cursor = '';
+    arrow.hidden = false;
+    linkEl.onclick = () => posthog.capture('affiliate_buy_clicked', {
+      word_number: DAY,
+      book: bookRec.slug,
+      title: bookRec.title,
+    });
+  } else if (CURATED_SLUGS.has(bookRec.slug)) {
+    // Curated page exists → internal nav to the /books-like/ page
     linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
     linkEl.style.pointerEvents = '';
     linkEl.style.cursor = '';
-    linkEl.querySelector('.book-rec-arrow').hidden = false;
+    arrow.hidden = false;
+    linkEl.onclick = null;
   } else {
-    // No curated page yet → show title/author as plain text, no link
+    // No curated page and no buy link → show title/author as plain text
     linkEl.removeAttribute('href');
     linkEl.style.pointerEvents = 'none';
     linkEl.style.cursor = 'default';
-    linkEl.querySelector('.book-rec-arrow').hidden = true;
+    arrow.hidden = true;
+    linkEl.onclick = null;
   }
   recEl.hidden = false;
 } else {

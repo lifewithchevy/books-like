@@ -36,7 +36,7 @@
     "FAERY",
     "MAGIC",
     "SWORN",
-    "SMOKE",
+    "GHOST",
     "NYMPH",
     "ROWAN",
     "CRAVE",
@@ -96,7 +96,7 @@
     "FLINT",
     "HALOS",
     "ROGUE",
-    "GHOST",
+    "SMOKE",
     "TOPAZ",
     "ELVES",
     "SPIES",
@@ -814,10 +814,11 @@
       "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg"
     },
     "GHOST": {
-      "slug": "the-serpent-and-the-wings-of-night",
-      "title": "The Serpent and the Wings of Night",
-      "author": "Carissa Broadbent",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
+      "slug": "weavingshaw",
+      "title": "Weavingshaw",
+      "author": "Heba Al-Wasity",
+      "buyUrl": "https://www.amazon.com/dp/0593982576?tag=90books-20",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593982576.01.LZZZZZZZ.jpg"
     },
     "TOPAZ": {
       "slug": "gild",
