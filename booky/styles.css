@@ -84,6 +84,10 @@
 
 * { box-sizing: border-box; }
 
+/* The `hidden` attribute must always win, even on elements with an author `display` rule
+   (e.g. .book-hero-badge / .book-hero-cta set display:block, which otherwise defeats it). */
+[hidden] { display: none !important; }
+
 html, body {
   margin: 0;
   padding: 0;
@@ -770,6 +774,17 @@ body {
   color: var(--ink-dim);
   letter-spacing: 0.3px;
   margin: 0;
+}
+/* Streak milestone progress — lives in the stats modal */
+.stat-milestone {
+  text-align: center;
+  font-size: 12px;
+  color: var(--ink-dim);
+  line-height: 1.4;
+  margin: 0 0 14px;
+  padding: 8px 10px;
+  background: var(--bg-3);
+  border-radius: 8px;
 }
 
 .end-share { padding-top: 2px; }

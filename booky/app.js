@@ -507,13 +507,9 @@ $('end-puzzle-no').textContent = 'Booky #' + DAY;
 // Streak — kept but low priority: one compact line on win
 const streakEl = $('end-streak');
 if (won && STATS.currentStreak >= 1) {
-const { next } = badgeForStreak(STATS.currentStreak);
-let line = `🔥 ${STATS.currentStreak}-day streak`;
-if (next) {
-const remaining = next.at - STATS.currentStreak;
-line += ` · ${remaining} day${remaining === 1 ? '' : 's'} to ${next.icon} ${next.name}`;
-}
-streakEl.textContent = line;
+// Show the earned romantasy rank — the shareable bit. Milestone progress lives in the stats page.
+const { earned } = badgeForStreak(STATS.currentStreak);
+streakEl.textContent = `🔥 ${STATS.currentStreak}-day streak · ${earned.icon} ${earned.name}`;
 streakEl.hidden = false;
 } else {
 streakEl.hidden = true;
@@ -625,6 +621,22 @@ $('stat-winpct').textContent = STATS.played
 ? Math.round(100 * STATS.wins / STATS.played) : 0;
 $('stat-streak').textContent = STATS.currentStreak;
 $('stat-max').textContent = STATS.maxStreak;
+
+// Earned rank + progress to next milestone (moved here from the win screen)
+const mEl = $('stat-milestone');
+if (STATS.currentStreak >= 1) {
+const { earned, next } = badgeForStreak(STATS.currentStreak);
+let txt = `${earned.icon} ${earned.name} · ${earned.blurb}`;
+if (next) {
+const rem = next.at - STATS.currentStreak;
+txt += ` ${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}.`;
+}
+mEl.textContent = txt;
+mEl.hidden = false;
+} else {
+mEl.hidden = true;
+}
+
 renderDistribution();
 }
 
