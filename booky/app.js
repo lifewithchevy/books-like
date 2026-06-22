@@ -486,99 +486,93 @@ recordFinish();
 const won = STATE.status === 'won';
 const tries = STATE.guesses.length;
 
-// Big celebration header
+// Hero 1: win/lose headline + the word. Guess count moved to the stats page.
 const title = $('end-headline');
 const sub = $('end-subtitle');
-
 if (won) {
 title.textContent = 'Congrats!';
-sub.textContent = `Solved in ${tries}/${MAX_GUESSES}`;
+sub.hidden = true;
 $('celebration').classList.remove('lost');
 $('celebration').classList.add('won');
 } else {
 title.textContent = "Tomorrow's another word.";
-sub.textContent = `The word was`;
+sub.textContent = 'the word was';
+sub.hidden = false;
 $('celebration').classList.remove('won');
 $('celebration').classList.add('lost');
 }
-
 $('end-word').textContent = ANSWER;
 $('end-puzzle-no').textContent = 'Booky #' + DAY;
 
-// Mini stats row
-$('end-stat-streak').textContent = STATS.currentStreak;
-$('end-stat-played').textContent = STATS.played;
-$('end-stat-winpct').textContent = STATS.played
-? `${Math.round(100 * STATS.wins / STATS.played)}%`
-: '0%';
-
-// Streak badge card — shown on win only
-const card = $('streak-card');
+// Streak — kept but low priority: one compact line on win
+const streakEl = $('end-streak');
 if (won && STATS.currentStreak >= 1) {
-const { earned, next } = badgeForStreak(STATS.currentStreak);
-if (earned) {
-$('streak-badge-icon').textContent = earned.icon;
-$('streak-badge-name').textContent = `${earned.name} · ${STATS.currentStreak}-day streak`;
-$('streak-badge-sub').textContent = earned.blurb;
-}
+const { next } = badgeForStreak(STATS.currentStreak);
+let line = `🔥 ${STATS.currentStreak}-day streak`;
 if (next) {
 const remaining = next.at - STATS.currentStreak;
-const span = next.at - (earned ? earned.at : 0);
-const progressed = STATS.currentStreak - (earned ? earned.at : 0);
-const pct = Math.max(4, Math.min(100, (progressed / span) * 100));
-$('streak-progress-fill').style.width = `${pct}%`;
-$('streak-progress-label').textContent =
-`${remaining} day${remaining === 1 ? '' : 's'} to ${next.icon} ${next.name}`;
-$('streak-progress').hidden = false;
-} else {
-$('streak-progress').hidden = true;
+line += ` · ${remaining} day${remaining === 1 ? '' : 's'} to ${next.icon} ${next.name}`;
 }
-card.hidden = false;
+streakEl.textContent = line;
+streakEl.hidden = false;
 } else {
-card.hidden = true;
+streakEl.hidden = true;
 }
 
 // Mirror to legacy stats modal (still accessible via the ▤ icon)
 renderStatsModal();
 
-// Book recommendation card
+// Hero 2: the word's book. CTA adapts — sponsored buy link, curated page, or none.
 const bookRec = DATA.wordBooks?.[ANSWER];
 const recEl = $('book-rec');
 if (bookRec) {
-  const linkEl = $('book-rec-link');
-  $('book-rec-title').textContent = bookRec.title;
-  $('book-rec-author').textContent = bookRec.author;
-  const arrow = linkEl.querySelector('.book-rec-arrow');
-  if (bookRec.buyUrl) {
-    // Featured book with no curated page → link straight to the buy page.
-    // Here the reveal link IS the affiliate buy click, so track it as one.
-    linkEl.href = bookRec.buyUrl;
-    linkEl.style.pointerEvents = '';
-    linkEl.style.cursor = '';
-    arrow.hidden = false;
-    linkEl.onclick = () => posthog.capture('affiliate_buy_clicked', {
-      word_number: DAY,
-      book: bookRec.slug,
-      title: bookRec.title,
-    });
-  } else if (CURATED_SLUGS.has(bookRec.slug)) {
-    // Curated page exists → internal nav to the /books-like/ page
-    linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
-    linkEl.style.pointerEvents = '';
-    linkEl.style.cursor = '';
-    arrow.hidden = false;
-    linkEl.onclick = null;
-  } else {
-    // No curated page and no buy link → show title/author as plain text
-    linkEl.removeAttribute('href');
-    linkEl.style.pointerEvents = 'none';
-    linkEl.style.cursor = 'default';
-    arrow.hidden = true;
-    linkEl.onclick = null;
-  }
-  recEl.hidden = false;
+$('book-rec-title').textContent = bookRec.title;
+$('book-rec-author').textContent = bookRec.author;
+$('book-rec-badge').hidden = !bookRec.featured;   // "Featured" badge for paid placements only
+
+const cover = $('book-rec-cover');
+if (bookRec.cover) {
+cover.src = bookRec.cover;
+cover.alt = `${bookRec.title} cover`;
+cover.hidden = false;
+cover.onerror = () => { cover.hidden = true; };
 } else {
-  recEl.hidden = true;
+cover.hidden = true;
+}
+
+const hookEl = $('book-rec-hook');
+if (bookRec.hook) {
+hookEl.textContent = bookRec.hook;
+hookEl.hidden = false;
+} else {
+hookEl.hidden = true;
+}
+
+const linkEl = $('book-rec-link');
+if (bookRec.buyUrl) {
+// Sponsored/featured: link straight to the buy page. This link IS the buy click.
+linkEl.href = bookRec.buyUrl;
+linkEl.textContent = 'Get it on Amazon';
+linkEl.hidden = false;
+linkEl.onclick = () => posthog.capture('affiliate_buy_clicked', {
+word_number: DAY,
+book: bookRec.slug,
+title: bookRec.title,
+});
+} else if (CURATED_SLUGS.has(bookRec.slug)) {
+// Curated page exists: send them to more books like it.
+linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
+linkEl.textContent = 'More books like this →';
+linkEl.hidden = false;
+linkEl.onclick = null;
+} else {
+// No page and no buy link: cover + title + author only.
+linkEl.hidden = true;
+linkEl.onclick = null;
+}
+recEl.hidden = false;
+} else {
+recEl.hidden = true;
 }
 
 // Reminder form — only show if user hasn't already subscribed
