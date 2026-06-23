@@ -48,7 +48,7 @@ try {
 // only loaded once — browser caches it. The Set lookup is O(1).
 const [data, dictList] = await Promise.all([
 fetch('/booky/words.json?v=5', { cache: 'no-store' }).then(r => r.json()),
-fetch('/booky/dictionary.json?v=9', { cache: 'force-cache' }).then(r => r.json()),
+fetch('/booky/dictionary.json?v=10', { cache: 'force-cache' }).then(r => r.json()),
 ]);
 DATA = data;
 DICT = new Set(dictList);
