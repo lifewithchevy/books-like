@@ -35,7 +35,7 @@
     "FATES",
     "HONOR",
     "MAGIC",
-    "SWORN",
+    "HAWKE",
     "GHOST",
     "NYMPH",
     "ROWAN",
@@ -542,12 +542,6 @@
       "title": "A Touch of Darkness",
       "author": "Scarlett St. Clair",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1949673294.01.LZZZZZZZ.jpg"
-    },
-    "SWORN": {
-      "slug": "from-blood-and-ash",
-      "title": "From Blood and Ash",
-      "author": "Jennifer L. Armentrout",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
     },
     "NIGHT": {
       "slug": "the-serpent-and-the-wings-of-night",
@@ -1641,6 +1635,12 @@
       "title": "Quicksilver",
       "author": "Callie Hart",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg"
+    },
+    "HAWKE": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
     }
   }
 }
