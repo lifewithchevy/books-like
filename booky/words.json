@@ -74,8 +74,8 @@
     "BLAZE",
     "VINES",
     "FANGS",
-    "LUNAR",
-    "SABER",
+    "CABIN",
+    "WITCH",
     "ASHEN",
     "QUILL",
     "SIGIL",
@@ -89,8 +89,8 @@
     "GHOUL",
     "HEIST",
     "PRIDE",
-    "ADORE",
-    "MOONS",
+    "PAINT",
+    "MATED",
     "CHAOL",
     "VOWED",
     "FLINT",
@@ -663,18 +663,6 @@
       "author": "Sarah J. Maas",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
     },
-    "LUNAR": {
-      "slug": "a-court-of-mist-and-fury",
-      "title": "A Court of Mist and Fury",
-      "author": "Sarah J. Maas",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
-    },
-    "SABER": {
-      "slug": "throne-of-glass",
-      "title": "Throne of Glass",
-      "author": "Sarah J. Maas",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
-    },
     "ASHEN": {
       "slug": "from-blood-and-ash",
       "title": "From Blood and Ash",
@@ -758,12 +746,6 @@
       "title": "A Court of Thorns and Roses",
       "author": "Sarah J. Maas",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
-    },
-    "MOONS": {
-      "slug": "a-court-of-mist-and-fury",
-      "title": "A Court of Mist and Fury",
-      "author": "Sarah J. Maas",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
     },
     "VOWED": {
       "slug": "from-blood-and-ash",
@@ -1570,12 +1552,6 @@
       "author": "Sarah J. Maas",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
     },
-    "ADORE": {
-      "slug": "a-court-of-thorns-and-roses",
-      "title": "A Court of Thorns and Roses",
-      "author": "Sarah J. Maas",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
-    },
     "TAIRN": {
       "slug": "fourth-wing",
       "title": "Fourth Wing",
@@ -1641,6 +1617,30 @@
       "title": "A Court of Thorns and Roses",
       "author": "Sarah J. Maas",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "PAINT": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+    },
+    "WITCH": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "CABIN": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "MATED": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
     }
   }
 }
