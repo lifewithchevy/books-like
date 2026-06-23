@@ -37,7 +37,7 @@
     "MAGIC",
     "HAWKE",
     "GHOST",
-    "NYMPH",
+    "BRYCE",
     "ROWAN",
     "CRAVE",
     "HEART",
@@ -532,12 +532,6 @@
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg"
     },
     "SIREN": {
-      "slug": "a-touch-of-darkness",
-      "title": "A Touch of Darkness",
-      "author": "Scarlett St. Clair",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1949673294.01.LZZZZZZZ.jpg"
-    },
-    "NYMPH": {
       "slug": "a-touch-of-darkness",
       "title": "A Touch of Darkness",
       "author": "Scarlett St. Clair",
@@ -1641,6 +1635,12 @@
       "title": "From Blood and Ash",
       "author": "Jennifer L. Armentrout",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
+    },
+    "BRYCE": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
     }
   }
 }
