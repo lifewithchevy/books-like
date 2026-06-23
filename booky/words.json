@@ -39,7 +39,7 @@
     "GHOST",
     "BRYCE",
     "ROWAN",
-    "CRAVE",
+    "ELAIN",
     "HEART",
     "AMBER",
     "VALOR",
@@ -566,12 +566,6 @@
       "title": "Fourth Wing",
       "author": "Rebecca Yarros",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
-    },
-    "CRAVE": {
-      "slug": "from-blood-and-ash",
-      "title": "From Blood and Ash",
-      "author": "Jennifer L. Armentrout",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
     },
     "MANOR": {
       "slug": "a-court-of-thorns-and-roses",
@@ -1641,6 +1635,12 @@
       "title": "House of Earth and Blood",
       "author": "Sarah J. Maas",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+    },
+    "ELAIN": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
     }
   }
 }
