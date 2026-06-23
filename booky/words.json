@@ -33,7 +33,7 @@
     "HUMAN",
     "OTTER",
     "FATES",
-    "FAERY",
+    "HONOR",
     "MAGIC",
     "SWORN",
     "GHOST",
@@ -203,7 +203,7 @@
     "SCALD",
     "FEARS",
     "SNEAK",
-    "HONOR",
+    "FAERY",
     "COMET",
     "ELIDE",
     "FAITH",
@@ -1391,10 +1391,10 @@
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg"
     },
     "HONOR": {
-      "slug": "a-court-of-thorns-and-roses",
-      "title": "A Court of Thorns and Roses",
-      "author": "Sarah J. Maas",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg"
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
     },
     "COMET": {
       "slug": "a-court-of-mist-and-fury",
