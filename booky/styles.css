@@ -197,7 +197,7 @@ body {
   justify-content: center;
   width: 100%;
   min-height: 0;
-  padding: 4px 14px;
+  padding: 14px 14px;
   position: relative;
   z-index: 1;
 }
@@ -206,7 +206,12 @@ body {
   flex-direction: column;
   gap: 5px;
   width: 100%;
-  max-width: 340px;
+  /* Height-aware: cap the board's width by the space left after the header +
+     keyboard so it never crowds them. ~0.82 ≈ 5/6 (board width:height ratio);
+     the ~370px subtracts header + keyboard + breathing room. Falls back to a
+     340px cap on tall screens and a 200px floor on very short ones. */
+  max-width: min(340px, max(220px, calc((100dvh - 330px) * 0.83)));
+  margin: auto;
 }
 .brow {
   display: grid;
