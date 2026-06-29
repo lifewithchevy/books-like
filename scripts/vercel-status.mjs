@@ -2,10 +2,9 @@
 /**
  * Vercel production health check for Cloud Agents.
  *
- * Requires secrets (Cursor dashboard → Cloud Agents → Secrets):
- *   VERCEL_TOKEN          — https://vercel.com/account/tokens
- *   VERCEL_ORG_ID         — team_… (already in .github/workflows/uptime.yml)
- *   VERCEL_PROJECT_ID     — prj_… (already in .github/workflows/uptime.yml)
+ * Token sources (any one works):
+ *   - GitHub Actions: secrets.VERCEL_TOKEN (vercel-status workflow)
+ *   - Cursor Cloud Agents: dashboard → Secrets → VERCEL_TOKEN
  *
  * Usage: node scripts/vercel-status.mjs [--logs]
  */
