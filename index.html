@@ -2641,7 +2641,7 @@
     </nav>
 
     <!-- Daily game ribbon -->
-    <a href="/booky" class="lp-daily-ribbon">
+    <a href="/booky" class="lp-daily-ribbon" data-booky-promo-ribbon>
       <span class="lp-daily-ribbon-pill">NEW</span>
       <span class="lp-daily-ribbon-text">
         <strong>Booky</strong>, the daily romantasy word game, guess it in 6 tries
@@ -2825,6 +2825,13 @@
       </div>
     </div>
   </div>
+
+  <!-- Jul 5 Weavingshaw promo — shown site-wide for returning users (landing has its own ribbon) -->
+  <a href="/booky" id="appBookyPromoRibbon" class="lp-daily-ribbon app-booky-promo-ribbon" data-booky-promo-ribbon hidden>
+    <span class="lp-daily-ribbon-pill">TODAY</span>
+    <span class="lp-daily-ribbon-text">Today&rsquo;s Booky word is hidden in <strong>Weavingshaw</strong></span>
+    <span class="lp-daily-ribbon-arrow">&rarr;</span>
+  </a>
 
   <!-- Header -->
   <header>
@@ -13834,6 +13841,7 @@
     .lp-daily-ribbon:hover .lp-daily-ribbon-arrow {
       transform: translateX(3px);
     }
+    .app-booky-promo-ribbon[hidden] { display: none !important; }
     @media (max-width: 600px) {
       .lp-daily-ribbon { padding: 9px 14px; font-size: 12px; gap: 8px; }
       .lp-daily-ribbon-pill { font-size: 9px; padding: 2px 6px; }
@@ -14679,7 +14687,29 @@
       // else: no match, home page loads normally
     }
 
+    // Swap the homepage ribbon on featured Booky days (author collabs, etc.)
+    function initBookyPromoRibbon() {
+      const promos = {
+        // Sunday Jul 5 2026 — Heba Al-Wasity / Weavingshaw (Booky #42, word: GHOST)
+        '2026-07-05': 'Today\u2019s Booky word is hidden in <strong>Weavingshaw</strong>',
+      };
+      const now = new Date();
+      const key = `${now.getFullYear()}-${String(now.getMonth() + 1).padStart(2, '0')}-${String(now.getDate()).padStart(2, '0')}`;
+      const promoText = promos[key];
+      if (!promoText) return;
+
+      document.querySelectorAll('[data-booky-promo-ribbon]').forEach((ribbon) => {
+        const pill = ribbon.querySelector('.lp-daily-ribbon-pill');
+        const text = ribbon.querySelector('.lp-daily-ribbon-text');
+        if (pill) pill.textContent = 'TODAY';
+        if (text) text.innerHTML = promoText;
+        ribbon.hidden = false;
+      });
+    }
+
     document.addEventListener('DOMContentLoaded', () => {
+      initBookyPromoRibbon();
+
       document.getElementById('suggestBookInput')?.addEventListener('keydown', e => {
         const resultsVisible = document.getElementById('suggestSearchResults')?.style.display !== 'none';
         if (e.key === 'Escape') { hideSuggestResults(); return; }

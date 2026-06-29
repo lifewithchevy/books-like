@@ -27,6 +27,7 @@ const CURATED_SLUGS = new Set([
   'the-cruel-prince',
   'the-serpent-and-the-wings-of-night',
   'throne-of-glass',
+  'weavingshaw',
 ]);
 
 let DATA = null; // { epoch, queue }
@@ -47,7 +48,7 @@ try {
 // Pull queue + dictionary in parallel. Dictionary is large (~80KB) but
 // only loaded once — browser caches it. The Set lookup is O(1).
 const [data, dictList] = await Promise.all([
-fetch('/booky/words.json?v=5', { cache: 'no-store' }).then(r => r.json()),
+fetch('/booky/words.json?v=6', { cache: 'no-store' }).then(r => r.json()),
 fetch('/booky/dictionary.json?v=12', { cache: 'force-cache' }).then(r => r.json()),
 ]);
 DATA = data;
