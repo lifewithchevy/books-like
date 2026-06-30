@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=24" />
+<link rel="stylesheet" href="/booky/styles.css?v=25" />
 <style>
   /* Preview chrome only — not part of the game */
   body.win-preview { overflow: auto; }
@@ -144,11 +144,19 @@ function milestoneText(s) {
 }
 
 const SCENARIOS = {
-  win:      { won: true,  tries: 4, played: 12, wins: 11, streak: 2, max: 5, featured: false },
-  loss:     { won: false, tries: 6, played: 12, wins: 10, streak: 0, max: 5, featured: false, word: 'GHOST' },
-  featured: { won: true,  tries: 3, played: 20, wins: 18, streak: 7, max: 9, featured: true },
-  newbie:   { won: true,  tries: 5, played: 1,  wins: 1,  streak: 1, max: 1, featured: false },
-  streak:   { won: true,  tries: 2, played: 40, wins: 38, streak: 29, max: 29, featured: false },
+  win:      { won: true,  tries: 4, played: 12, wins: 11, streak: 2, max: 5, featured: false,
+    title: 'Fourth Wing', author: 'Rebecca Yarros', slug: 'fourth-wing',
+    cover: 'https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg' },
+  loss:     { won: false, tries: 6, played: 12, wins: 10, streak: 0, max: 5, featured: false, word: 'GHOST',
+    title: 'Weavingshaw', author: 'Heba Al-Wasity', slug: 'weavingshaw', cover: 'assets/weavingshaw.jpg' },
+  featured: { won: true,  tries: 3, played: 20, wins: 18, streak: 7, max: 9, featured: true,
+    title: 'Weavingshaw', author: 'Heba Al-Wasity', slug: 'weavingshaw', cover: 'assets/weavingshaw.jpg', word: 'GHOST' },
+  newbie:   { won: true,  tries: 5, played: 1,  wins: 1,  streak: 1, max: 1, featured: false,
+    title: 'Fourth Wing', author: 'Rebecca Yarros', slug: 'fourth-wing',
+    cover: 'https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg' },
+  streak:   { won: true,  tries: 2, played: 40, wins: 38, streak: 29, max: 29, featured: false,
+    title: 'Fourth Wing', author: 'Rebecca Yarros', slug: 'fourth-wing',
+    cover: 'https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg' },
 };
 
 function render(key) {
@@ -186,17 +194,28 @@ function render(key) {
   rec.classList.toggle('book-hero--featured', s.featured);
   modal.classList.toggle('end-modal--featured', s.featured);
   $('book-rec-badge').hidden = !s.featured;
-  $('end-word').textContent = s.featured ? 'GHOST' : '';
-  if (s.featured) {
-    $('book-rec-title').textContent = 'Weavingshaw';
-    $('book-rec-author').textContent = 'Heba Al-Wasity';
+  $('end-word').textContent = s.word || (s.featured ? 'GHOST' : '');
+  $('end-word').hidden = !s.featured && !s.word;
+  $('book-rec-title').textContent = s.title;
+  $('book-rec-author').textContent = s.author;
+  if (s.featured && s.hook !== false) {
     $('book-rec-hook').textContent = 'A haunted loom, a cursed bargain, and a love that refuses to unravel.';
     $('book-rec-hook').hidden = false;
   } else {
-    $('book-rec-title').textContent = 'Fourth Wing';
-    $('book-rec-author').textContent = 'Rebecca Yarros';
     $('book-rec-hook').hidden = true;
   }
+  const cover = $('book-rec-cover');
+  cover.src = s.cover || (s.slug ? `assets/${s.slug}.jpg` : '');
+  cover.alt = `${s.title} cover`;
+  cover.hidden = false;
+  cover.onerror = () => {
+    if (s.slug && !cover.src.includes('assets/')) {
+      cover.src = `assets/${s.slug}.jpg`;
+      cover.onerror = () => { cover.hidden = true; };
+    } else {
+      cover.hidden = true;
+    }
+  };
   const link = $('book-rec-link');
   link.textContent = 'More books like this →';
   link.href = '#';

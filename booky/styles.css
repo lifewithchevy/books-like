@@ -425,8 +425,9 @@ body {
   padding: 11px;
 }
 .book-hero--compact .book-hero-cover {
-  width: 48px;
-  height: 72px;
+  width: 52px;
+  height: 78px;
+  display: block;
 }
 .book-hero--compact .book-hero-label {
   font-size: 10px;

@@ -486,6 +486,32 @@ else { next = b; break; }
 return { earned, next };
 }
 
+function applyBookCover(img, book) {
+if (!img || !book) return;
+const local = book.slug ? `/booky/assets/${book.slug}.jpg` : '';
+const remote = book.cover || '';
+img.alt = `${book.title} cover`;
+if (!remote && !local) {
+img.hidden = true;
+return;
+}
+img.hidden = false;
+if (remote) {
+img.src = remote;
+img.onerror = () => {
+if (local && !img.src.endsWith(local)) {
+img.src = local;
+img.onerror = () => { img.hidden = true; };
+} else {
+img.hidden = true;
+}
+};
+} else {
+img.src = local;
+img.onerror = () => { img.hidden = true; };
+}
+}
+
 function formatMilestoneText(streak) {
 if (streak < 1) return null;
 const { earned, next } = badgeForStreak(streak);
@@ -541,14 +567,7 @@ $('book-rec-badge').hidden = !bookRec.featured;
 $('end-word').textContent = ANSWER;
 
 const cover = $('book-rec-cover');
-if (bookRec.cover) {
-cover.src = bookRec.cover;
-cover.alt = `${bookRec.title} cover`;
-cover.hidden = false;
-cover.onerror = () => { cover.hidden = true; };
-} else {
-cover.hidden = true;
-}
+applyBookCover(cover, bookRec);
 
 const hookEl = $('book-rec-hook');
 if (bookRec.featured && bookRec.hook) {
