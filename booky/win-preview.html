@@ -158,7 +158,7 @@ function milestoneText(s) {
 
 const SCENARIOS = {
   win:      { won: true,  tries: 4, played: 12, wins: 11, streak: 2, max: 5, word: 'RIDER' },
-  loss:     { won: false, tries: 6, played: 12, wins: 10, streak: 0, max: 5, word: 'GHOST' },
+  loss:     { won: false, tries: 6, played: 12, wins: 10, streak: 0, max: 5, word: 'RIDER' },
   featured: { won: true,  tries: 3, played: 20, wins: 18, streak: 7, max: 9, word: 'GHOST' },
   newbie:   { won: true,  tries: 5, played: 1,  wins: 1,  streak: 1, max: 1, word: 'RIDER' },
   streak:   { won: true,  tries: 2, played: 40, wins: 38, streak: 29, max: 29, word: 'RIDER' },
@@ -213,9 +213,10 @@ function render(key) {
   const rec = $('book-rec');
   const modal = $('end-modal');
   if (book) {
-  rec.classList.toggle('book-hero--featured', !!book.featured);
-  modal.classList.toggle('end-modal--featured', !!book.featured);
-  $('book-rec-badge').hidden = !book.featured;
+  const isFeaturedWin = s.won && !!book?.featured;
+  rec.classList.toggle('book-hero--featured', isFeaturedWin);
+  modal.classList.toggle('end-modal--featured', isFeaturedWin);
+  $('book-rec-badge').hidden = !isFeaturedWin;
   const endWord = $('end-word');
   endWord.textContent = s.word;
   endWord.hidden = false;
@@ -227,7 +228,7 @@ function render(key) {
   endWord.setAttribute('aria-label', "Reveal today's word");
   $('book-rec-title').textContent = book.title;
   $('book-rec-author').textContent = book.author;
-  if (book.featured && book.hook) {
+  if (isFeaturedWin && book.hook) {
     $('book-rec-hook').textContent = book.hook;
     $('book-rec-hook').hidden = false;
   } else {

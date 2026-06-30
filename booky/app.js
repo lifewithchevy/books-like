@@ -580,16 +580,17 @@ $('end-puzzle-no').textContent = 'Booky #' + DAY;
 renderStatsModal();
 renderEndScreenStats();
 
-// Book card — below the fold; featured styling on author days only
+// Book card — featured promo theme on author-day wins only
 const bookRec = DATA.wordBooks?.[ANSWER];
 const recEl = $('book-rec');
 const endModal = $('end-modal');
 if (bookRec) {
-recEl.classList.toggle('book-hero--featured', !!bookRec.featured);
-if (endModal) endModal.classList.toggle('end-modal--featured', !!bookRec.featured);
+const isFeaturedWin = won && !!bookRec.featured;
+recEl.classList.toggle('book-hero--featured', isFeaturedWin);
+if (endModal) endModal.classList.toggle('end-modal--featured', isFeaturedWin);
 $('book-rec-title').textContent = bookRec.title;
 $('book-rec-author').textContent = bookRec.author;
-$('book-rec-badge').hidden = !bookRec.featured;
+$('book-rec-badge').hidden = !isFeaturedWin;
 const endWord = $('end-word');
 endWord.textContent = ANSWER;
 endWord.hidden = false;
@@ -599,7 +600,7 @@ const cover = $('book-rec-cover');
 applyBookCover(cover, bookRec);
 
 const hookEl = $('book-rec-hook');
-if (bookRec.featured && bookRec.hook) {
+if (isFeaturedWin && bookRec.hook) {
 hookEl.textContent = bookRec.hook;
 hookEl.hidden = false;
 } else {
