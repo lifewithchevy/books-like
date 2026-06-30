@@ -869,6 +869,15 @@ body.promo-page.promo-page--story .promo-cover {
   line-height: 1.5;
   padding: 20px;
 }
+.promo-loading {
+  position: relative;
+  z-index: 1;
+  text-align: center;
+  color: var(--ink-dim);
+  font-family: var(--font-serif);
+  font-size: 15px;
+  padding: 40px 20px;
+}
 
 /* Secondary share button (outline) */
 .secondary-btn {

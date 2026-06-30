@@ -26,6 +26,8 @@ function findDayBySlug(data, slug) {
 }
 
 function showError(msg) {
+  const loading = $('promo-loading');
+  if (loading) loading.hidden = true;
   $('promo-card').hidden = true;
   const err = $('promo-error');
   err.textContent = msg;
@@ -103,5 +105,7 @@ function showError(msg) {
   $('promo-cta').href = `https://90books.com/booky?${utm}`;
 
   document.title = `Booky — ${book.title}`;
+  const loading = $('promo-loading');
+  if (loading) loading.hidden = true;
   $('promo-card').hidden = false;
 })();
