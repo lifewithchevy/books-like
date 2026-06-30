@@ -407,6 +407,9 @@ body {
   margin-top: 12px;
 }
 #end-modal .share-btn {
+  position: relative;
+  overflow: hidden;
+  isolation: isolate;
   width: 100%;
   margin: 0;
   padding: 14px 16px;
@@ -416,15 +419,90 @@ body {
   border-radius: 8px;
   letter-spacing: 0.2px;
 }
-.share-btn--pulse {
-  animation: sharePulse 1.4s ease-out 2;
+
+/* Magical beckon — shifting romantasy glow + gold shimmer sweep */
+.share-btn--magic {
+  background: linear-gradient(
+    135deg,
+    var(--accent) 0%,
+    #b13386 38%,
+    #9333d9 72%,
+    var(--accent-dark) 100%
+  );
+  background-size: 220% 220%;
+  animation:
+    shareMagicGlow 2.6s ease-in-out infinite,
+    shareGradientDrift 5.5s ease-in-out infinite;
 }
-@keyframes sharePulse {
-  0%, 100% { box-shadow: 0 6px 20px var(--shadow-accent); }
-  50%      { box-shadow: 0 6px 28px var(--shadow-accent), 0 0 0 4px rgba(217, 70, 168, 0.25); }
+.share-btn--magic::before {
+  content: "";
+  position: absolute;
+  inset: -1px;
+  border-radius: inherit;
+  background: linear-gradient(
+    105deg,
+    transparent 36%,
+    rgba(255, 255, 255, 0.14) 44%,
+    rgba(240, 217, 160, 0.55) 50%,
+    rgba(255, 255, 255, 0.14) 56%,
+    transparent 64%
+  );
+  transform: translateX(-125%) skewX(-14deg);
+  animation: shareShimmer 3.4s ease-in-out infinite;
+  pointer-events: none;
+}
+.share-btn--magic::after {
+  content: "✦";
+  position: absolute;
+  right: 16px;
+  top: 50%;
+  margin-top: -7px;
+  font-size: 13px;
+  line-height: 1;
+  color: rgba(255, 248, 236, 0.92);
+  text-shadow: 0 0 10px rgba(240, 217, 160, 0.95), 0 0 18px rgba(217, 70, 168, 0.55);
+  animation: shareSparkle 2.2s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes shareMagicGlow {
+  0%, 100% {
+    box-shadow:
+      0 6px 20px var(--shadow-accent),
+      inset 0 1px 0 rgba(255, 255, 255, 0.1);
+    filter: brightness(1);
+  }
+  50% {
+    box-shadow:
+      0 10px 34px rgba(217, 70, 168, 0.48),
+      0 0 26px rgba(147, 51, 217, 0.38),
+      0 0 0 1px rgba(216, 176, 106, 0.45),
+      inset 0 1px 0 rgba(255, 255, 255, 0.22);
+    filter: brightness(1.07);
+  }
+}
+@keyframes shareGradientDrift {
+  0%, 100% { background-position: 0% 50%; }
+  50% { background-position: 100% 50%; }
+}
+@keyframes shareShimmer {
+  0%, 20% { transform: translateX(-125%) skewX(-14deg); opacity: 0; }
+  32% { opacity: 1; }
+  58%, 100% { transform: translateX(125%) skewX(-14deg); opacity: 0; }
+}
+@keyframes shareSparkle {
+  0%, 100% { opacity: 0.35; transform: scale(0.88) rotate(0deg); }
+  50% { opacity: 1; transform: scale(1.12) rotate(18deg); }
 }
 @media (prefers-reduced-motion: reduce) {
-  .share-btn--pulse { animation: none; }
+  .share-btn--magic {
+    animation: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+    background-size: auto;
+  }
+  .share-btn--magic::before,
+  .share-btn--magic::after { animation: none; }
+  .share-btn--magic::before { display: none; }
+  .share-btn--magic::after { opacity: 0.7; transform: none; }
 }
 
 .end-extras {

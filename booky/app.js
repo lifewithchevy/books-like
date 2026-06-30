@@ -602,10 +602,8 @@ tickCountdown();
 const shareBtn = $('share-btn');
 if (shareBtn) {
 shareBtn.textContent = 'Share';
-if (won) {
-  shareBtn.classList.add('share-btn--pulse');
-  setTimeout(() => shareBtn.classList.remove('share-btn--pulse'), 3000);
-}
+shareBtn.classList.remove('share-btn--magic');
+if (won) shareBtn.classList.add('share-btn--magic');
 }
 if (!window.__countdownTicker) {
 window.__countdownTicker = setInterval(tickCountdown, 1000);
