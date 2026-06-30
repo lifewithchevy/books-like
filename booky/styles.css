@@ -398,7 +398,7 @@ body {
 
 /* Win screen — word in book card, lightly blurred to tease without spoiling */
 .end-word--spoiled {
-  filter: blur(5px);
+  filter: blur(4px);
   opacity: 0.92;
   user-select: none;
   -webkit-user-select: none;
