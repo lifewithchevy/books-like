@@ -36,6 +36,10 @@
   --streak-border:  rgba(217, 70, 168, 0.35);
   --streak-icon-shadow: rgba(217, 70, 168, 0.5);
 
+  /* Gold accents — featured book card + secondary CTA */
+  --gold: #d8b06a;
+  --gold-label: #f0d9a0;
+
   /* Progress bar trough */
   --trough: rgba(0, 0, 0, 0.3);
 
@@ -77,6 +81,8 @@
     --streak-bg-to:   rgba(139, 63, 211, 0.10);
     --streak-border:  rgba(200, 57, 143, 0.30);
     --streak-icon-shadow: rgba(200, 57, 143, 0.35);
+
+    --gold-label: #a67c1a;
 
     --trough: rgba(42, 10, 38, 0.15);
   }
@@ -546,11 +552,11 @@ body {
 .book-hero--featured .book-hero-title { color: #f3e3ee; }
 .book-hero--featured .book-hero-author { color: #c3a6bc; }
 .book-hero--featured .book-hero-hook { color: #b496ac; }
-/* Book CTA below share — outline so share stays primary */
+/* Book CTA below share — gold outline so share stays primary */
 .secondary-link {
   background: transparent;
-  border: 1.5px solid var(--border);
-  color: var(--accent-2);
+  border: 1.5px solid var(--gold);
+  color: var(--gold-label);
   font-weight: 600;
   padding: 11px;
   border-radius: 10px;
@@ -560,9 +566,8 @@ body {
   text-decoration: none;
 }
 .book-hero--featured .secondary-link {
-  border-color: #d8b06a;
-  color: #f0d9a0;
   background: rgba(207, 63, 134, 0.15);
+  color: #f0d9a0;
 }
 .secondary-link:active { transform: scale(0.98); }
 
