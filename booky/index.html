@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=17" />
+<link rel="stylesheet" href="/booky/styles.css?v=18" />
 <!-- PostHog analytics -->
 <script>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
@@ -153,8 +153,16 @@ competes with the Booky wordmark or the help/stats icons. -->
 
 <!-- Share (priority) -->
 <div id="share-block" class="share-block">
-<pre id="share-preview" class="share-preview" aria-hidden="true"></pre>
-<button id="share-btn" class="primary share-btn">Share result</button>
+<p class="share-label">share your result</p>
+<button type="button" id="share-preview" class="share-preview-card" aria-label="Preview of your shareable result">
+<p id="share-header" class="share-header"></p>
+<p id="share-score" class="share-score"></p>
+<div id="share-grid" class="share-grid"></div>
+<p id="share-book" class="share-book" hidden></p>
+<p class="share-url">90books.com/booky</p>
+</button>
+<button id="share-btn" class="primary share-btn" type="button">Share result</button>
+<p id="share-hint" class="share-hint"></p>
 <div id="share-toast" class="share-toast" role="status" aria-live="polite" hidden></div>
 </div>
 
@@ -203,6 +211,6 @@ required
 <!-- Floating toast (invalid guess, etc.) -->
 <div id="floating-toast" class="float-toast" hidden></div>
 
-<script src="/booky/app.js?v=30" defer></script>
+<script src="/booky/app.js?v=31" defer></script>
 </body>
 </html>
