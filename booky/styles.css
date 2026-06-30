@@ -430,7 +430,7 @@ body.end-screen-open .bg-glow {
   line-height: 1.2;
   padding-bottom: 0.05em;
 }
-#end-modal .celebration.won .celebration-title {
+#end-modal .celebration .celebration-title {
   background: none;
   -webkit-background-clip: unset;
   background-clip: unset;
@@ -796,7 +796,7 @@ body.end-screen-open .bg-glow {
 #end-modal.end-modal--featured .end-puzzle-no {
   color: var(--featured-footer);
 }
-#end-modal.end-modal--featured .end-top:has(.celebration.won)::after {
+#end-modal.end-modal--featured .end-top:has(.celebration)::after {
   content: "— ✦ —";
   display: block;
   margin-top: 4px;

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=53" />
+<link rel="stylesheet" href="/booky/styles.css?v=54" />
 <style>
   /* Preview chrome only — not part of the game */
   body.win-preview { overflow: auto; }
@@ -183,15 +183,14 @@ function render(key) {
   if (s.won) {
     $('end-headline').textContent = 'Congratulations!';
     $('end-subtitle').textContent = `You guessed it in ${s.tries}`;
-    $('end-subtitle').hidden = false;
-    $('end-word-reveal').hidden = true;
     cel.classList.remove('lost'); cel.classList.add('won');
   } else {
     $('end-headline').textContent = 'Better luck tomorrow.';
-    $('end-subtitle').hidden = true;
-    $('end-word-reveal').hidden = true;
+    $('end-subtitle').textContent = 'You used all 6 guesses';
     cel.classList.remove('won'); cel.classList.add('lost');
   }
+  $('end-subtitle').hidden = false;
+  $('end-word-reveal').hidden = true;
 
   $('end-stat-played').textContent = s.played;
   $('end-stat-winpct').textContent = Math.round(100 * s.wins / s.played);
@@ -220,20 +219,12 @@ function render(key) {
   const endWord = $('end-word');
   endWord.textContent = s.word;
   endWord.hidden = false;
-  endWord.classList.toggle('end-word--spoiled', s.won);
-  endWord.classList.toggle('end-word--tappable', s.won);
-  endWord.setAttribute('aria-hidden', s.won ? 'true' : 'false');
-  if (s.won) {
-    endWord.setAttribute('role', 'button');
-    endWord.tabIndex = 0;
-    endWord.setAttribute('aria-pressed', 'false');
-    endWord.setAttribute('aria-label', "Reveal today's word");
-  } else {
-    endWord.removeAttribute('role');
-    endWord.removeAttribute('aria-pressed');
-    endWord.removeAttribute('aria-label');
-    endWord.tabIndex = -1;
-  }
+  endWord.classList.add('end-word--spoiled', 'end-word--tappable');
+  endWord.setAttribute('aria-hidden', 'true');
+  endWord.setAttribute('role', 'button');
+  endWord.tabIndex = 0;
+  endWord.setAttribute('aria-pressed', 'false');
+  endWord.setAttribute('aria-label', "Reveal today's word");
   $('book-rec-title').textContent = book.title;
   $('book-rec-author').textContent = book.author;
   if (book.featured && book.hook) {
@@ -261,7 +252,7 @@ function render(key) {
 
   const shareBtn = $('share-btn');
   if (shareBtn) {
-    shareBtn.classList.toggle('share-btn--magic', s.won);
+    shareBtn.classList.add('share-btn--magic');
   }
 
   // Highlight active control (standalone testing page only)
