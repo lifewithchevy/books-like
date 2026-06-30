@@ -189,8 +189,7 @@ function render(key) {
   } else {
     $('end-headline').textContent = 'Better luck tomorrow.';
     $('end-subtitle').hidden = true;
-    $('end-word-reveal').textContent = `The word was ${s.word}`;
-    $('end-word-reveal').hidden = false;
+    $('end-word-reveal').hidden = true;
     cel.classList.remove('won'); cel.classList.add('lost');
   }
 

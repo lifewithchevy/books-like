@@ -580,8 +580,7 @@ $('celebration').classList.add('won');
 } else {
 title.textContent = 'Better luck tomorrow.';
 sub.hidden = true;
-wordReveal.textContent = `The word was ${ANSWER}`;
-wordReveal.hidden = false;
+wordReveal.hidden = true;
 $('celebration').classList.remove('won');
 $('celebration').classList.add('lost');
 }
