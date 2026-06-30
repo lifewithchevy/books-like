@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Booky — Weavingshaw (dev preview)</title>
+<meta name="robots" content="noindex" />
+<meta name="theme-color" content="#160516" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
+<!-- Relative path — works on localhost:8080/booky/preview.html -->
+<link rel="stylesheet" href="styles.css?v=16" />
+<style>
+  /* Fallback if server/CSS not loaded */
+  html { background: #160516; }
+  .preview-fallback {
+    display: none;
+    max-width: 360px;
+    margin: 40px auto;
+    padding: 20px;
+    color: #f8b6da;
+    font-family: system-ui, sans-serif;
+    font-size: 14px;
+    line-height: 1.5;
+    text-align: center;
+  }
+</style>
+</head>
+<body class="promo-page promo-page--story">
+<noscript>
+  <p class="preview-fallback" style="display:block">Enable JavaScript for dynamic promos, or use this static Weavingshaw preview.</p>
+</noscript>
+<p id="preview-fallback" class="preview-fallback">
+  CSS didn&rsquo;t load. In Cursor terminal run: <code>./scripts/preview.sh</code><br />
+  Then open <strong>Ports</strong> &rarr; 8080 &rarr; click the globe icon.
+</p>
+<div class="bg-glow" aria-hidden="true"></div>
+
+<article class="promo-frame" id="promo-card">
+<span class="promo-corner promo-corner--tl" aria-hidden="true"></span>
+<span class="promo-corner promo-corner--tr" aria-hidden="true"></span>
+<span class="promo-corner promo-corner--bl" aria-hidden="true"></span>
+<span class="promo-corner promo-corner--br" aria-hidden="true"></span>
+<div class="promo-brand">
+<div class="booky-tiles" aria-hidden="true">
+<span>B</span><span>O</span><span>O</span><span>K</span><span>Y</span>
+</div>
+<p class="promo-tagline">romantasy word game</p>
+</div>
+<p class="promo-flourish" aria-hidden="true">— ✦ —</p>
+<p class="promo-teaser">today&rsquo;s word is hidden in&hellip;</p>
+<img
+  class="promo-cover"
+  src="https://images-na.ssl-images-amazon.com/images/P/0593982576.01.LZZZZZZZ.jpg"
+  alt="Weavingshaw cover"
+/>
+<p class="promo-book-title">Weavingshaw</p>
+<p class="promo-book-author">Heba Al-Wasity</p>
+<a class="promo-cta" href="https://90books.com/booky?utm_source=author_promo&amp;utm_medium=social&amp;utm_campaign=weavingshaw">Play now</a>
+<p class="promo-footer">daily romantasy word game by <strong>90books</strong></p>
+</article>
+
+<script>
+  // Show help only if styles.css failed (promo-frame has no border without CSS)
+  requestAnimationFrame(function () {
+    var card = document.getElementById('promo-card');
+    var fb = document.getElementById('preview-fallback');
+    if (!card || !fb) return;
+    var border = getComputedStyle(card).borderTopWidth;
+    if (border === '0px' || border === '') fb.style.display = 'block';
+  });
+</script>
+</body>
+</html>
