@@ -2,22 +2,14 @@
   "version": "2.0.0",
   "tasks": [
     {
-      "label": "Booky: start preview server",
+      "label": "Booky: Start Preview",
       "type": "shell",
-      "command": "./scripts/preview.sh",
-      "isBackground": true,
-      "problemMatcher": {
-        "pattern": { "regexp": "^$" },
-        "background": {
-          "activeOnStart": true,
-          "beginsPattern": "Booky preview server",
-          "endsPattern": "Serving HTTP on"
-        }
-      },
+      "command": "chmod +x scripts/preview-all.sh && bash scripts/preview-all.sh",
+      "problemMatcher": [],
       "presentation": {
         "reveal": "always",
-        "panel": "dedicated",
-        "focus": false
+        "panel": "shared",
+        "focus": true
       }
     }
   ]

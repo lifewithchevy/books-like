@@ -3,3 +3,7 @@ node_modules/
 .DS_Store
 .claude/
 .env*
+.preview/
+PREVIEW_URL.txt
+booky/.tunnel-base
+booky/preview-url.js

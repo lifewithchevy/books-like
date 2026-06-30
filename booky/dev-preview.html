@@ -2,93 +2,40 @@
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
-<meta name="viewport" content="width=device-width, initial-scale=1" />
-<title>Booky dev preview</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Booky — Weavingshaw (dev preview)</title>
 <meta name="robots" content="noindex" />
-<style>
-  * { box-sizing: border-box; }
-  html, body { margin: 0; height: 100%; font-family: system-ui, sans-serif; background: #111; color: #eee; }
-  .wrap { display: flex; height: 100%; }
-  aside {
-    width: 220px;
-    flex-shrink: 0;
-    padding: 14px 12px;
-    background: #1a1a1a;
-    border-right: 1px solid #333;
-    font-size: 12px;
-    line-height: 1.5;
-    overflow: auto;
-  }
-  aside h1 { font-size: 13px; margin: 0 0 10px; font-weight: 600; }
-  aside label { display: block; margin: 10px 0 4px; color: #aaa; }
-  aside input, aside select {
-    width: 100%;
-    padding: 6px 8px;
-    border: 1px solid #444;
-    border-radius: 6px;
-    background: #222;
-    color: #fff;
-    font-size: 12px;
-  }
-  aside button {
-    margin-top: 10px;
-    width: 100%;
-    padding: 8px;
-    border: none;
-    border-radius: 6px;
-    background: #d946a8;
-    color: #fff;
-    font-weight: 600;
-    cursor: pointer;
-    font-size: 12px;
-  }
-  aside a { color: #f8b6da; }
-  aside p { margin: 12px 0 0; color: #888; font-size: 11px; }
-  main { flex: 1; min-width: 0; background: #160516; }
-  iframe { width: 100%; height: 100%; border: none; display: block; }
-</style>
+<meta name="theme-color" content="#160516" />
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="styles.css?v=16" />
 </head>
-<body>
-<div class="wrap">
-  <aside>
-    <h1>Booky preview</h1>
-    <label for="book">Book slug</label>
-    <input id="book" type="text" value="weavingshaw" />
-    <label for="format">Format</label>
-    <select id="format">
-      <option value="">Feed / post</option>
-      <option value="story" selected>IG story</option>
-    </select>
-    <button type="button" id="reload">Reload preview</button>
-    <p>Edit <code>booky/styles.css</code> — save and reload (or use live-server auto-refresh).</p>
-    <p><a id="open-tab" href="#" target="_blank" rel="noopener">Open promo in new tab</a></p>
-  </aside>
-  <main>
-    <iframe id="frame" title="Booky promo preview"></iframe>
-  </main>
+<body class="promo-page promo-page--story">
+<div class="bg-glow" aria-hidden="true"></div>
+
+<article class="promo-frame">
+<span class="promo-corner promo-corner--tl" aria-hidden="true"></span>
+<span class="promo-corner promo-corner--tr" aria-hidden="true"></span>
+<span class="promo-corner promo-corner--bl" aria-hidden="true"></span>
+<span class="promo-corner promo-corner--br" aria-hidden="true"></span>
+<div class="promo-brand">
+<div class="booky-tiles" aria-hidden="true">
+<span>B</span><span>O</span><span>O</span><span>K</span><span>Y</span>
 </div>
-<script>
-  const book = document.getElementById('book');
-  const format = document.getElementById('format');
-  const frame = document.getElementById('frame');
-  const openTab = document.getElementById('open-tab');
-
-  function promoUrl() {
-    const q = new URLSearchParams({ book: book.value.trim() || 'weavingshaw' });
-    if (format.value) q.set('format', format.value);
-    return '/booky/promo/?' + q;
-  }
-
-  function load() {
-    const url = promoUrl();
-    frame.src = url;
-    openTab.href = url;
-  }
-
-  document.getElementById('reload').addEventListener('click', load);
-  book.addEventListener('keydown', (e) => { if (e.key === 'Enter') load(); });
-  format.addEventListener('change', load);
-  load();
-</script>
+<p class="promo-tagline">romantasy word game</p>
+</div>
+<p class="promo-flourish" aria-hidden="true">— ✦ —</p>
+<p class="promo-teaser">today&rsquo;s word is hidden in&hellip;</p>
+<img
+  class="promo-cover"
+  src="https://images-na.ssl-images-amazon.com/images/P/0593982576.01.LZZZZZZZ.jpg"
+  alt="Weavingshaw cover"
+/>
+<p class="promo-book-title">Weavingshaw</p>
+<p class="promo-book-author">Heba Al-Wasity</p>
+<a class="promo-cta" href="https://90books.com/booky?utm_source=author_promo&amp;utm_medium=social&amp;utm_campaign=weavingshaw">Play now</a>
+<p class="promo-footer">daily romantasy word game by <strong>90books</strong></p>
+</article>
 </body>
 </html>
