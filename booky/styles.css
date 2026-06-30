@@ -380,13 +380,35 @@ body {
 }
 .end-milestone {
   text-align: center;
-  font-size: 11px;
-  line-height: 1.4;
+  font-size: 12px;
+  line-height: 1.45;
   color: var(--ink-dim);
-  margin: 14px 0 0;
+  margin: 0;
   padding: 0;
   background: none;
   border: none;
+}
+.end-section-title {
+  margin: 0 0 12px;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2.2px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  text-align: center;
+}
+#end-modal .end-ranks {
+  margin: 0;
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1px solid var(--border);
+}
+#end-modal .book-hero .end-section-title {
+  margin-bottom: 8px;
+}
+#end-modal .reminder-form .end-section-title {
+  margin-bottom: 6px;
 }
 #end-modal .book-hero-cta { padding: 11px; min-height: 44px; }
 #end-modal .next {
@@ -713,10 +735,15 @@ body {
   color: var(--featured-plum-dim);
 }
 #end-modal.end-modal--featured .end-stats,
+#end-modal.end-modal--featured .end-ranks,
 #end-modal.end-modal--featured .end-share,
 #end-modal.end-modal--featured .end-extras,
 #end-modal.end-modal--featured .next {
   border-top-color: rgba(216, 176, 106, 0.28);
+}
+#end-modal.end-modal--featured .end-section-title {
+  color: var(--featured-footer);
+  letter-spacing: 2.4px;
 }
 #end-modal.end-modal--featured .share-btn--magic {
   background: linear-gradient(135deg, #cf3f86, #b13386);
@@ -1526,6 +1553,7 @@ body.promo-page.promo-page--story .promo-cover {
   .celebration { padding: 2px 0 12px; }
   .celebration-sub { font-size: 12px; }
   #end-modal .end-stats,
+  #end-modal .end-ranks,
   #end-modal .end-share,
   #end-modal .end-extras {
     padding-top: 14px;

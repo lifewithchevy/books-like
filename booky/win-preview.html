@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=42" />
+<link rel="stylesheet" href="/booky/styles.css?v=43" />
 <style>
   /* Preview chrome only — not part of the game */
   body.win-preview { overflow: auto; }
@@ -79,12 +79,17 @@
 </div>
 
 <div class="end-stats">
+<h3 class="end-section-title">Statistics</h3>
 <div class="stat-row end-stat-row">
 <div><span id="end-stat-played">0</span><small>played</small></div>
 <div><span id="end-stat-winpct">0</span><small>win %</small></div>
 <div><span id="end-stat-streak">0</span><small>streak</small></div>
 <div><span id="end-stat-max">0</span><small>max</small></div>
 </div>
+</div>
+
+<div class="end-ranks" id="end-ranks" hidden>
+<h3 class="end-section-title">Titles Earned</h3>
 <p id="end-milestone" class="end-milestone" hidden></p>
 </div>
 
@@ -98,6 +103,7 @@
 
 <div id="end-extras" class="end-extras">
 <div id="book-rec" class="book-hero book-hero--compact" hidden>
+<h3 class="end-section-title">Source Tome</h3>
 <p class="book-hero-label">📚 Today&rsquo;s word is from</p>
 <p id="end-word" class="end-word" aria-hidden="true"></p>
 <div class="book-hero-row">
@@ -113,6 +119,7 @@
 </div>
 
 <form id="reminder-form" class="reminder-form" novalidate>
+<h3 class="end-section-title">Streak Covenant</h3>
 <p class="reminder-headline">don&rsquo;t lose your 🔥 streak</p>
 <div class="reminder-row">
 <input type="email" id="reminder-email" placeholder="your@email.com" aria-label="Email for daily reminders" autocomplete="email" inputmode="email" required />
@@ -195,8 +202,16 @@ function render(key) {
   $('end-stat-max').textContent = s.max;
 
   const mEl = $('end-milestone');
+  const ranksBlock = $('end-ranks');
   const mt = milestoneText(s.streak);
-  if (mt) { mEl.textContent = mt; mEl.hidden = false; } else { mEl.hidden = true; }
+  if (mt) {
+    mEl.textContent = mt;
+    mEl.hidden = false;
+    if (ranksBlock) ranksBlock.hidden = false;
+  } else {
+    mEl.hidden = true;
+    if (ranksBlock) ranksBlock.hidden = true;
+  }
 
   // Book card — title, author, cover from words.json (same as prod)
   const rec = $('book-rec');

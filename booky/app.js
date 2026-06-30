@@ -637,13 +637,17 @@ $('end-stat-streak').textContent = STATS.currentStreak;
 $('end-stat-max').textContent = STATS.maxStreak;
 
 const milestoneEl = $('end-milestone');
+const ranksBlock = $('end-ranks');
 const milestoneTxt = formatMilestoneText(STATS.currentStreak);
 if (milestoneEl) {
 if (milestoneTxt) {
 milestoneEl.textContent = milestoneTxt;
 milestoneEl.hidden = false;
+if (ranksBlock) ranksBlock.hidden = false;
 } else {
 milestoneEl.hidden = true;
+if (ranksBlock) ranksBlock.hidden = true;
+}
 }
 }
 
