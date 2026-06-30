@@ -328,6 +328,13 @@ $('end-modal').close();
 $('reminder-form').addEventListener('submit', onReminderSubmit);
 }
 
+function setReminderSubscribedUI(subscribed) {
+const form = $('reminder-form');
+const active = $('reminder-active');
+if (form) form.style.display = subscribed ? 'none' : 'block';
+if (active) active.hidden = !subscribed;
+}
+
 async function onReminderSubmit(e) {
 e.preventDefault();
 const input = $('reminder-email');
@@ -362,16 +369,8 @@ posthog.capture('email_signup_completed', {
 source: 'booky_endscreen',
 word_number_at_signup: DAY,
 });
-toast.textContent = "you're in. i'll email you a reminder for tomorrow's word.";
-toast.className = 'reminder-toast reminder-success';
-toast.hidden = false;
-// Stop the attention pulse and collapse the form, leaving only the toast
-$('reminder-form').classList.remove('reminder-highlight');
-setTimeout(() => {
-$('reminder-form').querySelector('.reminder-row').style.display = 'none';
-$('reminder-form').querySelector('.reminder-pitch').style.display = 'none';
-$('reminder-form').querySelector('.reminder-headline').style.display = 'none';
-}, 600);
+setReminderSubscribedUI(true);
+toast.hidden = true;
 } catch {
 toast.textContent = "couldn't save right now. try again in a sec?";
 toast.className = 'reminder-toast reminder-error';
@@ -591,9 +590,7 @@ if (endModal) endModal.classList.remove('end-modal--featured');
 
 // Reminder form — below share; only if not subscribed
 const subscribed = localStorage.getItem('90books_booky_reminder_sub');
-const reminderForm = $('reminder-form');
-reminderForm.style.display = subscribed ? 'none' : 'block';
-$('reminder-active').hidden = !subscribed;
+setReminderSubscribedUI(!!subscribed);
 
 $('end-modal').showModal();
 tickCountdown();
