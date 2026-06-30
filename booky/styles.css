@@ -354,8 +354,9 @@ body {
   justify-content: center;
 }
 #end-modal .celebration-title {
-  font-size: clamp(24px, 6vw, 32px);
-  margin-bottom: 8px;
+  font-size: clamp(34px, 9vw, 44px);
+  margin-bottom: 0;
+  line-height: 1.05;
 }
 #end-modal .end-top {
   margin-bottom: 0;
@@ -397,6 +398,16 @@ body {
   text-transform: uppercase;
   color: var(--ink-faint);
   text-align: center;
+}
+.end-score-line {
+  text-align: center;
+  font-size: 14px;
+  color: var(--ink-dim);
+  margin: -2px 0 14px;
+  letter-spacing: 0.3px;
+}
+#end-modal .end-section-title + .end-score-line {
+  margin-top: -2px;
 }
 #end-modal .end-ranks {
   margin: 0;
@@ -716,7 +727,7 @@ body {
   -webkit-text-fill-color: var(--featured-plum-light);
   color: var(--featured-plum-light);
 }
-#end-modal.end-modal--featured .celebration-sub {
+#end-modal.end-modal--featured .end-score-line {
   color: var(--featured-pink);
   font-family: var(--font-serif);
   font-style: italic;
