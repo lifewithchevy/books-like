@@ -397,7 +397,7 @@ body.end-screen-open .bg-glow {
   padding:
     max(56px, calc(20px + env(safe-area-inset-top)))
     max(20px, env(safe-area-inset-right))
-    max(88px, calc(24px + env(safe-area-inset-bottom)))
+    max(24px, env(safe-area-inset-bottom))
     max(20px, env(safe-area-inset-left));
   box-sizing: border-box;
 }
@@ -415,49 +415,6 @@ body.end-screen-open .bg-glow {
   background: var(--bg-2);
   border: 1px solid var(--border);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.08);
-}
-.end-dismiss-bar {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  z-index: 301;
-  padding:
-    10px max(16px, env(safe-area-inset-right))
-    max(14px, env(safe-area-inset-bottom))
-    max(16px, env(safe-area-inset-left));
-  background: linear-gradient(180deg, transparent 0%, var(--bg) 28%);
-  border-top: 1px solid var(--border);
-}
-.end-dismiss {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  min-height: 48px;
-  padding: 12px 16px;
-  border: 1px solid var(--border);
-  border-radius: 12px;
-  background: var(--bg-2);
-  color: var(--ink);
-  font-family: var(--font-sans);
-  font-size: 15px;
-  font-weight: 600;
-  letter-spacing: 0.2px;
-  cursor: pointer;
-  -webkit-tap-highlight-color: transparent;
-}
-.end-dismiss:active {
-  transform: scale(0.98);
-}
-#end-modal.end-modal--featured .end-dismiss-bar {
-  background: linear-gradient(180deg, transparent 0%, #160c1d 32%);
-  border-top-color: rgba(216, 176, 106, 0.28);
-}
-#end-modal.end-modal--featured .end-dismiss {
-  background: rgba(22, 12, 29, 0.72);
-  border-color: rgba(216, 176, 106, 0.38);
-  color: var(--featured-plum-light);
 }
 #end-modal.end-modal--featured .sheet-close {
   background: rgba(22, 12, 29, 0.82);

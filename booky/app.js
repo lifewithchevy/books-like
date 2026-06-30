@@ -321,11 +321,9 @@ renderStatsModal();
 $('stats-modal').showModal();
 });
 $('share-btn').addEventListener('click', onShare);
-$('end-modal').querySelectorAll('[data-close-end]').forEach((btn) => {
-btn.addEventListener('click', (e) => {
+$('end-modal').querySelector('[data-close-end]').addEventListener('click', (e) => {
 e.preventDefault();
 closeEndScreen();
-});
 });
 $('reminder-form').addEventListener('submit', onReminderSubmit);
 const endWord = $('end-word');
