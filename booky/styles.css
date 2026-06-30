@@ -44,6 +44,7 @@
   --trough: rgba(0, 0, 0, 0.3);
 
   --font-serif: "Cormorant Garamond", Georgia, serif;
+  --font-stat: "Libre Baskerville", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
@@ -1023,9 +1024,10 @@ body {
 }
 .stat-row > div { display: flex; flex-direction: column; }
 .stat-row span {
-  font-family: var(--font-serif);
+  font-family: var(--font-stat);
   font-size: 30px;
-  font-weight: 600;
+  font-weight: 700;
+  font-variant-numeric: lining-nums tabular-nums;
   color: var(--ink);
 }
 .stat-row small {
@@ -1186,9 +1188,10 @@ body {
 }
 .mini-stats > div { display: flex; flex-direction: column; }
 .mini-stats span {
-  font-family: var(--font-serif);
+  font-family: var(--font-stat);
   font-size: 20px;
-  font-weight: 600;
+  font-weight: 700;
+  font-variant-numeric: lining-nums tabular-nums;
   color: var(--ink);
 }
 .mini-stats small {
