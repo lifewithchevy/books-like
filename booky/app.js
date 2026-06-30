@@ -323,7 +323,7 @@ $('stats-modal').showModal();
 $('share-btn').addEventListener('click', onShare);
 $('end-modal').querySelector('[data-close-end]').addEventListener('click', (e) => {
 e.preventDefault();
-$('end-modal').close();
+closeEndScreen();
 });
 $('reminder-form').addEventListener('submit', onReminderSubmit);
 const endWord = $('end-word');
@@ -362,6 +362,21 @@ function toggleWordSpoiler() {
 const el = $('end-word');
 if (!el || el.hidden || STATE.status !== 'won') return;
 setWordSpoilerState(!el.classList.contains('end-word--spoiled'));
+}
+
+function openEndScreen() {
+const el = $('end-modal');
+if (!el) return;
+el.hidden = false;
+document.body.classList.add('end-screen-open');
+el.scrollTop = 0;
+}
+
+function closeEndScreen() {
+const el = $('end-modal');
+if (!el) return;
+el.hidden = true;
+document.body.classList.remove('end-screen-open');
 }
 
 function setReminderSubscribedUI(subscribed) {
@@ -639,7 +654,7 @@ if (endModal) endModal.classList.remove('end-modal--featured');
 const subscribed = localStorage.getItem('90books_booky_reminder_sub');
 setReminderSubscribedUI(!!subscribed);
 
-$('end-modal').showModal();
+openEndScreen();
 tickCountdown();
 
 const shareBtn = $('share-btn');
