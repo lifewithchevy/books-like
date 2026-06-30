@@ -443,9 +443,8 @@ body.end-screen-open .bg-glow {
 }
 #end-modal .end-stats {
   margin: 0;
-  padding-top: 20px;
-  margin-top: 20px;
-  border-top: 1px solid var(--border);
+  padding-top: 16px;
+  margin-top: 16px;
 }
 #end-modal .end-stat-row {
   margin: 0 0 4px;
