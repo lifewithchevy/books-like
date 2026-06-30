@@ -501,10 +501,10 @@ img.onerror = () => { img.hidden = true; };
 function formatMilestoneText(streak) {
 if (streak < 1) return null;
 const { earned, next } = badgeForStreak(streak);
-let txt = `${earned.icon} ${earned.name} · ${earned.blurb}`;
+let txt = `${earned.icon} ${earned.name}`;
 if (next) {
 const rem = next.at - streak;
-txt += ` ${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}.`;
+txt += ` · ${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}`;
 }
 return txt;
 }

@@ -139,8 +139,8 @@ function badgeForStreak(s) {
 function milestoneText(s) {
   if (s < 1) return null;
   const { earned, next } = badgeForStreak(s);
-  let t = `${earned.icon} ${earned.name} · ${earned.blurb}`;
-  if (next) { const r = next.at - s; t += ` ${r} day${r === 1 ? '' : 's'} to ${next.icon} ${next.name}.`; }
+  let t = `${earned.icon} ${earned.name}`;
+  if (next) { const r = next.at - s; t += ` · ${r} day${r === 1 ? '' : 's'} to ${next.icon} ${next.name}`; }
   return t;
 }
 
