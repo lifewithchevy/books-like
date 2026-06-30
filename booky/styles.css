@@ -397,10 +397,10 @@ body {
   color: var(--accent-2);
 }
 
-/* Win screen — word in book card, lightly blurred to tease without spoiling */
+/* Win screen — word in book card, blurred to tease without spoiling */
 .end-word--spoiled {
-  filter: blur(4px);
-  opacity: 0.92;
+  filter: blur(7px);
+  opacity: 0.86;
   user-select: none;
   -webkit-user-select: none;
   pointer-events: none;
