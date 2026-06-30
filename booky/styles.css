@@ -356,7 +356,15 @@ body {
 #end-modal .celebration-title {
   font-size: clamp(26px, 6.5vw, 34px);
   margin-bottom: 0;
-  line-height: 1.05;
+  line-height: 1.2;
+  padding-bottom: 0.05em;
+}
+#end-modal .celebration.won .celebration-title {
+  background: none;
+  -webkit-background-clip: unset;
+  background-clip: unset;
+  -webkit-text-fill-color: unset;
+  color: var(--accent-2);
 }
 #end-modal .end-top {
   margin-bottom: 0;
@@ -1560,7 +1568,7 @@ body.promo-page.promo-page--story .promo-cover {
 
 @media (max-height: 700px) {
   #end-modal .end-inner { padding: 24px 18px 18px; }
-  #end-modal .celebration-title { font-size: 28px; }
+  #end-modal .celebration-title { font-size: 24px; }
   .celebration { padding: 2px 0 12px; }
   .celebration-sub { font-size: 12px; }
   #end-modal .end-stats,
