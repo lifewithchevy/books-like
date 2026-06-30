@@ -339,19 +339,36 @@ body {
   margin: 0;
   border-radius: 0;
   background: var(--bg);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
 }
 #end-modal .end-inner {
   max-width: 420px;
   margin: 0 auto;
-  min-height: 100vh;
-  padding: 44px 22px 30px;
+  min-height: 100dvh;
+  min-height: 100svh;
+  padding:
+    max(44px, calc(env(safe-area-inset-top, 0px) + 36px))
+    max(18px, env(safe-area-inset-right, 0px))
+    max(24px, calc(env(safe-area-inset-bottom, 0px) + 14px))
+    max(18px, env(safe-area-inset-left, 0px));
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  gap: 15px;
+  justify-content: flex-start;
+  gap: 12px;
 }
-#end-modal .celebration-title { font-size: 40px; }
-#end-modal .book-hero-cta { padding: 13px; }
+#end-modal .sheet-close {
+  top: max(10px, env(safe-area-inset-top, 0px));
+  right: max(10px, env(safe-area-inset-right, 0px));
+  min-width: 44px;
+  min-height: 44px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+#end-modal .celebration-title { font-size: clamp(28px, 8vw, 40px); }
+#end-modal .book-hero-cta { padding: 13px; min-height: 44px; }
 #end-modal .reminder-card { margin-top: 0; }
 #end-modal .next { margin: 0; }
 
@@ -425,6 +442,8 @@ body {
   font-size: 13px;
   font-style: italic;
   color: var(--ink-dim);
+  line-height: 1.35;
+  overflow-wrap: anywhere;
 }
 .share-url {
   margin: 0;
@@ -436,6 +455,7 @@ body {
   margin: 2px 0 0;
   padding: 13px;
   font-size: 15px;
+  min-height: 44px;
 }
 .share-btn--pulse {
   animation: sharePulse 1.4s ease-out 2;
@@ -510,11 +530,12 @@ body {
 .book-hero-meta { flex: 1; min-width: 0; }
 .book-hero-title {
   font-family: var(--font-serif);
-  font-size: 21px;
+  font-size: clamp(17px, 4.8vw, 21px);
   font-weight: 600;
   color: var(--ink);
   margin: 0;
-  line-height: 1.1;
+  line-height: 1.15;
+  overflow-wrap: anywhere;
 }
 .book-hero-author {
   font-size: 12px;
@@ -904,6 +925,7 @@ body {
   border: 1px solid var(--border);
   color: var(--ink);
   padding: 0 16px;
+  min-height: 44px;
   border-radius: 8px;
   cursor: pointer;
   font-family: var(--font-sans);
@@ -1236,4 +1258,76 @@ body.promo-page.promo-page--story .promo-cover {
   .tile { font-size: 20px; }
   .kb-key { height: 42px; font-size: 12px; }
   .topbar { padding: 6px 14px 4px; }
+}
+
+/* Win screen — compact on small / short viewports */
+@media (max-width: 380px) {
+  #end-modal .end-inner {
+    padding-left: max(14px, env(safe-area-inset-left, 0px));
+    padding-right: max(14px, env(safe-area-inset-right, 0px));
+    gap: 10px;
+  }
+  .share-block { padding: 10px; gap: 6px; }
+  .share-preview-card { padding: 10px 10px 9px; }
+  .share-score { font-size: 19px; margin-bottom: 8px; }
+  .share-row { font-size: 17px; letter-spacing: 0.5px; }
+  .book-hero { padding: 11px; }
+  .book-hero-row { gap: 10px; }
+  .book-hero-cover { width: 52px; height: 78px; }
+  .book-hero-label { margin-bottom: 8px; font-size: 10px; }
+  .reminder-card { padding: 11px; }
+  .reminder-headline { font-size: 15px; }
+}
+
+@media (max-height: 740px) {
+  #end-modal .end-inner { gap: 10px; }
+  #end-modal .celebration-title { font-size: clamp(26px, 7vw, 34px); }
+  .celebration { padding: 0 0 4px; }
+  .celebration-sub { font-size: 12px; }
+  .share-block { padding: 11px; gap: 6px; }
+  .share-preview-card { padding: 11px 10px 9px; }
+  .share-score { font-size: 20px; margin-bottom: 8px; }
+  .share-grid { gap: 3px; margin-bottom: 8px; }
+  .share-row { font-size: 18px; }
+  .book-hero { padding: 11px; }
+  .book-hero-cover { width: 54px; height: 81px; }
+  .book-hero-cta { margin-top: 10px; padding: 11px; }
+  .reminder-card { padding: 11px 12px; }
+  .reminder-headline { font-size: 15px; margin-bottom: 2px; }
+}
+
+@media (max-height: 640px) {
+  #end-modal .end-inner {
+    padding-top: max(38px, calc(env(safe-area-inset-top, 0px) + 28px));
+    gap: 8px;
+  }
+  #end-modal .celebration-title { font-size: 24px; }
+  .end-top .end-puzzle-no { margin-bottom: 4px; }
+  .share-label { font-size: 9px; letter-spacing: 1.8px; }
+  .share-score { font-size: 18px; }
+  .share-row { font-size: 16px; line-height: 1.1; }
+  .share-book { font-size: 12px; margin-bottom: 6px; }
+  .share-hint { font-size: 11px; }
+  .book-hero-hook { font-size: 11.5px; margin-top: 5px; }
+  .end-word { font-size: 20px; letter-spacing: 4px; margin-bottom: 6px; }
+  .next { font-size: 10px; }
+}
+
+@media (max-width: 340px) {
+  .reminder-row {
+    grid-template-columns: 1fr;
+  }
+  #reminder-submit {
+    width: 100%;
+    padding: 12px 16px;
+  }
+}
+
+/* Win screen — breathe on tall desktop viewports */
+@media (min-width: 500px) and (min-height: 820px) {
+  #end-modal .end-inner {
+    justify-content: center;
+    gap: 15px;
+    padding-bottom: max(32px, calc(env(safe-area-inset-bottom, 0px) + 20px));
+  }
 }
