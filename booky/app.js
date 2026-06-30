@@ -492,12 +492,13 @@ const title = $('end-headline');
 const sub = $('end-subtitle');
 if (won) {
 title.textContent = 'Congrats!';
-sub.hidden = true;
+sub.textContent = `You got it in ${tries}`;
+sub.hidden = false;
 $('celebration').classList.remove('lost');
 $('celebration').classList.add('won');
 } else {
 title.textContent = "Tomorrow's another word.";
-sub.hidden = true;   // the answer now reveals in the book card below
+sub.hidden = true;
 $('celebration').classList.remove('won');
 $('celebration').classList.add('lost');
 }
@@ -514,43 +515,59 @@ streakEl.hidden = true;
 }
 
 renderStatsModal();
+renderSharePreview();
 
-// Hero 2: canonical author promo SVG (booky-assets)
+// Book card — standard layout; dark featured styling on author days only
 const bookRec = DATA.wordBooks?.[ANSWER];
 const recEl = $('book-rec');
 if (bookRec) {
-  const teaser = "today\u2019s word was from...";
-  let ctaText = 'PLAY NOW';
-  let ctaHref = 'https://90books.com/booky';
-  if (bookRec.buyUrl) {
-    ctaText = 'Get it on Amazon';
-    ctaHref = bookRec.buyUrl;
-  } else if (CURATED_SLUGS.has(bookRec.slug)) {
-    ctaText = 'More books like this';
-    ctaHref = `https://90books.com/books-like/${bookRec.slug}`;
-  }
-  const cover = bookRec.cover || `/booky/assets/${bookRec.slug}.jpg`;
-  recEl.innerHTML = renderBookyPromoSVG({
-    cover,
-    title: bookRec.title,
-    author: bookRec.author,
-    teaser,
-    ctaText,
-    ctaHref,
-  });
-  if (bookRec.buyUrl && ctaHref === bookRec.buyUrl) {
-    recEl.querySelector('a')?.addEventListener('click', () => {
-      posthog.capture('affiliate_buy_clicked', {
-        word_number: DAY,
-        book: bookRec.slug,
-        title: bookRec.title,
-      });
-    });
-  }
-  recEl.hidden = false;
+recEl.classList.toggle('book-hero--featured', !!bookRec.featured);
+$('book-rec-title').textContent = bookRec.title;
+$('book-rec-author').textContent = bookRec.author;
+$('book-rec-badge').hidden = !bookRec.featured;
+$('end-word').textContent = ANSWER;
+
+const cover = $('book-rec-cover');
+if (bookRec.cover) {
+cover.src = bookRec.cover;
+cover.alt = `${bookRec.title} cover`;
+cover.hidden = false;
+cover.onerror = () => { cover.hidden = true; };
 } else {
-  recEl.hidden = true;
-  recEl.innerHTML = '';
+cover.hidden = true;
+}
+
+const hookEl = $('book-rec-hook');
+if (bookRec.featured && bookRec.hook) {
+hookEl.textContent = bookRec.hook;
+hookEl.hidden = false;
+} else {
+hookEl.hidden = true;
+}
+
+const linkEl = $('book-rec-link');
+if (bookRec.buyUrl) {
+linkEl.href = bookRec.buyUrl;
+linkEl.textContent = 'Get it on Amazon';
+linkEl.hidden = false;
+linkEl.onclick = () => posthog.capture('affiliate_buy_clicked', {
+word_number: DAY,
+book: bookRec.slug,
+title: bookRec.title,
+});
+} else if (CURATED_SLUGS.has(bookRec.slug)) {
+linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
+linkEl.textContent = 'More books like this \u2192';
+linkEl.hidden = false;
+linkEl.onclick = null;
+} else {
+linkEl.hidden = true;
+linkEl.onclick = null;
+}
+recEl.hidden = false;
+} else {
+recEl.hidden = true;
+recEl.classList.remove('book-hero--featured');
 }
 
 // Reminder form — only show if user hasn't already subscribed
@@ -562,18 +579,36 @@ $('reminder-active').hidden = !subscribed;
 $('end-modal').showModal();
 tickCountdown();
 
-// After the win celebration settles, gently pulse + scroll the email card
-// into view once (no popup). Peak emotional moment = best time to ask.
+// Email reminder: no auto-scroll — share block stays in view
 if (won && !subscribed) {
   reminderForm.classList.remove('reminder-highlight');
-  setTimeout(() => {
-    reminderForm.classList.add('reminder-highlight');
-    reminderForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 1400);
 }
 if (!window.__countdownTicker) {
 window.__countdownTicker = setInterval(tickCountdown, 1000);
 }
+}
+
+function renderSharePreview() {
+const el = $('share-preview');
+if (!el) return;
+const header = `📚 Booky #${DAY}`;
+let scoreLine;
+if (STATE.status === 'won') {
+const streak = STATS.currentStreak > 1 ? ` 🔥${STATS.currentStreak}` : '';
+scoreLine = `${STATE.guesses.length}/${MAX_GUESSES}${streak}`;
+} else {
+scoreLine = `🥀 X/${MAX_GUESSES}`;
+}
+const rows = STATE.guesses.map(g => {
+const r = evaluate(g, ANSWER);
+return r.map(s => s === 'correct' ? '🟪' : s === 'present' ? '🟨' : '⬛').join('');
+});
+const bookRec = DATA.wordBooks?.[ANSWER];
+const bookLine = bookRec ? `📖 From: ${bookRec.title}` : null;
+el.textContent = [header, scoreLine, ...rows, ...(bookLine ? [bookLine] : [])].join('\n');
+// Gold-tinted preview border on featured author days
+const block = $('share-block');
+if (block) block.classList.toggle('share-block--featured', !!(bookRec && bookRec.featured));
 }
 
 function buildShareString() {
