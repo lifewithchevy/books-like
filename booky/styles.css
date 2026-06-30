@@ -394,6 +394,23 @@ body {
   color: var(--accent-2);
 }
 
+/* Win screen — word visible in layout but blurred so shares don't spoil */
+.end-word-spoiler {
+  margin: 6px 0 0;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 6px;
+  text-transform: uppercase;
+  color: var(--accent-2);
+  filter: blur(11px);
+  opacity: 0.9;
+  user-select: none;
+  -webkit-user-select: none;
+  pointer-events: none;
+}
+
 .end-share {
   margin-top: 12px;
 }
