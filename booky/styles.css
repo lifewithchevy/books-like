@@ -592,13 +592,13 @@ body {
   font-size: 13px;
   padding: 10px;
 }
-.reminder-card--compact {
+.reminder-form {
   margin-top: 0;
-  padding: 11px 12px;
+  padding: 0;
 }
-.reminder-card--compact .reminder-headline {
+.reminder-form .reminder-headline {
   font-size: 14px;
-  margin-bottom: 6px;
+  margin-bottom: 8px;
 }
 
 /* Featured author day — gold accent on book card only */
@@ -976,25 +976,6 @@ body {
   margin-top: 1px;
 }
 
-/* Email reminder card — its own bordered card, like the streak card */
-.reminder-card {
-  margin-top: 12px;
-  padding: 14px 14px 13px;
-  border: 1px solid var(--streak-border);
-  border-radius: 10px;
-  background: linear-gradient(135deg, var(--streak-bg-from), var(--streak-bg-to));
-}
-/* One-time attention pulse fired after the win celebration settles */
-.reminder-card.reminder-highlight {
-  animation: reminderPulse 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) 2;
-}
-@keyframes reminderPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(147, 51, 217, 0); border-color: var(--streak-border); }
-  50%      { box-shadow: 0 0 0 4px rgba(147, 51, 217, 0.22); border-color: var(--accent); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .reminder-card.reminder-highlight { animation: none; }
-}
 .reminder-active {
   margin: 10px 0 0;
   padding-top: 8px;
