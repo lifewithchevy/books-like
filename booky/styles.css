@@ -367,10 +367,9 @@ body {
   line-height: 1.4;
   color: var(--ink-dim);
   margin: 0 0 7px;
-  padding: 7px 9px;
-  background: linear-gradient(135deg, var(--streak-bg-from), var(--streak-bg-to));
+  padding: 0;
+  background: none;
   border: none;
-  border-radius: 8px;
 }
 #end-modal .book-hero-cta { padding: 11px; min-height: 44px; }
 #end-modal .next {
