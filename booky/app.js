@@ -480,6 +480,17 @@ else { next = b; break; }
 return { earned, next };
 }
 
+function formatMilestoneText(streak) {
+if (streak < 1) return null;
+const { earned, next } = badgeForStreak(streak);
+let txt = `${earned.icon} ${earned.name} · ${earned.blurb}`;
+if (next) {
+const rem = next.at - streak;
+txt += ` ${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}.`;
+}
+return txt;
+}
+
 // ---- End screen ----
 function showEndScreen() {
 recordFinish();
@@ -613,6 +624,18 @@ $('end-stat-winpct').textContent = STATS.played
 ? Math.round(100 * STATS.wins / STATS.played) : 0;
 $('end-stat-streak').textContent = STATS.currentStreak;
 $('end-stat-max').textContent = STATS.maxStreak;
+
+const milestoneEl = $('end-milestone');
+const milestoneTxt = formatMilestoneText(STATS.currentStreak);
+if (milestoneEl) {
+if (milestoneTxt) {
+milestoneEl.textContent = milestoneTxt;
+milestoneEl.hidden = false;
+} else {
+milestoneEl.hidden = true;
+}
+}
+
 renderDistribution('end-dist');
 }
 
@@ -631,19 +654,16 @@ $('stat-winpct').textContent = STATS.played
 $('stat-streak').textContent = STATS.currentStreak;
 $('stat-max').textContent = STATS.maxStreak;
 
-// Earned rank + progress to next milestone (moved here from the win screen)
+// Earned rank + progress to next milestone
 const mEl = $('stat-milestone');
-if (STATS.currentStreak >= 1) {
-const { earned, next } = badgeForStreak(STATS.currentStreak);
-let txt = `${earned.icon} ${earned.name} · ${earned.blurb}`;
-if (next) {
-const rem = next.at - STATS.currentStreak;
-txt += ` ${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}.`;
-}
-mEl.textContent = txt;
+const milestoneTxt = formatMilestoneText(STATS.currentStreak);
+if (mEl) {
+if (milestoneTxt) {
+mEl.textContent = milestoneTxt;
 mEl.hidden = false;
 } else {
 mEl.hidden = true;
+}
 }
 
 renderDistribution('stat-dist');
