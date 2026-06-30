@@ -44,7 +44,6 @@
   --trough: rgba(0, 0, 0, 0.3);
 
   --font-serif: "Cormorant Garamond", Georgia, serif;
-  --font-stat: "Libre Baskerville", Georgia, "Times New Roman", serif;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
 
@@ -349,10 +348,27 @@ body {
   border-radius: 0;
   background: var(--bg);
   color: var(--ink);
+  font-family: var(--font-sans);
   overflow-x: hidden;
   overflow-y: auto;
   -webkit-overflow-scrolling: touch;
   animation: endScreenIn 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+}
+/* Win screen type — 3 families: Cormorant (display), Inter (UI), mono (countdown) */
+#end-modal .celebration-title,
+#end-modal .end-stat-row span,
+#end-modal .end-word,
+#end-modal .end-word-reveal,
+#end-modal .book-hero-title,
+#end-modal .reminder-headline {
+  font-family: var(--font-serif);
+}
+#end-modal .end-stat-row span {
+  font-weight: 600;
+  font-variant-numeric: lining-nums tabular-nums;
+}
+#end-modal .next span {
+  font-family: ui-monospace, "SF Mono", monospace;
 }
 #end-modal.end-screen[hidden] {
   display: none !important;
@@ -1061,9 +1077,9 @@ body.end-screen-open .bg-glow {
 }
 .stat-row > div { display: flex; flex-direction: column; }
 .stat-row span {
-  font-family: var(--font-stat);
+  font-family: var(--font-serif);
   font-size: 30px;
-  font-weight: 700;
+  font-weight: 600;
   font-variant-numeric: lining-nums tabular-nums;
   color: var(--ink);
 }
@@ -1225,9 +1241,9 @@ body.end-screen-open .bg-glow {
 }
 .mini-stats > div { display: flex; flex-direction: column; }
 .mini-stats span {
-  font-family: var(--font-stat);
+  font-family: var(--font-serif);
   font-size: 20px;
-  font-weight: 700;
+  font-weight: 600;
   font-variant-numeric: lining-nums tabular-nums;
   color: var(--ink);
 }
