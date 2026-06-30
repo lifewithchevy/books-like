@@ -27,14 +27,14 @@ for i in $(seq 1 20); do
   sleep 0.25
 done
 
-# Public tunnel (works in Cursor Simple Browser when localhost does not)
-nohup npx --yes localtunnel --port "$PORT" >"$LOG_DIR/tunnel.log" 2>&1 &
+# Public tunnel (no IP/password gate — works in Cursor Simple Browser)
+nohup npx --yes cloudflared tunnel --url "http://127.0.0.1:${PORT}" >"$LOG_DIR/tunnel.log" 2>&1 &
 TUNNEL_PID=$!
 echo "$TUNNEL_PID" > "$LOG_DIR/tunnel.pid"
 
 TUNNEL_URL=""
-for i in $(seq 1 40); do
-  TUNNEL_URL=$(grep -oE 'https://[a-z0-9-]+\.loca\.lt' "$LOG_DIR/tunnel.log" | head -1 || true)
+for i in $(seq 1 50); do
+  TUNNEL_URL=$(grep -oE 'https://[a-z0-9-]+\.trycloudflare\.com' "$LOG_DIR/tunnel.log" | head -1 || true)
   if [[ -n "$TUNNEL_URL" ]]; then
     break
   fi
@@ -42,7 +42,8 @@ for i in $(seq 1 40); do
 done
 
 PREVIEW_PAGE="${TUNNEL_URL}/booky/preview.html"
-echo "$PREVIEW_PAGE" > "$ROOT/PREVIEW_URL.txt"
+GAME_PAGE="${TUNNEL_URL}/booky/?preview=win"
+echo "$GAME_PAGE" > "$ROOT/PREVIEW_URL.txt"
 printf '%s\n' "$TUNNEL_URL" > "$ROOT/booky/.tunnel-base"
 
 cat > "$ROOT/booky/preview-url.js" <<EOF
@@ -51,9 +52,11 @@ EOF
 
 echo ""
 echo "══════════════════════════════════════════════════"
-echo "  BOOKY PREVIEW — paste this in the right browser:"
+echo "  BOOKY PREVIEW — paste in the right browser:"
 echo ""
-echo "  ${PREVIEW_PAGE}"
+echo "  Win screen:  ${GAME_PAGE}"
+echo "  Game:        ${TUNNEL_URL}/booky/"
+echo "  Author promo: ${PREVIEW_PAGE}"
 echo ""
-echo "  Edit: booky/styles.css  →  Save  →  Refresh browser"
+echo "  Edit booky/styles.css → Save → Refresh"
 echo "══════════════════════════════════════════════════"

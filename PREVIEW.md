@@ -1,9 +1,25 @@
 # Booky live preview
 
-**Refresh the right-side browser:**
+Tunnel URLs expire when the preview restarts. Run:
 
-https://outdoors-entrance-written-childhood.trycloudflare.com/booky/preview.html
+```bash
+./scripts/preview-all.sh
+```
 
-Now uses the **original SVG** from [booky-assets](https://github.com/lifewithchevy/booky-assets) (filigree corners, crescent moon, gold PLAY NOW).
+Then open the URLs it prints.
 
-Edit `booky/promo-render.js` or `booky/assets/` → Save → Refresh.
+## Win screen (branch changes)
+
+**https://firewall-carrier-visits-script.trycloudflare.com/booky/?preview=win**
+
+Opens the win modal immediately — stats, milestone, Share, countdown at bottom.
+
+## Full game
+
+**https://firewall-carrier-visits-script.trycloudflare.com/booky/**
+
+## Author promo graphic
+
+**https://firewall-carrier-visits-script.trycloudflare.com/booky/preview.html**
+
+Edit `booky/styles.css` or `booky/app.js` → Save → hard refresh (Ctrl+Shift+R).

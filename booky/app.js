@@ -91,10 +91,15 @@ date: new Date().toISOString().split('T')[0],
 if (STATE.status !== 'playing') {
 LOCKED = true;
 showEndScreen();
+} else if (new URLSearchParams(location.search).get('preview') === 'win') {
+// Dev/preview: open win screen without finishing today's puzzle
+STATE = { dayNumber: DAY, guesses: [ANSWER], status: 'won' };
+LOCKED = true;
+showEndScreen();
 }
 
-// First-time visitor: show help
-if (!localStorage.getItem('90books_booky_seen_help_v1')) {
+// First-time visitor: show help (skip when previewing win screen)
+if (!localStorage.getItem('90books_booky_seen_help_v1') && !new URLSearchParams(location.search).get('preview')) {
 localStorage.setItem('90books_booky_seen_help_v1', '1');
 setTimeout(() => $('help-modal').showModal(), 400);
 }
