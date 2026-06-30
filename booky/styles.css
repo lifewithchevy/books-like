@@ -344,7 +344,7 @@ body {
   position: relative;
 }
 #end-modal .end-inner {
-  padding: 28px 20px 18px;
+  padding: 32px 24px 24px;
 }
 #end-modal .sheet-close {
   min-width: 44px;
@@ -355,12 +355,20 @@ body {
 }
 #end-modal .celebration-title {
   font-size: clamp(24px, 6vw, 32px);
-  margin-bottom: 4px;
+  margin-bottom: 8px;
 }
-#end-modal .end-top { margin-bottom: 4px; }
-#end-modal .end-stats { margin: 0; }
+#end-modal .end-top {
+  margin-bottom: 0;
+  padding-bottom: 4px;
+}
+#end-modal .end-stats {
+  margin: 0;
+  padding-top: 20px;
+  margin-top: 20px;
+  border-top: 1px solid var(--border);
+}
 #end-modal .end-stat-row {
-  margin: 2px 0 8px;
+  margin: 0 0 4px;
 }
 #end-modal .end-stat-row span {
   font-size: clamp(20px, 5.5vw, 26px);
@@ -368,21 +376,23 @@ body {
 #end-modal .end-stat-row small {
   font-size: 9px;
   letter-spacing: 1.2px;
-  margin-top: 2px;
+  margin-top: 4px;
 }
 .end-milestone {
   text-align: center;
   font-size: 11px;
   line-height: 1.4;
   color: var(--ink-dim);
-  margin: 0 0 7px;
+  margin: 14px 0 0;
   padding: 0;
   background: none;
   border: none;
 }
 #end-modal .book-hero-cta { padding: 11px; min-height: 44px; }
 #end-modal .next {
-  margin: 14px 0 0;
+  margin: 20px 0 0;
+  padding-top: 18px;
+  border-top: 1px solid var(--border);
   text-align: center;
 }
 
@@ -407,7 +417,9 @@ body {
 }
 
 .end-share {
-  margin-top: 12px;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
 }
 #end-modal .share-btn {
   position: relative;
@@ -563,12 +575,12 @@ body {
 }
 
 .end-extras {
-  margin-top: 14px;
-  padding-top: 0;
-  border-top: none;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  gap: 10px;
+  gap: 16px;
 }
 .book-hero--compact {
   padding: 11px;
@@ -699,6 +711,12 @@ body {
 }
 #end-modal.end-modal--featured .end-milestone {
   color: var(--featured-plum-dim);
+}
+#end-modal.end-modal--featured .end-stats,
+#end-modal.end-modal--featured .end-share,
+#end-modal.end-modal--featured .end-extras,
+#end-modal.end-modal--featured .next {
+  border-top-color: rgba(216, 176, 106, 0.28);
 }
 #end-modal.end-modal--featured .share-btn--magic {
   background: linear-gradient(135deg, #cf3f86, #b13386);
@@ -1001,7 +1019,7 @@ body {
 /* End sheet — celebration block */
 .celebration {
   text-align: center;
-  padding: 2px 0 8px;
+  padding: 4px 0 16px;
 }
 .celebration-title {
   font-family: var(--font-serif);
@@ -1122,8 +1140,8 @@ body {
 }
 
 .reminder-active {
-  margin: 10px 0 0;
-  padding-top: 8px;
+  margin: 4px 0 0;
+  padding-top: 14px;
   border-top: 1px solid var(--border);
   font-size: 12px;
   color: var(--ink-dim);
@@ -1503,14 +1521,24 @@ body.promo-page.promo-page--story .promo-cover {
 }
 
 @media (max-height: 700px) {
-  #end-modal .end-inner { padding: 22px 18px 14px; }
+  #end-modal .end-inner { padding: 24px 18px 18px; }
   #end-modal .celebration-title { font-size: 22px; }
-  .celebration { padding: 0; }
+  .celebration { padding: 2px 0 12px; }
   .celebration-sub { font-size: 12px; }
-  #end-modal .end-stat-row { margin-bottom: 6px; }
+  #end-modal .end-stats,
+  #end-modal .end-share,
+  #end-modal .end-extras {
+    padding-top: 14px;
+    margin-top: 14px;
+  }
+  #end-modal .next {
+    padding-top: 14px;
+    margin-top: 14px;
+  }
+  #end-modal .end-stat-row { margin-bottom: 2px; }
   #end-modal .end-stat-row span { font-size: 20px; }
   #end-modal .share-btn { min-height: 44px; padding: 12px; }
-  .end-extras { margin-top: 10px; }
+  .end-extras { gap: 12px; }
 }
 
 @media (max-width: 340px) {
