@@ -339,6 +339,8 @@ body {
 #end-modal {
   max-width: 500px;
   max-height: min(96dvh, 96svh);
+  background: transparent;
+  box-shadow: none;
 }
 #end-modal .end-inner {
   padding: 28px 20px 18px;
@@ -507,8 +509,8 @@ body {
 
 .end-extras {
   margin-top: 14px;
-  padding-top: 14px;
-  border-top: 1px solid var(--border);
+  padding-top: 0;
+  border-top: none;
   display: flex;
   flex-direction: column;
   gap: 10px;
@@ -545,10 +547,10 @@ body {
   margin-bottom: 6px;
 }
 
-/* Featured author day — subtle gold accent on modal */
+/* Featured author day — gold accent on book card only */
 #end-modal.end-modal--featured {
-  border: 1.5px solid rgba(216, 176, 106, 0.45);
-  box-shadow: 0 12px 40px rgba(0, 0, 0, 0.35), inset 0 0 0 1px rgba(216, 176, 106, 0.12);
+  border: none;
+  box-shadow: none;
 }
 
 /* Book hero — default (follows light/dark game theme) */
@@ -1328,7 +1330,7 @@ body.promo-page.promo-page--story .promo-cover {
   #end-modal .end-stat-row { margin-bottom: 6px; }
   #end-modal .end-stat-row span { font-size: 20px; }
   #end-modal .share-btn { min-height: 44px; padding: 12px; }
-  .end-extras { margin-top: 10px; padding-top: 10px; }
+  .end-extras { margin-top: 10px; }
 }
 
 @media (max-width: 340px) {
