@@ -92,10 +92,11 @@ if (STATE.status !== 'playing') {
 LOCKED = true;
 showEndScreen();
 } else if (new URLSearchParams(location.search).get('preview') === 'win') {
-// Dev/preview: open win screen without finishing today's puzzle
-STATE = { dayNumber: DAY, guesses: [ANSWER], status: 'won' };
+// Dev/preview: open win screen without finishing today's puzzle.
+// Use a detached copy so we never persist a fake "won" game to storage.
+STATE = { dayNumber: DAY, guesses: [ANSWER], status: 'won', statsRecorded: true };
 LOCKED = true;
-showEndScreen();
+try { showEndScreen(); } catch (e) { console.error('preview win failed', e); }
 }
 
 // First-time visitor: show help (skip when previewing win screen)
