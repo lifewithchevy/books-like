@@ -1,0 +1,15 @@
+{
+  "updated": "2026-06-30T21:09:22Z",
+  "local": {
+    "hub": "http://localhost:8080/booky/preview-hub.html",
+    "win": "http://localhost:8080/booky/?preview=win",
+    "game": "http://localhost:8080/booky/"
+  },
+  "tunnelOk": true,
+  "tunnel": {
+    "base": "https://sum-charged-operates-plate.trycloudflare.com",
+    "hub": "https://sum-charged-operates-plate.trycloudflare.com/booky/preview-hub.html",
+    "win": "https://sum-charged-operates-plate.trycloudflare.com/booky/?preview=win",
+    "game": "https://sum-charged-operates-plate.trycloudflare.com/booky/"
+  }
+}

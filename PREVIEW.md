@@ -1,25 +1,39 @@
-# Booky live preview
+# Booky preview — always working
 
-Tunnel URLs expire when the preview restarts. Run:
+## One link to bookmark (in this Cursor session)
+
+Run once if preview isn't up:
 
 ```bash
-./scripts/preview-all.sh
+./scripts/ensure-preview.sh
 ```
 
-Then open the URLs it prints.
+Then open **the hub** (paste in the right-side browser):
 
-## Win screen (branch changes)
+**`/booky/preview-hub.html`** on whatever host the script prints.
 
-**https://firewall-carrier-visits-script.trycloudflare.com/booky/?preview=win**
+The hub uses **relative links** — win screen, game, and promos always work on the same host.
 
-Opens the win modal immediately — stats, milestone, Share, countdown at bottom.
+| Page | Path |
+|------|------|
+| **Hub (bookmark this)** | `/booky/preview-hub.html` |
+| **Win screen** | `/booky/?preview=win` |
+| **Full game** | `/booky/` |
 
-## Full game
+## Stable preview (Vercel, not prod)
 
-**https://firewall-carrier-visits-script.trycloudflare.com/booky/**
+Every push to `cursor/**` branches deploys a **Vercel preview** (never 90books.com).
 
-## Author promo graphic
+Check **PR #5** for the bot comment with the stable win-screen URL — it updates on each push.
 
-**https://firewall-carrier-visits-script.trycloudflare.com/booky/preview.html**
+## If the public tunnel link dies
 
-Edit `booky/styles.css` or `booky/app.js` → Save → hard refresh (Ctrl+Shift+R).
+The preview **daemon auto-restarts** the tunnel. Refresh the hub page or re-run:
+
+```bash
+./scripts/ensure-preview.sh
+```
+
+## Cursor port forwarding
+
+If the tunnel fails, use **Ports → 8080 → globe icon** → open `/booky/preview-hub.html`.

@@ -4,7 +4,7 @@
     {
       "label": "Booky: Start Preview",
       "type": "shell",
-      "command": "chmod +x scripts/preview-all.sh && bash scripts/preview-all.sh",
+      "command": "chmod +x scripts/ensure-preview.sh scripts/preview-daemon.sh && bash scripts/ensure-preview.sh",
       "problemMatcher": [],
       "presentation": {
         "reveal": "always",
