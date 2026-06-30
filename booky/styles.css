@@ -546,45 +546,25 @@ body {
 .book-hero--featured .book-hero-title { color: #f3e3ee; }
 .book-hero--featured .book-hero-author { color: #c3a6bc; }
 .book-hero--featured .book-hero-hook { color: #b496ac; }
-/* Book CTA below share — outlined button; Share stays primary (filled) */
+/* Book CTA below share — outline so share stays primary */
 .secondary-link {
-  display: block;
-  background: var(--bg);
-  border: 1.5px solid var(--accent);
+  background: transparent;
+  border: 1.5px solid var(--border);
   color: var(--accent-2);
   font-weight: 600;
   padding: 11px;
   border-radius: 10px;
   font-size: 14px;
   font-family: var(--font-sans);
-  box-shadow: 0 2px 10px rgba(217, 70, 168, 0.12);
+  box-shadow: none;
   text-decoration: none;
-  transition: border-color 0.15s, background 0.15s, box-shadow 0.15s;
-}
-.secondary-link:hover {
-  border-color: var(--accent-2);
-  box-shadow: 0 3px 14px rgba(217, 70, 168, 0.18);
 }
 .book-hero--featured .secondary-link {
   border-color: #d8b06a;
   color: #f0d9a0;
   background: rgba(207, 63, 134, 0.15);
-  box-shadow: none;
-}
-.book-hero--featured .secondary-link:hover {
-  border-color: #f0d9a0;
-  background: rgba(207, 63, 134, 0.22);
 }
 .secondary-link:active { transform: scale(0.98); }
-
-@media (prefers-color-scheme: light) {
-  .secondary-link {
-    background: #fff;
-    border-color: var(--accent);
-    color: var(--accent-dark);
-    box-shadow: 0 2px 10px rgba(200, 57, 143, 0.14);
-  }
-}
 
 /* Promo asset frame — author /booky/promo pages only */
 .promo-asset-frame {
