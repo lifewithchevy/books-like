@@ -636,9 +636,6 @@ milestoneEl.hidden = true;
 }
 }
 
-renderDistribution('end-dist');
-}
-
 function buildShareString() {
 const { header, scoreLine, rows, bookLine } = getShareParts();
 // Two trailing spaces before every \n = Reddit hard break; invisible on all other platforms
@@ -675,20 +672,14 @@ if (!ul) return;
 ul.innerHTML = '';
 const max = Math.max(1, ...Object.values(STATS.distribution));
 const todayKey = STATE.status === 'won' ? STATE.guesses.length : (STATE.status === 'lost' ? 'X' : null);
-const compact = ulId === 'end-dist';
-const allKeys = [1, 2, 3, 4, 5, 6, 'X'];
-const keys = compact
-? allKeys.filter((k) => k === todayKey || (STATS.distribution[k] || 0) > 0)
-: allKeys;
-for (const key of keys) {
+for (const key of [1, 2, 3, 4, 5, 6, 'X']) {
 const count = STATS.distribution[key] || 0;
 const li = document.createElement('li');
 const label = document.createElement('span');
 label.textContent = key;
 const bar = document.createElement('div');
 bar.className = 'bar' + (key === todayKey ? ' today' : '');
-const pct = count > 0 ? Math.max(compact ? 12 : 8, (count / max) * 100) : (compact ? 4 : 8);
-bar.style.width = `${pct}%`;
+bar.style.width = `${Math.max(8, (count / max) * 100)}%`;
 bar.textContent = count > 0 ? count : '';
 li.append(label, bar);
 ul.appendChild(li);

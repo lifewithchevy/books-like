@@ -372,12 +372,6 @@ body {
   border: 1px solid var(--streak-border);
   border-radius: 8px;
 }
-#end-modal .dist-title--compact {
-  margin: 0 0 5px;
-  font-size: 10px;
-  letter-spacing: 1.6px;
-}
-#end-modal .dist--compact { margin-bottom: 0; }
 #end-modal .book-hero-cta { padding: 11px; min-height: 44px; }
 #end-modal .next {
   margin: 12px 0 0;
@@ -706,28 +700,6 @@ body {
 }
 .dist .bar.today {
   background: linear-gradient(90deg, var(--accent), var(--correct));
-}
-
-/* Win screen — slim distribution (original Wordle was ~16px bars, not NYT-sized) */
-.dist--compact {
-  gap: 3px;
-}
-.dist--compact li {
-  grid-template-columns: 10px 1fr;
-  gap: 5px;
-  font-size: 11px;
-  line-height: 1;
-}
-.dist--compact .bar {
-  height: 12px;
-  min-width: 4px;
-  border-radius: 2px;
-  padding: 0 4px;
-  font-size: 9px;
-  font-weight: 700;
-}
-.dist--compact .bar:not(.today) {
-  opacity: 0.7;
 }
 
 /* End sheet — celebration block */
@@ -1267,7 +1239,6 @@ body.promo-page.promo-page--story .promo-cover {
   .celebration-sub { font-size: 12px; }
   #end-modal .end-stat-row { margin-bottom: 6px; }
   #end-modal .end-stat-row span { font-size: 20px; }
-  .dist--compact .bar { height: 11px; }
   #end-modal .share-btn { min-height: 44px; padding: 12px; }
   .end-extras { margin-top: 10px; padding-top: 10px; }
 }
