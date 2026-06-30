@@ -905,23 +905,16 @@ body {
 #reminder-email:focus { border-color: var(--accent); }
 #reminder-email::placeholder { color: var(--ink-faint); }
 #reminder-submit {
-  background: var(--bg-3);
-  border: 1px solid var(--border);
-  color: var(--ink);
-  padding: 0 16px;
+  padding: 10px 14px;
   min-height: 44px;
-  border-radius: 8px;
+  white-space: nowrap;
   cursor: pointer;
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 600;
-  transition: background 0.15s, border-color 0.15s;
-}
-#reminder-submit:hover:not(:disabled) {
-  background: var(--accent);
-  border-color: var(--accent);
 }
 #reminder-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+#end-modal.end-modal--featured #reminder-submit {
+  background: rgba(207, 63, 134, 0.15);
+  color: #f0d9a0;
+}
 .reminder-toast {
   margin: 10px 0 0;
   text-align: center;
@@ -1262,5 +1255,5 @@ body.promo-page.promo-page--story .promo-cover {
 
 @media (max-width: 340px) {
   .reminder-row { grid-template-columns: 1fr; }
-  #reminder-submit { width: 100%; padding: 12px 16px; }
+  #reminder-submit { width: 100%; padding: 12px 16px; min-height: 44px; }
 }
