@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=47" />
+<link rel="stylesheet" href="/booky/styles.css?v=48" />
 <style>
   /* Preview chrome only — not part of the game */
   body.win-preview { overflow: auto; }
@@ -220,9 +220,21 @@ function render(key) {
   $('book-rec-badge').hidden = !book.featured;
   const endWord = $('end-word');
   endWord.textContent = s.word;
-  endWord.classList.toggle('end-word--spoiled', s.won);
   endWord.hidden = false;
+  endWord.classList.toggle('end-word--spoiled', s.won);
+  endWord.classList.toggle('end-word--tappable', s.won);
   endWord.setAttribute('aria-hidden', s.won ? 'true' : 'false');
+  if (s.won) {
+    endWord.setAttribute('role', 'button');
+    endWord.tabIndex = 0;
+    endWord.setAttribute('aria-pressed', 'false');
+    endWord.setAttribute('aria-label', "Reveal today's word");
+  } else {
+    endWord.removeAttribute('role');
+    endWord.removeAttribute('aria-pressed');
+    endWord.removeAttribute('aria-label');
+    endWord.tabIndex = -1;
+  }
   $('book-rec-title').textContent = book.title;
   $('book-rec-author').textContent = book.author;
   if (book.featured && book.hook) {
@@ -266,6 +278,23 @@ function render(key) {
 
 const key = new URLSearchParams(location.search).get('s') || 'win';
 loadWordData().then(() => render(key)).catch(() => render(key));
+const previewWord = document.getElementById('end-word');
+if (previewWord) {
+  const togglePreviewWord = () => {
+    if (previewWord.hidden) return;
+    const spoiled = previewWord.classList.toggle('end-word--spoiled');
+    previewWord.setAttribute('aria-hidden', spoiled ? 'true' : 'false');
+    previewWord.setAttribute('aria-pressed', spoiled ? 'false' : 'true');
+    previewWord.setAttribute('aria-label', spoiled ? "Reveal today's word" : "Hide today's word");
+  };
+  previewWord.addEventListener('click', togglePreviewWord);
+  previewWord.addEventListener('keydown', (e) => {
+    if (e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      togglePreviewWord();
+    }
+  });
+}
 document.getElementById('share-btn').addEventListener('click', () => {
   const t = document.getElementById('share-toast');
   t.textContent = 'preview only — sharing works in the real game';

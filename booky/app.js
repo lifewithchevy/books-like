@@ -326,6 +326,42 @@ e.preventDefault();
 $('end-modal').close();
 });
 $('reminder-form').addEventListener('submit', onReminderSubmit);
+const endWord = $('end-word');
+if (endWord) {
+endWord.addEventListener('click', toggleWordSpoiler);
+endWord.addEventListener('keydown', (e) => {
+if (e.key === 'Enter' || e.key === ' ') {
+e.preventDefault();
+toggleWordSpoiler();
+}
+});
+}
+}
+
+function setWordSpoilerState(spoiled) {
+const el = $('end-word');
+if (!el || el.hidden) return;
+const tappable = STATE.status === 'won';
+el.classList.toggle('end-word--spoiled', spoiled);
+el.classList.toggle('end-word--tappable', tappable);
+el.setAttribute('aria-hidden', spoiled ? 'true' : 'false');
+if (tappable) {
+el.setAttribute('role', 'button');
+el.tabIndex = 0;
+el.setAttribute('aria-pressed', spoiled ? 'false' : 'true');
+el.setAttribute('aria-label', spoiled ? "Reveal today's word" : "Hide today's word");
+} else {
+el.removeAttribute('role');
+el.removeAttribute('aria-pressed');
+el.removeAttribute('aria-label');
+el.tabIndex = -1;
+}
+}
+
+function toggleWordSpoiler() {
+const el = $('end-word');
+if (!el || el.hidden || STATE.status !== 'won') return;
+setWordSpoilerState(!el.classList.contains('end-word--spoiled'));
 }
 
 function setReminderSubscribedUI(subscribed) {
@@ -551,9 +587,16 @@ $('book-rec-author').textContent = bookRec.author;
 $('book-rec-badge').hidden = !bookRec.featured;
 const endWord = $('end-word');
 endWord.textContent = ANSWER;
-endWord.classList.toggle('end-word--spoiled', won);
 endWord.hidden = false;
-endWord.setAttribute('aria-hidden', won ? 'true' : 'false');
+if (won) setWordSpoilerState(true);
+else {
+endWord.classList.remove('end-word--spoiled', 'end-word--tappable');
+endWord.setAttribute('aria-hidden', 'false');
+endWord.removeAttribute('role');
+endWord.removeAttribute('aria-pressed');
+endWord.removeAttribute('aria-label');
+endWord.tabIndex = -1;
+}
 
 const cover = $('book-rec-cover');
 applyBookCover(cover, bookRec);

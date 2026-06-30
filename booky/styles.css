@@ -449,12 +449,24 @@ body {
 }
 
 /* Win screen — word in book card, blurred to tease without spoiling */
+.end-word--tappable {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+}
 .end-word--spoiled {
   filter: blur(7px);
   opacity: 0.86;
   user-select: none;
   -webkit-user-select: none;
-  pointer-events: none;
+  transition: filter 0.28s ease, opacity 0.28s ease;
+}
+.end-word--tappable:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+  border-radius: 4px;
+}
+#end-modal.end-modal--featured .end-word--tappable:focus-visible {
+  outline-color: var(--featured-gold);
 }
 
 .end-share {
@@ -1570,7 +1582,7 @@ body.promo-page.promo-page--story .promo-cover {
 
 @media (max-height: 700px) {
   #end-modal .end-inner { padding: 24px 18px 18px; }
-  #end-modal .celebration-title { font-size: 24px; }
+  #end-modal .celebration-title { font-size: 26px; }
   .celebration { padding: 2px 0 12px; }
   .celebration-sub { font-size: 12px; }
   #end-modal .end-stats,
