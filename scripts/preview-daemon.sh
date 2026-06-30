@@ -21,7 +21,7 @@ data = {
   "updated": ts,
   "local": {
     "hub": f"{local}/booky/preview-hub.html",
-    "win": f"{local}/booky/win-preview.html",
+    "win": f"{local}/booky/device-preview.html",
     "game": f"{local}/booky/",
   },
   "tunnelOk": ok == "true",
@@ -31,7 +31,7 @@ if tunnel:
   data["tunnel"] = {
     "base": base,
     "hub": f"{base}/booky/preview-hub.html",
-    "win": f"{base}/booky/win-preview.html",
+    "win": f"{base}/booky/device-preview.html",
     "game": f"{base}/booky/",
   }
 with open(path, "w") as f:
