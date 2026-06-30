@@ -35,14 +35,21 @@
     border: 1px solid rgba(255,255,255,0.25);
   }
   .pv-bar a.on { background: #d946a8; border-color: #d946a8; }
-  /* Show the end modal inline (non-modal open dialog) */
-  #end-modal[open] {
+  /* Embedded in device-preview iframe — hide dev controls, prod-like layout */
+  body.embedded .pv-bar { display: none; }
+  body.embedded #end-modal[open] { margin: 24px auto; }
+  /* Standalone testing page */
+  body.win-preview:not(.embedded) #end-modal[open] {
     position: static;
     margin: 52px auto 24px;
+  }
+  body.embedded #end-modal[open] {
+    position: static;
   }
 </style>
 </head>
 <body class="win-preview">
+<script>if (window.self !== window.top) document.body.classList.add('embedded');</script>
 <div class="bg-glow" aria-hidden="true"></div>
 
 <nav class="pv-bar">
@@ -196,13 +203,15 @@ function render(key) {
   link.hidden = false;
   rec.hidden = false;
 
-  // Highlight active control
+  // Highlight active control (standalone testing page only)
+  if (!document.body.classList.contains('embedded')) {
   document.querySelectorAll('.pv-bar a').forEach((a) => {
     a.classList.toggle('on', a.dataset.q === key);
     const u = new URL(location.href);
     u.searchParams.set('s', a.dataset.q);
     a.href = u.pathname + u.search;
   });
+  }
 }
 
 const key = new URLSearchParams(location.search).get('s') || 'win';
