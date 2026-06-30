@@ -351,15 +351,22 @@ body {
 #end-modal .end-top { margin-bottom: 4px; }
 #end-modal .end-stats { margin: 0; }
 #end-modal .end-stat-row {
-  margin: 4px 0 12px;
+  margin: 2px 0 8px;
 }
 #end-modal .end-stat-row span {
-  font-size: clamp(24px, 6vw, 30px);
+  font-size: clamp(20px, 5.5vw, 26px);
 }
-#end-modal .dist-title {
-  margin: 0 0 8px;
+#end-modal .end-stat-row small {
+  font-size: 9px;
+  letter-spacing: 1.2px;
+  margin-top: 2px;
 }
-#end-modal .dist { margin-bottom: 0; }
+#end-modal .dist-title--compact {
+  margin: 0 0 5px;
+  font-size: 10px;
+  letter-spacing: 1.6px;
+}
+#end-modal .dist--compact { margin-bottom: 0; }
 #end-modal .book-hero-cta { padding: 11px; min-height: 44px; }
 #end-modal .next {
   margin: 12px 0 0;
@@ -378,7 +385,7 @@ body {
 }
 
 .end-share {
-  margin-top: 16px;
+  margin-top: 12px;
 }
 #end-modal .share-btn {
   width: 100%;
@@ -688,6 +695,28 @@ body {
 }
 .dist .bar.today {
   background: linear-gradient(90deg, var(--accent), var(--correct));
+}
+
+/* Win screen — slim distribution (original Wordle was ~16px bars, not NYT-sized) */
+.dist--compact {
+  gap: 3px;
+}
+.dist--compact li {
+  grid-template-columns: 10px 1fr;
+  gap: 5px;
+  font-size: 11px;
+  line-height: 1;
+}
+.dist--compact .bar {
+  height: 12px;
+  min-width: 4px;
+  border-radius: 2px;
+  padding: 0 4px;
+  font-size: 9px;
+  font-weight: 700;
+}
+.dist--compact .bar:not(.today) {
+  opacity: 0.7;
 }
 
 /* End sheet — celebration block */
@@ -1217,8 +1246,7 @@ body.promo-page.promo-page--story .promo-cover {
 /* Win screen — compact on small / short viewports */
 @media (max-width: 380px) {
   #end-modal .end-inner { padding: 22px 16px 16px; }
-  #end-modal .end-stat-row span { font-size: 22px; }
-  .dist .bar { height: 16px; }
+  #end-modal .end-stat-row span { font-size: 20px; }
 }
 
 @media (max-height: 700px) {
@@ -1226,10 +1254,9 @@ body.promo-page.promo-page--story .promo-cover {
   #end-modal .celebration-title { font-size: 22px; }
   .celebration { padding: 0; }
   .celebration-sub { font-size: 12px; }
-  #end-modal .end-stat-row { margin-bottom: 8px; }
-  #end-modal .end-stat-row span { font-size: 22px; }
-  .dist li { gap: 6px; }
-  .dist .bar { height: 16px; }
+  #end-modal .end-stat-row { margin-bottom: 6px; }
+  #end-modal .end-stat-row span { font-size: 20px; }
+  .dist--compact .bar { height: 11px; }
   #end-modal .share-btn { min-height: 44px; padding: 12px; }
   .end-extras { margin-top: 10px; padding-top: 10px; }
 }
