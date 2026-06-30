@@ -85,7 +85,7 @@
 * { box-sizing: border-box; }
 
 /* The `hidden` attribute must always win, even on elements with an author `display` rule
-   (e.g. .book-hero-badge / .book-hero-cta set display:block, which otherwise defeats it). */
+   (e.g. .promo-cta sets display:block, which otherwise defeats it). */
 [hidden] { display: none !important; }
 
 html, body {
@@ -351,7 +351,7 @@ body {
   gap: 15px;
 }
 #end-modal .celebration-title { font-size: 40px; }
-#end-modal .book-hero-cta { padding: 13px; }
+#end-modal .promo-cta { padding: 13px; }
 #end-modal .reminder-card { margin-top: 0; }
 #end-modal .next { margin: 0; }
 .end-top { text-align: center; }
@@ -687,79 +687,190 @@ body {
 .reminder-success { color: var(--accent-2); }
 .reminder-error   { color: #ff8aa3; }
 
-/* ---- Book recommendation (text link) ---- */
-/* Book hero — the word's book (curated rec or sponsored feature) */
-.book-hero {
-  border: 1px solid var(--streak-border);
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--streak-bg-from), var(--streak-bg-to));
-  padding: 14px;
+/* ---- Author promo frame (IG graphics + win screen) ---- */
+.promo-frame {
+  --promo-gold: #c9a227;
+  --promo-gold-light: #e8d48a;
+  position: relative;
+  border: 1.5px solid var(--promo-gold);
+  border-radius: 2px;
+  padding: 22px 18px 18px;
+  background:
+    linear-gradient(180deg, rgba(201, 162, 39, 0.06) 0%, transparent 42%),
+    var(--bg);
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 162, 39, 0.18),
+    0 0 36px rgba(201, 162, 39, 0.07);
 }
-/* "Featured" badge — paid placements only (set via the book's `featured` flag).
-   Gold so it reads distinct from the magenta CTA; sits above the title, beside the cover. */
-.book-hero-badge {
-  display: inline-block;
-  margin: 0 0 6px;
-  background: #e8b923;
-  color: #4a3200;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 20px;
+.promo-corner {
+  position: absolute;
+  width: 18px;
+  height: 18px;
+  border: 2px solid var(--promo-gold-light);
+  pointer-events: none;
+  opacity: 0.85;
 }
-/* The word reveal — now the first line of the book card, above the label */
-#book-rec .end-word { margin: 2px 0 4px; }
-.book-hero-label {
-  font-size: 11px;
-  font-weight: 700;
-  letter-spacing: 1.6px;
-  text-transform: uppercase;
-  color: var(--accent-2);
-  text-align: center;
-  margin: 0 0 12px;
+.promo-corner--tl { top: 7px; left: 7px; border-right: none; border-bottom: none; }
+.promo-corner--tr { top: 7px; right: 7px; border-left: none; border-bottom: none; }
+.promo-corner--bl { bottom: 7px; left: 7px; border-right: none; border-top: none; }
+.promo-corner--br { bottom: 7px; right: 7px; border-left: none; border-top: none; }
+
+.booky-tiles {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
 }
-.book-hero-row { display: flex; gap: 14px; align-items: center; }
-.book-hero-cover {
-  width: 60px;
-  height: 90px;
-  flex: 0 0 auto;
-  border-radius: 5px;
-  object-fit: cover;
-  background: var(--bg-3);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.20);
-}
-.book-hero-meta { flex: 1; min-width: 0; }
-.book-hero-title {
+.booky-tiles span {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--promo-gold);
+  border-radius: 2px;
   font-family: var(--font-serif);
-  font-size: 21px;
+  font-weight: 600;
+  font-size: 19px;
+  color: var(--promo-gold-light);
+  background: rgba(201, 162, 39, 0.07);
+  line-height: 1;
+}
+.promo-tagline {
+  margin: 8px 0 0;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-dim);
+  letter-spacing: 0.4px;
+}
+.promo-flourish {
+  margin: 14px 0 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--promo-gold);
+  letter-spacing: 4px;
+  opacity: 0.9;
+}
+.promo-teaser {
+  margin: 0 0 14px;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-style: italic;
+  font-size: 17px;
+  font-weight: 500;
+  color: var(--accent-2);
+  line-height: 1.35;
+}
+.promo-word-reveal {
+  margin: -6px 0 12px;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 22px;
+  font-weight: 600;
+  letter-spacing: 6px;
+  color: var(--correct);
+  text-transform: uppercase;
+}
+.promo-cover {
+  display: block;
+  width: min(188px, 72%);
+  height: auto;
+  aspect-ratio: 2 / 3;
+  margin: 0 auto 14px;
+  object-fit: cover;
+  border-radius: 3px;
+  background: var(--bg-3);
+  box-shadow: 0 10px 32px rgba(0, 0, 0, 0.42);
+}
+.promo-book-title {
+  margin: 0;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 24px;
   font-weight: 600;
   color: var(--ink);
-  margin: 0;
-  line-height: 1.1;
+  line-height: 1.15;
 }
-.book-hero-author {
-  font-size: 12px;
-  color: var(--ink-faint);
-  margin: 3px 0 0;
-}
-.book-hero-hook {
-  font-size: 12.5px;
-  font-style: italic;
+.promo-book-author {
+  margin: 5px 0 0;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 14px;
+  font-weight: 500;
   color: var(--ink-dim);
-  line-height: 1.4;
-  margin: 7px 0 0;
 }
-.book-hero-cta {
+.promo-cta {
   display: block;
   width: 100%;
+  margin-top: 16px;
+  padding: 13px 16px;
+  border: none;
+  border-radius: 10px;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #fff5f0;
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-weight: 600;
+  letter-spacing: 2px;
+  text-transform: uppercase;
   text-align: center;
-  margin-top: 14px;
   text-decoration: none;
+  cursor: pointer;
+  box-shadow: 0 6px 22px var(--shadow-accent);
+  transition: transform 0.12s ease, box-shadow 0.12s ease;
+}
+.promo-cta:hover {
+  box-shadow: 0 8px 26px var(--shadow-accent);
+}
+.promo-cta:active { transform: scale(0.98); }
+.promo-footer {
+  margin: 14px 0 0;
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.2px;
+}
+.promo-footer strong {
+  color: var(--ink-dim);
+  font-weight: 600;
 }
 
-/* Secondary share button (outline) — the book CTA is the primary action now */
+/* Standalone author promo page (screenshot / IG story) */
+body.promo-page {
+  min-height: 100dvh;
+  overflow: auto;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px 16px;
+}
+body.promo-page .promo-frame {
+  width: 100%;
+  max-width: 380px;
+}
+body.promo-page.promo-page--story {
+  min-height: 100dvh;
+  padding: 28px 20px;
+}
+body.promo-page.promo-page--story .promo-frame {
+  max-width: 400px;
+}
+body.promo-page.promo-page--story .promo-cover {
+  width: min(220px, 78%);
+}
+.promo-error {
+  position: relative;
+  z-index: 1;
+  max-width: 360px;
+  text-align: center;
+  color: var(--ink-dim);
+  font-size: 14px;
+  line-height: 1.5;
+  padding: 20px;
+}
+
+/* Secondary share button (outline) */
 .secondary-btn {
   width: 100%;
   background: transparent;

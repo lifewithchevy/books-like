@@ -501,13 +501,11 @@ sub.hidden = true;   // the answer now reveals in the book card below
 $('celebration').classList.remove('won');
 $('celebration').classList.add('lost');
 }
-$('end-word').textContent = ANSWER;
 $('end-puzzle-no').textContent = 'Booky #' + DAY;
 
-// Streak — kept but low priority: one compact line on win
+// Streak — compact line on win
 const streakEl = $('end-streak');
 if (won && STATS.currentStreak >= 1) {
-// Show the earned romantasy rank — the shareable bit. Milestone progress lives in the stats page.
 const { earned } = badgeForStreak(STATS.currentStreak);
 streakEl.textContent = `🔥 ${STATS.currentStreak}-day streak · ${earned.icon} ${earned.name}`;
 streakEl.hidden = false;
@@ -515,16 +513,16 @@ streakEl.hidden = false;
 streakEl.hidden = true;
 }
 
-// Mirror to legacy stats modal (still accessible via the ▤ icon)
 renderStatsModal();
 
-// Hero 2: the word's book. CTA adapts — sponsored buy link, curated page, or none.
+// Hero 2: author promo frame (matches /booky/promo graphics)
 const bookRec = DATA.wordBooks?.[ANSWER];
 const recEl = $('book-rec');
+const teaserEl = $('promo-teaser');
+const wordRevealEl = $('end-word');
 if (bookRec) {
 $('book-rec-title').textContent = bookRec.title;
 $('book-rec-author').textContent = bookRec.author;
-$('book-rec-badge').hidden = !bookRec.featured;   // "Featured" badge for paid placements only
 
 const cover = $('book-rec-cover');
 if (bookRec.cover) {
@@ -536,17 +534,20 @@ cover.onerror = () => { cover.hidden = true; };
 cover.hidden = true;
 }
 
-const hookEl = $('book-rec-hook');
-if (bookRec.hook) {
-hookEl.textContent = bookRec.hook;
-hookEl.hidden = false;
+// Post-play copy; promo page uses "hidden in…" before they play
+teaserEl.textContent = won
+? 'today\u2019s word was from\u2026'
+: 'today\u2019s word was from\u2026';
+// Reveal the 5-letter word on loss only (promo graphic never spoils it)
+if (!won) {
+wordRevealEl.textContent = ANSWER;
+wordRevealEl.hidden = false;
 } else {
-hookEl.hidden = true;
+wordRevealEl.hidden = true;
 }
 
 const linkEl = $('book-rec-link');
 if (bookRec.buyUrl) {
-// Sponsored/featured: link straight to the buy page. This link IS the buy click.
 linkEl.href = bookRec.buyUrl;
 linkEl.textContent = 'Get it on Amazon';
 linkEl.hidden = false;
@@ -556,13 +557,11 @@ book: bookRec.slug,
 title: bookRec.title,
 });
 } else if (CURATED_SLUGS.has(bookRec.slug)) {
-// Curated page exists: send them to more books like it.
 linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
-linkEl.textContent = 'More books like this →';
+linkEl.textContent = 'More books like this \u2192';
 linkEl.hidden = false;
 linkEl.onclick = null;
 } else {
-// No page and no buy link: cover + title + author only.
 linkEl.hidden = true;
 linkEl.onclick = null;
 }
