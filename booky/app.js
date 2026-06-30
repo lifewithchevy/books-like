@@ -601,7 +601,8 @@ tickCountdown();
 
 const shareBtn = $('share-btn');
 if (shareBtn) {
-shareBtn.textContent = 'Share';
+const shareLabel = shareBtn.querySelector('.share-btn__label');
+if (shareLabel) shareLabel.textContent = 'Share';
 shareBtn.classList.remove('share-btn--magic');
 if (won) shareBtn.classList.add('share-btn--magic');
 }

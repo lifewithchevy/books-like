@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=36" />
+<link rel="stylesheet" href="/booky/styles.css?v=37" />
 <style>
   /* Preview chrome only — not part of the game */
   body.win-preview { overflow: auto; }
@@ -85,7 +85,10 @@
 </div>
 
 <div id="share-block" class="end-share">
-<button id="share-btn" class="primary share-btn" type="button">Share</button>
+<button id="share-btn" class="primary share-btn" type="button">
+  <span class="share-dust" aria-hidden="true"></span>
+  <span class="share-btn__label">Share</span>
+</button>
 <div id="share-toast" class="share-toast" role="status" aria-live="polite" hidden></div>
 </div>
 
