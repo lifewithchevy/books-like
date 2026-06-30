@@ -315,8 +315,6 @@ renderStatsModal();
 $('stats-modal').showModal();
 });
 $('share-btn').addEventListener('click', onShare);
-const sharePreviewBtn = $('share-preview');
-if (sharePreviewBtn) sharePreviewBtn.addEventListener('click', onShare);
 $('end-modal').querySelector('[data-close-end]').addEventListener('click', (e) => {
 e.preventDefault();
 $('end-modal').close();
@@ -489,41 +487,37 @@ recordFinish();
 const won = STATE.status === 'won';
 const tries = STATE.guesses.length;
 
-// Hero 1: win/lose headline + the word. Guess count moved to the stats page.
+// Headline — Wordle-style win/lose copy
 const title = $('end-headline');
 const sub = $('end-subtitle');
+const wordReveal = $('end-word-reveal');
 if (won) {
-title.textContent = 'Congrats!';
-sub.textContent = `You got it in ${tries}`;
+title.textContent = 'Congratulations!';
+sub.textContent = `You guessed it in ${tries}`;
 sub.hidden = false;
+wordReveal.hidden = true;
 $('celebration').classList.remove('lost');
 $('celebration').classList.add('won');
 } else {
-title.textContent = "Tomorrow's another word.";
+title.textContent = 'Better luck tomorrow.';
 sub.hidden = true;
+wordReveal.textContent = `The word was ${ANSWER}`;
+wordReveal.hidden = false;
 $('celebration').classList.remove('won');
 $('celebration').classList.add('lost');
 }
 $('end-puzzle-no').textContent = 'Booky #' + DAY;
 
-// Streak — compact line on win
-const streakEl = $('end-streak');
-if (won && STATS.currentStreak >= 1) {
-const { earned } = badgeForStreak(STATS.currentStreak);
-streakEl.textContent = `🔥 ${STATS.currentStreak}-day streak · ${earned.icon} ${earned.name}`;
-streakEl.hidden = false;
-} else {
-streakEl.hidden = true;
-}
-
 renderStatsModal();
-renderSharePreview();
+renderEndScreenStats();
 
-// Book card — standard layout; dark featured styling on author days only
+// Book card — below the fold; featured styling on author days only
 const bookRec = DATA.wordBooks?.[ANSWER];
 const recEl = $('book-rec');
+const endModal = $('end-modal');
 if (bookRec) {
 recEl.classList.toggle('book-hero--featured', !!bookRec.featured);
+if (endModal) endModal.classList.toggle('end-modal--featured', !!bookRec.featured);
 $('book-rec-title').textContent = bookRec.title;
 $('book-rec-author').textContent = bookRec.author;
 $('book-rec-badge').hidden = !bookRec.featured;
@@ -570,9 +564,10 @@ recEl.hidden = false;
 } else {
 recEl.hidden = true;
 recEl.classList.remove('book-hero--featured');
+if (endModal) endModal.classList.remove('end-modal--featured');
 }
 
-// Reminder form — only show if user hasn't already subscribed
+// Reminder form — below share; only if not subscribed
 const subscribed = localStorage.getItem('90books_booky_reminder_sub');
 const reminderForm = $('reminder-form');
 reminderForm.style.display = subscribed ? 'none' : 'block';
@@ -581,14 +576,13 @@ $('reminder-active').hidden = !subscribed;
 $('end-modal').showModal();
 tickCountdown();
 
-// Email reminder: no auto-scroll — share block stays in view
-if (won && !subscribed) {
-  reminderForm.classList.remove('reminder-highlight');
-}
 const shareBtn = $('share-btn');
-if (shareBtn && won) {
+if (shareBtn) {
+shareBtn.textContent = 'Share';
+if (won) {
   shareBtn.classList.add('share-btn--pulse');
   setTimeout(() => shareBtn.classList.remove('share-btn--pulse'), 3000);
+}
 }
 if (!window.__countdownTicker) {
 window.__countdownTicker = setInterval(tickCountdown, 1000);
@@ -613,48 +607,13 @@ const bookLine = bookRec ? `📖 From: ${bookRec.title}` : null;
 return { header, scoreLine, rows, bookLine, bookRec };
 }
 
-function shareButtonLabel() {
-const won = STATE.status === 'won';
-if (won) {
-const n = STATE.guesses.length;
-const streak = STATS.currentStreak > 1 ? ` 🔥${STATS.currentStreak}` : '';
-return `Share your ${n}/${MAX_GUESSES}${streak}`;
-}
-return 'Share today\u2019s puzzle';
-}
-
-function shareHintText() {
-const isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-if (isTouch) return 'tap to post — friends see your grid, not the answer';
-return 'click to copy — paste anywhere';
-}
-
-function renderSharePreview() {
-const parts = getShareParts();
-const headerEl = $('share-header');
-const scoreEl = $('share-score');
-const gridEl = $('share-grid');
-const bookEl = $('share-book');
-const btn = $('share-btn');
-const hintEl = $('share-hint');
-if (!headerEl || !gridEl) return;
-
-headerEl.textContent = parts.header;
-if (scoreEl) scoreEl.textContent = parts.scoreLine;
-gridEl.innerHTML = parts.rows.map(row => `<div class="share-row">${row}</div>`).join('');
-if (bookEl) {
-if (parts.bookLine) {
-bookEl.textContent = parts.bookLine;
-bookEl.hidden = false;
-} else {
-bookEl.hidden = true;
-}
-}
-if (btn) btn.textContent = shareButtonLabel();
-if (hintEl) hintEl.textContent = shareHintText();
-
-const block = $('share-block');
-if (block) block.classList.toggle('share-block--featured', !!(parts.bookRec && parts.bookRec.featured));
+function renderEndScreenStats() {
+$('end-stat-played').textContent = STATS.played;
+$('end-stat-winpct').textContent = STATS.played
+? Math.round(100 * STATS.wins / STATS.played) : 0;
+$('end-stat-streak').textContent = STATS.currentStreak;
+$('end-stat-max').textContent = STATS.maxStreak;
+renderDistribution('end-dist');
 }
 
 function buildShareString() {
@@ -687,11 +646,12 @@ mEl.hidden = false;
 mEl.hidden = true;
 }
 
-renderDistribution();
+renderDistribution('stat-dist');
 }
 
-function renderDistribution() {
-const ul = $('stat-dist');
+function renderDistribution(ulId = 'stat-dist') {
+const ul = $(ulId);
+if (!ul) return;
 ul.innerHTML = '';
 const max = Math.max(1, ...Object.values(STATS.distribution));
 const todayKey = STATE.status === 'won' ? STATE.guesses.length : (STATE.status === 'lost' ? 'X' : null);
