@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=31" />
+<link rel="stylesheet" href="/booky/styles.css?v=32" />
 <style>
   /* Preview chrome only — not part of the game */
   body.win-preview { overflow: auto; }
@@ -71,7 +71,6 @@
 <h2 id="end-headline" class="celebration-title"></h2>
 <p id="end-subtitle" class="celebration-sub"></p>
 </div>
-<p id="end-word-spoiler" class="end-word-spoiler" hidden aria-hidden="true"></p>
 <p id="end-word-reveal" class="end-word-reveal" hidden></p>
 </div>
 
@@ -92,7 +91,7 @@
 
 <div id="end-extras" class="end-extras">
 <div id="book-rec" class="book-hero book-hero--compact" hidden>
-<p id="end-word" class="end-word"></p>
+<p id="end-word" class="end-word" aria-hidden="true"></p>
 <p class="book-hero-label">📚 Today&rsquo;s word is from</p>
 <div class="book-hero-row">
 <img id="book-rec-cover" class="book-hero-cover" alt="" hidden />
@@ -174,17 +173,10 @@ function render(key) {
     $('end-subtitle').textContent = `You guessed it in ${s.tries}`;
     $('end-subtitle').hidden = false;
     $('end-word-reveal').hidden = true;
-    const spoiler = $('end-word-spoiler');
-    if (spoiler) {
-      spoiler.textContent = s.word;
-      spoiler.hidden = false;
-    }
     cel.classList.remove('lost'); cel.classList.add('won');
   } else {
     $('end-headline').textContent = 'Better luck tomorrow.';
     $('end-subtitle').hidden = true;
-    const spoiler = $('end-word-spoiler');
-    if (spoiler) spoiler.hidden = true;
     $('end-word-reveal').textContent = `The word was ${s.word}`;
     $('end-word-reveal').hidden = false;
     cel.classList.remove('won'); cel.classList.add('lost');
@@ -206,8 +198,11 @@ function render(key) {
   rec.classList.toggle('book-hero--featured', !!book.featured);
   modal.classList.toggle('end-modal--featured', !!book.featured);
   $('book-rec-badge').hidden = !book.featured;
-  $('end-word').textContent = s.word;
-  $('end-word').hidden = s.won;
+  const endWord = $('end-word');
+  endWord.textContent = s.word;
+  endWord.classList.toggle('end-word--spoiled', s.won);
+  endWord.hidden = false;
+  endWord.setAttribute('aria-hidden', s.won ? 'true' : 'false');
   $('book-rec-title').textContent = book.title;
   $('book-rec-author').textContent = book.author;
   if (book.featured && book.hook) {

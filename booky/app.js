@@ -519,22 +519,16 @@ const tries = STATE.guesses.length;
 const title = $('end-headline');
 const sub = $('end-subtitle');
 const wordReveal = $('end-word-reveal');
-const wordSpoiler = $('end-word-spoiler');
 if (won) {
 title.textContent = 'Congratulations!';
 sub.textContent = `You guessed it in ${tries}`;
 sub.hidden = false;
 wordReveal.hidden = true;
-if (wordSpoiler) {
-wordSpoiler.textContent = ANSWER;
-wordSpoiler.hidden = false;
-}
 $('celebration').classList.remove('lost');
 $('celebration').classList.add('won');
 } else {
 title.textContent = 'Better luck tomorrow.';
 sub.hidden = true;
-if (wordSpoiler) wordSpoiler.hidden = true;
 wordReveal.textContent = `The word was ${ANSWER}`;
 wordReveal.hidden = false;
 $('celebration').classList.remove('won');
@@ -555,8 +549,11 @@ if (endModal) endModal.classList.toggle('end-modal--featured', !!bookRec.feature
 $('book-rec-title').textContent = bookRec.title;
 $('book-rec-author').textContent = bookRec.author;
 $('book-rec-badge').hidden = !bookRec.featured;
-$('end-word').textContent = ANSWER;
-$('end-word').hidden = won;
+const endWord = $('end-word');
+endWord.textContent = ANSWER;
+endWord.classList.toggle('end-word--spoiled', won);
+endWord.hidden = false;
+endWord.setAttribute('aria-hidden', won ? 'true' : 'false');
 
 const cover = $('book-rec-cover');
 applyBookCover(cover, bookRec);
