@@ -487,29 +487,15 @@ return { earned, next };
 }
 
 function applyBookCover(img, book) {
+if (window.BookyCover) return window.BookyCover.applyBookCover(img, book);
 if (!img || !book) return;
 const local = book.slug ? `/booky/assets/${book.slug}.jpg` : '';
 const remote = book.cover || '';
 img.alt = `${book.title} cover`;
-if (!remote && !local) {
-img.hidden = true;
-return;
-}
+if (!remote && !local) { img.hidden = true; return; }
 img.hidden = false;
-if (remote) {
-img.src = remote;
-img.onerror = () => {
-if (local && !img.src.endsWith(local)) {
-img.src = local;
+img.src = remote || local;
 img.onerror = () => { img.hidden = true; };
-} else {
-img.hidden = true;
-}
-};
-} else {
-img.src = local;
-img.onerror = () => { img.hidden = true; };
-}
 }
 
 function formatMilestoneText(streak) {

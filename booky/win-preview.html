@@ -120,6 +120,7 @@
 </div>
 </dialog>
 
+<script src="/booky/book-cover.js?v=1"></script>
 <script>
 const BADGES = [
   { at: 1, icon: '✨', name: 'Initiate', blurb: 'You crossed the veil.' },
@@ -144,23 +145,25 @@ function milestoneText(s) {
 }
 
 const SCENARIOS = {
-  win:      { won: true,  tries: 4, played: 12, wins: 11, streak: 2, max: 5, featured: false,
-    title: 'Fourth Wing', author: 'Rebecca Yarros', slug: 'fourth-wing',
-    cover: 'https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg' },
-  loss:     { won: false, tries: 6, played: 12, wins: 10, streak: 0, max: 5, featured: false, word: 'GHOST',
-    title: 'Weavingshaw', author: 'Heba Al-Wasity', slug: 'weavingshaw', cover: 'assets/weavingshaw.jpg' },
-  featured: { won: true,  tries: 3, played: 20, wins: 18, streak: 7, max: 9, featured: true,
-    title: 'Weavingshaw', author: 'Heba Al-Wasity', slug: 'weavingshaw', cover: 'assets/weavingshaw.jpg', word: 'GHOST' },
-  newbie:   { won: true,  tries: 5, played: 1,  wins: 1,  streak: 1, max: 1, featured: false,
-    title: 'Fourth Wing', author: 'Rebecca Yarros', slug: 'fourth-wing',
-    cover: 'https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg' },
-  streak:   { won: true,  tries: 2, played: 40, wins: 38, streak: 29, max: 29, featured: false,
-    title: 'Fourth Wing', author: 'Rebecca Yarros', slug: 'fourth-wing',
-    cover: 'https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg' },
+  win:      { won: true,  tries: 4, played: 12, wins: 11, streak: 2, max: 5, word: 'RIDER' },
+  loss:     { won: false, tries: 6, played: 12, wins: 10, streak: 0, max: 5, word: 'GHOST' },
+  featured: { won: true,  tries: 3, played: 20, wins: 18, streak: 7, max: 9, word: 'GHOST' },
+  newbie:   { won: true,  tries: 5, played: 1,  wins: 1,  streak: 1, max: 1, word: 'RIDER' },
+  streak:   { won: true,  tries: 2, played: 40, wins: 38, streak: 29, max: 29, word: 'RIDER' },
 };
+
+let WORD_DATA = null;
+
+async function loadWordData() {
+  if (WORD_DATA) return WORD_DATA;
+  const res = await fetch('/booky/words.json?v=6', { cache: 'no-store' });
+  WORD_DATA = await res.json();
+  return WORD_DATA;
+}
 
 function render(key) {
   const s = SCENARIOS[key] || SCENARIOS.win;
+  const book = WORD_DATA?.wordBooks?.[s.word];
   const $ = (id) => document.getElementById(id);
 
   $('end-puzzle-no').textContent = 'Booky #42';
@@ -174,7 +177,7 @@ function render(key) {
   } else {
     $('end-headline').textContent = 'Better luck tomorrow.';
     $('end-subtitle').hidden = true;
-    $('end-word-reveal').textContent = `The word was ${s.word || 'GHOST'}`;
+    $('end-word-reveal').textContent = `The word was ${s.word}`;
     $('end-word-reveal').hidden = false;
     cel.classList.remove('won'); cel.classList.add('lost');
   }
@@ -188,39 +191,39 @@ function render(key) {
   const mt = milestoneText(s.streak);
   if (mt) { mEl.textContent = mt; mEl.hidden = false; } else { mEl.hidden = true; }
 
-  // Book card (always shown in preview)
+  // Book card — title, author, cover from words.json (same as prod)
   const rec = $('book-rec');
   const modal = $('end-modal');
-  rec.classList.toggle('book-hero--featured', s.featured);
-  modal.classList.toggle('end-modal--featured', s.featured);
-  $('book-rec-badge').hidden = !s.featured;
-  $('end-word').textContent = s.word || (s.featured ? 'GHOST' : '');
-  $('end-word').hidden = !s.featured && !s.word;
-  $('book-rec-title').textContent = s.title;
-  $('book-rec-author').textContent = s.author;
-  if (s.featured && s.hook !== false) {
-    $('book-rec-hook').textContent = 'A haunted loom, a cursed bargain, and a love that refuses to unravel.';
+  if (book) {
+  rec.classList.toggle('book-hero--featured', !!book.featured);
+  modal.classList.toggle('end-modal--featured', !!book.featured);
+  $('book-rec-badge').hidden = !book.featured;
+  $('end-word').textContent = s.word;
+  $('end-word').hidden = !book.featured;
+  $('book-rec-title').textContent = book.title;
+  $('book-rec-author').textContent = book.author;
+  if (book.featured && book.hook) {
+    $('book-rec-hook').textContent = book.hook;
     $('book-rec-hook').hidden = false;
   } else {
     $('book-rec-hook').hidden = true;
   }
-  const cover = $('book-rec-cover');
-  cover.src = s.cover || (s.slug ? `assets/${s.slug}.jpg` : '');
-  cover.alt = `${s.title} cover`;
-  cover.hidden = false;
-  cover.onerror = () => {
-    if (s.slug && !cover.src.includes('assets/')) {
-      cover.src = `assets/${s.slug}.jpg`;
-      cover.onerror = () => { cover.hidden = true; };
-    } else {
-      cover.hidden = true;
-    }
-  };
+  if (window.BookyCover) {
+    window.BookyCover.applyBookCover($('book-rec-cover'), book);
+  }
   const link = $('book-rec-link');
-  link.textContent = 'More books like this →';
-  link.href = '#';
+  if (book.buyUrl) {
+    link.textContent = 'Get it on Amazon';
+    link.href = book.buyUrl;
+  } else {
+    link.textContent = 'More books like this →';
+    link.href = '#';
+  }
   link.hidden = false;
   rec.hidden = false;
+  } else {
+  rec.hidden = true;
+  }
 
   // Highlight active control (standalone testing page only)
   if (!document.body.classList.contains('embedded')) {
@@ -234,7 +237,7 @@ function render(key) {
 }
 
 const key = new URLSearchParams(location.search).get('s') || 'win';
-render(key);
+loadWordData().then(() => render(key)).catch(() => render(key));
 document.getElementById('share-btn').addEventListener('click', () => {
   const t = document.getElementById('share-toast');
   t.textContent = 'preview only — sharing works in the real game';

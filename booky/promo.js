@@ -22,8 +22,9 @@ function findDayBySlug(data, slug) {
 }
 
 function coverForBook(book) {
+  if (window.BookyCover) return window.BookyCover.primaryCoverUrl(book);
   if (book.cover) return book.cover;
-  return `/booky/assets/${book.slug}.jpg`;
+  return book.slug ? `/booky/assets/${book.slug}.jpg` : '';
 }
 
 function showError(msg) {
