@@ -5,39 +5,42 @@
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
 <title>Booky Author Promo</title>
 <meta name="robots" content="noindex" />
-<meta name="theme-color" content="#160516" />
-<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
-<link rel="preconnect" href="https://fonts.googleapis.com" />
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=15" />
+<meta name="theme-color" content="#160c1d" />
+<style>
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    background: #160c1d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 16px;
+    box-sizing: border-box;
+  }
+  body.promo-page--story { padding: 28px 16px; }
+  .promo-asset-frame {
+    width: 400px;
+    max-width: 92vw;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+  }
+  body.promo-page--story .promo-asset-frame { width: min(400px, 94vw); }
+  .promo-asset-frame svg { display: block; width: 100%; height: auto; }
+  .promo-error, .promo-loading {
+    color: #b496ac;
+    font-family: Georgia, serif;
+    text-align: center;
+    padding: 40px 20px;
+    max-width: 360px;
+  }
+</style>
 </head>
 <body class="promo-page">
-<div class="bg-glow" aria-hidden="true"></div>
 <p id="promo-loading" class="promo-loading">Loading promo…</p>
-
-<article id="promo-card" class="promo-frame" hidden>
-<span class="promo-corner promo-corner--tl" aria-hidden="true"></span>
-<span class="promo-corner promo-corner--tr" aria-hidden="true"></span>
-<span class="promo-corner promo-corner--bl" aria-hidden="true"></span>
-<span class="promo-corner promo-corner--br" aria-hidden="true"></span>
-<div class="promo-brand">
-<div class="booky-tiles" aria-hidden="true">
-<span>B</span><span>O</span><span>O</span><span>K</span><span>Y</span>
-</div>
-<p class="promo-tagline">romantasy word game</p>
-</div>
-<p class="promo-flourish" aria-hidden="true">— ✦ —</p>
-<p id="promo-teaser" class="promo-teaser">today&rsquo;s word is hidden in&hellip;</p>
-<img id="promo-cover" class="promo-cover" alt="" />
-<p id="promo-title" class="promo-book-title"></p>
-<p id="promo-author" class="promo-book-author"></p>
-<a id="promo-cta" class="promo-cta" href="/booky">Play now</a>
-<p class="promo-footer">daily romantasy word game by <strong>90books</strong></p>
-</article>
-
+<div id="promo-mount" class="promo-asset-frame" hidden></div>
 <p id="promo-error" class="promo-error" hidden></p>
-
-<script src="/booky/promo.js?v=1" defer></script>
+<script src="/booky/promo-render.js?v=2"></script>
+<script src="/booky/promo.js?v=2" defer></script>
 </body>
 </html>

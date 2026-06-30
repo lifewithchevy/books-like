@@ -351,9 +351,26 @@ body {
   gap: 15px;
 }
 #end-modal .celebration-title { font-size: 40px; }
-#end-modal .promo-cta { padding: 13px; }
+#end-modal .promo-asset-frame { max-width: 360px; }
 #end-modal .reminder-card { margin-top: 0; }
 #end-modal .next { margin: 0; }
+/* Match booky-assets plum behind the SVG on win screen */
+#end-modal { background: #160c1d; }
+
+/* Canonical share asset frame (github.com/lifewithchevy/booky-assets) */
+.promo-asset-frame {
+  width: 100%;
+  max-width: 400px;
+  margin: 0 auto;
+  border-radius: 22px;
+  overflow: hidden;
+  box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+}
+.promo-asset-frame svg {
+  display: block;
+  width: 100%;
+  height: auto;
+}
 .end-top { text-align: center; }
 .end-top .end-puzzle-no { margin-bottom: 8px; }
 .sheet-close {

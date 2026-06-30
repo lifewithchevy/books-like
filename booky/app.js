@@ -515,59 +515,42 @@ streakEl.hidden = true;
 
 renderStatsModal();
 
-// Hero 2: author promo frame (matches /booky/promo graphics)
+// Hero 2: canonical author promo SVG (booky-assets)
 const bookRec = DATA.wordBooks?.[ANSWER];
 const recEl = $('book-rec');
-const teaserEl = $('promo-teaser');
-const wordRevealEl = $('end-word');
 if (bookRec) {
-$('book-rec-title').textContent = bookRec.title;
-$('book-rec-author').textContent = bookRec.author;
-
-const cover = $('book-rec-cover');
-if (bookRec.cover) {
-cover.src = bookRec.cover;
-cover.alt = `${bookRec.title} cover`;
-cover.hidden = false;
-cover.onerror = () => { cover.hidden = true; };
+  const teaser = "today\u2019s word was from...";
+  let ctaText = 'PLAY NOW';
+  let ctaHref = 'https://90books.com/booky';
+  if (bookRec.buyUrl) {
+    ctaText = 'Get it on Amazon';
+    ctaHref = bookRec.buyUrl;
+  } else if (CURATED_SLUGS.has(bookRec.slug)) {
+    ctaText = 'More books like this';
+    ctaHref = `https://90books.com/books-like/${bookRec.slug}`;
+  }
+  const cover = bookRec.cover || `/booky/assets/${bookRec.slug}.jpg`;
+  recEl.innerHTML = renderBookyPromoSVG({
+    cover,
+    title: bookRec.title,
+    author: bookRec.author,
+    teaser,
+    ctaText,
+    ctaHref,
+  });
+  if (bookRec.buyUrl && ctaHref === bookRec.buyUrl) {
+    recEl.querySelector('a')?.addEventListener('click', () => {
+      posthog.capture('affiliate_buy_clicked', {
+        word_number: DAY,
+        book: bookRec.slug,
+        title: bookRec.title,
+      });
+    });
+  }
+  recEl.hidden = false;
 } else {
-cover.hidden = true;
-}
-
-// Post-play copy; promo page uses "hidden in…" before they play
-teaserEl.textContent = won
-? 'today\u2019s word was from\u2026'
-: 'today\u2019s word was from\u2026';
-// Reveal the 5-letter word on loss only (promo graphic never spoils it)
-if (!won) {
-wordRevealEl.textContent = ANSWER;
-wordRevealEl.hidden = false;
-} else {
-wordRevealEl.hidden = true;
-}
-
-const linkEl = $('book-rec-link');
-if (bookRec.buyUrl) {
-linkEl.href = bookRec.buyUrl;
-linkEl.textContent = 'Get it on Amazon';
-linkEl.hidden = false;
-linkEl.onclick = () => posthog.capture('affiliate_buy_clicked', {
-word_number: DAY,
-book: bookRec.slug,
-title: bookRec.title,
-});
-} else if (CURATED_SLUGS.has(bookRec.slug)) {
-linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
-linkEl.textContent = 'More books like this \u2192';
-linkEl.hidden = false;
-linkEl.onclick = null;
-} else {
-linkEl.hidden = true;
-linkEl.onclick = null;
-}
-recEl.hidden = false;
-} else {
-recEl.hidden = true;
+  recEl.hidden = true;
+  recEl.innerHTML = '';
 }
 
 // Reminder form — only show if user hasn't already subscribed

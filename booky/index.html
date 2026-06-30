@@ -151,27 +151,8 @@ competes with the Booky wordmark or the help/stats icons. -->
 </div>
 </div>
 
-<!-- Hero 2: author promo frame (same template as /booky/promo) -->
-<div id="book-rec" class="promo-frame" hidden>
-<span class="promo-corner promo-corner--tl" aria-hidden="true"></span>
-<span class="promo-corner promo-corner--tr" aria-hidden="true"></span>
-<span class="promo-corner promo-corner--bl" aria-hidden="true"></span>
-<span class="promo-corner promo-corner--br" aria-hidden="true"></span>
-<div class="promo-brand">
-<div class="booky-tiles" aria-hidden="true">
-<span>B</span><span>O</span><span>O</span><span>K</span><span>Y</span>
-</div>
-<p class="promo-tagline">romantasy word game</p>
-</div>
-<p class="promo-flourish" aria-hidden="true">— ✦ —</p>
-<p id="promo-teaser" class="promo-teaser">today&rsquo;s word is hidden in&hellip;</p>
-<p id="end-word" class="promo-word-reveal" hidden></p>
-<img id="book-rec-cover" class="promo-cover" alt="" hidden />
-<p id="book-rec-title" class="promo-book-title"></p>
-<p id="book-rec-author" class="promo-book-author"></p>
-<a id="book-rec-link" class="promo-cta" target="_blank" rel="noopener" hidden></a>
-<p class="promo-footer">daily romantasy word game by <strong>90books</strong></p>
-</div>
+<!-- Hero 2: canonical author promo SVG (booky-assets) -->
+<div id="book-rec" class="promo-asset-frame" hidden></div>
 
 <!-- Streak + earned romantasy rank -->
 <p id="end-streak" class="end-streak" hidden></p>
@@ -206,6 +187,7 @@ required
 <!-- Floating toast (invalid guess, etc.) -->
 <div id="floating-toast" class="float-toast" hidden></div>
 
-<script src="/booky/app.js?v=28" defer></script>
+<script src="/booky/promo-render.js?v=2"></script>
+<script src="/booky/app.js?v=29" defer></script>
 </body>
 </html>

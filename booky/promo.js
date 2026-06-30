@@ -1,9 +1,5 @@
-// Author promo graphic — same frame as the Booky win screen.
-// Usage:
-//   /booky/promo              today's featured book (if any)
-//   /booky/promo?day=42       puzzle day number
-//   /booky/promo?book=weavingshaw   by book slug
-//   /booky/promo?format=story       taller layout for IG stories
+// Dynamic author promo — uses canonical SVG from booky-assets via promo-render.js
+// /booky/promo/?book=weavingshaw  /booky/promo/?day=42  /booky/promo/?format=story
 
 const $ = (id) => document.getElementById(id);
 
@@ -25,10 +21,14 @@ function findDayBySlug(data, slug) {
   return null;
 }
 
+function coverForBook(book) {
+  if (book.cover) return book.cover;
+  return `/booky/assets/${book.slug}.jpg`;
+}
+
 function showError(msg) {
-  const loading = $('promo-loading');
-  if (loading) loading.hidden = true;
-  $('promo-card').hidden = true;
+  $('promo-loading').hidden = true;
+  $('promo-mount').hidden = true;
   const err = $('promo-error');
   err.textContent = msg;
   err.hidden = false;
@@ -84,28 +84,22 @@ function showError(msg) {
     return;
   }
 
-  $('promo-teaser').textContent = 'today\u2019s word is hidden in\u2026';
-  $('promo-title').textContent = book.title;
-  $('promo-author').textContent = book.author;
-
-  const cover = $('promo-cover');
-  if (book.cover) {
-    cover.src = book.cover;
-    cover.alt = `${book.title} cover`;
-    cover.onerror = () => { cover.hidden = true; };
-  } else {
-    cover.hidden = true;
-  }
-
   const utm = new URLSearchParams({
     utm_source: 'author_promo',
     utm_medium: 'social',
     utm_campaign: book.slug || `day-${day}`,
   });
-  $('promo-cta').href = `https://90books.com/booky?${utm}`;
+
+  $('promo-mount').innerHTML = renderBookyPromoSVG({
+    cover: coverForBook(book),
+    title: book.title,
+    author: book.author,
+    teaser: "today's word is hidden in...",
+    ctaText: 'PLAY NOW',
+    ctaHref: `https://90books.com/booky?${utm}`,
+  });
 
   document.title = `Booky — ${book.title}`;
-  const loading = $('promo-loading');
-  if (loading) loading.hidden = true;
-  $('promo-card').hidden = false;
+  $('promo-loading').hidden = true;
+  $('promo-mount').hidden = false;
 })();
