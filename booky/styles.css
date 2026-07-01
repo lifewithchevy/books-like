@@ -556,7 +556,8 @@ body.end-screen-open .bg-glow {
 #end-modal .end-description--italic {
   font-style: italic;
 }
-#end-modal #book-rec-author {
+#end-modal #book-rec-author,
+#end-modal #end-milestone-next {
   font-size: 14px;
 }
 #end-modal .share-btn {
