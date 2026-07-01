@@ -558,12 +558,24 @@ const { earned } = badgeForStreak(streak);
 return earned ? `${earned.icon} ${earned.name}` : null;
 }
 
+function formatSharePreview() {
+if (STATE.status === 'won') {
+let preview = `${STATE.guesses.length}/${MAX_GUESSES}`;
+if (STATS.currentStreak >= 1) {
+preview += ` 🔥${STATS.currentStreak}`;
+const badge = formatEarnedBadge(STATS.currentStreak);
+if (badge) preview += ` ${badge}`;
+}
+return preview;
+}
+return `X/${MAX_GUESSES}`;
+}
+
 // ---- End screen ----
 function showEndScreen() {
 recordFinish();
 
 const won = STATE.status === 'won';
-const tries = STATE.guesses.length;
 
 // Headline — Wordle-style win/lose copy
 const title = $('end-headline');
@@ -571,16 +583,14 @@ const sub = $('end-subtitle');
 const wordReveal = $('end-word-reveal');
 if (won) {
 title.textContent = 'Congratulations!';
-sub.textContent = `You guessed it in ${tries}`;
 $('celebration').classList.remove('lost');
 $('celebration').classList.add('won');
 } else {
 title.textContent = 'Better luck tomorrow.';
-sub.textContent = `You used all ${MAX_GUESSES} guesses`;
 $('celebration').classList.remove('won');
 $('celebration').classList.add('lost');
 }
-sub.hidden = false;
+sub.textContent = formatSharePreview();
 wordReveal.hidden = true;
 $('end-puzzle-no').textContent = 'Booky #' + DAY;
 
@@ -649,8 +659,7 @@ tickCountdown();
 
 const shareBtn = $('share-btn');
 if (shareBtn) {
-const shareLabel = shareBtn.querySelector('.share-btn__label');
-if (shareLabel) shareLabel.textContent = 'Share';
+shareBtn.setAttribute('aria-label', `Share your ${formatSharePreview()} result`);
 shareBtn.classList.add('share-btn--magic');
 }
 if (!window.__countdownTicker) {
