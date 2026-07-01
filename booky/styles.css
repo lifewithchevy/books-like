@@ -578,6 +578,14 @@ body.end-screen-open .bg-glow {
   margin-top: 16px;
 }
 #end-modal .end-book-cta { padding: 8px 10px; min-height: 40px; font-size: 12px; }
+#end-modal .reminder-headline {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink-dim);
+  text-align: left;
+  letter-spacing: 0;
+  margin: 0 0 8px;
+}
 #end-modal .next {
   margin: 20px 0 0;
   padding-top: 18px;
@@ -765,9 +773,6 @@ body.end-screen-open .bg-glow {
   flex-direction: column;
   gap: 16px;
 }
-.book-hero--compact {
-  padding: 8px 10px;
-}
 /* End screen book block — no card box; type matches other sections */
 #end-modal .end-book {
   margin: 0;
@@ -776,11 +781,25 @@ body.end-screen-open .bg-glow {
   background: none;
   box-shadow: none;
 }
+#end-modal .end-book-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 12px;
+}
+#end-modal .end-book-head .end-section-title {
+  margin-bottom: 0;
+}
 #end-modal .end-book .end-word {
-  margin: 0 0 8px;
-  font-size: 20px;
+  margin: 0;
+  font-size: 18px;
   font-weight: 600;
-  text-align: left;
+  letter-spacing: 4px;
+  text-align: right;
+  text-transform: uppercase;
+  white-space: nowrap;
+  flex-shrink: 0;
 }
 #end-modal .end-book-row {
   display: flex;
@@ -810,13 +829,6 @@ body.end-screen-open .bg-glow {
 .reminder-form {
   margin-top: 0;
   padding: 0;
-}
-.reminder-form .reminder-headline {
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 600;
-  margin-bottom: 8px;
-  color: var(--ink-dim);
 }
 
 /* Featured author day — full win screen matches Heba promo graphic */
