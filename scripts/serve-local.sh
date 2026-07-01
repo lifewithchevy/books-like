@@ -28,7 +28,7 @@ echo "════════════════════════�
 echo "  Booky — local only (port ${PORT})"
 echo ""
 echo "  Game:       http://localhost:${PORT}/booky/"
-echo "  Win screen: http://localhost:${PORT}/booky/win-preview.html?s=newbie"
+echo "  Win screen: http://localhost:${PORT}/booky/?preview=newbie"
 echo ""
 echo "  Cursor: Ports → ${PORT} → globe icon"
 echo "════════════════════════════════════════"

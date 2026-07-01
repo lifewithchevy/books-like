@@ -91,15 +91,15 @@ date: new Date().toISOString().split('T')[0],
 if (STATE.status !== 'playing') {
 LOCKED = true;
 showEndScreen();
-} else if (new URLSearchParams(location.search).get('preview') === 'win') {
-// Dev/preview: open win screen without finishing today's puzzle.
-// Use a detached copy so we never persist a fake "won" game to storage.
-STATE = { dayNumber: DAY, guesses: [ANSWER], status: 'won', statsRecorded: true };
-LOCKED = true;
-try { showEndScreen(); } catch (e) { console.error('preview win failed', e); }
+} else {
+const previewKey = new URLSearchParams(location.search).get('preview');
+if (previewKey) {
+applyPreviewScenario(previewKey);
+try { showEndScreen(); } catch (e) { console.error('preview failed', e); }
+}
 }
 
-// First-time visitor: show help (skip when previewing win screen)
+// First-time visitor: show help (skip when previewing end screen)
 if (!localStorage.getItem('90books_booky_seen_help_v1') && !new URLSearchParams(location.search).get('preview')) {
 localStorage.setItem('90books_booky_seen_help_v1', '1');
 setTimeout(() => $('help-modal').showModal(), 400);
@@ -146,6 +146,45 @@ lastPlayedDay: 0
 };
 }
 function saveStats() { localStorage.setItem(STATS_KEY, JSON.stringify(STATS)); }
+
+// Dev preview on the real game page: /booky/?preview=newbie (never persisted)
+const PREVIEW_SCENARIOS = {
+win:      { won: true,  tries: 4, played: 12, wins: 11, streak: 2, max: 5 },
+loss:     { won: false, tries: 6, played: 12, wins: 10, streak: 0, max: 5 },
+featured: { won: true,  tries: 3, played: 20, wins: 18, streak: 7, max: 9, word: 'GHOST' },
+newbie:   { won: true,  tries: 5, played: 1,  wins: 1,  streak: 1, max: 1 },
+streak:   { won: true,  tries: 2, played: 40, wins: 38, streak: 29, max: 29 },
+};
+
+function previewGuesses(won, tries) {
+if (won) {
+const g = [];
+for (let i = 0; i < tries - 1; i++) g.push('STARE');
+g.push(ANSWER);
+return g;
+}
+return Array(MAX_GUESSES).fill('STARE');
+}
+
+function applyPreviewScenario(key) {
+const s = PREVIEW_SCENARIOS[key] || PREVIEW_SCENARIOS.win;
+if (s.word) ANSWER = s.word;
+STATE = {
+dayNumber: DAY,
+guesses: previewGuesses(s.won, s.tries),
+status: s.won ? 'won' : 'lost',
+statsRecorded: true,
+};
+STATS = {
+currentStreak: s.streak,
+maxStreak: s.max,
+played: s.played,
+wins: s.wins,
+distribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, X: 0 },
+lastPlayedDay: DAY,
+};
+LOCKED = true;
+}
 
 function recordFinish() {
 if (STATE.statsRecorded) return;

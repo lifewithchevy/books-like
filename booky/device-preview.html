@@ -148,8 +148,7 @@ const deviceSel = document.getElementById('device');
 let srcKey = 'real';
 
 function srcFor(key) {
-  if (key === 'real') return './?preview=win';
-  return './win-preview.html?s=' + key;
+  return './?preview=' + (key === 'real' ? 'win' : key);
 }
 
 function applyDevice() {

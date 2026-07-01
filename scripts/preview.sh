@@ -15,7 +15,7 @@ echo "  ────────────────────────
 echo "  Promo (Heba):  http://localhost:${PORT}/booky/promo/?book=weavingshaw&format=story"
 echo "  Dev split:     http://localhost:${PORT}/booky/dev-preview.html"
 echo "  Game:          http://localhost:${PORT}/booky/"
-echo "  Win screen:    http://localhost:${PORT}/booky/win-preview.html?s=newbie"
+echo "  Win screen:    http://localhost:${PORT}/booky/?preview=newbie"
 echo ""
 echo "  In Cursor: Ports panel → forward ${PORT} → open in browser (right split)"
 echo "  Press Ctrl+C to stop"

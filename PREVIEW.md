@@ -1,6 +1,6 @@
 # Booky — local dev
 
-One server, one port. Everything lives under `/booky/`.
+One server, one page: `/booky/`
 
 ```bash
 ./scripts/serve-local.sh
@@ -10,10 +10,12 @@ One server, one port. Everything lives under `/booky/`.
 | What | URL |
 |------|-----|
 | **Game** | http://localhost:8080/booky/ |
-| **Win screen (mock)** | http://localhost:8080/booky/win-preview.html?s=newbie |
+| **Win screen (mock, same page)** | http://localhost:8080/booky/?preview=newbie |
+
+Other preview scenarios (all on `/booky/`): `?preview=win`, `?preview=loss`, `?preview=featured`, `?preview=streak`
 
 In Cursor: **Ports → 8080 → globe icon**.
 
-No public URL, no tunnel. Same `localhost` for the game and the win screen — just different paths in the `booky/` folder.
+No separate preview page — the end screen changes live in `index.html`, `styles.css`, and `app.js`. Preview mode only fakes stats so you can see the win screen without playing.
 
-**Note:** `win-preview.html` is on the feature branch (`cursor/booky-promo-frame-brand-3b79`). If you get a 404, run `git checkout cursor/booky-promo-frame-brand-3b79` before serving.
+**Branch:** these changes are on `cursor/booky-promo-frame-brand-3b79` until merged to `main`.
