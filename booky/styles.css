@@ -1259,6 +1259,16 @@ body.end-screen-open .bg-glow {
   margin: 0;
   letter-spacing: 0.5px;
 }
+#end-modal #end-subline {
+  margin-top: 5px;
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--accent-2);
+  letter-spacing: 0.3px;
+}
+#end-modal.end-modal--featured #end-subline {
+  color: var(--featured-pink);
+}
 .end-puzzle-no {
   font-family: var(--font-sans);
   font-size: 11px;

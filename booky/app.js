@@ -627,6 +627,22 @@ $('celebration').classList.add('lost');
 wordReveal.hidden = true;
 $('end-puzzle-no').textContent = 'Booky #' + DAY;
 
+// First-win treatment — the highest-emotion moment. The lifetime stats row
+// is all 1s and uninspiring on day one, so hide it and lean on a streak
+// subline + the badge/grid instead.
+const isFirstWin = won && STATS.played === 1;
+const subline = $('end-subline');
+if (subline) {
+if (isFirstWin) {
+subline.textContent = 'Your streak starts today 🔥';
+subline.hidden = false;
+} else {
+subline.hidden = true;
+}
+}
+const statsBlock = $('end-stats');
+if (statsBlock) statsBlock.hidden = isFirstWin;
+
 renderStatsModal();
 renderEndScreenStats();
 
@@ -691,6 +707,8 @@ const shareBtn = $('share-btn');
 if (shareBtn) {
 shareBtn.setAttribute('aria-label', won ? `Share your ${formatSharePreview()} result` : 'Share');
 shareBtn.classList.add('share-btn--magic');
+const shareLabel = shareBtn.querySelector('.share-btn__label');
+if (shareLabel) shareLabel.textContent = isFirstWin ? 'Share your first win' : 'Share';
 }
 if (!window.__countdownTicker) {
 window.__countdownTicker = setInterval(tickCountdown, 1000);
