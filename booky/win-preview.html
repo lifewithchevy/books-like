@@ -241,9 +241,8 @@ function render(key) {
   const rec = $('book-rec');
   const modal = $('end-modal');
   if (book) {
-  const isFeaturedWin = s.won && !!book?.featured;
-  rec.classList.toggle('book-hero--featured', isFeaturedWin);
-  modal.classList.toggle('end-modal--featured', isFeaturedWin);
+  rec.classList.remove('book-hero--featured');
+  if (modal) modal.classList.remove('end-modal--featured');
   const endWord = $('end-word');
   endWord.textContent = s.word;
   endWord.hidden = false;
