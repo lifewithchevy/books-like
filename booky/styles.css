@@ -532,24 +532,24 @@ body.end-screen-open .bg-glow {
   color: var(--ink-faint);
   text-align: left;
 }
-/* Subtitle — book title */
+/* Subtitle — book title (serif) */
 #end-modal .end-subtitle {
   font-family: var(--font-serif);
-  font-size: 17px;
+  font-size: clamp(19px, 5vw, 22px);
   font-weight: 600;
   line-height: 1.2;
   color: var(--ink);
   margin: 0;
   overflow-wrap: anywhere;
 }
-/* Description — author, hook, titles earned */
+/* Description — author, hook, titles earned (sans) */
 #end-modal .end-description {
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 400;
   line-height: 1.45;
   color: var(--ink-dim);
-  margin: 4px 0 0;
+  margin: 5px 0 0;
   text-align: left;
 }
 #end-modal .end-description--italic {
@@ -803,12 +803,12 @@ body.end-screen-open .bg-glow {
 }
 #end-modal .end-book-row {
   display: flex;
-  gap: 10px;
+  gap: 12px;
   align-items: flex-start;
 }
 #end-modal .end-book-cover {
-  width: 44px;
-  height: 66px;
+  width: 48px;
+  height: 72px;
   flex: 0 0 auto;
   border-radius: 4px;
   object-fit: cover;
@@ -818,13 +818,13 @@ body.end-screen-open .bg-glow {
 #end-modal .end-book-meta {
   flex: 1;
   min-width: 0;
-  padding-top: 2px;
+  padding-top: 4px;
 }
 #end-modal .end-book-cta {
   display: block;
   width: 100%;
   text-align: center;
-  margin-top: 10px;
+  margin-top: 12px;
 }
 .reminder-form {
   margin-top: 0;
