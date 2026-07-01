@@ -591,11 +591,13 @@ $('end-puzzle-no').textContent = 'Booky #' + DAY;
 renderStatsModal();
 renderEndScreenStats();
 
-// Book card — same compact layout every day; hook/link when present in words.json
+// Book card — compact layout; dark promo screen on featured author wins
 const bookRec = DATA.wordBooks?.[ANSWER];
 const recEl = $('book-rec');
+const endModal = $('end-modal');
+const isFeaturedWin = won && !!bookRec?.featured;
+if (endModal) endModal.classList.toggle('end-modal--featured', !!(bookRec && isFeaturedWin));
 if (bookRec) {
-recEl.classList.remove('book-hero--featured');
 $('book-rec-title').textContent = bookRec.title;
 $('book-rec-author').textContent = bookRec.author;
 const endWord = $('end-word');
@@ -636,7 +638,6 @@ linkEl.onclick = null;
 recEl.hidden = false;
 } else {
 recEl.hidden = true;
-recEl.classList.remove('book-hero--featured');
 if (endModal) endModal.classList.remove('end-modal--featured');
 }
 

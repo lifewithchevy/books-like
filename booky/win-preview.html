@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=68" />
+<link rel="stylesheet" href="/booky/styles.css?v=69" />
 <style>
   /* Preview chrome only — not part of the game */
   body.win-preview { overflow: auto; }
@@ -94,7 +94,7 @@
 
 <div class="end-ranks" id="end-ranks" hidden>
 <h3 class="end-section-title">Titles Earned</h3>
-<p id="end-milestone" class="end-milestone" hidden></p>
+<p id="end-milestone" class="end-description" hidden></p>
 </div>
 
 <div id="share-block" class="end-share">
@@ -106,18 +106,18 @@
 </div>
 
 <div id="end-extras" class="end-extras">
-<div id="book-rec" class="book-hero book-hero--compact" hidden>
-<p class="book-hero-label">📚 Today&rsquo;s word is from</p>
+<div id="book-rec" class="end-book" hidden>
+<h3 class="end-section-title">Today&rsquo;s word is from</h3>
 <p id="end-word" class="end-word" aria-hidden="true"></p>
-<div class="book-hero-row">
-<img id="book-rec-cover" class="book-hero-cover" alt="" hidden />
-<div class="book-hero-meta">
-<p id="book-rec-title" class="book-hero-title"></p>
-<p id="book-rec-author" class="book-hero-author"></p>
-<p id="book-rec-hook" class="book-hero-hook" hidden></p>
+<div class="end-book-row">
+<img id="book-rec-cover" class="end-book-cover" alt="" hidden />
+<div class="end-book-meta">
+<p id="book-rec-title" class="end-subtitle"></p>
+<p id="book-rec-author" class="end-description"></p>
+<p id="book-rec-hook" class="end-description end-description--italic" hidden></p>
 </div>
 </div>
-<a id="book-rec-link" class="book-hero-cta secondary-link" target="_blank" rel="noopener" hidden></a>
+<a id="book-rec-link" class="end-book-cta secondary-link" target="_blank" rel="noopener" hidden></a>
 </div>
 
 <form id="reminder-form" class="reminder-form" novalidate>
@@ -240,9 +240,9 @@ function render(key) {
   // Book card — title, author, cover from words.json (same as prod)
   const rec = $('book-rec');
   const modal = $('end-modal');
+  const isFeaturedWin = s.won && !!book?.featured;
+  if (modal) modal.classList.toggle('end-modal--featured', !!(book && isFeaturedWin));
   if (book) {
-  rec.classList.remove('book-hero--featured');
-  if (modal) modal.classList.remove('end-modal--featured');
   const endWord = $('end-word');
   endWord.textContent = s.word;
   endWord.hidden = false;
@@ -254,7 +254,7 @@ function render(key) {
   endWord.setAttribute('aria-label', "Reveal today's word");
   $('book-rec-title').textContent = book.title;
   $('book-rec-author').textContent = book.author;
-  if (isFeaturedWin && book.hook) {
+  if (s.won && book.hook) {
     $('book-rec-hook').textContent = book.hook;
     $('book-rec-hook').hidden = false;
   } else {
@@ -275,6 +275,7 @@ function render(key) {
   rec.hidden = false;
   } else {
   rec.hidden = true;
+  if (modal) modal.classList.remove('end-modal--featured');
   }
 
   const shareBtn = $('share-btn');
