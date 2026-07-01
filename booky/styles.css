@@ -85,7 +85,7 @@
 * { box-sizing: border-box; }
 
 /* The `hidden` attribute must always win, even on elements with an author `display` rule
-   (e.g. .book-hero-badge / .book-hero-cta set display:block, which otherwise defeats it). */
+   (e.g. .book-hero-cta sets display:block, which otherwise defeats it). */
 [hidden] { display: none !important; }
 
 html, body {
@@ -658,18 +658,19 @@ body {
 #reminder-submit {
   background: var(--bg-3);
   border: 1px solid var(--border);
-  color: var(--ink);
+  color: var(--accent-2);   /* pink label, same as the book text link */
   padding: 0 16px;
   border-radius: 8px;
   cursor: pointer;
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
-  transition: background 0.15s, border-color 0.15s;
+  transition: background 0.15s, border-color 0.15s, color 0.15s;
 }
 #reminder-submit:hover:not(:disabled) {
   background: var(--accent);
   border-color: var(--accent);
+  color: #fff;
 }
 #reminder-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 .reminder-toast {
@@ -688,20 +689,6 @@ body {
   border-radius: 12px;
   background: linear-gradient(135deg, var(--streak-bg-from), var(--streak-bg-to));
   padding: 14px;
-}
-/* "Featured" badge — paid placements only (set via the book's `featured` flag).
-   Gold so it reads distinct from the magenta CTA; sits above the title, beside the cover. */
-.book-hero-badge {
-  display: inline-block;
-  margin: 0 0 6px;
-  background: #e8b923;
-  color: #4a3200;
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 1.4px;
-  text-transform: uppercase;
-  padding: 3px 10px;
-  border-radius: 20px;
 }
 /* The word reveal — now the first line of the book card, above the label */
 #book-rec .end-word { margin: 2px 0 4px; }
@@ -794,6 +781,50 @@ body {
   padding: 8px 10px;
   background: var(--bg-3);
   border-radius: 8px;
+}
+
+/* Share CTA — magic sparkle: a shine sweep + twinkling stars pull the eye
+   to the growth action, fantasy-coded. All motion stops under reduced-motion
+   (sparkles then sit at a soft constant glow instead). */
+#share-btn {
+  position: relative;
+  overflow: hidden;
+}
+#share-btn::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: -60%;
+  width: 40%;
+  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.35), transparent);
+  transform: skewX(-20deg);
+  animation: share-shine 3.2s ease-in-out infinite;
+  pointer-events: none;
+}
+@keyframes share-shine {
+  0%        { left: -60%; }
+  55%, 100% { left: 130%; }
+}
+#share-btn .spark {
+  position: absolute;
+  font-size: 11px;
+  color: #fff;
+  opacity: 0;
+  pointer-events: none;
+  text-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
+  animation: spark-twinkle 2.4s ease-in-out infinite;
+}
+#share-btn .spark:nth-of-type(1) { top: 5px; left: 16%; }
+#share-btn .spark:nth-of-type(2) { bottom: 4px; left: 72%; font-size: 9px; animation-delay: 0.8s; }
+#share-btn .spark:nth-of-type(3) { top: 8px; left: 87%; font-size: 13px; animation-delay: 1.6s; }
+@keyframes spark-twinkle {
+  0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); }
+  50%      { opacity: 1; transform: scale(1) rotate(90deg); }
+}
+@media (prefers-reduced-motion: reduce) {
+  #share-btn::before, #share-btn .spark { animation: none; }
+  #share-btn .spark { opacity: 0.6; }
 }
 
 /* Shared filled-button style: the Share CTA + the sponsored buy link */

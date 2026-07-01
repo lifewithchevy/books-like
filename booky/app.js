@@ -545,7 +545,6 @@ const recEl = $('book-rec');
 if (bookRec) {
 $('book-rec-title').textContent = bookRec.title;
 $('book-rec-author').textContent = bookRec.author;
-$('book-rec-badge').hidden = !bookRec.featured;   // "Featured" badge for paid placements only
 
 const cover = $('book-rec-cover');
 if (bookRec.cover) {
