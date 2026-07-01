@@ -597,6 +597,20 @@ const { earned } = badgeForStreak(streak);
 return earned ? `${earned.icon} ${earned.name}` : null;
 }
 
+// Split form for the win screen — earned title on top, "N days to next" below.
+function formatMilestoneParts(streak) {
+if (streak < 1) return null;
+const { earned, next } = badgeForStreak(streak);
+if (!earned) return null;
+const main = `${earned.icon} ${earned.name}`;
+let nextTxt = null;
+if (next) {
+const rem = next.at - streak;
+nextTxt = `${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}`;
+}
+return { main, next: nextTxt };
+}
+
 function formatSharePreview() {
 if (STATE.status === 'won') {
 let preview = `${STATE.guesses.length}/${MAX_GUESSES}`;
@@ -745,18 +759,21 @@ $('end-stat-streak').textContent = STATS.currentStreak;
 $('end-stat-max').textContent = STATS.maxStreak;
 
 const milestoneEl = $('end-milestone');
+const nextEl = $('end-milestone-next');
 const ranksBlock = $('end-ranks');
 const won = STATE.status === 'won';
-const milestoneTxt = won ? formatMilestoneText(STATS.currentStreak) : null;
-if (milestoneEl) {
-if (milestoneTxt) {
-milestoneEl.textContent = milestoneTxt;
-milestoneEl.hidden = false;
+const parts = won ? formatMilestoneParts(STATS.currentStreak) : null;
+if (parts) {
+if (milestoneEl) { milestoneEl.textContent = parts.main; milestoneEl.hidden = false; }
+if (nextEl) {
+if (parts.next) { nextEl.textContent = parts.next; nextEl.hidden = false; }
+else nextEl.hidden = true;
+}
 if (ranksBlock) ranksBlock.hidden = false;
 } else {
-milestoneEl.hidden = true;
+if (milestoneEl) milestoneEl.hidden = true;
+if (nextEl) nextEl.hidden = true;
 if (ranksBlock) ranksBlock.hidden = true;
-}
 }
 renderEndGrid();
 }
