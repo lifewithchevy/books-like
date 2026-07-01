@@ -601,7 +601,6 @@ recEl.classList.toggle('book-hero--featured', isFeaturedWin);
 if (endModal) endModal.classList.toggle('end-modal--featured', isFeaturedWin);
 $('book-rec-title').textContent = bookRec.title;
 $('book-rec-author').textContent = bookRec.author;
-$('book-rec-badge').hidden = !isFeaturedWin;
 const endWord = $('end-word');
 endWord.textContent = ANSWER;
 endWord.hidden = false;

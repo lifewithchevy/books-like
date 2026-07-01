@@ -752,27 +752,42 @@ body.end-screen-open .bg-glow {
   gap: 16px;
 }
 .book-hero--compact {
-  padding: 11px;
+  padding: 8px 10px;
+}
+.book-hero--compact .book-hero-row {
+  gap: 10px;
 }
 .book-hero--compact .book-hero-cover {
-  width: 52px;
-  height: 78px;
+  width: 44px;
+  height: 66px;
   display: block;
 }
 .book-hero--compact .book-hero-label {
-  font-size: 10px;
+  font-size: 9px;
   margin-bottom: 2px;
+  letter-spacing: 1.4px;
 }
 .book-hero--compact .end-word {
-  margin-bottom: 8px;
+  margin-bottom: 6px;
+  font-size: 20px;
 }
 .book-hero--compact .book-hero-title {
-  font-size: 17px;
+  font-size: 15px;
+}
+.book-hero--compact .book-hero-author {
+  font-size: 11px;
+  margin-top: 2px;
+}
+.book-hero--compact .book-hero-hook {
+  font-size: 11px;
+  margin-top: 5px;
+  line-height: 1.35;
 }
 .book-hero--compact .book-hero-cta {
-  margin-top: 10px;
-  font-size: 13px;
-  padding: 10px;
+  margin-top: 8px;
+  font-size: 12px;
+  padding: 8px 10px;
+  min-height: 40px;
 }
 .reminder-form {
   margin-top: 0;
@@ -968,7 +983,7 @@ body.end-screen-open .bg-glow {
   padding: 3px 10px;
   border-radius: 20px;
 }
-#book-rec .end-word { margin: 2px 0 10px; }
+#book-rec .end-word { margin: 2px 0 6px; }
 .book-hero-label {
   font-size: 11px;
   font-weight: 700;

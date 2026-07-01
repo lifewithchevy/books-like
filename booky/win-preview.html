@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=67" />
+<link rel="stylesheet" href="/booky/styles.css?v=68" />
 <style>
   /* Preview chrome only — not part of the game */
   body.win-preview { overflow: auto; }
@@ -112,7 +112,6 @@
 <div class="book-hero-row">
 <img id="book-rec-cover" class="book-hero-cover" alt="" hidden />
 <div class="book-hero-meta">
-<span id="book-rec-badge" class="book-hero-badge" hidden>Featured</span>
 <p id="book-rec-title" class="book-hero-title"></p>
 <p id="book-rec-author" class="book-hero-author"></p>
 <p id="book-rec-hook" class="book-hero-hook" hidden></p>
@@ -245,7 +244,6 @@ function render(key) {
   const isFeaturedWin = s.won && !!book?.featured;
   rec.classList.toggle('book-hero--featured', isFeaturedWin);
   modal.classList.toggle('end-modal--featured', isFeaturedWin);
-  $('book-rec-badge').hidden = !isFeaturedWin;
   const endWord = $('end-word');
   endWord.textContent = s.word;
   endWord.hidden = false;
