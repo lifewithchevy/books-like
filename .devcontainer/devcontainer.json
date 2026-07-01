@@ -7,5 +7,5 @@
       "onAutoForward": "openBrowser"
     }
   },
-  "postStartCommand": "bash scripts/ensure-preview.sh"
+  "postStartCommand": "bash scripts/serve-local.sh"
 }

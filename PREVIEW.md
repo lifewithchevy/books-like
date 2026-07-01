@@ -1,39 +1,19 @@
-# Booky preview — always working
+# Booky — local dev
 
-## One link to bookmark (in this Cursor session)
-
-Run once if preview isn't up:
+One server, one port. Everything lives under `/booky/`.
 
 ```bash
-./scripts/ensure-preview.sh
+./scripts/serve-local.sh
+# or: python3 -m http.server 8080   (from repo root)
 ```
 
-Then open **the hub** (paste in the right-side browser):
+| What | URL |
+|------|-----|
+| **Game** | http://localhost:8080/booky/ |
+| **Win screen (mock)** | http://localhost:8080/booky/win-preview.html?s=newbie |
 
-**`/booky/preview-hub.html`** on whatever host the script prints.
+In Cursor: **Ports → 8080 → globe icon**.
 
-The hub uses **relative links** — win screen, game, and promos always work on the same host.
+No public URL, no tunnel. Same `localhost` for the game and the win screen — just different paths in the `booky/` folder.
 
-| Page | Path |
-|------|------|
-| **Hub (bookmark this)** | `/booky/preview-hub.html` |
-| **Win screen** | `/booky/?preview=win` |
-| **Full game** | `/booky/` |
-
-## Stable preview (Vercel, not prod)
-
-Every push to `cursor/**` branches deploys a **Vercel preview** (never 90books.com).
-
-Check **PR #5** for the bot comment with the stable win-screen URL — it updates on each push.
-
-## If the public tunnel link dies
-
-The preview **daemon auto-restarts** the tunnel. Refresh the hub page or re-run:
-
-```bash
-./scripts/ensure-preview.sh
-```
-
-## Cursor port forwarding
-
-If the tunnel fails, use **Ports → 8080 → globe icon** → open `/booky/preview-hub.html`.
+**Note:** `win-preview.html` is on the feature branch (`cursor/booky-promo-frame-brand-3b79`). If you get a 404, run `git checkout cursor/booky-promo-frame-brand-3b79` before serving.
