@@ -567,7 +567,9 @@ hookEl.hidden = true;
 
 const linkEl = $('book-rec-link');
 if (bookRec.buyUrl) {
-// Sponsored/featured: link straight to the buy page. This link IS the buy click.
+// Sponsored/featured: link straight to the buy page. This link IS the buy
+// click, so it keeps button prominence (part of the paid deliverable).
+linkEl.classList.add('primary');
 linkEl.href = bookRec.buyUrl;
 linkEl.textContent = 'Get it on Amazon';
 linkEl.hidden = false;
@@ -577,7 +579,8 @@ book: bookRec.slug,
 title: bookRec.title,
 });
 } else if (CURATED_SLUGS.has(bookRec.slug)) {
-// Curated page exists: send them to more books like it.
+// Curated page exists: quiet text link — Share is the main CTA.
+linkEl.classList.remove('primary');
 linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
 linkEl.textContent = 'More books like this →';
 linkEl.hidden = false;
@@ -597,11 +600,6 @@ const subscribed = localStorage.getItem('90books_booky_reminder_sub');
 const reminderForm = $('reminder-form');
 reminderForm.style.display = subscribed ? 'none' : 'block';
 $('reminder-active').hidden = !subscribed;
-
-// One primary ask per player state: new winners get the email pulse below;
-// subscribers have no email ask left, so Share takes the primary slot
-// (the share grid is the growth loop — Wordle's entire engine).
-$('share-btn').classList.toggle('share-primary', !!subscribed);
 
 // Tomorrow tease — optional per-word copy in words.json `teases`, keyed by
 // TOMORROW's word (queue is 0-indexed, so index DAY = day DAY+1). Open loop

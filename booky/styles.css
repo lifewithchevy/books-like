@@ -745,36 +745,21 @@ body {
   line-height: 1.4;
   margin: 7px 0 0;
 }
+/* Book CTA — quiet text link by default: Share is the main CTA. The
+   sponsored/featured buy link gets .primary re-added in JS, so a paid
+   placement still renders as a full button (the deliverable). */
 .book-hero-cta {
   display: block;
   width: 100%;
   text-align: center;
-  margin-top: 14px;
-  text-decoration: none;
-}
-
-/* Share button — co-primary (accent outline): the share grid is the growth
-   loop, so it must read as an action, not furniture. Book CTA stays primary. */
-.secondary-btn {
-  width: 100%;
-  background: transparent;
-  border: 1.5px solid var(--accent);
+  margin-top: 12px;
   color: var(--accent-2);
   font-weight: 600;
-  padding: 11px;
-  border-radius: 10px;
-  cursor: pointer;
-  font-size: 14px;
-  font-family: var(--font-sans);
+  font-size: 13.5px;
+  text-decoration: underline;
+  text-underline-offset: 3px;
 }
-.secondary-btn:active { transform: scale(0.98); }
-/* Once the email is captured, Share takes the primary slot (one ask per state) */
-#share-btn.share-primary {
-  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
-  border-color: transparent;
-  color: white;
-  box-shadow: 0 6px 20px var(--shadow-accent);
-}
+.book-hero-cta.primary { text-decoration: none; }
 
 /* Streak — low-priority single line */
 .end-streak {
@@ -811,7 +796,7 @@ body {
   border-radius: 8px;
 }
 
-.end-share { padding-top: 2px; }
+/* Shared filled-button style: the Share CTA + the sponsored buy link */
 .primary {
   width: 100%;
   background: linear-gradient(135deg, var(--accent), var(--accent-dark));
