@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=65" />
+<link rel="stylesheet" href="/booky/styles.css?v=66" />
 <style>
   /* Preview chrome only — not part of the game */
   body.win-preview { overflow: auto; }
@@ -88,7 +88,7 @@
 </div>
 
 <div class="end-guesses" id="end-guesses">
-<h3 class="end-section-title">Guesses Cast</h3>
+<h3 class="end-section-title">Pages Turned</h3>
 <div id="end-dist" class="end-dist" role="img" aria-label="Guesses used this game"></div>
 </div>
 
@@ -174,22 +174,18 @@ function renderPreviewDist(s) {
   if (!row) return;
   const todayKey = s.won ? s.tries : 'X';
   const keys = s.won ? [1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5, 6, 'X'];
+  row.classList.toggle('end-dist--lost', !s.won);
   row.innerHTML = '';
   for (const key of keys) {
     const isToday = key === todayKey;
     const cell = document.createElement('div');
     cell.className = 'end-dist-cell';
+    const tile = document.createElement('div');
+    tile.className = 'end-dist-tile' + (isToday ? ' today' : '');
     const label = document.createElement('span');
     label.className = 'end-dist-label' + (isToday ? ' today' : '');
     label.textContent = key;
-    const track = document.createElement('div');
-    track.className = 'end-dist-track';
-    if (isToday) {
-      const bar = document.createElement('div');
-      bar.className = 'end-dist-bar today';
-      track.appendChild(bar);
-    }
-    cell.append(label, track);
+    cell.append(tile, label);
     row.appendChild(cell);
   }
   row.setAttribute(

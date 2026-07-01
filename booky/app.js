@@ -764,22 +764,18 @@ const won = STATE.status === 'won';
 const guesses = STATE.guesses.length;
 const todayKey = won ? guesses : 'X';
 const keys = won ? [1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5, 6, 'X'];
+row.classList.toggle('end-dist--lost', !won);
 row.innerHTML = '';
 for (const key of keys) {
 const isToday = key === todayKey;
 const cell = document.createElement('div');
 cell.className = 'end-dist-cell';
+const tile = document.createElement('div');
+tile.className = 'end-dist-tile' + (isToday ? ' today' : '');
 const label = document.createElement('span');
 label.className = 'end-dist-label' + (isToday ? ' today' : '');
 label.textContent = key;
-const track = document.createElement('div');
-track.className = 'end-dist-track';
-if (isToday) {
-const bar = document.createElement('div');
-bar.className = 'end-dist-bar today';
-track.appendChild(bar);
-}
-cell.append(label, track);
+cell.append(tile, label);
 row.appendChild(cell);
 }
 row.setAttribute(
