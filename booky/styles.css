@@ -458,7 +458,7 @@ body.end-screen-open .bg-glow {
   margin-top: 4px;
 }
 .end-milestone {
-  text-align: center;
+  text-align: left;
   font-size: 12px;
   line-height: 1.45;
   color: var(--ink-dim);
@@ -475,10 +475,10 @@ body.end-screen-open .bg-glow {
   letter-spacing: 2.2px;
   text-transform: uppercase;
   color: var(--ink-faint);
-  text-align: center;
+  text-align: left;
 }
 .end-score-line {
-  text-align: center;
+  text-align: left;
   font-size: 14px;
   color: var(--ink-dim);
   margin: -2px 0 14px;
