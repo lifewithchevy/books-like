@@ -765,34 +765,35 @@ ul.appendChild(li);
 }
 }
 
-function renderEndDistribution(dist = STATS.distribution, todayKey = null) {
+function renderEndDistribution() {
 const row = $('end-dist');
 if (!row) return;
-if (todayKey === null) {
-todayKey = STATE.status === 'won' ? STATE.guesses.length : (STATE.status === 'lost' ? 'X' : null);
-}
+const won = STATE.status === 'won';
+const guesses = STATE.guesses.length;
+const todayKey = won ? guesses : 'X';
+const keys = won ? [1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5, 6, 'X'];
 row.innerHTML = '';
-const max = Math.max(1, ...Object.values(dist));
-const parts = [];
-for (const key of [1, 2, 3, 4, 5, 6, 'X']) {
-const count = dist[key] || 0;
+for (const key of keys) {
+const isToday = key === todayKey;
 const cell = document.createElement('div');
 cell.className = 'end-dist-cell';
 const label = document.createElement('span');
-label.className = 'end-dist-label';
+label.className = 'end-dist-label' + (isToday ? ' today' : '');
 label.textContent = key;
 const track = document.createElement('div');
 track.className = 'end-dist-track';
+if (isToday) {
 const bar = document.createElement('div');
-bar.className = 'end-dist-bar' + (key === todayKey ? ' today' : '');
-bar.style.width = `${Math.max(count > 0 ? 18 : 10, (count / max) * 100)}%`;
-if (count > 0) bar.textContent = count;
+bar.className = 'end-dist-bar today';
 track.appendChild(bar);
+}
 cell.append(label, track);
 row.appendChild(cell);
-parts.push(`${key}: ${count}${key === todayKey ? ' (today)' : ''}`);
 }
-row.setAttribute('aria-label', `Guess distribution. ${parts.join(', ')}`);
+row.setAttribute(
+'aria-label',
+won ? `Guessed the word in ${guesses} ${guesses === 1 ? 'try' : 'tries'}` : `Did not guess the word in ${MAX_GUESSES} tries`,
+);
 }
 
 async function onShare() {
