@@ -446,6 +446,7 @@ body.end-screen-open .bg-glow {
   color: var(--accent-2);
 }
 #end-modal .end-top {
+  margin-top: 28px;
   margin-bottom: 0;
   padding-bottom: 4px;
 }
