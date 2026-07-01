@@ -555,6 +555,9 @@ body.end-screen-open .bg-glow {
 #end-modal .end-description--italic {
   font-style: italic;
 }
+#end-modal #book-rec-author {
+  font-size: 14px;
+}
 #end-modal .share-btn {
   position: relative;
   overflow: hidden;
@@ -1047,7 +1050,7 @@ body.end-screen-open .bg-glow {
 }
 .book-hero-author {
   font-family: var(--font-sans);
-  font-size: 16px;
+  font-size: 14px;
   color: var(--ink-dim);
   margin: 5px 0 0;
 }
@@ -1504,7 +1507,7 @@ body.end-screen-open .bg-glow {
   text-align: center;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 16px;
+  font-size: 17px;
   font-weight: 500;
   color: var(--accent-2);
   line-height: 1.35;
