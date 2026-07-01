@@ -581,6 +581,10 @@ body.end-screen-open .bg-glow {
   border-top: 1px solid var(--border);
   text-align: center;
 }
+#end-modal .next + .end-puzzle-no {
+  margin: 8px 0 0;
+  text-align: center;
+}
 
 .end-word-reveal {
   margin: 6px 0 0;
