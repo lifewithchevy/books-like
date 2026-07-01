@@ -496,7 +496,7 @@ body.end-screen-open .bg-glow {
 }
 .end-grid-tile--correct { background: var(--correct); }
 .end-grid-tile--present { background: var(--present); }
-.end-grid-tile--absent { background: var(--absent); }
+.end-grid-tile--absent { background: #9a94a3; }
 @keyframes endTilePop {
   from { opacity: 0; transform: scale(0.6); }
   to   { opacity: 1; transform: scale(1); }
@@ -897,7 +897,7 @@ body.end-screen-open .bg-glow {
   color: var(--featured-pink);
 }
 #end-modal.end-modal--featured .end-grid-tile--absent {
-  background: rgba(58, 40, 66, 0.85);
+  background: rgba(180, 168, 190, 0.55);
 }
 #end-modal.end-modal--featured .end-grid-tile--present {
   background: var(--featured-gold);
