@@ -575,15 +575,17 @@ body.end-screen-open .bg-glow {
   letter-spacing: 0;
   margin: 0 0 8px;
 }
-#end-modal .next {
+#end-modal .end-footer {
   margin: 20px 0 0;
   padding-top: 18px;
   border-top: 1px solid var(--border);
   text-align: center;
 }
-#end-modal .next + .end-puzzle-no {
-  margin: 8px 0 0;
-  text-align: center;
+#end-modal .end-footer .end-puzzle-no { margin: 0 0 6px; }
+#end-modal .end-footer .next {
+  margin: 0;
+  padding-top: 0;
+  border-top: none;
 }
 
 .end-word-reveal {
@@ -882,6 +884,9 @@ body.end-screen-open .bg-glow {
 }
 #end-modal.end-modal--featured .end-puzzle-no {
   color: var(--featured-footer);
+}
+#end-modal.end-modal--featured .end-footer {
+  border-top-color: rgba(216, 176, 106, 0.28);
 }
 #end-modal.end-modal--featured .end-top:has(.celebration)::after {
   content: "— ✦ —";
