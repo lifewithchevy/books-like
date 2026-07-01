@@ -561,11 +561,7 @@ return earned ? `${earned.icon} ${earned.name}` : null;
 function formatSharePreview() {
 if (STATE.status === 'won') {
 let preview = `${STATE.guesses.length}/${MAX_GUESSES}`;
-if (STATS.currentStreak >= 1) {
-preview += ` 🔥${STATS.currentStreak}`;
-const badge = formatEarnedBadge(STATS.currentStreak);
-if (badge) preview += ` ${badge}`;
-}
+if (STATS.currentStreak >= 1) preview += ` 🔥${STATS.currentStreak}`;
 return preview;
 }
 return `X/${MAX_GUESSES}`;
