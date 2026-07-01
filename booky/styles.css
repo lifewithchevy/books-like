@@ -639,6 +639,20 @@ body.end-screen-open .bg-glow {
 #end-modal.end-modal--featured .end-brandtag { color: var(--featured-footer); }
 #end-modal.end-modal--featured .end-play-url { color: var(--featured-pink); }
 
+/* Book teaser — 'today's word is hidden in…' (italic serif, from promo) */
+#end-modal .end-book-head .end-book-teaser {
+  font-family: var(--font-serif);
+  font-size: 15px;
+  font-style: italic;
+  font-weight: 500;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--accent-2);
+}
+#end-modal.end-modal--featured .end-book-head .end-book-teaser {
+  color: var(--featured-pink);
+}
+
 .end-word-reveal {
   margin: 6px 0 0;
   text-align: center;
