@@ -530,28 +530,6 @@ body.end-screen-open .bg-glow {
   color: var(--ink-faint);
   text-align: left;
 }
-.end-stats-head {
-  display: flex;
-  align-items: baseline;
-  justify-content: space-between;
-  gap: 12px;
-  margin-bottom: 12px;
-}
-.end-stats-head .end-section-title {
-  margin-bottom: 0;
-}
-.end-result-chip {
-  margin: 0;
-  font-family: var(--font-sans);
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1.2;
-  color: var(--ink-dim);
-  text-align: right;
-  white-space: nowrap;
-  overflow: hidden;
-  text-overflow: ellipsis;
-}
 #end-modal .share-btn {
   position: relative;
   overflow: hidden;
@@ -902,6 +880,7 @@ body.end-screen-open .bg-glow {
   border-bottom-color: rgba(216, 176, 106, 0.28);
 }
 #end-modal.end-modal--featured .end-stats,
+#end-modal.end-modal--featured .end-guesses,
 #end-modal.end-modal--featured .end-ranks,
 #end-modal.end-modal--featured .end-share,
 #end-modal.end-modal--featured .end-extras,
@@ -1724,6 +1703,7 @@ body.promo-page.promo-page--story .promo-cover {
   .celebration { padding: 2px 0 12px; }
   .celebration-sub { font-size: 12px; }
   #end-modal .end-stats,
+  #end-modal .end-guesses,
   #end-modal .end-ranks,
   #end-modal .end-share,
   #end-modal .end-extras {

@@ -8,7 +8,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=64" />
+<link rel="stylesheet" href="/booky/styles.css?v=65" />
 <style>
   /* Preview chrome only — not part of the game */
   body.win-preview { overflow: auto; }
@@ -78,10 +78,7 @@
 </div>
 
 <div class="end-stats">
-<div class="end-stats-head">
 <h3 class="end-section-title">Statistics</h3>
-<p id="end-subtitle" class="end-result-chip" hidden></p>
-</div>
 <div class="stat-row end-stat-row">
 <div><span id="end-stat-played">0</span><small>played</small></div>
 <div><span id="end-stat-winpct">0</span><small>win %</small></div>
@@ -163,14 +160,6 @@ function milestoneText(s) {
   if (next) { const r = next.at - s; t += ` · ${r} day${r === 1 ? '' : 's'} to ${next.icon} ${next.name}`; }
   return t;
 }
-function sharePreview(s) {
-  if (s.won) {
-    let p = `${s.tries}/6`;
-    if (s.streak >= 1) p += ` 🔥${s.streak}`;
-    return p;
-  }
-  return 'X/6';
-}
 
 const SCENARIOS = {
   win:      { won: true,  tries: 4, played: 12, wins: 11, streak: 2, max: 5, word: 'RIDER' },
@@ -231,13 +220,6 @@ function render(key) {
   } else {
     $('end-headline').textContent = 'Better luck tomorrow.';
     cel.classList.remove('won'); cel.classList.add('lost');
-  }
-  if (s.won) {
-    $('end-subtitle').textContent = sharePreview(s);
-    $('end-subtitle').hidden = false;
-  } else {
-    $('end-subtitle').textContent = '';
-    $('end-subtitle').hidden = true;
   }
   $('end-word-reveal').hidden = true;
 
