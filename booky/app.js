@@ -712,7 +712,7 @@ scoreLine = `🥀 X/${MAX_GUESSES}`;
 }
 const rows = STATE.guesses.map(g => {
 const r = evaluate(g, ANSWER);
-return r.map(s => s === 'correct' ? '🟪' : s === 'present' ? '🟨' : '⬛').join('');
+return r.map(s => s === 'correct' ? '🟪' : s === 'present' ? '🟨' : '⬜').join('');
 });
 const bookRec = DATA.wordBooks?.[ANSWER];
 const bookLine = bookRec ? `📖 From: ${bookRec.title}` : null;
