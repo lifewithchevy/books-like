@@ -771,12 +771,12 @@ body.end-screen-open .bg-glow {
   border-top: 1px solid var(--border);
   display: flex;
   flex-direction: column;
-  gap: 16px;
+  gap: 20px;
 }
 /* End screen book block — no card box; type matches other sections */
 #end-modal .end-book {
   margin: 0;
-  padding: 0;
+  padding: 0 0 4px;
   border: none;
   background: none;
   box-shadow: none;
@@ -786,7 +786,7 @@ body.end-screen-open .bg-glow {
   align-items: baseline;
   justify-content: space-between;
   gap: 12px;
-  margin-bottom: 12px;
+  margin-bottom: 14px;
 }
 #end-modal .end-book-head .end-section-title {
   margin-bottom: 0;
@@ -982,9 +982,12 @@ body.end-screen-open .bg-glow {
 #end-modal.end-modal--featured #reminder-email:focus {
   border-color: var(--featured-gold);
 }
+#end-modal.end-modal--featured .reminder-form,
+#end-modal.end-modal--featured .reminder-active {
+  border-top-color: rgba(216, 176, 106, 0.28);
+}
 #end-modal.end-modal--featured .reminder-active {
   color: var(--featured-plum-dim);
-  border-top-color: rgba(216, 176, 106, 0.28);
 }
 #end-modal.end-modal--featured .reminder-toast.reminder-error {
   color: #ff8aa3;

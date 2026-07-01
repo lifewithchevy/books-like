@@ -609,7 +609,7 @@ const cover = $('book-rec-cover');
 applyBookCover(cover, bookRec);
 
 const hookEl = $('book-rec-hook');
-if (won && bookRec.hook) {
+if (won && bookRec.hook && !bookRec.featured) {
 hookEl.textContent = bookRec.hook;
 hookEl.hidden = false;
 } else {

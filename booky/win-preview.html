@@ -256,7 +256,7 @@ function render(key) {
   endWord.setAttribute('aria-label', "Reveal today's word");
   $('book-rec-title').textContent = book.title;
   $('book-rec-author').textContent = book.author;
-  if (s.won && book.hook) {
+  if (s.won && book.hook && !book.featured) {
     $('book-rec-hook').textContent = book.hook;
     $('book-rec-hook').hidden = false;
   } else {
