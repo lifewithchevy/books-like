@@ -628,13 +628,6 @@ body.end-screen-open .bg-glow {
   color: var(--ink-faint);
   margin: 0;
 }
-#end-modal .end-flourish {
-  display: block;
-  width: 38px;
-  height: auto;
-  margin: 4px auto 0;
-  opacity: 0.9;
-}
 #end-modal.end-modal--featured .end-brand { color: var(--featured-gold); }
 #end-modal.end-modal--featured .end-brandtag { color: var(--featured-footer); }
 #end-modal.end-modal--featured .end-play-url { color: var(--featured-pink); }
