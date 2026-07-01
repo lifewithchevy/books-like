@@ -587,6 +587,40 @@ body.end-screen-open .bg-glow {
   padding-top: 0;
   border-top: none;
 }
+#end-modal .end-play-url {
+  margin: 8px 0 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.4px;
+  color: var(--accent-2);
+}
+
+/* Brand header — makes every win-screen screenshot self-marketing */
+#end-modal .end-brand {
+  text-align: center;
+  margin: 0 0 12px;
+}
+#end-modal .end-brandmark {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 22px;
+  letter-spacing: 1.5px;
+  color: var(--ink);
+  margin: 0;
+}
+#end-modal .end-brandtag {
+  font-family: var(--font-sans);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-faint);
+  margin: 3px 0 0;
+}
+#end-modal.end-modal--featured .end-brandmark { color: var(--featured-plum-light); }
+#end-modal.end-modal--featured .end-brandtag { color: var(--featured-footer); }
+#end-modal.end-modal--featured .end-play-url { color: var(--featured-pink); }
 
 .end-word-reveal {
   margin: 6px 0 0;
