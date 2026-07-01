@@ -665,7 +665,7 @@ tickCountdown();
 
 const shareBtn = $('share-btn');
 if (shareBtn) {
-shareBtn.setAttribute('aria-label', `Share your ${formatSharePreview()} result`);
+shareBtn.setAttribute('aria-label', won ? `Share your ${formatSharePreview()} result` : 'Share');
 shareBtn.classList.add('share-btn--magic');
 }
 if (!window.__countdownTicker) {
