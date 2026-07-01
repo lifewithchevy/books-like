@@ -478,17 +478,17 @@ body.end-screen-open .bg-glow {
 .end-grid {
   display: flex;
   flex-direction: column;
-  gap: 3px;
-  align-items: center;
+  gap: 5px;
+  align-items: flex-start;
 }
 .end-grid-row {
   display: flex;
-  gap: 3px;
+  gap: 5px;
 }
 .end-grid-tile {
-  width: 18px;
-  height: 18px;
-  border-radius: 3px;
+  width: 44px;
+  height: 44px;
+  border-radius: 5px;
   background: var(--absent);
   box-sizing: border-box;
   animation: endTilePop 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
@@ -505,7 +505,7 @@ body.end-screen-open .bg-glow {
   .end-grid-tile { animation: none; }
 }
 @media (max-width: 360px) {
-  .end-grid-tile { width: 16px; height: 16px; }
+  .end-grid-tile { width: 38px; height: 38px; }
 }
 /* Section labels — Statistics, Guesses, Titles Earned, Today's word is from */
 #end-modal .end-section-title {
