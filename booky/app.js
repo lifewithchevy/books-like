@@ -543,12 +543,19 @@ img.onerror = () => { img.hidden = true; };
 function formatMilestoneText(streak) {
 if (streak < 1) return null;
 const { earned, next } = badgeForStreak(streak);
+if (!earned) return null;
 let txt = `${earned.icon} ${earned.name}`;
 if (next) {
 const rem = next.at - streak;
 txt += ` · ${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}`;
 }
 return txt;
+}
+
+function formatEarnedBadge(streak) {
+if (streak < 1) return null;
+const { earned } = badgeForStreak(streak);
+return earned ? `${earned.icon} ${earned.name}` : null;
 }
 
 // ---- End screen ----
@@ -654,9 +661,13 @@ window.__countdownTicker = setInterval(tickCountdown, 1000);
 function getShareParts() {
 const header = `📚 Booky #${DAY}`;
 let scoreLine;
+let badgeLine = null;
 if (STATE.status === 'won') {
-const streak = STATS.currentStreak > 1 ? ` 🔥${STATS.currentStreak}` : '';
-scoreLine = `${STATE.guesses.length}/${MAX_GUESSES}${streak}`;
+scoreLine = `${STATE.guesses.length}/${MAX_GUESSES}`;
+if (STATS.currentStreak >= 1) {
+scoreLine += ` 🔥${STATS.currentStreak}`;
+badgeLine = formatEarnedBadge(STATS.currentStreak);
+}
 } else {
 scoreLine = `🥀 X/${MAX_GUESSES}`;
 }
@@ -666,7 +677,7 @@ return r.map(s => s === 'correct' ? '🟪' : s === 'present' ? '🟨' : '⬛').j
 });
 const bookRec = DATA.wordBooks?.[ANSWER];
 const bookLine = bookRec ? `📖 From: ${bookRec.title}` : null;
-return { header, scoreLine, rows, bookLine, bookRec };
+return { header, scoreLine, badgeLine, rows, bookLine, bookRec };
 }
 
 function renderEndScreenStats() {
@@ -678,7 +689,8 @@ $('end-stat-max').textContent = STATS.maxStreak;
 
 const milestoneEl = $('end-milestone');
 const ranksBlock = $('end-ranks');
-const milestoneTxt = formatMilestoneText(STATS.currentStreak);
+const won = STATE.status === 'won';
+const milestoneTxt = won ? formatMilestoneText(STATS.currentStreak) : null;
 if (milestoneEl) {
 if (milestoneTxt) {
 milestoneEl.textContent = milestoneTxt;
@@ -692,10 +704,10 @@ if (ranksBlock) ranksBlock.hidden = true;
 }
 
 function buildShareString() {
-const { header, scoreLine, rows, bookLine } = getShareParts();
+const { header, scoreLine, badgeLine, rows, bookLine } = getShareParts();
 // Two trailing spaces before every \n = Reddit hard break; invisible on all other platforms
 const HB = '  \n';
-const lines = [header, scoreLine, ...rows, ...(bookLine ? [bookLine] : []), SITE_URL];
+const lines = [header, scoreLine, ...(badgeLine ? [badgeLine] : []), ...rows, ...(bookLine ? [bookLine] : []), SITE_URL];
 return lines.join(HB);
 }
 

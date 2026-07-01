@@ -151,6 +151,7 @@ function badgeForStreak(s) {
 function milestoneText(s) {
   if (s < 1) return null;
   const { earned, next } = badgeForStreak(s);
+  if (!earned) return null;
   let t = `${earned.icon} ${earned.name}`;
   if (next) { const r = next.at - s; t += ` · ${r} day${r === 1 ? '' : 's'} to ${next.icon} ${next.name}`; }
   return t;
@@ -199,7 +200,7 @@ function render(key) {
 
   const mEl = $('end-milestone');
   const ranksBlock = $('end-ranks');
-  const mt = milestoneText(s.streak);
+  const mt = s.won ? milestoneText(s.streak) : null;
   if (mt) {
     mEl.textContent = mt;
     mEl.hidden = false;
