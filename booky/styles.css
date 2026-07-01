@@ -596,29 +596,46 @@ body.end-screen-open .bg-glow {
   color: var(--accent-2);
 }
 
-/* Brand header — makes every win-screen screenshot self-marketing */
+/* Brand header — tiled BOOKY wordmark + flourish, echoing the promo card.
+   Makes every win-screen screenshot self-marketing. */
 #end-modal .end-brand {
   text-align: center;
-  margin: 0 0 12px;
+  margin: 0 0 14px;
+  color: var(--accent-2);
 }
-#end-modal .end-brandmark {
+#end-modal .end-brand-tiles {
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  margin: 0 0 8px;
+}
+#end-modal .end-brand-tiles span {
+  width: 32px;
+  height: 34px;
+  display: grid;
+  place-items: center;
+  border: 2px solid currentColor;
+  border-radius: 6px;
   font-family: var(--font-serif);
+  font-size: 19px;
   font-weight: 600;
-  font-size: 22px;
-  letter-spacing: 1.5px;
-  color: var(--ink);
-  margin: 0;
+  line-height: 1;
 }
 #end-modal .end-brandtag {
-  font-family: var(--font-sans);
-  font-size: 10px;
-  font-weight: 700;
-  letter-spacing: 2px;
-  text-transform: uppercase;
+  font-family: var(--font-serif);
+  font-size: 12px;
+  letter-spacing: 3px;
   color: var(--ink-faint);
-  margin: 3px 0 0;
+  margin: 0;
 }
-#end-modal.end-modal--featured .end-brandmark { color: var(--featured-plum-light); }
+#end-modal .end-flourish {
+  display: block;
+  width: 54px;
+  height: auto;
+  margin: 8px auto 0;
+  opacity: 0.9;
+}
+#end-modal.end-modal--featured .end-brand { color: var(--featured-gold); }
 #end-modal.end-modal--featured .end-brandtag { color: var(--featured-footer); }
 #end-modal.end-modal--featured .end-play-url { color: var(--featured-pink); }
 
