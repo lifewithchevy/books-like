@@ -479,7 +479,7 @@ body.end-screen-open .bg-glow {
   display: flex;
   flex-direction: column;
   gap: 3px;
-  align-items: flex-start;
+  align-items: center;
 }
 .end-grid-row {
   display: flex;
