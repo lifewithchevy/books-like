@@ -202,7 +202,15 @@ function render(key) {
     $('end-headline').textContent = 'Better luck tomorrow.';
     cel.classList.remove('won'); cel.classList.add('lost');
   }
-  $('end-subtitle').textContent = sharePreview(s);
+  if (s.won) {
+    $('end-subtitle').textContent = sharePreview(s);
+    $('end-subtitle').hidden = false;
+    $('share-btn').classList.remove('share-btn--solo');
+  } else {
+    $('end-subtitle').textContent = '';
+    $('end-subtitle').hidden = true;
+    $('share-btn').classList.add('share-btn--solo');
+  }
   $('end-word-reveal').hidden = true;
 
   $('end-stat-played').textContent = s.played;

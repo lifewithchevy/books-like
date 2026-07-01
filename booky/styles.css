@@ -516,6 +516,9 @@ body.end-screen-open .bg-glow {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+#end-modal .share-btn--solo .share-btn__content {
+  justify-content: center;
+}
 #end-modal .end-ranks {
   margin: 0;
   padding-top: 16px;

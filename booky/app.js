@@ -590,7 +590,13 @@ title.textContent = 'Better luck tomorrow.';
 $('celebration').classList.remove('won');
 $('celebration').classList.add('lost');
 }
+if (won) {
 sub.textContent = formatSharePreview();
+sub.hidden = false;
+} else {
+sub.textContent = '';
+sub.hidden = true;
+}
 wordReveal.hidden = true;
 $('end-puzzle-no').textContent = 'Booky #' + DAY;
 
