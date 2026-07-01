@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=85" />
+<link rel="stylesheet" href="/booky/styles.css?v=86" />
 <!-- PostHog analytics -->
 <script>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
@@ -182,23 +182,6 @@ competes with the Booky wordmark or the help/stats icons. -->
 <div id="share-toast" class="share-toast" role="status" aria-live="polite" hidden></div>
 </div>
 
-<div id="end-extras" class="end-extras">
-<div id="book-rec" class="end-book" hidden>
-<div class="end-book-head">
-<h3 class="end-section-title">Today&rsquo;s word is from</h3>
-<p id="end-word" class="end-word" aria-hidden="true" hidden></p>
-</div>
-<div class="end-book-row">
-<img id="book-rec-cover" class="end-book-cover" alt="" hidden />
-<div class="end-book-meta">
-<p id="book-rec-title" class="end-subtitle"></p>
-<p id="book-rec-author" class="end-description"></p>
-<p id="book-rec-hook" class="end-description end-description--italic" hidden></p>
-</div>
-</div>
-<a id="book-rec-link" class="end-book-cta secondary-link" target="_blank" rel="noopener" hidden></a>
-</div>
-
 <form id="reminder-form" class="reminder-form" novalidate>
 <p class="reminder-headline">don&rsquo;t lose your 🔥 streak</p>
 <div class="reminder-row">
@@ -216,6 +199,23 @@ required
 <p class="reminder-toast" id="reminder-toast" hidden></p>
 </form>
 <p id="reminder-active" class="reminder-active" hidden>📩 Daily reminders on</p>
+
+<div id="end-extras" class="end-extras">
+<div id="book-rec" class="end-book" hidden>
+<div class="end-book-head">
+<h3 class="end-section-title">Today&rsquo;s word is from</h3>
+<p id="end-word" class="end-word" aria-hidden="true" hidden></p>
+</div>
+<div class="end-book-row">
+<img id="book-rec-cover" class="end-book-cover" alt="" hidden />
+<div class="end-book-meta">
+<p id="book-rec-title" class="end-subtitle"></p>
+<p id="book-rec-author" class="end-description"></p>
+<p id="book-rec-hook" class="end-description end-description--italic" hidden></p>
+</div>
+</div>
+<a id="book-rec-link" class="end-book-cta secondary-link" target="_blank" rel="noopener" hidden></a>
+</div>
 </div>
 
 <p class="next">next word in <span id="countdown">--:--:--</span></p>
