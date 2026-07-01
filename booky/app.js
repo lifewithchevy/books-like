@@ -716,6 +716,7 @@ milestoneEl.hidden = true;
 if (ranksBlock) ranksBlock.hidden = true;
 }
 }
+renderEndDistribution();
 }
 
 function buildShareString() {
@@ -766,6 +767,36 @@ bar.textContent = count > 0 ? count : '';
 li.append(label, bar);
 ul.appendChild(li);
 }
+}
+
+function renderEndDistribution(dist = STATS.distribution, todayKey = null) {
+const row = $('end-dist');
+if (!row) return;
+if (todayKey === null) {
+todayKey = STATE.status === 'won' ? STATE.guesses.length : (STATE.status === 'lost' ? 'X' : null);
+}
+row.innerHTML = '';
+const max = Math.max(1, ...Object.values(dist));
+const parts = [];
+for (const key of [1, 2, 3, 4, 5, 6, 'X']) {
+const count = dist[key] || 0;
+const cell = document.createElement('div');
+cell.className = 'end-dist-cell';
+const label = document.createElement('span');
+label.className = 'end-dist-label';
+label.textContent = key;
+const track = document.createElement('div');
+track.className = 'end-dist-track';
+const bar = document.createElement('div');
+bar.className = 'end-dist-bar' + (key === todayKey ? ' today' : '');
+bar.style.width = `${Math.max(count > 0 ? 18 : 10, (count / max) * 100)}%`;
+if (count > 0) bar.textContent = count;
+track.appendChild(bar);
+cell.append(label, track);
+row.appendChild(cell);
+parts.push(`${key}: ${count}${key === todayKey ? ' (today)' : ''}`);
+}
+row.setAttribute('aria-label', `Guess distribution. ${parts.join(', ')}`);
 }
 
 async function onShare() {

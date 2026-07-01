@@ -460,6 +460,57 @@ body.end-screen-open .bg-glow {
   letter-spacing: 1.2px;
   margin-top: 4px;
 }
+/* One-line guess distribution — Wordle-style bars in a single row */
+.end-dist {
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  margin-top: 10px;
+}
+.end-dist-cell {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  gap: 2px;
+  min-width: 0;
+}
+.end-dist-label {
+  flex-shrink: 0;
+  width: 9px;
+  font-family: var(--font-sans);
+  font-size: 9px;
+  font-weight: 700;
+  color: var(--ink-faint);
+  text-align: center;
+}
+.end-dist-track {
+  flex: 1;
+  min-width: 0;
+  height: 16px;
+  display: flex;
+  align-items: center;
+}
+.end-dist-bar {
+  height: 100%;
+  min-width: 8px;
+  border-radius: 2px;
+  background: var(--absent);
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 2px;
+  box-sizing: border-box;
+  color: var(--ink);
+  font-family: var(--font-sans);
+  font-size: 8px;
+  font-weight: 700;
+  line-height: 1;
+  transition: width 0.35s ease;
+}
+.end-dist-bar.today {
+  background: linear-gradient(90deg, var(--accent), var(--correct));
+  color: #fff;
+}
 .end-milestone {
   text-align: left;
   font-size: 12px;
@@ -827,6 +878,16 @@ body.end-screen-open .bg-glow {
 }
 #end-modal.end-modal--featured .end-word-reveal {
   color: var(--featured-pink);
+}
+#end-modal.end-modal--featured .end-dist-label {
+  color: var(--featured-footer);
+}
+#end-modal.end-modal--featured .end-dist-bar {
+  background: rgba(216, 176, 106, 0.22);
+}
+#end-modal.end-modal--featured .end-dist-bar.today {
+  background: linear-gradient(90deg, #cf3f86, #b13386);
+  color: #f0d9a0;
 }
 #end-modal.end-modal--featured .end-stat-row span {
   color: var(--featured-plum-light);

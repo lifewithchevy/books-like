@@ -88,6 +88,7 @@
 <div><span id="end-stat-streak">0</span><small>streak</small></div>
 <div><span id="end-stat-max">0</span><small>max</small></div>
 </div>
+<div id="end-dist" class="end-dist" role="img" aria-label="Guess distribution"></div>
 </div>
 
 <div class="end-ranks" id="end-ranks" hidden>
@@ -172,12 +173,41 @@ function sharePreview(s) {
 }
 
 const SCENARIOS = {
-  win:      { won: true,  tries: 4, played: 12, wins: 11, streak: 2, max: 5, word: 'RIDER' },
-  loss:     { won: false, tries: 6, played: 12, wins: 10, streak: 0, max: 5, word: 'RIDER' },
-  featured: { won: true,  tries: 3, played: 20, wins: 18, streak: 7, max: 9, word: 'GHOST' },
-  newbie:   { won: true,  tries: 5, played: 1,  wins: 1,  streak: 1, max: 1, word: 'RIDER' },
-  streak:   { won: true,  tries: 2, played: 40, wins: 38, streak: 29, max: 29, word: 'RIDER' },
+  win:      { won: true,  tries: 4, played: 12, wins: 11, streak: 2, max: 5, word: 'RIDER', dist: { 1: 1, 2: 3, 3: 5, 4: 8, 5: 4, 6: 2, X: 1 } },
+  loss:     { won: false, tries: 6, played: 12, wins: 10, streak: 0, max: 5, word: 'RIDER', dist: { 1: 1, 2: 3, 3: 5, 4: 8, 5: 4, 6: 2, X: 3 } },
+  featured: { won: true,  tries: 3, played: 20, wins: 18, streak: 7, max: 9, word: 'GHOST', dist: { 1: 2, 2: 6, 3: 12, 4: 10, 5: 5, 6: 2, X: 1 } },
+  newbie:   { won: true,  tries: 5, played: 1,  wins: 1,  streak: 1, max: 1, word: 'RIDER', dist: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 1, 6: 0, X: 0 } },
+  streak:   { won: true,  tries: 2, played: 40, wins: 38, streak: 29, max: 29, word: 'RIDER', dist: { 1: 5, 2: 12, 3: 18, 4: 14, 5: 6, 6: 2, X: 1 } },
 };
+
+function renderPreviewDist(s) {
+  const row = document.getElementById('end-dist');
+  if (!row) return;
+  const dist = s.dist || {};
+  const todayKey = s.won ? s.tries : 'X';
+  row.innerHTML = '';
+  const max = Math.max(1, ...Object.values(dist));
+  const parts = [];
+  for (const key of [1, 2, 3, 4, 5, 6, 'X']) {
+    const count = dist[key] || 0;
+    const cell = document.createElement('div');
+    cell.className = 'end-dist-cell';
+    const label = document.createElement('span');
+    label.className = 'end-dist-label';
+    label.textContent = key;
+    const track = document.createElement('div');
+    track.className = 'end-dist-track';
+    const bar = document.createElement('div');
+    bar.className = 'end-dist-bar' + (key === todayKey ? ' today' : '');
+    bar.style.width = `${Math.max(count > 0 ? 18 : 10, (count / max) * 100)}%`;
+    if (count > 0) bar.textContent = count;
+    track.appendChild(bar);
+    cell.append(label, track);
+    row.appendChild(cell);
+    parts.push(`${key}: ${count}${key === todayKey ? ' (today)' : ''}`);
+  }
+  row.setAttribute('aria-label', `Guess distribution. ${parts.join(', ')}`);
+}
 
 let WORD_DATA = null;
 
@@ -227,6 +257,8 @@ function render(key) {
     mEl.hidden = true;
     if (ranksBlock) ranksBlock.hidden = true;
   }
+
+  renderPreviewDist(s);
 
   // Book card — title, author, cover from words.json (same as prod)
   const rec = $('book-rec');
