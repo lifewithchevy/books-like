@@ -606,7 +606,7 @@ const main = `${earned.icon} ${earned.name}`;
 let nextTxt = null;
 if (next) {
 const rem = next.at - streak;
-nextTxt = `${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}`;
+nextTxt = `${rem} day${rem === 1 ? '' : 's'} to ${next.name}`;
 }
 return { main, next: nextTxt };
 }
