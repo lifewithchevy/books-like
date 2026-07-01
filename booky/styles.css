@@ -596,40 +596,6 @@ body.end-screen-open .bg-glow {
   color: var(--accent-2);
 }
 
-/* Brand header — tiled BOOKY wordmark + flourish, echoing the promo card.
-   Makes every win-screen screenshot self-marketing. */
-#end-modal .end-brand {
-  text-align: center;
-  margin: 0 0 8px;
-  color: var(--accent-2);
-}
-#end-modal .end-brand-tiles {
-  display: flex;
-  justify-content: center;
-  gap: 4px;
-  margin: 0 0 4px;
-}
-#end-modal .end-brand-tiles span {
-  width: 22px;
-  height: 24px;
-  display: grid;
-  place-items: center;
-  border: 1.5px solid currentColor;
-  border-radius: 5px;
-  font-family: var(--font-serif);
-  font-size: 13px;
-  font-weight: 600;
-  line-height: 1;
-}
-#end-modal .end-brandtag {
-  font-family: var(--font-serif);
-  font-size: 9px;
-  letter-spacing: 2px;
-  color: var(--ink-faint);
-  margin: 0;
-}
-#end-modal.end-modal--featured .end-brand { color: var(--featured-gold); }
-#end-modal.end-modal--featured .end-brandtag { color: var(--featured-footer); }
 #end-modal.end-modal--featured .end-play-url { color: var(--featured-pink); }
 
 .end-word-reveal {
