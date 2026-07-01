@@ -425,14 +425,14 @@ const toast = $('reminder-toast');
 const email = (input.value || '').trim();
 
 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-toast.textContent = 'hmm, that email looks off. mind checking it?';
+toast.textContent = 'that address looks off — mind checking it?';
 toast.className = 'reminder-toast reminder-error';
 toast.hidden = false;
 return;
 }
 
 btn.disabled = true;
-btn.textContent = 'saving…';
+btn.textContent = 'sending…';
 
 try {
 const res = await fetch('/api/booky-subscribe', {
@@ -454,11 +454,11 @@ word_number_at_signup: DAY,
 setReminderSubscribedUI(true);
 toast.hidden = true;
 } catch {
-toast.textContent = "couldn't save right now. try again in a sec?";
+toast.textContent = "the raven lost its way — try again?";
 toast.className = 'reminder-toast reminder-error';
 toast.hidden = false;
 btn.disabled = false;
-btn.textContent = 'remind me';
+btn.textContent = 'send a raven';
 }
 }
 
