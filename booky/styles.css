@@ -828,7 +828,8 @@ body.end-screen-open .bg-glow {
 }
 .reminder-form {
   margin-top: 0;
-  padding: 0;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
 }
 
 /* Featured author day — full win screen matches Heba promo graphic */
