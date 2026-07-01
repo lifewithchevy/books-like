@@ -605,11 +605,15 @@ body.end-screen-open .bg-glow {
   -webkit-tap-highlight-color: transparent;
 }
 .end-word--spoiled {
-  filter: blur(7px);
-  opacity: 0.86;
+  filter: blur(8px);
+  opacity: 1;
+  color: var(--ink-dim);
   user-select: none;
   -webkit-user-select: none;
-  transition: filter 0.28s ease, opacity 0.28s ease;
+  transition: filter 0.28s ease, opacity 0.28s ease, color 0.28s ease;
+}
+#end-modal.end-modal--featured .end-word--spoiled {
+  color: var(--featured-plum-mid);
 }
 .end-word--tappable:focus-visible {
   outline: 2px solid var(--accent);
