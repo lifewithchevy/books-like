@@ -486,8 +486,8 @@ body.end-screen-open .bg-glow {
   gap: 5px;
 }
 .end-grid-tile {
-  width: 26px;
-  height: 26px;
+  width: 24px;
+  height: 24px;
   border-radius: 4px;
   background: var(--absent);
   box-sizing: border-box;
@@ -505,7 +505,7 @@ body.end-screen-open .bg-glow {
   .end-grid-tile { animation: none; }
 }
 @media (max-width: 360px) {
-  .end-grid-tile { width: 23px; height: 23px; }
+  .end-grid-tile { width: 21px; height: 21px; }
 }
 /* Section labels — Statistics, Guesses, Titles Earned, Today's word is from */
 #end-modal .end-section-title {
