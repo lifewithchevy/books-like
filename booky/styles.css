@@ -460,12 +460,19 @@ body.end-screen-open .bg-glow {
   letter-spacing: 1.2px;
   margin-top: 4px;
 }
-/* This game's guess — one row, today’s bucket filled (full history in stats modal) */
+/* This game’s guesses — full history lives in the stats modal */
 .end-dist {
   display: flex;
   align-items: flex-end;
   gap: 4px;
-  margin-top: 10px;
+}
+#end-modal .end-guesses {
+  margin: 0;
+  padding-top: 16px;
+  margin-top: 16px;
+}
+#end-modal .end-guesses .end-section-title {
+  margin-bottom: 10px;
 }
 .end-dist-cell {
   flex: 1;
