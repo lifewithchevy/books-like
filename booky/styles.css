@@ -477,7 +477,7 @@ body.end-screen-open .bg-glow {
 /* Guesses grid + Titles Earned side by side */
 #end-modal .end-cols {
   display: flex;
-  gap: 18px;
+  gap: 36px;
   align-items: flex-start;
 }
 #end-modal .end-cols .end-guesses {
