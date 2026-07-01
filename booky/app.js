@@ -740,7 +740,7 @@ milestoneEl.hidden = true;
 if (ranksBlock) ranksBlock.hidden = true;
 }
 }
-renderEndDistribution();
+renderEndGrid();
 }
 
 function buildShareString() {
@@ -793,30 +793,32 @@ ul.appendChild(li);
 }
 }
 
-function renderEndDistribution() {
-const row = $('end-dist');
-if (!row) return;
+// Mini color grid — the exact artifact shared as 🟪🟨⬛, rendered on screen
+// so players see what they're about to share (screen ↔ share parity).
+function renderEndGrid() {
+const grid = $('end-grid');
+if (!grid) return;
 const won = STATE.status === 'won';
 const guesses = STATE.guesses.length;
-const todayKey = won ? guesses : 'X';
-const keys = won ? [1, 2, 3, 4, 5, 6] : [1, 2, 3, 4, 5, 6, 'X'];
-row.classList.toggle('end-dist--lost', !won);
-row.innerHTML = '';
-for (const key of keys) {
-const isToday = key === todayKey;
-const cell = document.createElement('div');
-cell.className = 'end-dist-cell';
+grid.classList.toggle('end-grid--lost', !won);
+grid.innerHTML = '';
+STATE.guesses.forEach((guess, r) => {
+const result = evaluate(guess, ANSWER);
+const rowEl = document.createElement('div');
+rowEl.className = 'end-grid-row';
+rowEl.style.setProperty('--row', r);
+for (const state of result) {
 const tile = document.createElement('div');
-tile.className = 'end-dist-tile' + (isToday ? ' today' : '');
-const label = document.createElement('span');
-label.className = 'end-dist-label' + (isToday ? ' today' : '');
-label.textContent = key;
-cell.append(tile, label);
-row.appendChild(cell);
+tile.className = 'end-grid-tile end-grid-tile--' + state;
+rowEl.appendChild(tile);
 }
-row.setAttribute(
+grid.appendChild(rowEl);
+});
+grid.setAttribute(
 'aria-label',
-won ? `Guessed the word in ${guesses} ${guesses === 1 ? 'try' : 'tries'}` : `Did not guess the word in ${MAX_GUESSES} tries`,
+won
+? `Solved in ${guesses} ${guesses === 1 ? 'try' : 'tries'}`
+: `Did not solve in ${MAX_GUESSES} tries`,
 );
 }
 

@@ -365,7 +365,6 @@ body {
 #end-modal .end-section-title,
 #end-modal .end-description,
 #end-modal .end-stat-row small,
-#end-modal .end-dist-label,
 #end-modal .reminder-headline,
 #end-modal .reminder-active,
 #end-modal .share-btn,
@@ -470,56 +469,43 @@ body.end-screen-open .bg-glow {
   margin-top: 4px;
 }
 /* This game’s tries — tile squares like the share strip; lifetime chart in stats modal */
-.end-dist {
-  display: flex;
-  align-items: flex-end;
-  gap: 6px;
-  flex-wrap: wrap;
-}
 #end-modal .end-guesses {
   margin: 0;
   padding-top: 16px;
   margin-top: 16px;
 }
-.end-dist-cell {
+/* Mini color grid — same artifact players share (🟪🟨⬛) */
+.end-grid {
   display: flex;
   flex-direction: column;
-  align-items: center;
-  gap: 6px;
-  flex: 0 0 auto;
+  gap: 4px;
+  align-items: flex-start;
 }
-.end-dist-tile {
-  width: 36px;
-  height: 36px;
-  border-radius: 4px;
-  border: 2px solid var(--border);
-  background: transparent;
-  box-sizing: border-box;
+.end-grid-row {
+  display: flex;
+  gap: 4px;
 }
-.end-dist-tile.today {
-  border: none;
-  background: var(--correct);
-  box-shadow: 0 0 12px var(--shadow-correct);
-}
-.end-dist--lost .end-dist-tile.today {
+.end-grid-tile {
+  width: 30px;
+  height: 30px;
+  border-radius: 5px;
   background: var(--absent);
-  box-shadow: none;
+  box-sizing: border-box;
+  animation: endTilePop 0.3s cubic-bezier(0.2, 0.8, 0.2, 1) backwards;
+  animation-delay: calc(var(--row, 0) * 0.06s);
 }
-.end-dist-label {
-  font-family: var(--font-sans);
-  font-size: 9px;
-  font-weight: 700;
-  color: var(--ink-faint);
-  text-align: center;
-  line-height: 1;
-  min-width: 36px;
+.end-grid-tile--correct { background: var(--correct); }
+.end-grid-tile--present { background: var(--present); }
+.end-grid-tile--absent { background: var(--absent); }
+@keyframes endTilePop {
+  from { opacity: 0; transform: scale(0.6); }
+  to   { opacity: 1; transform: scale(1); }
 }
-.end-dist-label.today {
-  color: var(--correct);
-  font-weight: 800;
+@media (prefers-reduced-motion: reduce) {
+  .end-grid-tile { animation: none; }
 }
-.end-dist--lost .end-dist-label.today {
-  color: var(--ink-dim);
+@media (max-width: 360px) {
+  .end-grid-tile { width: 26px; height: 26px; }
 }
 /* Section labels — Statistics, Guesses, Titles Earned, Today's word is from */
 #end-modal .end-section-title {
@@ -910,19 +896,15 @@ body.end-screen-open .bg-glow {
 #end-modal.end-modal--featured .end-word-reveal {
   color: var(--featured-pink);
 }
-#end-modal.end-modal--featured .end-dist-tile {
-  border-color: rgba(216, 176, 106, 0.28);
-}
-#end-modal.end-modal--featured .end-dist-tile.today {
-  background: linear-gradient(135deg, #cf3f86, #9333d9);
-  box-shadow: 0 0 12px rgba(207, 63, 134, 0.45);
-}
-#end-modal.end-modal--featured .end-dist--lost .end-dist-tile.today {
+#end-modal.end-modal--featured .end-grid-tile--absent {
   background: rgba(58, 40, 66, 0.85);
-  box-shadow: none;
 }
-#end-modal.end-modal--featured .end-dist-label.today {
-  color: var(--featured-pink);
+#end-modal.end-modal--featured .end-grid-tile--present {
+  background: var(--featured-gold);
+}
+#end-modal.end-modal--featured .end-grid-tile--correct {
+  background: linear-gradient(135deg, #cf3f86, #9333d9);
+  box-shadow: 0 0 10px rgba(207, 63, 134, 0.40);
 }
 #end-modal.end-modal--featured .end-stat-row span {
   color: var(--featured-plum-light);
