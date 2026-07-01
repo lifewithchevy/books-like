@@ -535,7 +535,7 @@ body.end-screen-open .bg-glow {
 /* Subtitle — book title (serif) */
 #end-modal .end-subtitle {
   font-family: var(--font-serif);
-  font-size: clamp(22px, 5.5vw, 26px);
+  font-size: clamp(20px, 5.2vw, 23px);
   font-weight: 600;
   line-height: 1.2;
   color: var(--ink);
@@ -545,7 +545,7 @@ body.end-screen-open .bg-glow {
 /* Description — author, hook, titles earned (sans) */
 #end-modal .end-description {
   font-family: var(--font-sans);
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 400;
   line-height: 1.45;
   color: var(--ink-dim);
@@ -1038,7 +1038,7 @@ body.end-screen-open .bg-glow {
 .book-hero-meta { flex: 1; min-width: 0; }
 .book-hero-title {
   font-family: var(--font-serif);
-  font-size: clamp(22px, 5.5vw, 26px);
+  font-size: clamp(20px, 5.2vw, 23px);
   font-weight: 600;
   color: var(--ink);
   margin: 0;
@@ -1047,13 +1047,13 @@ body.end-screen-open .bg-glow {
 }
 .book-hero-author {
   font-family: var(--font-sans);
-  font-size: 17px;
+  font-size: 16px;
   color: var(--ink-dim);
   margin: 5px 0 0;
 }
 .book-hero-hook {
   font-family: var(--font-sans);
-  font-size: 17px;
+  font-size: 16px;
   font-style: italic;
   color: var(--ink-dim);
   line-height: 1.45;
@@ -1504,7 +1504,7 @@ body.end-screen-open .bg-glow {
   text-align: center;
   font-family: var(--font-serif);
   font-style: italic;
-  font-size: 17px;
+  font-size: 16px;
   font-weight: 500;
   color: var(--accent-2);
   line-height: 1.35;
@@ -1653,7 +1653,7 @@ body.promo-page.promo-page--story .promo-cover {
 .stat-milestone {
   text-align: center;
   font-family: var(--font-sans);
-  font-size: 17px;
+  font-size: 16px;
   color: var(--ink-dim);
   line-height: 1.45;
   margin: 0 0 14px;
