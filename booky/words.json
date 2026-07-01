@@ -1,6 +1,9 @@
 {
   "epoch": "2026-05-25",
-  "_comment": "Curated 5-letter words from the romantasy lexicon. Order = daily sequence. wordBooks maps each word to a related book shown on the end screen.",
+  "_comment": "Curated 5-letter words from the romantasy lexicon. Order = daily sequence. wordBooks maps each word to a related book shown on the end screen. teases maps a word to an optional one-line hint shown on the PREVIOUS day's end screen (never hint at the word itself, only the book's vibe). Days without an entry simply show no tease.",
+  "teases": {
+    "HEART": "tomorrow's word is from the book that made everyone switch courts 👀"
+  },
   "queue": [
     "COURT",
     "BLADE",

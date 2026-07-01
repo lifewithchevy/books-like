@@ -48,7 +48,7 @@ try {
 // Pull queue + dictionary in parallel. Dictionary is large (~80KB) but
 // only loaded once — browser caches it. The Set lookup is O(1).
 const [data, dictList] = await Promise.all([
-fetch('/booky/words.json?v=6', { cache: 'no-store' }).then(r => r.json()),
+fetch('/booky/words.json?v=7', { cache: 'no-store' }).then(r => r.json()),
 fetch('/booky/dictionary.json?v=12', { cache: 'force-cache' }).then(r => r.json()),
 ]);
 DATA = data;
@@ -131,12 +131,17 @@ function saveState() { localStorage.setItem(STATE_KEY, JSON.stringify(STATE)); }
 function loadStats() {
 try {
 const s = JSON.parse(localStorage.getItem(STATS_KEY));
-if (s && typeof s === 'object') return s;
+if (s && typeof s === 'object') {
+// Stats saved before the Ward existed — grant the starting one.
+if (typeof s.wards !== 'number') s.wards = 1;
+return s;
+}
 } catch {}
 return {
 currentStreak: 0, maxStreak: 0, played: 0, wins: 0,
 distribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, X: 0 },
-lastPlayedDay: 0
+lastPlayedDay: 0,
+wards: 1
 };
 }
 function saveStats() { localStorage.setItem(STATS_KEY, JSON.stringify(STATS)); }
@@ -149,9 +154,19 @@ STATS.played += 1;
 if (STATE.status === 'won') {
 STATS.wins += 1;
 STATS.distribution[STATE.guesses.length] += 1;
-const broken = STATS.lastPlayedDay && (DAY - STATS.lastPlayedDay > 1);
+// Streak Ward (Duolingo streak-freeze, romantasy-skinned): a single missed
+// day is auto-covered if a Ward is banked. Two+ missed days always break.
+const gap = STATS.lastPlayedDay ? DAY - STATS.lastPlayedDay : 1;
+if (gap === 2 && STATS.wards > 0) {
+STATS.wards -= 1;
+STATE.wardUsed = true; // persisted so the end screen shows the save on re-open
+saveState();
+}
+const broken = gap > 1 && !STATE.wardUsed;
 STATS.currentStreak = broken ? 1 : STATS.currentStreak + 1;
 if (STATS.currentStreak > STATS.maxStreak) STATS.maxStreak = STATS.currentStreak;
+// The Ward recharges at every 7-day streak mark (one banked at a time)
+if (STATS.currentStreak % 7 === 0) STATS.wards = 1;
 } else {
 STATS.distribution.X += 1;
 STATS.currentStreak = 0;
@@ -489,15 +504,12 @@ const tries = STATE.guesses.length;
 
 // Hero 1: win/lose headline + the word. Guess count moved to the stats page.
 const title = $('end-headline');
-const sub = $('end-subtitle');
 if (won) {
 title.textContent = 'Congrats!';
-sub.hidden = true;
 $('celebration').classList.remove('lost');
 $('celebration').classList.add('won');
 } else {
 title.textContent = "Tomorrow's another word.";
-sub.hidden = true;   // the answer now reveals in the book card below
 $('celebration').classList.remove('won');
 $('celebration').classList.add('lost');
 }
@@ -513,6 +525,15 @@ streakEl.textContent = `🔥 ${STATS.currentStreak}-day streak · ${earned.icon}
 streakEl.hidden = false;
 } else {
 streakEl.hidden = true;
+}
+
+// Ward receipt — only shows on the day a Ward actually saved the streak
+const wardEl = $('end-ward');
+if (won && STATE.wardUsed) {
+wardEl.textContent = '🛡️ your Ward covered the day you missed. streak intact.';
+wardEl.hidden = false;
+} else {
+wardEl.hidden = true;
 }
 
 // Mirror to legacy stats modal (still accessible via the ▤ icon)
@@ -577,6 +598,24 @@ const reminderForm = $('reminder-form');
 reminderForm.style.display = subscribed ? 'none' : 'block';
 $('reminder-active').hidden = !subscribed;
 
+// One primary ask per player state: new winners get the email pulse below;
+// subscribers have no email ask left, so Share takes the primary slot
+// (the share grid is the growth loop — Wordle's entire engine).
+$('share-btn').classList.toggle('share-primary', !!subscribed);
+
+// Tomorrow tease — optional per-word copy in words.json `teases`, keyed by
+// TOMORROW's word (queue is 0-indexed, so index DAY = day DAY+1). Open loop
+// for the return visit; stays hidden on days without written copy.
+const teaseEl = $('tomorrow-tease');
+const tomorrowWord = DATA.queue[DAY];
+const tease = tomorrowWord ? DATA.teases?.[tomorrowWord.toUpperCase()] : null;
+if (tease) {
+teaseEl.textContent = tease;
+teaseEl.hidden = false;
+} else {
+teaseEl.hidden = true;
+}
+
 $('end-modal').showModal();
 tickCountdown();
 
@@ -595,9 +634,13 @@ window.__countdownTicker = setInterval(tickCountdown, 1000);
 }
 
 function buildShareString() {
-const header = `📚 Booky #${DAY}`;
+// The rank rides in the header — identity is the shareable bit (Spelling
+// Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
+let header = `📚 Booky #${DAY}`;
 let scoreLine;
 if (STATE.status === 'won') {
+const { earned } = badgeForStreak(STATS.currentStreak);
+if (earned) header += ` · ${earned.icon} ${earned.name}`;
 const streak = STATS.currentStreak > 1 ? ` 🔥${STATS.currentStreak}` : '';
 scoreLine = `${STATE.guesses.length}/${MAX_GUESSES}${streak}`;
 } else {
@@ -631,6 +674,9 @@ if (next) {
 const rem = next.at - STATS.currentStreak;
 txt += ` ${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}.`;
 }
+txt += STATS.wards > 0
+? ' 🛡️ Ward ready (covers one missed day).'
+: ' 🛡️ Ward spent. Recharges at your next 7-day mark.';
 mEl.textContent = txt;
 mEl.hidden = false;
 } else {

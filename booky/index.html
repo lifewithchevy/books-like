@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- build: booky-v29 -->
+<!-- build: booky-v30 -->
 <html lang="en">
 <head>
 <meta charset="UTF-8" />
@@ -18,7 +18,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=14" />
+<link rel="stylesheet" href="/booky/styles.css?v=15" />
 <!-- PostHog analytics -->
 <script>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
@@ -116,7 +116,7 @@ competes with the Booky wordmark or the help/stats icons. -->
 </div>
 <p class="ex-desc"><strong>D</strong> is not in the word.</p>
 
-<p class="footnote">A new word unlocks at midnight UTC. Don't break your streak.</p>
+<p class="footnote">A new word unlocks at midnight. Miss a day? Your 🛡️ Ward saves the streak once (it recharges at your next 7-day mark).</p>
 </form>
 </dialog>
 
@@ -147,7 +147,6 @@ competes with the Booky wordmark or the help/stats icons. -->
 <p id="end-puzzle-no" class="end-puzzle-no"></p>
 <div class="celebration" id="celebration">
 <h2 id="end-headline" class="celebration-title"></h2>
-<p id="end-subtitle" class="celebration-sub"></p>
 </div>
 </div>
 
@@ -169,6 +168,8 @@ competes with the Booky wordmark or the help/stats icons. -->
 
 <!-- Streak + earned romantasy rank -->
 <p id="end-streak" class="end-streak" hidden></p>
+<!-- Ward receipt: only visible the day a Ward auto-saved the streak -->
+<p id="end-ward" class="end-ward" hidden></p>
 
 <!-- Share -->
 <button id="share-btn" class="secondary-btn">Share result</button>
@@ -193,6 +194,8 @@ required
 </form>
 <p id="reminder-active" class="reminder-active" hidden>📩 Daily reminders on</p>
 
+<!-- Tomorrow tease: optional open-loop line fed from words.json `teases` -->
+<p id="tomorrow-tease" class="tomorrow-tease" hidden></p>
 <p class="next">Next word in <span id="countdown">--:--:--</span></p>
 </div>
 </dialog>
@@ -200,6 +203,6 @@ required
 <!-- Floating toast (invalid guess, etc.) -->
 <div id="floating-toast" class="float-toast" hidden></div>
 
-<script src="/booky/app.js?v=27" defer></script>
+<script src="/booky/app.js?v=28" defer></script>
 </body>
 </html>
