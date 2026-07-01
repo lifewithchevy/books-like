@@ -607,7 +607,7 @@ body.end-screen-open .bg-glow {
 .end-word--spoiled {
   filter: blur(8px);
   opacity: 1;
-  color: var(--ink-dim);
+  color: var(--ink);
   user-select: none;
   -webkit-user-select: none;
   transition: filter 0.28s ease, opacity 0.28s ease, color 0.28s ease;
