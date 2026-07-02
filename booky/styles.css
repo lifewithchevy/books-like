@@ -911,3 +911,61 @@ body {
   .kb-key { height: 42px; font-size: 12px; }
   .topbar { padding: 6px 14px 4px; }
 }
+
+/* Static og:image canvas (1200×630 screenshot source) */
+body.og-image-page {
+  position: relative;
+  width: 1200px;
+  height: 630px;
+  margin: 0;
+  overflow: hidden;
+  color-scheme: dark;
+  --bg: #160516;
+  --ink: #f6ecf3;
+  --ink-dim: #b09ab8;
+  --correct: #9333d9;
+  --present: #c79320;
+  --absent: #3a2842;
+  --shadow-correct: rgba(147, 51, 217, 0.45);
+  background:
+    radial-gradient(ellipse 80% 70% at 50% 20%, rgba(217, 70, 168, 0.18) 0%, transparent 60%),
+    radial-gradient(ellipse 60% 50% at 80% 80%, rgba(139, 63, 211, 0.12) 0%, transparent 55%),
+    var(--bg);
+}
+.og-image-inner {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 28px;
+}
+.og-image-page .og-word-row {
+  display: flex;
+  gap: 14px;
+}
+.og-image-page .og-word-row span {
+  width: 96px;
+  height: 96px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 48px;
+  font-weight: 800;
+  color: #fff;
+}
+.og-image-page .og-word-row .correct { background: var(--correct); box-shadow: 0 0 14px var(--shadow-correct); }
+.og-image-page .og-word-row .present { background: var(--present); }
+.og-image-page .og-word-row .absent  { background: var(--absent); color: var(--ink); }
+.og-image-page .og-tagline {
+  margin: 0;
+  font-family: var(--font-serif);
+  font-size: 32px;
+  font-weight: 500;
+  font-style: italic;
+  color: var(--ink-dim);
+  letter-spacing: 0.5px;
+}
