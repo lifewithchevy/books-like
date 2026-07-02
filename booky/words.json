@@ -60,7 +60,7 @@
     "EMBER",
     "CRUEL",
     "SHADE",
-    "HAUNT",
+    "MOTIF",
     "FERAL",
     "TRIAL",
     "FATED",
@@ -1647,6 +1647,12 @@
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
     },
     "SYBIL": {
+      "slug": "the-knight-and-the-moth",
+      "title": "The Knight and the Moth",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316582704.01.LZZZZZZZ.jpg"
+    },
+    "MOTIF": {
       "slug": "the-knight-and-the-moth",
       "title": "The Knight and the Moth",
       "author": "Rachel Gillig",
