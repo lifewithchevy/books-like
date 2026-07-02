@@ -50,7 +50,7 @@
     "AMBER",
     "ASHES",
     "GLEAM",
-    "RAVEN",
+    "SYBIL",
     "REALM",
     "BOUND",
     "POWER",
@@ -99,7 +99,7 @@
     "ROGUE",
     "SMOKE",
     "TOPAZ",
-    "SYBIL",
+    "OMENS",
     "SPIES",
     "MISTS",
     "FLARE",
@@ -111,7 +111,7 @@
     "PARRY",
     "CHAIN",
     "SPARK",
-    "OMENS",
+    "HALOS",
     "GUILE",
     "DUSKY",
     "OPALS",
@@ -861,10 +861,10 @@
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg"
     },
     "OMENS": {
-      "slug": "house-of-earth-and-blood",
-      "title": "House of Earth and Blood",
-      "author": "Sarah J. Maas",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg"
+      "slug": "the-knight-and-the-moth",
+      "title": "The Knight and the Moth",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316582704.01.LZZZZZZZ.jpg"
     },
     "GUILE": {
       "slug": "the-cruel-prince",
