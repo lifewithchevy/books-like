@@ -674,12 +674,11 @@ body {
 .reminder-error   { color: #ff8aa3; }
 
 /* ---- Book recommendation (text link) ---- */
-/* Book hero — the word's book (curated rec or sponsored feature).
-   Outlined-only container (no pink fill) for better text contrast. */
+/* Book hero — the word's book (curated rec or sponsored feature) */
 .book-hero {
   border: 1px solid var(--streak-border);
   border-radius: 12px;
-  background: transparent;
+  background: linear-gradient(135deg, var(--streak-bg-from), var(--streak-bg-to));
   padding: 14px;
 }
 /* The word reveal — now the first line of the book card, above the label */
