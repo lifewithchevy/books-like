@@ -726,8 +726,8 @@ body {
   line-height: 1.4;
   margin: 7px 0 0;
 }
-/* Book links — quiet text links below the cover/title. Share is the only
-   primary CTA; Amazon buy + books-like are equal-weight secondary links. */
+/* Book link — one quiet text link below the cover/title. Share is the
+   only primary CTA. Amazon buy when available, else books-like page. */
 .book-hero-cta {
   display: block;
   margin-top: 10px;
@@ -737,9 +737,6 @@ body {
   font-size: 13.5px;
   text-decoration: underline;
   text-underline-offset: 3px;
-}
-.book-hero-cta + .book-hero-cta {
-  margin-top: 4px;
 }
 
 /* Streak — low-priority single line */

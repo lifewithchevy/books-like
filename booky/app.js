@@ -559,14 +559,25 @@ cover.hidden = true;
 // be re-enabled later by restoring the `bookRec.hook` conditional.
 $('book-rec-hook').hidden = true;
 
-// Secondary text links under the book (Share is the only primary CTA).
+// One secondary text link under the book (Share is the only primary CTA).
+// Prefer Amazon buy; fall back to curated books-like page.
 const linkEl = $('book-rec-link');
-const linkSecondaryEl = $('book-rec-link-secondary');
-
 if (bookRec.buyUrl) {
 linkEl.href = bookRec.buyUrl;
+linkEl.textContent = 'Get it on Amazon →';
+linkEl.rel = 'noopener sponsored';
 linkEl.hidden = false;
 linkEl.onclick = () => posthog.capture('affiliate_buy_clicked', {
+word_number: DAY,
+book: bookRec.slug,
+title: bookRec.title,
+});
+} else if (CURATED_SLUGS.has(bookRec.slug)) {
+linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
+linkEl.textContent = 'More books like this →';
+linkEl.rel = 'noopener';
+linkEl.hidden = false;
+linkEl.onclick = () => posthog.capture('booky_books_like_clicked', {
 word_number: DAY,
 book: bookRec.slug,
 title: bookRec.title,
@@ -574,19 +585,6 @@ title: bookRec.title,
 } else {
 linkEl.hidden = true;
 linkEl.onclick = null;
-}
-
-if (CURATED_SLUGS.has(bookRec.slug)) {
-linkSecondaryEl.href = `https://90books.com/books-like/${bookRec.slug}`;
-linkSecondaryEl.hidden = false;
-linkSecondaryEl.onclick = () => posthog.capture('booky_books_like_clicked', {
-word_number: DAY,
-book: bookRec.slug,
-title: bookRec.title,
-});
-} else {
-linkSecondaryEl.hidden = true;
-linkSecondaryEl.onclick = null;
 }
 recEl.hidden = false;
 } else {
