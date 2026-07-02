@@ -480,6 +480,7 @@ body {
   text-align: center;
   padding: 2px 0 8px;
 }
+/* Same gradient headline in every scenario (win + loss) */
 .celebration-title {
   font-family: var(--font-serif);
   font-weight: 600;
@@ -490,11 +491,6 @@ body {
   -webkit-background-clip: text;
   background-clip: text;
   -webkit-text-fill-color: transparent;
-}
-.celebration.lost .celebration-title {
-  background: none;
-  -webkit-text-fill-color: var(--ink);
-  color: var(--ink);
 }
 .end-puzzle-no {
   font-family: var(--font-sans);
