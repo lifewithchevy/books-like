@@ -559,10 +559,10 @@ cover.hidden = true;
 // be re-enabled later by restoring the `bookRec.hook` conditional.
 $('book-rec-hook').hidden = true;
 
+// Secondary text links under the book (Share is the only primary CTA).
 const linkEl = $('book-rec-link');
 const linkSecondaryEl = $('book-rec-link-secondary');
 
-// Primary: Amazon affiliate buy link (always when buyUrl is set).
 if (bookRec.buyUrl) {
 linkEl.href = bookRec.buyUrl;
 linkEl.hidden = false;
@@ -576,7 +576,6 @@ linkEl.hidden = true;
 linkEl.onclick = null;
 }
 
-// Secondary: curated 90books page when one exists.
 if (CURATED_SLUGS.has(bookRec.slug)) {
 linkSecondaryEl.href = `https://90books.com/books-like/${bookRec.slug}`;
 linkSecondaryEl.hidden = false;
