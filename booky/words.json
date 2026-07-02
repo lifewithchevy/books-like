@@ -41,6 +41,7 @@
     "ROWAN",
     "ELAIN",
     "HEART",
+    "SCARS",
     "SWORD",
     "VALOR",
     "GHOST",
@@ -375,6 +376,12 @@
       "title": "Throne of Glass",
       "author": "Sarah J. Maas",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg"
+    },
+    "SCARS": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg"
     },
     "MERCY": {
       "slug": "the-serpent-and-the-wings-of-night",
