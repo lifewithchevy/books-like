@@ -374,8 +374,7 @@ word_number_at_signup: DAY,
 toast.textContent = "you're in. i'll email you a reminder for tomorrow's word.";
 toast.className = 'reminder-toast reminder-success';
 toast.hidden = false;
-// Stop the attention pulse and collapse the form, leaving only the toast
-$('reminder-form').classList.remove('reminder-highlight');
+// Collapse the form, leaving only the toast
 setTimeout(() => {
 $('reminder-form').querySelector('.reminder-row').style.display = 'none';
 $('reminder-form').querySelector('.reminder-pitch').style.display = 'none';
@@ -609,15 +608,6 @@ teaseEl.hidden = true;
 $('end-modal').showModal();
 tickCountdown();
 
-// After the win celebration settles, gently pulse + scroll the email card
-// into view once (no popup). Peak emotional moment = best time to ask.
-if (won && !subscribed) {
-  reminderForm.classList.remove('reminder-highlight');
-  setTimeout(() => {
-    reminderForm.classList.add('reminder-highlight');
-    reminderForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 1400);
-}
 if (!window.__countdownTicker) {
 window.__countdownTicker = setInterval(tickCountdown, 1000);
 }

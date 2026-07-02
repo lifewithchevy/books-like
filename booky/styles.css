@@ -598,18 +598,6 @@ body {
   padding-top: 16px;
   border-top: 1px solid var(--border);
 }
-/* One-time attention pulse fired after the win celebration settles */
-.reminder-card.reminder-highlight .reminder-row {
-  animation: reminderPulse 1.6s cubic-bezier(0.2, 0.8, 0.2, 1) 2;
-  border-radius: 8px;
-}
-@keyframes reminderPulse {
-  0%, 100% { box-shadow: 0 0 0 0 rgba(147, 51, 217, 0); }
-  50%      { box-shadow: 0 0 0 4px rgba(147, 51, 217, 0.22); }
-}
-@media (prefers-reduced-motion: reduce) {
-  .reminder-card.reminder-highlight .reminder-row { animation: none; }
-}
 .reminder-active {
   margin: 10px 0 0;
   padding-top: 8px;
@@ -653,22 +641,23 @@ body {
 }
 #reminder-email:focus { border-color: var(--accent); }
 #reminder-email::placeholder { color: var(--ink-faint); }
+/* Pink outline button. Hover keeps the outline but shifts to the primary
+   (Share) CTA's pink — no fill. */
 #reminder-submit {
-  background: var(--bg-3);
-  border: 1px solid var(--border);
-  color: var(--accent-2);   /* pink label, same as the book text link */
+  background: transparent;
+  border: 1.5px solid var(--accent-2);
+  color: var(--accent-2);
   padding: 0 16px;
   border-radius: 8px;
   cursor: pointer;
   font-family: var(--font-sans);
   font-size: 13px;
   font-weight: 600;
-  transition: background 0.15s, border-color 0.15s, color 0.15s;
+  transition: border-color 0.15s, color 0.15s;
 }
 #reminder-submit:hover:not(:disabled) {
-  background: var(--accent);
   border-color: var(--accent);
-  color: #fff;
+  color: var(--accent);
 }
 #reminder-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 .reminder-toast {
