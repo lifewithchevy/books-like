@@ -99,7 +99,7 @@
     "ROGUE",
     "SMOKE",
     "TOPAZ",
-    "ELVES",
+    "SYBIL",
     "SPIES",
     "MISTS",
     "FLARE",
@@ -1645,6 +1645,12 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "SYBIL": {
+      "slug": "the-knight-and-the-moth",
+      "title": "The Knight and the Moth",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316582704.01.LZZZZZZZ.jpg"
     }
   }
 }
