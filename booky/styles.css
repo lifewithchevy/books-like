@@ -783,48 +783,56 @@ body {
   border-radius: 8px;
 }
 
-/* Share CTA — magic sparkle: a shine sweep + twinkling stars pull the eye
-   to the growth action, fantasy-coded. All motion stops under reduced-motion
-   (sparkles then sit at a soft constant glow instead). */
+/* Share CTA — fairy dust: soft glowing specks that drift upward and fade,
+   like pixie dust settling over the button. Each particle staggers its own
+   duration/delay so the drift never reads as a pattern. Motion stops under
+   reduced-motion (a few specks stay at a faint constant glow instead). */
 #share-btn {
   position: relative;
   overflow: hidden;
 }
-#share-btn::before {
-  content: '';
+#share-btn .dust {
   position: absolute;
-  top: 0;
-  bottom: 0;
-  left: -60%;
-  width: 40%;
-  background: linear-gradient(105deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-  transform: skewX(-20deg);
-  animation: share-shine 3.2s ease-in-out infinite;
-  pointer-events: none;
-}
-@keyframes share-shine {
-  0%        { left: -60%; }
-  55%, 100% { left: 130%; }
-}
-#share-btn .spark {
-  position: absolute;
-  font-size: 11px;
-  color: #fff;
+  bottom: 6px;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 0 6px 1px rgba(255, 255, 255, 0.85);
   opacity: 0;
   pointer-events: none;
-  text-shadow: 0 0 6px rgba(255, 255, 255, 0.8);
-  animation: spark-twinkle 2.4s ease-in-out infinite;
+  animation: dust-float 3s ease-in-out infinite;
 }
-#share-btn .spark:nth-of-type(1) { top: 5px; left: 16%; }
-#share-btn .spark:nth-of-type(2) { bottom: 4px; left: 72%; font-size: 9px; animation-delay: 0.8s; }
-#share-btn .spark:nth-of-type(3) { top: 8px; left: 87%; font-size: 13px; animation-delay: 1.6s; }
-@keyframes spark-twinkle {
-  0%, 100% { opacity: 0; transform: scale(0.4) rotate(0deg); }
-  50%      { opacity: 1; transform: scale(1) rotate(90deg); }
+#share-btn .dust-star {
+  width: auto;
+  height: auto;
+  border-radius: 0;
+  background: none;
+  box-shadow: none;
+  font-size: 9px;
+  line-height: 1;
+  color: #ffe3f2;
+  text-shadow: 0 0 5px rgba(255, 214, 235, 0.9);
+}
+#share-btn .dust:nth-of-type(1) { left: 8%;  animation-duration: 2.6s; }
+#share-btn .dust:nth-of-type(2) { left: 19%; width: 2px; height: 2px; animation-delay: 1.1s; animation-duration: 3.4s; background: #ffd6ee; }
+#share-btn .dust:nth-of-type(3) { left: 31%; animation-delay: 0.5s; animation-duration: 2.9s; }
+#share-btn .dust:nth-of-type(4) { left: 66%; width: 2px; height: 2px; animation-delay: 1.7s; animation-duration: 2.4s; }
+#share-btn .dust:nth-of-type(5) { left: 78%; animation-delay: 0.8s; animation-duration: 3.6s; background: #ffd6ee; }
+#share-btn .dust:nth-of-type(6) { left: 91%; width: 2px; height: 2px; animation-delay: 2.2s; animation-duration: 2.7s; }
+#share-btn .dust:nth-of-type(7) { left: 13%; animation-delay: 1.9s; animation-duration: 3.2s; }
+#share-btn .dust:nth-of-type(8) { left: 85%; animation-delay: 0.3s; animation-duration: 3.8s; font-size: 11px; }
+@keyframes dust-float {
+  0%   { opacity: 0; transform: translateY(8px) scale(0.5); }
+  25%  { opacity: 1; }
+  65%  { opacity: 0.7; }
+  100% { opacity: 0; transform: translateY(-22px) scale(1.05); }
 }
 @media (prefers-reduced-motion: reduce) {
-  #share-btn::before, #share-btn .spark { animation: none; }
-  #share-btn .spark { opacity: 0.6; }
+  #share-btn .dust { animation: none; }
+  #share-btn .dust:nth-of-type(1),
+  #share-btn .dust:nth-of-type(5),
+  #share-btn .dust:nth-of-type(8) { opacity: 0.5; transform: translateY(-6px); }
 }
 
 /* Shared filled-button style: the Share CTA + the sponsored buy link */
