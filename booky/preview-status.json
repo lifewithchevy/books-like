@@ -1,0 +1,15 @@
+{
+  "updated": "2026-06-30T21:38:28Z",
+  "local": {
+    "hub": "http://localhost:8080/booky/preview-hub.html",
+    "win": "http://localhost:8080/booky/device-preview.html",
+    "game": "http://localhost:8080/booky/"
+  },
+  "tunnelOk": true,
+  "tunnel": {
+    "base": "https://condo-oakland-worth-decorating.trycloudflare.com",
+    "hub": "https://condo-oakland-worth-decorating.trycloudflare.com/booky/preview-hub.html",
+    "win": "https://condo-oakland-worth-decorating.trycloudflare.com/booky/device-preview.html",
+    "game": "https://condo-oakland-worth-decorating.trycloudflare.com/booky/"
+  }
+}

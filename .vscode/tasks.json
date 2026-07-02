@@ -1,0 +1,16 @@
+{
+  "version": "2.0.0",
+  "tasks": [
+    {
+      "label": "Booky: Serve local",
+      "type": "shell",
+      "command": "chmod +x scripts/serve-local.sh scripts/preview.sh && bash scripts/serve-local.sh",
+      "problemMatcher": [],
+      "presentation": {
+        "reveal": "always",
+        "panel": "shared",
+        "focus": true
+      }
+    }
+  ]
+}

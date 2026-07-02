@@ -1,0 +1,188 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Booky — device preview (real deploy)</title>
+<meta name="robots" content="noindex" />
+<style>
+  :root {
+    --bg: #0f0a12;
+    --panel: #1c1320;
+    --ink: #f6ecf3;
+    --dim: #b09ab8;
+    --accent: #d946a8;
+    --border: #36283d;
+  }
+  * { box-sizing: border-box; }
+  html, body { margin: 0; height: 100%; }
+  body {
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Inter, system-ui, sans-serif;
+    display: flex;
+    flex-direction: column;
+    min-height: 100dvh;
+  }
+  header {
+    padding: 10px 12px;
+    border-bottom: 1px solid var(--border);
+    display: flex;
+    gap: 8px;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+  }
+  header .group { display: flex; gap: 6px; flex-wrap: wrap; align-items: center; }
+  label.sel {
+    font-size: 11px;
+    color: var(--dim);
+    display: flex;
+    align-items: center;
+    gap: 5px;
+  }
+  select, button.tab {
+    background: var(--panel);
+    color: var(--ink);
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    font-size: 12px;
+    padding: 7px 10px;
+    font-family: inherit;
+    cursor: pointer;
+  }
+  button.tab.on { background: var(--accent); border-color: var(--accent); color: #fff; font-weight: 700; }
+  .dims { font-size: 11px; color: var(--dim); }
+  .stage {
+    flex: 1;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow: auto;
+    padding: 22px 16px 40px;
+  }
+  .phone {
+    position: relative;
+    background: #000;
+    border-radius: 44px;
+    padding: 12px;
+    box-shadow: 0 24px 70px rgba(0,0,0,0.6);
+    flex: 0 0 auto;
+  }
+  .phone .notch {
+    position: absolute;
+    top: 12px; left: 50%;
+    transform: translateX(-50%);
+    width: 36%;
+    height: 26px;
+    background: #000;
+    border-radius: 0 0 16px 16px;
+    z-index: 2;
+    pointer-events: none;
+  }
+  .screen {
+    border-radius: 32px;
+    overflow: hidden;
+    background: #fff;
+  }
+  iframe {
+    border: 0;
+    display: block;
+    background: #fff;
+  }
+  .hint {
+    text-align: center;
+    font-size: 11px;
+    color: var(--dim);
+    padding: 0 16px 18px;
+    line-height: 1.5;
+  }
+  .hint code { color: #f8b6da; }
+</style>
+</head>
+<body>
+<header>
+  <div class="group">
+    <button class="tab on" data-src="real">Real game</button>
+    <button class="tab" data-src="win">Win</button>
+    <button class="tab" data-src="loss">Loss</button>
+    <button class="tab" data-src="featured">Featured</button>
+    <button class="tab" data-src="newbie">First win</button>
+    <button class="tab" data-src="streak">Streak</button>
+  </div>
+  <div class="group">
+    <label class="sel">Device
+      <select id="device">
+        <option value="375x667">iPhone SE (375×667)</option>
+        <option value="390x844" selected>iPhone 13/14 (390×844)</option>
+        <option value="393x852">iPhone 15 (393×852)</option>
+        <option value="430x932">iPhone 15 Pro Max (430×932)</option>
+        <option value="360x800">Android (360×800)</option>
+        <option value="412x915">Pixel 7 (412×915)</option>
+      </select>
+    </label>
+    <span class="dims" id="dims"></span>
+  </div>
+</header>
+
+<div class="stage">
+  <div class="phone" id="phone">
+    <div class="notch"></div>
+    <div class="screen" id="screen">
+      <iframe id="frame" title="Booky preview"></iframe>
+    </div>
+  </div>
+</div>
+
+<p class="hint">
+  <strong>Real game</strong> = exact deployed code (real <code>/booky/</code> + app.js + CSS) at true mobile resolution, system light/dark — exactly what ships.
+  Other tabs use mock scenarios for layouts you can't easily reach (loss, featured day, long streak).
+</p>
+
+<script>
+const frame = document.getElementById('frame');
+const screen = document.getElementById('screen');
+const phone = document.getElementById('phone');
+const dimsEl = document.getElementById('dims');
+const deviceSel = document.getElementById('device');
+let srcKey = 'real';
+
+function srcFor(key) {
+  return './?preview=' + (key === 'real' ? 'win' : key);
+}
+
+function applyDevice() {
+  const [w, h] = deviceSel.value.split('x').map(Number);
+  frame.style.width = w + 'px';
+  frame.style.height = h + 'px';
+  screen.style.width = w + 'px';
+  screen.style.height = h + 'px';
+  dimsEl.textContent = w + ' × ' + h + ' px';
+
+  // Scale down if it doesn't fit the stage height
+  const maxH = window.innerHeight - 200;
+  const scale = Math.min(1, maxH / (h + 24));
+  phone.style.transform = 'scale(' + scale + ')';
+  phone.style.transformOrigin = 'top center';
+}
+
+function reload() {
+  frame.src = srcFor(srcKey);
+}
+
+document.querySelectorAll('.tab').forEach((b) => {
+  b.addEventListener('click', () => {
+    document.querySelectorAll('.tab').forEach((x) => x.classList.remove('on'));
+    b.classList.add('on');
+    srcKey = b.dataset.src;
+    reload();
+  });
+});
+deviceSel.addEventListener('change', applyDevice);
+window.addEventListener('resize', applyDevice);
+
+applyDevice();
+reload();
+</script>
+</body>
+</html>

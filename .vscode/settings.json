@@ -1,0 +1,12 @@
+{
+  "remote.autoForwardPorts": true,
+  "remote.autoForwardPortsSource": "hybrid",
+  "remote.forwardOnOpen": true,
+  "remote.portsAttributes": {
+    "8080": {
+      "label": "Booky preview",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "simpleBrowser.focusLockIndicator.enabled": true
+}

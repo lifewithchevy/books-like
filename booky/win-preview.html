@@ -1,0 +1,16 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Redirecting…</title>
+<meta http-equiv="refresh" content="0;url=/booky/?preview=newbie" />
+<script>
+  const s = new URLSearchParams(location.search).get('s') || 'newbie';
+  location.replace('/booky/?preview=' + encodeURIComponent(s));
+</script>
+</head>
+<body>
+<p>Moved to <a href="/booky/?preview=newbie">/booky/?preview=newbie</a></p>
+</body>
+</html>

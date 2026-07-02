@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Booky — Weavingshaw (dev preview)</title>
+<meta name="robots" content="noindex" />
+<style>
+  html, body {
+    margin: 0;
+    min-height: 100%;
+    background: #160c1d;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px 16px;
+    box-sizing: border-box;
+  }
+  .promo-asset-frame {
+    width: 400px;
+    max-width: 92vw;
+    border-radius: 22px;
+    overflow: hidden;
+    box-shadow: 0 18px 60px rgba(0, 0, 0, 0.55);
+  }
+  .promo-asset-frame svg { display: block; width: 100%; height: auto; }
+</style>
+</head>
+<body>
+<div id="promo-mount" class="promo-asset-frame"></div>
+<script src="promo-render.js?v=2"></script>
+<script>
+document.getElementById('promo-mount').innerHTML = renderBookyPromoSVG({
+  cover: 'assets/weavingshaw.jpg',
+  title: 'Weavingshaw',
+  author: 'Heba Al-Wasity',
+  teaser: "today's word is hidden in...",
+  ctaText: 'PLAY NOW',
+  ctaHref: 'https://90books.com/booky?utm_source=author_promo&utm_medium=social&utm_campaign=weavingshaw',
+});
+</script>
+</body>
+</html>

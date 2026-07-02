@@ -1,0 +1,11 @@
+{
+  "name": "Booky preview",
+  "forwardPorts": [8080],
+  "portsAttributes": {
+    "8080": {
+      "label": "Booky preview",
+      "onAutoForward": "openBrowser"
+    }
+  },
+  "postStartCommand": "bash scripts/serve-local.sh"
+}

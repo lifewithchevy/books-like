@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+<title>Booky preview hub</title>
+<meta name="robots" content="noindex" />
+<style>
+  :root {
+    --bg: #160516;
+    --ink: #f6ecf3;
+    --dim: #b09ab8;
+    --accent: #d946a8;
+    --accent2: #f8b6da;
+    --card: #221127;
+    --border: #3a213e;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    min-height: 100dvh;
+    background: var(--bg);
+    color: var(--ink);
+    font-family: Inter, system-ui, sans-serif;
+    padding: 28px 18px 32px;
+    display: flex;
+    justify-content: center;
+  }
+  .wrap { width: 100%; max-width: 420px; }
+  h1 {
+    font-family: "Cormorant Garamond", Georgia, serif;
+    font-size: 32px;
+    font-weight: 600;
+    margin: 0 0 6px;
+    text-align: center;
+  }
+  .sub {
+    text-align: center;
+    color: var(--dim);
+    font-size: 13px;
+    line-height: 1.45;
+    margin: 0 0 22px;
+  }
+  .card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 14px;
+    padding: 16px;
+    margin-bottom: 14px;
+  }
+  .label {
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 1.8px;
+    text-transform: uppercase;
+    color: var(--dim);
+    margin: 0 0 10px;
+  }
+  a.btn {
+    display: block;
+    text-align: center;
+    text-decoration: none;
+    border-radius: 10px;
+    padding: 14px 16px;
+    font-weight: 700;
+    font-size: 15px;
+    margin-bottom: 8px;
+  }
+  a.btn:last-child { margin-bottom: 0; }
+  a.primary {
+    background: linear-gradient(135deg, var(--accent), #b13386);
+    color: #fff;
+    box-shadow: 0 6px 20px rgba(217, 70, 168, 0.3);
+  }
+  a.secondary {
+    background: transparent;
+    border: 1.5px solid var(--border);
+    color: var(--accent2);
+  }
+  .status {
+    text-align: center;
+    font-size: 11px;
+    color: var(--dim);
+    margin-top: 16px;
+    line-height: 1.5;
+  }
+  .status code {
+    font-size: 10px;
+    word-break: break-all;
+  }
+  .vercel {
+    margin-top: 10px;
+    padding-top: 10px;
+    border-top: 1px solid var(--border);
+    font-size: 11px;
+    color: var(--dim);
+    line-height: 1.45;
+  }
+  .vercel a { color: var(--accent2); }
+</style>
+</head>
+<body>
+<div class="wrap">
+  <h1>Booky preview</h1>
+  <p class="sub">Bookmark <strong>this page</strong>. Links below always point to the latest build on this server.</p>
+
+  <div class="card">
+    <p class="label">Win screen — exactly what ships</p>
+    <a class="btn primary" id="link-win" href="./device-preview.html">Mobile device preview ✦</a>
+    <a class="btn secondary" id="link-game" href="./?preview=win">Win screen preview</a>
+    <a class="btn secondary" href="./?preview=newbie">First win (mock)</a>
+    <a class="btn secondary" href="./">Open full game</a>
+  </div>
+
+  <div class="card">
+    <p class="label">Other previews</p>
+    <a class="btn secondary" href="./preview.html">Author promo graphic</a>
+    <a class="btn secondary" href="./dev-preview.html">Weavingshaw dev promo</a>
+  </div>
+
+  <p class="status" id="status">Loading preview status…</p>
+  <p class="vercel" id="vercel-note" hidden></p>
+</div>
+<script>
+(function () {
+  const statusEl = document.getElementById('status');
+  const vercelEl = document.getElementById('vercel-note');
+  const params = new URLSearchParams(location.search);
+  if (params.get('go') === 'win') {
+    location.replace('./?preview=win');
+    return;
+  }
+
+  fetch('./preview-status.json?_=' + Date.now())
+    .then((r) => r.json())
+    .then((d) => {
+      const t = d.tunnel;
+      const ok = d.tunnelOk && t;
+      statusEl.innerHTML = ok
+        ? 'Tunnel live · updated <code>' + d.updated + '</code><br>Public URL: <code>' + t.hub + '</code>'
+        : 'Local server only · updated <code>' + (d.updated || '?') + '</code><br>Use Cursor <strong>Ports → 8080 → globe</strong> if the public link fails.';
+      if (d.vercel && d.vercel.win) {
+        vercelEl.hidden = false;
+        vercelEl.innerHTML = 'Stable branch preview (Vercel, not prod):<br><a href="' + d.vercel.win + '" target="_blank" rel="noopener">' + d.vercel.win + '</a>';
+      }
+    })
+    .catch(() => {
+      statusEl.textContent = 'Preview server running. Use the buttons above — they use relative links on this host.';
+    });
+})();
+</script>
+</body>
+</html>

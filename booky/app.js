@@ -91,10 +91,16 @@ date: new Date().toISOString().split('T')[0],
 if (STATE.status !== 'playing') {
 LOCKED = true;
 showEndScreen();
+} else {
+const previewKey = new URLSearchParams(location.search).get('preview');
+if (previewKey) {
+applyPreviewScenario(previewKey);
+try { showEndScreen(); } catch (e) { console.error('preview failed', e); }
+}
 }
 
-// First-time visitor: show help
-if (!localStorage.getItem('90books_booky_seen_help_v1')) {
+// First-time visitor: show help (skip when previewing end screen)
+if (!localStorage.getItem('90books_booky_seen_help_v1') && !new URLSearchParams(location.search).get('preview')) {
 localStorage.setItem('90books_booky_seen_help_v1', '1');
 setTimeout(() => $('help-modal').showModal(), 400);
 }
@@ -140,6 +146,45 @@ lastPlayedDay: 0
 };
 }
 function saveStats() { localStorage.setItem(STATS_KEY, JSON.stringify(STATS)); }
+
+// Dev preview on the real game page: /booky/?preview=newbie (never persisted)
+const PREVIEW_SCENARIOS = {
+win:      { won: true,  tries: 4, played: 12, wins: 11, streak: 2, max: 5 },
+loss:     { won: false, tries: 6, played: 12, wins: 10, streak: 0, max: 5 },
+featured: { won: true,  tries: 3, played: 20, wins: 18, streak: 7, max: 9, word: 'GHOST' },
+newbie:   { won: true,  tries: 5, played: 1,  wins: 1,  streak: 1, max: 1 },
+streak:   { won: true,  tries: 2, played: 40, wins: 38, streak: 29, max: 29 },
+};
+
+function previewGuesses(won, tries) {
+if (won) {
+const g = [];
+for (let i = 0; i < tries - 1; i++) g.push('STARE');
+g.push(ANSWER);
+return g;
+}
+return Array(MAX_GUESSES).fill('STARE');
+}
+
+function applyPreviewScenario(key) {
+const s = PREVIEW_SCENARIOS[key] || PREVIEW_SCENARIOS.win;
+if (s.word) ANSWER = s.word;
+STATE = {
+dayNumber: DAY,
+guesses: previewGuesses(s.won, s.tries),
+status: s.won ? 'won' : 'lost',
+statsRecorded: true,
+};
+STATS = {
+currentStreak: s.streak,
+maxStreak: s.max,
+played: s.played,
+wins: s.wins,
+distribution: { 1: 0, 2: 0, 3: 0, 4: 0, 5: 0, 6: 0, X: 0 },
+lastPlayedDay: DAY,
+};
+LOCKED = true;
+}
 
 function recordFinish() {
 if (STATE.statsRecorded) return;
@@ -317,9 +362,59 @@ $('stats-modal').showModal();
 $('share-btn').addEventListener('click', onShare);
 $('end-modal').querySelector('[data-close-end]').addEventListener('click', (e) => {
 e.preventDefault();
-$('end-modal').close();
+closeEndScreen();
 });
 $('reminder-form').addEventListener('submit', onReminderSubmit);
+const endWord = $('end-word');
+if (endWord) {
+endWord.addEventListener('click', toggleWordSpoiler);
+endWord.addEventListener('keydown', (e) => {
+if (e.key === 'Enter' || e.key === ' ') {
+e.preventDefault();
+toggleWordSpoiler();
+}
+});
+}
+}
+
+function setWordSpoilerState(spoiled) {
+const el = $('end-word');
+if (!el || el.hidden) return;
+el.classList.toggle('end-word--spoiled', spoiled);
+el.classList.toggle('end-word--tappable', true);
+el.setAttribute('aria-hidden', spoiled ? 'true' : 'false');
+el.setAttribute('role', 'button');
+el.tabIndex = 0;
+el.setAttribute('aria-pressed', spoiled ? 'false' : 'true');
+el.setAttribute('aria-label', spoiled ? "Reveal today's word" : "Hide today's word");
+}
+
+function toggleWordSpoiler() {
+const el = $('end-word');
+if (!el || el.hidden) return;
+setWordSpoilerState(!el.classList.contains('end-word--spoiled'));
+}
+
+function openEndScreen() {
+const el = $('end-modal');
+if (!el) return;
+el.hidden = false;
+document.body.classList.add('end-screen-open');
+el.scrollTop = 0;
+}
+
+function closeEndScreen() {
+const el = $('end-modal');
+if (!el) return;
+el.hidden = true;
+document.body.classList.remove('end-screen-open');
+}
+
+function setReminderSubscribedUI(subscribed) {
+const form = $('reminder-form');
+const active = $('reminder-active');
+if (form) form.style.display = subscribed ? 'none' : 'block';
+if (active) active.hidden = !subscribed;
 }
 
 async function onReminderSubmit(e) {
@@ -330,14 +425,14 @@ const toast = $('reminder-toast');
 const email = (input.value || '').trim();
 
 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
-toast.textContent = 'hmm, that email looks off. mind checking it?';
+toast.textContent = 'that address looks off — mind checking it?';
 toast.className = 'reminder-toast reminder-error';
 toast.hidden = false;
 return;
 }
 
 btn.disabled = true;
-btn.textContent = 'saving…';
+btn.textContent = 'sending…';
 
 try {
 const res = await fetch('/api/booky-subscribe', {
@@ -356,22 +451,14 @@ posthog.capture('email_signup_completed', {
 source: 'booky_endscreen',
 word_number_at_signup: DAY,
 });
-toast.textContent = "you're in. i'll email you a reminder for tomorrow's word.";
-toast.className = 'reminder-toast reminder-success';
-toast.hidden = false;
-// Stop the attention pulse and collapse the form, leaving only the toast
-$('reminder-form').classList.remove('reminder-highlight');
-setTimeout(() => {
-$('reminder-form').querySelector('.reminder-row').style.display = 'none';
-$('reminder-form').querySelector('.reminder-pitch').style.display = 'none';
-$('reminder-form').querySelector('.reminder-headline').style.display = 'none';
-}, 600);
+setReminderSubscribedUI(true);
+toast.hidden = true;
 } catch {
-toast.textContent = "couldn't save right now. try again in a sec?";
+toast.textContent = "the raven lost its way — try again?";
 toast.className = 'reminder-toast reminder-error';
 toast.hidden = false;
 btn.disabled = false;
-btn.textContent = 'remind me';
+btn.textContent = 'send a raven';
 }
 }
 
@@ -480,64 +567,118 @@ else { next = b; break; }
 return { earned, next };
 }
 
+function applyBookCover(img, book) {
+if (window.BookyCover) return window.BookyCover.applyBookCover(img, book);
+if (!img || !book) return;
+const local = book.slug ? `/booky/assets/${book.slug}.jpg` : '';
+const remote = book.cover || '';
+img.alt = `${book.title} cover`;
+if (!remote && !local) { img.hidden = true; return; }
+img.hidden = false;
+img.src = remote || local;
+img.onerror = () => { img.hidden = true; };
+}
+
+function formatMilestoneText(streak) {
+if (streak < 1) return null;
+const { earned, next } = badgeForStreak(streak);
+if (!earned) return null;
+let txt = `${earned.icon} ${earned.name}`;
+if (next) {
+const rem = next.at - streak;
+txt += ` · ${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}`;
+}
+return txt;
+}
+
+function formatEarnedBadge(streak) {
+if (streak < 1) return null;
+const { earned } = badgeForStreak(streak);
+return earned ? `${earned.icon} ${earned.name}` : null;
+}
+
+// Split form for the win screen — earned title on top, "N days to next" below.
+function formatMilestoneParts(streak) {
+if (streak < 1) return null;
+const { earned, next } = badgeForStreak(streak);
+if (!earned) return null;
+const main = `${earned.icon} ${earned.name}`;
+let nextTxt = null;
+if (next) {
+const rem = next.at - streak;
+nextTxt = `${rem} day${rem === 1 ? '' : 's'} to ${next.name}`;
+}
+return { main, next: nextTxt };
+}
+
+function formatSharePreview() {
+if (STATE.status === 'won') {
+let preview = `${STATE.guesses.length}/${MAX_GUESSES}`;
+if (STATS.currentStreak >= 1) preview += ` 🔥${STATS.currentStreak}`;
+return preview;
+}
+return `X/${MAX_GUESSES}`;
+}
+
 // ---- End screen ----
 function showEndScreen() {
 recordFinish();
 
 const won = STATE.status === 'won';
-const tries = STATE.guesses.length;
 
-// Hero 1: win/lose headline + the word. Guess count moved to the stats page.
+// Headline — Wordle-style win/lose copy
 const title = $('end-headline');
-const sub = $('end-subtitle');
+const wordReveal = $('end-word-reveal');
 if (won) {
-title.textContent = 'Congrats!';
-sub.hidden = true;
+title.textContent = 'Congratulations!';
 $('celebration').classList.remove('lost');
 $('celebration').classList.add('won');
 } else {
-title.textContent = "Tomorrow's another word.";
-sub.hidden = true;   // the answer now reveals in the book card below
+title.textContent = 'Better luck tomorrow.';
 $('celebration').classList.remove('won');
 $('celebration').classList.add('lost');
 }
-$('end-word').textContent = ANSWER;
+wordReveal.hidden = true;
 $('end-puzzle-no').textContent = 'Booky #' + DAY;
 
-// Streak — kept but low priority: one compact line on win
-const streakEl = $('end-streak');
-if (won && STATS.currentStreak >= 1) {
-// Show the earned romantasy rank — the shareable bit. Milestone progress lives in the stats page.
-const { earned } = badgeForStreak(STATS.currentStreak);
-streakEl.textContent = `🔥 ${STATS.currentStreak}-day streak · ${earned.icon} ${earned.name}`;
-streakEl.hidden = false;
+// First-win treatment — the highest-emotion moment. The lifetime stats row
+// is all 1s and uninspiring on day one, so hide it and lean on a streak
+// subline + the badge/grid instead.
+const isFirstWin = won && STATS.played === 1;
+const subline = $('end-subline');
+if (subline) {
+if (isFirstWin) {
+subline.textContent = 'Your streak starts today 🔥';
+subline.hidden = false;
 } else {
-streakEl.hidden = true;
+subline.hidden = true;
 }
+}
+const statsBlock = $('end-stats');
+if (statsBlock) statsBlock.hidden = isFirstWin;
 
-// Mirror to legacy stats modal (still accessible via the ▤ icon)
 renderStatsModal();
+renderEndScreenStats();
 
-// Hero 2: the word's book. CTA adapts — sponsored buy link, curated page, or none.
+// Book card — compact layout; dark promo screen on featured author wins
 const bookRec = DATA.wordBooks?.[ANSWER];
 const recEl = $('book-rec');
+const endModal = $('end-modal');
+const isFeaturedWin = won && !!bookRec?.featured;
+if (endModal) endModal.classList.toggle('end-modal--featured', !!(bookRec && isFeaturedWin));
 if (bookRec) {
 $('book-rec-title').textContent = bookRec.title;
 $('book-rec-author').textContent = bookRec.author;
-$('book-rec-badge').hidden = !bookRec.featured;   // "Featured" badge for paid placements only
+const endWord = $('end-word');
+endWord.textContent = ANSWER;
+endWord.hidden = false;
+setWordSpoilerState(true);
 
 const cover = $('book-rec-cover');
-if (bookRec.cover) {
-cover.src = bookRec.cover;
-cover.alt = `${bookRec.title} cover`;
-cover.hidden = false;
-cover.onerror = () => { cover.hidden = true; };
-} else {
-cover.hidden = true;
-}
+applyBookCover(cover, bookRec);
 
 const hookEl = $('book-rec-hook');
-if (bookRec.hook) {
+if (won && bookRec.hook && !bookRec.featured) {
 hookEl.textContent = bookRec.hook;
 hookEl.hidden = false;
 } else {
@@ -546,7 +687,6 @@ hookEl.hidden = true;
 
 const linkEl = $('book-rec-link');
 if (bookRec.buyUrl) {
-// Sponsored/featured: link straight to the buy page. This link IS the buy click.
 linkEl.href = bookRec.buyUrl;
 linkEl.textContent = 'Get it on Amazon';
 linkEl.hidden = false;
@@ -556,62 +696,93 @@ book: bookRec.slug,
 title: bookRec.title,
 });
 } else if (CURATED_SLUGS.has(bookRec.slug)) {
-// Curated page exists: send them to more books like it.
 linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
-linkEl.textContent = 'More books like this →';
+linkEl.textContent = 'More books like this \u2192';
 linkEl.hidden = false;
 linkEl.onclick = null;
 } else {
-// No page and no buy link: cover + title + author only.
 linkEl.hidden = true;
 linkEl.onclick = null;
 }
 recEl.hidden = false;
 } else {
 recEl.hidden = true;
+if (endModal) endModal.classList.remove('end-modal--featured');
 }
 
-// Reminder form — only show if user hasn't already subscribed
+// Reminder form — below share; only if not subscribed
 const subscribed = localStorage.getItem('90books_booky_reminder_sub');
-const reminderForm = $('reminder-form');
-reminderForm.style.display = subscribed ? 'none' : 'block';
-$('reminder-active').hidden = !subscribed;
+setReminderSubscribedUI(!!subscribed);
 
-$('end-modal').showModal();
+openEndScreen();
 tickCountdown();
 
-// After the win celebration settles, gently pulse + scroll the email card
-// into view once (no popup). Peak emotional moment = best time to ask.
-if (won && !subscribed) {
-  reminderForm.classList.remove('reminder-highlight');
-  setTimeout(() => {
-    reminderForm.classList.add('reminder-highlight');
-    reminderForm.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, 1400);
+const shareBtn = $('share-btn');
+if (shareBtn) {
+shareBtn.setAttribute('aria-label', won ? `Share your ${formatSharePreview()} result` : 'Share');
+shareBtn.classList.add('share-btn--magic');
+const shareLabel = shareBtn.querySelector('.share-btn__label');
+if (shareLabel) shareLabel.textContent = isFirstWin ? 'Share your first win' : 'Share';
 }
 if (!window.__countdownTicker) {
 window.__countdownTicker = setInterval(tickCountdown, 1000);
 }
 }
 
-function buildShareString() {
+function getShareParts() {
 const header = `📚 Booky #${DAY}`;
 let scoreLine;
+let badgeLine = null;
 if (STATE.status === 'won') {
-const streak = STATS.currentStreak > 1 ? ` 🔥${STATS.currentStreak}` : '';
-scoreLine = `${STATE.guesses.length}/${MAX_GUESSES}${streak}`;
+scoreLine = `${STATE.guesses.length}/${MAX_GUESSES}`;
+if (STATS.currentStreak >= 1) {
+scoreLine += ` 🔥${STATS.currentStreak}`;
+badgeLine = formatEarnedBadge(STATS.currentStreak);
+}
 } else {
 scoreLine = `🥀 X/${MAX_GUESSES}`;
 }
 const rows = STATE.guesses.map(g => {
 const r = evaluate(g, ANSWER);
-return r.map(s => s === 'correct' ? '🟪' : s === 'present' ? '🟨' : '⬛').join('');
+return r.map(s => s === 'correct' ? '🟪' : s === 'present' ? '🟨' : '⬜').join('');
 });
 const bookRec = DATA.wordBooks?.[ANSWER];
 const bookLine = bookRec ? `📖 From: ${bookRec.title}` : null;
+return { header, scoreLine, badgeLine, rows, bookLine, bookRec };
+}
+
+function renderEndScreenStats() {
+$('end-stat-played').textContent = STATS.played;
+$('end-stat-winpct').textContent = STATS.played
+? Math.round(100 * STATS.wins / STATS.played) : 0;
+$('end-stat-streak').textContent = STATS.currentStreak;
+$('end-stat-max').textContent = STATS.maxStreak;
+
+const milestoneEl = $('end-milestone');
+const nextEl = $('end-milestone-next');
+const ranksBlock = $('end-ranks');
+const won = STATE.status === 'won';
+const parts = won ? formatMilestoneParts(STATS.currentStreak) : null;
+if (parts) {
+if (milestoneEl) { milestoneEl.textContent = parts.main; milestoneEl.hidden = false; }
+if (nextEl) {
+if (parts.next) { nextEl.textContent = parts.next; nextEl.hidden = false; }
+else nextEl.hidden = true;
+}
+if (ranksBlock) ranksBlock.hidden = false;
+} else {
+if (milestoneEl) milestoneEl.hidden = true;
+if (nextEl) nextEl.hidden = true;
+if (ranksBlock) ranksBlock.hidden = true;
+}
+renderEndGrid();
+}
+
+function buildShareString() {
+const { header, scoreLine, badgeLine, rows, bookLine } = getShareParts();
 // Two trailing spaces before every \n = Reddit hard break; invisible on all other platforms
 const HB = '  \n';
-const lines = [header, scoreLine, ...rows, ...(bookLine ? [bookLine] : []), SITE_URL];
+const lines = [header, scoreLine, ...(badgeLine ? [badgeLine] : []), ...rows, ...(bookLine ? [bookLine] : []), SITE_URL];
 return lines.join(HB);
 }
 
@@ -622,26 +793,24 @@ $('stat-winpct').textContent = STATS.played
 $('stat-streak').textContent = STATS.currentStreak;
 $('stat-max').textContent = STATS.maxStreak;
 
-// Earned rank + progress to next milestone (moved here from the win screen)
+// Earned rank + progress to next milestone
 const mEl = $('stat-milestone');
-if (STATS.currentStreak >= 1) {
-const { earned, next } = badgeForStreak(STATS.currentStreak);
-let txt = `${earned.icon} ${earned.name} · ${earned.blurb}`;
-if (next) {
-const rem = next.at - STATS.currentStreak;
-txt += ` ${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}.`;
-}
-mEl.textContent = txt;
+const milestoneTxt = formatMilestoneText(STATS.currentStreak);
+if (mEl) {
+if (milestoneTxt) {
+mEl.textContent = milestoneTxt;
 mEl.hidden = false;
 } else {
 mEl.hidden = true;
 }
-
-renderDistribution();
 }
 
-function renderDistribution() {
-const ul = $('stat-dist');
+renderDistribution('stat-dist');
+}
+
+function renderDistribution(ulId = 'stat-dist') {
+const ul = $(ulId);
+if (!ul) return;
 ul.innerHTML = '';
 const max = Math.max(1, ...Object.values(STATS.distribution));
 const todayKey = STATE.status === 'won' ? STATE.guesses.length : (STATE.status === 'lost' ? 'X' : null);
@@ -657,6 +826,35 @@ bar.textContent = count > 0 ? count : '';
 li.append(label, bar);
 ul.appendChild(li);
 }
+}
+
+// Mini color grid — the exact artifact shared as 🟪🟨⬛, rendered on screen
+// so players see what they're about to share (screen ↔ share parity).
+function renderEndGrid() {
+const grid = $('end-grid');
+if (!grid) return;
+const won = STATE.status === 'won';
+const guesses = STATE.guesses.length;
+grid.classList.toggle('end-grid--lost', !won);
+grid.innerHTML = '';
+STATE.guesses.forEach((guess, r) => {
+const result = evaluate(guess, ANSWER);
+const rowEl = document.createElement('div');
+rowEl.className = 'end-grid-row';
+rowEl.style.setProperty('--row', r);
+for (const state of result) {
+const tile = document.createElement('div');
+tile.className = 'end-grid-tile end-grid-tile--' + state;
+rowEl.appendChild(tile);
+}
+grid.appendChild(rowEl);
+});
+grid.setAttribute(
+'aria-label',
+won
+? `Solved in ${guesses} ${guesses === 1 ? 'try' : 'tries'}`
+: `Did not solve in ${MAX_GUESSES} tries`,
+);
 }
 
 async function onShare() {
