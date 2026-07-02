@@ -351,6 +351,8 @@ body {
   gap: 15px;
 }
 #end-modal .celebration-title { font-size: 40px; }
+/* Loss headline is longer copy — shrink so it stays on one line (fits down to ~320px phones) */
+#end-modal .celebration.lost .celebration-title { font-size: 24px; white-space: nowrap; }
 #end-modal .reminder-card { margin-top: 0; }
 #end-modal .next { margin: 0; }
 .end-top { text-align: center; }
@@ -637,8 +639,8 @@ body {
 }
 #reminder-email:focus { border-color: var(--accent); }
 #reminder-email::placeholder { color: var(--ink-faint); }
-/* Pink outline button. Hover keeps the outline but shifts to the primary
-   (Share) CTA's pink — no fill. */
+/* Pink outline button. Default is a LIGHTER pink; hover keeps the outline
+   but deepens to the primary (Share) CTA's pink — no fill. */
 #reminder-submit {
   background: transparent;
   border: 1.5px solid var(--accent-2);
@@ -654,6 +656,12 @@ body {
 #reminder-submit:hover:not(:disabled) {
   border-color: var(--accent);
   color: var(--accent);
+}
+/* In light mode --accent-2 is a DARKER magenta (for contrast), so the base
+   rule would read darker than hover. Use an explicitly lighter pink here so
+   default stays lighter than the hover accent. */
+@media (prefers-color-scheme: light) {
+  #reminder-submit { border-color: #d968ac; color: #d968ac; }
 }
 #reminder-submit:disabled { opacity: 0.6; cursor: not-allowed; }
 .reminder-toast {
