@@ -566,11 +566,9 @@ hookEl.hidden = true;
 
 const linkEl = $('book-rec-link');
 if (bookRec.buyUrl) {
-// Sponsored/featured: link straight to the buy page. This link IS the buy
-// click, so it keeps button prominence (part of the paid deliverable).
-linkEl.classList.add('primary');
+// Buy link — quiet text link (same as the curated one); Share is the main CTA.
 linkEl.href = bookRec.buyUrl;
-linkEl.textContent = 'Get it on Amazon';
+linkEl.textContent = 'Get it on Amazon →';
 linkEl.hidden = false;
 linkEl.onclick = () => posthog.capture('affiliate_buy_clicked', {
 word_number: DAY,
@@ -579,7 +577,6 @@ title: bookRec.title,
 });
 } else if (CURATED_SLUGS.has(bookRec.slug)) {
 // Curated page exists: quiet text link — Share is the main CTA.
-linkEl.classList.remove('primary');
 linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
 linkEl.textContent = 'More books like this →';
 linkEl.hidden = false;
