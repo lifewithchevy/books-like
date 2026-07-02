@@ -559,11 +559,13 @@ cover.hidden = true;
 // be re-enabled later by restoring the `bookRec.hook` conditional.
 $('book-rec-hook').hidden = true;
 
+// One secondary text link under the book (Share is the only primary CTA).
+// Prefer Amazon buy; fall back to curated books-like page.
 const linkEl = $('book-rec-link');
 if (bookRec.buyUrl) {
-// Buy link — quiet text link (same as the curated one); Share is the main CTA.
 linkEl.href = bookRec.buyUrl;
 linkEl.textContent = 'Get it on Amazon →';
+linkEl.rel = 'noopener sponsored';
 linkEl.hidden = false;
 linkEl.onclick = () => posthog.capture('affiliate_buy_clicked', {
 word_number: DAY,
@@ -571,13 +573,16 @@ book: bookRec.slug,
 title: bookRec.title,
 });
 } else if (CURATED_SLUGS.has(bookRec.slug)) {
-// Curated page exists: quiet text link — Share is the main CTA.
 linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
 linkEl.textContent = 'More books like this →';
+linkEl.rel = 'noopener';
 linkEl.hidden = false;
-linkEl.onclick = null;
+linkEl.onclick = () => posthog.capture('booky_books_like_clicked', {
+word_number: DAY,
+book: bookRec.slug,
+title: bookRec.title,
+});
 } else {
-// No page and no buy link: cover + title + author only.
 linkEl.hidden = true;
 linkEl.onclick = null;
 }

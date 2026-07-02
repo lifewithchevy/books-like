@@ -610,7 +610,7 @@ body {
   font-size: 16px;
   color: var(--accent-2);
   margin: 0 0 4px;
-  text-align: center;
+  text-align: left;
   letter-spacing: 0.3px;
 }
 .reminder-pitch {
@@ -726,9 +726,8 @@ body {
   line-height: 1.4;
   margin: 7px 0 0;
 }
-/* Book CTA — quiet text link (both the curated "More books like this" and
-   the "Get it on Amazon" buy link). Share is the main CTA. Sits a fixed,
-   tight distance below the author. */
+/* Book link — one quiet text link below the cover/title. Share is the
+   only primary CTA. Amazon buy when available, else books-like page. */
 .book-hero-cta {
   display: block;
   margin-top: 10px;
