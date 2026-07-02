@@ -911,3 +911,186 @@ body {
   .kb-key { height: 42px; font-size: 12px; }
   .topbar { padding: 6px 14px 4px; }
 }
+
+/* Shared author promo frame (Heba graphic, win screen, og:image) */
+.promo-frame {
+  --promo-gold: #c9a227;
+  --promo-gold-light: #e8d48a;
+  position: relative;
+  border: 1.5px solid var(--promo-gold);
+  border-radius: 2px;
+  padding: 22px 18px 18px;
+  background:
+    linear-gradient(180deg, rgba(201, 162, 39, 0.06) 0%, transparent 42%),
+    var(--bg);
+  box-shadow:
+    inset 0 0 0 1px rgba(201, 162, 39, 0.18),
+    0 0 36px rgba(201, 162, 39, 0.07);
+}
+.promo-filigree {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  overflow: visible;
+}
+.promo-filigree-corner {
+  position: absolute;
+  width: 74px;
+  height: 74px;
+  color: #d8b06a;
+}
+.promo-filigree-corner--tl { top: 18px; left: 18px; }
+.promo-filigree-corner--tr { top: 18px; right: 18px; }
+.promo-filigree-corner--bl { bottom: 18px; left: 18px; }
+.promo-filigree-corner--br { bottom: 18px; right: 18px; }
+
+.booky-tiles {
+  display: flex;
+  justify-content: center;
+  gap: 5px;
+}
+.booky-tiles span {
+  width: 34px;
+  height: 34px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid var(--promo-gold);
+  border-radius: 2px;
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 19px;
+  color: var(--promo-gold-light);
+  background: rgba(201, 162, 39, 0.07);
+  line-height: 1;
+}
+.promo-brand { text-align: center; }
+.promo-tagline {
+  margin: 8px 0 0;
+  text-align: center;
+  font-family: var(--font-serif);
+  font-size: 13px;
+  font-weight: 500;
+  color: var(--ink-dim);
+  letter-spacing: 0.4px;
+}
+.promo-flourish {
+  margin: 14px 0 12px;
+  text-align: center;
+  font-size: 13px;
+  color: var(--promo-gold);
+  letter-spacing: 4px;
+  opacity: 0.9;
+}
+.promo-flourish-svg {
+  display: block;
+  width: 54px;
+  height: auto;
+  margin: 10px auto 0;
+  color: var(--promo-gold);
+  opacity: 0.9;
+}
+.promo-footer {
+  margin: 14px 0 0;
+  text-align: center;
+  font-size: 11px;
+  color: var(--ink-faint);
+  letter-spacing: 0.2px;
+}
+.promo-footer strong {
+  color: var(--ink-dim);
+  font-weight: 600;
+}
+
+/* Static og:image canvas (1200×630 screenshot source) */
+body.og-image-page {
+  position: relative;
+  width: 1200px;
+  height: 630px;
+  margin: 0;
+  overflow: hidden;
+  background: linear-gradient(180deg, #1d1126 0%, #2a1632 55%, #160c1d 100%);
+}
+body.og-image-page::before,
+body.og-image-page::after {
+  content: "";
+  position: absolute;
+  left: 50%;
+  border-radius: 50%;
+  pointer-events: none;
+}
+body.og-image-page::before {
+  top: 44%;
+  width: 520px;
+  height: 320px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, rgba(207, 63, 134, 0.2) 0%, rgba(207, 63, 134, 0.08) 48%, transparent 72%);
+}
+body.og-image-page::after {
+  top: 50%;
+  width: 380px;
+  height: 220px;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(ellipse, rgba(216, 176, 106, 0.1) 0%, transparent 68%);
+}
+.og-image-page .promo-frame {
+  position: absolute;
+  inset: 28px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 18px;
+  padding: 36px 48px 32px;
+  border-width: 3px;
+  border-color: #d8b06a;
+  border-radius: 16px;
+  background: transparent;
+  box-shadow: none;
+}
+.og-image-page .booky-tiles span {
+  width: 48px;
+  height: 50px;
+  font-size: 28px;
+  border-color: #d8b06a;
+  color: #d8b06a;
+  background: #2c1a36;
+  border-radius: 8px;
+  border-width: 3px;
+}
+.og-image-page .promo-tagline {
+  font-size: 15px;
+  letter-spacing: 4px;
+  color: #b496ac;
+}
+.og-image-page .promo-flourish-svg {
+  width: 64px;
+  margin-top: 6px;
+  color: #d8b06a;
+}
+.og-image-page .og-demo-grid {
+  display: flex;
+  gap: 10px;
+  margin-top: 4px;
+}
+.og-image-page .og-demo-grid span {
+  width: 64px;
+  height: 64px;
+  border-radius: 6px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 32px;
+  font-weight: 800;
+  color: #fff;
+}
+.og-image-page .og-demo-grid .correct { background: var(--correct); }
+.og-image-page .og-demo-grid .present { background: var(--present); }
+.og-image-page .og-demo-grid .absent  { background: var(--absent); color: var(--ink); }
+.og-image-page .promo-footer {
+  margin-top: 6px;
+  font-size: 13px;
+  letter-spacing: 2px;
+  color: #9c7f95;
+}
