@@ -1645,6 +1645,36 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg"
+    },
+    "SYBIL": {
+      "slug": "the-knight-and-the-moth",
+      "title": "The Knight and the Moth",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316582704.01.LZZZZZZZ.jpg"
+    },
+    "HOWLS": {
+      "slug": "dire-bound",
+      "title": "Dire Bound",
+      "author": "Sable Sorensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601382.01.LZZZZZZZ.jpg"
+    },
+    "RUNED": {
+      "slug": "heartless-hunter",
+      "title": "Heartless Hunter",
+      "author": "Kristen Ciccarelli",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250866905.01.LZZZZZZZ.jpg"
+    },
+    "SNOWY": {
+      "slug": "hemlock-and-silver",
+      "title": "Hemlock & Silver",
+      "author": "T. Kingfisher",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250342034.01.LZZZZZZZ.jpg"
+    },
+    "GRAIL": {
+      "slug": "the-everlasting",
+      "title": "The Everlasting",
+      "author": "Alix E. Harrow",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250799081.01.LZZZZZZZ.jpg"
     }
   }
 }
