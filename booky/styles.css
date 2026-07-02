@@ -351,7 +351,7 @@ body {
   gap: 15px;
 }
 #end-modal .celebration-title { font-size: 40px; }
-#end-modal .book-hero-cta { padding: 13px; }
+#end-modal .book-hero-cta.primary { padding: 13px; }
 #end-modal .reminder-card { margin-top: 0; }
 #end-modal .next { margin: 0; }
 .end-top { text-align: center; }
@@ -701,7 +701,10 @@ body {
   text-align: center;
   margin: 0 0 12px;
 }
-.book-hero-row { display: flex; gap: 14px; align-items: center; }
+/* Cover + meta column: title/author align to the cover's TOP, the CTA link
+   pins to the cover's BOTTOM (meta is a stretched flex column, margin-top:
+   auto on the link does the pinning). */
+.book-hero-row { display: flex; gap: 14px; align-items: stretch; }
 .book-hero-cover {
   width: 60px;
   height: 90px;
@@ -711,7 +714,12 @@ body {
   background: var(--bg-3);
   box-shadow: 0 4px 14px rgba(0, 0, 0, 0.20);
 }
-.book-hero-meta { flex: 1; min-width: 0; }
+.book-hero-meta {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+}
 .book-hero-title {
   font-family: var(--font-serif);
   font-size: 21px;
@@ -732,21 +740,26 @@ body {
   line-height: 1.4;
   margin: 7px 0 0;
 }
-/* Book CTA — quiet text link by default: Share is the main CTA. The
-   sponsored/featured buy link gets .primary re-added in JS, so a paid
-   placement still renders as a full button (the deliverable). */
+/* Book CTA — quiet text link by default: Share is the main CTA. Lives in
+   the meta column, pinned to the cover's bottom edge. The sponsored/featured
+   buy link gets .primary re-added in JS, so a paid placement still renders
+   as a button (column-width, same bottom alignment). */
 .book-hero-cta {
   display: block;
-  width: 100%;
-  text-align: center;
-  margin-top: 12px;
+  margin-top: auto;
+  padding-top: 8px;   /* breathing room when the title wraps close */
+  text-align: left;
   color: var(--accent-2);
   font-weight: 600;
   font-size: 13.5px;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
-.book-hero-cta.primary { text-decoration: none; }
+.book-hero-cta.primary {
+  text-decoration: none;
+  text-align: center;
+  width: 100%;
+}
 
 /* Streak — low-priority single line */
 .end-streak {
