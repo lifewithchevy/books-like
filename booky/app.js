@@ -556,13 +556,9 @@ cover.onerror = () => { cover.hidden = true; };
 cover.hidden = true;
 }
 
-const hookEl = $('book-rec-hook');
-if (bookRec.hook) {
-hookEl.textContent = bookRec.hook;
-hookEl.hidden = false;
-} else {
-hookEl.hidden = true;
-}
+// Hook line hidden for now (per Olga) — keep the element + data so it can
+// be re-enabled later by restoring the `bookRec.hook` conditional.
+$('book-rec-hook').hidden = true;
 
 const linkEl = $('book-rec-link');
 if (bookRec.buyUrl) {
