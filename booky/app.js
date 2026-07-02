@@ -560,26 +560,34 @@ cover.hidden = true;
 $('book-rec-hook').hidden = true;
 
 const linkEl = $('book-rec-link');
+const linkSecondaryEl = $('book-rec-link-secondary');
+
+// Primary: Amazon affiliate buy link (always when buyUrl is set).
 if (bookRec.buyUrl) {
-// Buy link — quiet text link (same as the curated one); Share is the main CTA.
 linkEl.href = bookRec.buyUrl;
-linkEl.textContent = 'Get it on Amazon →';
 linkEl.hidden = false;
 linkEl.onclick = () => posthog.capture('affiliate_buy_clicked', {
 word_number: DAY,
 book: bookRec.slug,
 title: bookRec.title,
 });
-} else if (CURATED_SLUGS.has(bookRec.slug)) {
-// Curated page exists: quiet text link — Share is the main CTA.
-linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
-linkEl.textContent = 'More books like this →';
-linkEl.hidden = false;
-linkEl.onclick = null;
 } else {
-// No page and no buy link: cover + title + author only.
 linkEl.hidden = true;
 linkEl.onclick = null;
+}
+
+// Secondary: curated 90books page when one exists.
+if (CURATED_SLUGS.has(bookRec.slug)) {
+linkSecondaryEl.href = `https://90books.com/books-like/${bookRec.slug}`;
+linkSecondaryEl.hidden = false;
+linkSecondaryEl.onclick = () => posthog.capture('booky_books_like_clicked', {
+word_number: DAY,
+book: bookRec.slug,
+title: bookRec.title,
+});
+} else {
+linkSecondaryEl.hidden = true;
+linkSecondaryEl.onclick = null;
 }
 recEl.hidden = false;
 } else {
