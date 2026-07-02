@@ -654,9 +654,8 @@ if (next) {
 const rem = next.at - STATS.currentStreak;
 txt += ` ${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}.`;
 }
-txt += STATS.wards > 0
-? ' 🛡️ Ward ready (covers one missed day).'
-: ' 🛡️ Ward spent. Recharges at your next 7-day mark.';
+// Ward status line hidden for now (mechanic still runs silently; the gold
+// receipt still shows on a day a Ward actually saves the streak).
 mEl.textContent = txt;
 mEl.hidden = false;
 } else {
