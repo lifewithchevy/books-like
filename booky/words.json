@@ -118,7 +118,7 @@
     "OPALS",
     "PIXIE",
     "TIDES",
-    "BOUND",
+    "POPPY",
     "COALS",
     "EERIE",
     "CACHE",
@@ -373,11 +373,11 @@
       "buyUrl": "https://amzn.to/4vaA7Q6"
     },
     "BOUND": {
-      "slug": "from-blood-and-ash",
-      "title": "From Blood and Ash",
-      "author": "Jennifer L. Armentrout",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
-      "buyUrl": "https://amzn.to/49prybO"
+      "slug": "dire-bound",
+      "title": "Dire Bound",
+      "author": "Sable Sorensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601382.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780316601382&i=stripbooks&tag=90books-20"
     },
     "TRIAL": {
       "slug": "a-court-of-thorns-and-roses",
@@ -1891,6 +1891,27 @@
       "author": "Rachel Gillig",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/0316582704.01.LZZZZZZZ.jpg",
       "buyUrl": "https://www.amazon.com/s?k=9780316582704&i=stripbooks&tag=90books-20"
+    },
+    "MERYN": {
+      "slug": "dire-bound",
+      "title": "Dire Bound",
+      "author": "Sable Sorensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601382.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780316601382&i=stripbooks&tag=90books-20"
+    },
+    "BONDS": {
+      "slug": "dire-bound",
+      "title": "Dire Bound",
+      "author": "Sable Sorensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601382.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780316601382&i=stripbooks&tag=90books-20"
+    },
+    "STARK": {
+      "slug": "dire-bound",
+      "title": "Dire Bound",
+      "author": "Sable Sorensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601382.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780316601382&i=stripbooks&tag=90books-20"
     }
   }
 }
