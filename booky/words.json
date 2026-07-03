@@ -77,7 +77,7 @@
     "VINES",
     "FANGS",
     "CABIN",
-    "WITCH",
+    "SWORE",
     "ASHEN",
     "QUILL",
     "SIGIL",
@@ -1858,11 +1858,11 @@
       "buyUrl": "https://amzn.to/3PKcUoT"
     },
     "WITCH": {
-      "slug": "throne-of-glass",
-      "title": "Throne of Glass",
-      "author": "Sarah J. Maas",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
-      "buyUrl": "https://amzn.to/4aeI6DP"
+      "slug": "heartless-hunter",
+      "title": "Heartless Hunter",
+      "author": "Kristen Ciccarelli",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250866905.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781250866905&i=stripbooks&tag=90books-20"
     },
     "CABIN": {
       "slug": "a-court-of-mist-and-fury",
