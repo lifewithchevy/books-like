@@ -1,6 +1,6 @@
 {
   "epoch": "2026-05-25",
-  "_comment": "Curated 5-letter words from the romantasy lexicon. Order = daily sequence. wordBooks maps each word to a related book shown on the end screen. teases maps a word to an optional one-line hint shown on the PREVIOUS day's end screen (never hint at the word itself, only the book's vibe). Kept empty for now — add an entry ONLY for a selected author-promo day, not for every daily book.",
+  "_comment": "Curated 5-letter words from the romantasy lexicon. Order = daily sequence. wordBooks maps each word to a related book shown on the end screen. teases maps a word to an optional one-line hint shown on the PREVIOUS day's end screen (never hint at the word itself, only the book's vibe). Kept empty for now \u2014 add an entry ONLY for a selected author-promo day, not for every daily book.",
   "teases": {},
   "queue": [
     "COURT",
@@ -47,7 +47,7 @@
     "EARTH",
     "GHOST",
     "YIELD",
-    "REALM",
+    "TAROT",
     "SYBIL",
     "ASHES",
     "TRIAL",
@@ -86,7 +86,7 @@
     "ASHEN",
     "SILKS",
     "BRIDE",
-    "TAROT",
+    "REALM",
     "FIERY",
     "GHOUL",
     "HEIST",
