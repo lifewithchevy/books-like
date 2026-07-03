@@ -1912,6 +1912,13 @@
       "author": "Sable Sorensen",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601382.01.LZZZZZZZ.jpg",
       "buyUrl": "https://www.amazon.com/s?k=9780316601382&i=stripbooks&tag=90books-20"
+    },
+    "APPLE": {
+      "slug": "hemlock-and-silver",
+      "title": "Hemlock & Silver",
+      "author": "T. Kingfisher",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250342034.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781250342034&i=stripbooks&tag=90books-20"
     }
   }
 }
