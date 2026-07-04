@@ -618,7 +618,14 @@ window.__countdownTicker = setInterval(tickCountdown, 1000);
 }
 }
 
-function buildShareString() {
+function buildShareString(method) {
+// Tag the shared URL so PostHog can attribute where shares land ($pageview
+// where utm_source=share, break down by $referring_domain). Visible domain
+// stays 90books.com/booky; params just ride along. method mirrors the
+// booky_share_clicked property (native | clipboard).
+const shareUrl = method
+? `${SITE_URL}?utm_source=share&utm_medium=${method}`
+: SITE_URL;
 // The rank rides in the header — identity is the shareable bit (Spelling
 // Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
 let header = `📚 Booky #${DAY}`;
@@ -639,7 +646,7 @@ const bookRec = DATA.wordBooks?.[ANSWER];
 const bookLine = bookRec ? `📖 From: ${bookRec.title}` : null;
 // Two trailing spaces before every \n = Reddit hard break; invisible on all other platforms
 const HB = '  \n';
-const lines = [header, scoreLine, ...rows, ...(bookLine ? [bookLine] : []), SITE_URL];
+const lines = [header, scoreLine, ...rows, ...(bookLine ? [bookLine] : []), shareUrl];
 return lines.join(HB);
 }
 
@@ -690,7 +697,6 @@ ul.appendChild(li);
 }
 
 async function onShare() {
-const text = buildShareString();
 const props = {
 word_number: DAY,
 won: STATE.status === 'won',
@@ -706,7 +712,7 @@ streak: STATS.currentStreak,
 const isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
 if (navigator.share && isTouch) {
 try {
-await navigator.share({ text });
+await navigator.share({ text: buildShareString('native') });
 showShareToast("shared! thanks for spreading the word 💜");
 posthog.capture('booky_share_clicked', { ...props, method: 'native' });
 return;
@@ -715,6 +721,7 @@ return;
 }
 }
 // Desktop / no Share API: copy to clipboard
+const text = buildShareString('clipboard');
 try {
 await navigator.clipboard.writeText(text);
 showShareToast("copied! paste it anywhere 📋");
