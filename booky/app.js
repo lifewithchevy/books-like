@@ -619,12 +619,15 @@ window.__countdownTicker = setInterval(tickCountdown, 1000);
 }
 
 function buildShareString() {
-// Share a clean, bare link — just 90books.com/booky, no tracking query.
-// Web-browser clicks still attribute via PostHog's automatic $referrer /
-// $referring_domain (e.g. reddit.com); the native/clipboard split lives on
-// the booky_share_clicked event's `method` property. Note: taps from native
-// apps and pasted links usually drop the referrer and land as "Direct".
-const shareUrl = SITE_URL;
+// Share a clean link with no tracking query. The https:// scheme is
+// required: Reddit, iMessage, WhatsApp, Notes etc. only auto-linkify text
+// that starts with a scheme, so a bare "90books.com/booky" pastes as dead
+// plain text. Web-browser clicks still attribute via PostHog's automatic
+// $referrer / $referring_domain (e.g. reddit.com); the native/clipboard
+// split lives on the booky_share_clicked event's `method` property. Note:
+// taps from native apps and pasted links usually drop the referrer and
+// land as "Direct".
+const shareUrl = `https://${SITE_URL}`;
 // The rank rides in the header — identity is the shareable bit (Spelling
 // Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
 let header = `📚 Booky #${DAY}`;
