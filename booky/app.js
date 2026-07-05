@@ -618,14 +618,13 @@ window.__countdownTicker = setInterval(tickCountdown, 1000);
 }
 }
 
-function buildShareString(method) {
-// Share a clean, tidy link — the visible text stays 90books.com/booky/s
-// instead of trailing a long ?utm_source=... query. The /booky/s path
-// 302-redirects (see vercel.json) to /booky?utm_source=share, so PostHog
-// still attributes where shares land ($pageview where utm_source=share,
-// break down by $referring_domain). The native/clipboard split lives on the
-// booky_share_clicked event's `method` property, so it need not ride the URL.
-const shareUrl = method ? `${SITE_URL}/s` : SITE_URL;
+function buildShareString() {
+// Share a clean, bare link — just 90books.com/booky, no tracking query.
+// Web-browser clicks still attribute via PostHog's automatic $referrer /
+// $referring_domain (e.g. reddit.com); the native/clipboard split lives on
+// the booky_share_clicked event's `method` property. Note: taps from native
+// apps and pasted links usually drop the referrer and land as "Direct".
+const shareUrl = SITE_URL;
 // The rank rides in the header — identity is the shareable bit (Spelling
 // Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
 let header = `📚 Booky #${DAY}`;
@@ -712,7 +711,7 @@ streak: STATS.currentStreak,
 const isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
 if (navigator.share && isTouch) {
 try {
-await navigator.share({ text: buildShareString('native') });
+await navigator.share({ text: buildShareString() });
 showShareToast("shared! thanks for spreading the word 💜");
 posthog.capture('booky_share_clicked', { ...props, method: 'native' });
 return;
@@ -721,7 +720,7 @@ return;
 }
 }
 // Desktop / no Share API: copy to clipboard
-const text = buildShareString('clipboard');
+const text = buildShareString();
 try {
 await navigator.clipboard.writeText(text);
 showShareToast("copied! paste it anywhere 📋");
