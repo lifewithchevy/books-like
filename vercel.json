@@ -101,6 +101,11 @@
       "permanent": false
     },
     {
+      "source": "/r/romantasy",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=romantasy",
+      "permanent": false
+    },
+    {
       "source": "/romantasy",
       "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=romantasy",
       "permanent": false
