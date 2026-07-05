@@ -99,6 +99,11 @@
       "source": "/heba",
       "destination": "/booky?utm_source=heba&utm_medium=author&utm_campaign=weavingshaw",
       "permanent": false
+    },
+    {
+      "source": "/booky/s",
+      "destination": "/booky?utm_source=share&utm_medium=social",
+      "permanent": false
     }
   ],
   "rewrites": [

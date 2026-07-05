@@ -619,13 +619,13 @@ window.__countdownTicker = setInterval(tickCountdown, 1000);
 }
 
 function buildShareString(method) {
-// Tag the shared URL so PostHog can attribute where shares land ($pageview
-// where utm_source=share, break down by $referring_domain). Visible domain
-// stays 90books.com/booky; params just ride along. method mirrors the
-// booky_share_clicked property (native | clipboard).
-const shareUrl = method
-? `${SITE_URL}?utm_source=share&utm_medium=${method}`
-: SITE_URL;
+// Share a clean, tidy link — the visible text stays 90books.com/booky/s
+// instead of trailing a long ?utm_source=... query. The /booky/s path
+// 302-redirects (see vercel.json) to /booky?utm_source=share, so PostHog
+// still attributes where shares land ($pageview where utm_source=share,
+// break down by $referring_domain). The native/clipboard split lives on the
+// booky_share_clicked event's `method` property, so it need not ride the URL.
+const shareUrl = method ? `${SITE_URL}/s` : SITE_URL;
 // The rank rides in the header — identity is the shareable bit (Spelling
 // Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
 let header = `📚 Booky #${DAY}`;
