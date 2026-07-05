@@ -99,6 +99,11 @@
       "source": "/heba",
       "destination": "/booky?utm_source=heba&utm_medium=author&utm_campaign=weavingshaw",
       "permanent": false
+    },
+    {
+      "source": "/romantasy",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=romantasy",
+      "permanent": false
     }
   ],
   "rewrites": [
