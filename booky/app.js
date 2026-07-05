@@ -619,14 +619,22 @@ window.__countdownTicker = setInterval(tickCountdown, 1000);
 }
 
 function buildShareString() {
-// INTENTIONALLY a bare, schemeless, NON-clickable "90books.com/booky" —
-// do not add https:// or a tracking query to "fix" the dead link. Reddit
-// (and similar) downrank posts perceived as link self-promotion, so we keep
-// the URL as plain text: it plants the name for people to search (the Wordle
-// move) without tripping anti-link penalties. Web-browser visits still
-// attribute via PostHog's automatic $referrer / $referring_domain; the
-// native/clipboard split lives on the booky_share_clicked event's `method`.
-const shareUrl = SITE_URL;
+// INTENTIONALLY a bare, schemeless, NON-clickable "90books.com/booky" — do
+// not add https:// or a tracking query to "fix" the dead link. Reddit (and
+// similar) downrank posts perceived as link self-promotion, so we keep the
+// URL as plain text: it plants the name for people to search (the Wordle
+// move) without tripping anti-link penalties.
+//
+// The Reddit MOBILE app already leaves a bare domain as plain text, but the
+// Reddit DESKTOP web composer auto-links "90books.com/booky" on paste. We
+// can't change their editor, so we insert a zero-width space (U+200B) inside
+// the ".com" — the string still READS as "90books.com/booky" but no longer
+// matches a domain.tld pattern, so nothing auto-links it on any surface.
+//
+// Web-browser visits still attribute via PostHog's automatic $referrer /
+// $referring_domain; the native/clipboard split lives on the
+// booky_share_clicked event's `method`.
+const shareUrl = SITE_URL.replace('.com', '.\u200Bcom');
 // The rank rides in the header — identity is the shareable bit (Spelling
 // Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
 let header = `📚 Booky #${DAY}`;
