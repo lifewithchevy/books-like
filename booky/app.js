@@ -546,11 +546,15 @@ $('book-rec-title').textContent = bookRec.title;
 $('book-rec-author').textContent = bookRec.author;
 
 const cover = $('book-rec-cover');
+const coverLink = $('book-rec-cover-link');
 if (bookRec.cover) {
 cover.src = bookRec.cover;
 cover.alt = `${bookRec.title} cover`;
 cover.hidden = false;
-cover.onerror = () => { cover.hidden = true; };
+cover.onerror = () => {
+cover.hidden = true;
+coverLink.hidden = true;
+};
 } else {
 cover.hidden = true;
 }
@@ -560,31 +564,43 @@ cover.hidden = true;
 $('book-rec-hook').hidden = true;
 
 // One secondary text link under the book (Share is the only primary CTA).
-// Prefer Amazon buy; fall back to curated books-like page.
+// Prefer Amazon buy; fall back to curated books-like page. Cover uses the same URL.
 const linkEl = $('book-rec-link');
+const trackAffiliateBuy = () => posthog.capture('affiliate_buy_clicked', {
+word_number: DAY,
+book: bookRec.slug,
+title: bookRec.title,
+});
+const trackBooksLike = () => posthog.capture('booky_books_like_clicked', {
+word_number: DAY,
+book: bookRec.slug,
+title: bookRec.title,
+});
 if (bookRec.buyUrl) {
 linkEl.href = bookRec.buyUrl;
 linkEl.textContent = 'Get it on Amazon →';
 linkEl.rel = 'noopener sponsored';
 linkEl.hidden = false;
-linkEl.onclick = () => posthog.capture('affiliate_buy_clicked', {
-word_number: DAY,
-book: bookRec.slug,
-title: bookRec.title,
-});
+linkEl.onclick = trackAffiliateBuy;
+coverLink.href = bookRec.buyUrl;
+coverLink.rel = 'noopener sponsored';
+coverLink.hidden = cover.hidden;
+coverLink.onclick = trackAffiliateBuy;
 } else if (CURATED_SLUGS.has(bookRec.slug)) {
 linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
 linkEl.textContent = 'More books like this →';
 linkEl.rel = 'noopener';
 linkEl.hidden = false;
-linkEl.onclick = () => posthog.capture('booky_books_like_clicked', {
-word_number: DAY,
-book: bookRec.slug,
-title: bookRec.title,
-});
+linkEl.onclick = trackBooksLike;
+coverLink.href = linkEl.href;
+coverLink.rel = 'noopener';
+coverLink.hidden = cover.hidden;
+coverLink.onclick = trackBooksLike;
 } else {
 linkEl.hidden = true;
 linkEl.onclick = null;
+coverLink.hidden = true;
+coverLink.onclick = null;
 }
 recEl.hidden = false;
 } else {
