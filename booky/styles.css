@@ -696,6 +696,15 @@ body {
    and the CTA link sit as one tight group (no bottom-pin — that left a big
    gap under short one-line titles). */
 .book-hero-row { display: flex; gap: 14px; align-items: center; }
+.book-hero-cover-link {
+  flex: 0 0 auto;
+  line-height: 0;
+  border-radius: 5px;
+}
+.book-hero-cover-link:focus-visible {
+  outline: 2px solid var(--accent-2);
+  outline-offset: 2px;
+}
 .book-hero-cover {
   width: 60px;
   height: 90px;
