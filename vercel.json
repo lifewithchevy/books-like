@@ -114,6 +114,16 @@
       "source": "/romantasy",
       "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=romantasy",
       "permanent": false
+    },
+    {
+      "source": "/r/booktokreddit",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=booktokreddit",
+      "permanent": false
+    },
+    {
+      "source": "/booktokreddit",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=booktokreddit",
+      "permanent": false
     }
   ],
   "rewrites": [
