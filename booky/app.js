@@ -7,7 +7,6 @@ const STATE_KEY = '90books_booky_word_v1';
 const STATS_KEY = '90books_booky_word_stats_v1';
 const SITE_URL = '90books.com/booky';
 const REDDIT_DAILY_THREAD = 'https://www.reddit.com/r/B00KY/comments/1upibhw/daily_results_thread_booky/';
-const SHARE_PLAY_LINK = 'https://90books.com/booky?utm_source=reddit&utm_medium=social&utm_campaign=b00ky_daily';
 
 // Slugs that have fully curated recommendation pages on 90books.com.
 // Only show a clickable link on the end screen for these — the rest show
@@ -336,7 +335,6 @@ const shareSheet = $('share-sheet');
 if (shareSheet) {
   $('share-sheet-close')?.addEventListener('click', () => shareSheet.close());
   $('share-reddit-btn')?.addEventListener('click', onShareReddit);
-  $('share-copy-result-btn')?.addEventListener('click', onShareCopyResult);
   $('share-copy-link-btn')?.addEventListener('click', onShareCopyLink);
 }
 $('end-modal').querySelector('[data-close-end]').addEventListener('click', (e) => {
@@ -759,9 +757,7 @@ async function copyText(text) {
 
 function openShareSheet() {
   const sheet = $('share-sheet');
-  const preview = $('share-preview');
-  if (!sheet || !preview) return;
-  preview.textContent = buildShareString();
+  if (!sheet) return;
   if (typeof sheet.showModal === 'function') sheet.showModal();
 }
 
@@ -774,20 +770,12 @@ async function onShareReddit() {
   showShareToast('Copied! Paste as a comment in r/B00KY 💜');
 }
 
-async function onShareCopyResult() {
+async function onShareCopyLink() {
   const ok = await copyText(buildShareString());
   if (!ok) return;
   captureShare('clipboard');
   $('share-sheet')?.close();
   showShareToast('Copied! Paste it anywhere 📋');
-}
-
-async function onShareCopyLink() {
-  const ok = await copyText(SHARE_PLAY_LINK);
-  if (!ok) return;
-  captureShare('copy_link');
-  $('share-sheet')?.close();
-  showShareToast('Link copied! Send friends to Booky 🔗');
 }
 
 function showShareToast(msg) {
