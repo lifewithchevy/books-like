@@ -11928,15 +11928,14 @@
       if (_twDesc)  _twDesc.content  = 'Find your next romantasy. The reads real readers recommend to each other, handpicked by a fellow reader, not an algorithm.';
     }
 
-    // goHome: close overlay + station + show shelves
-    goHome = function() {
+    // Show discover shelves (browse / booky-library). Hides the Booky landing overlay.
+    function showDiscoverShelves() {
       navClearStack();
       closeSearchOverlay();
+      document.getElementById('landingOverlay').classList.add('hidden');
       resetUrlToHome();
-      // Reset station + results
       document.getElementById('stationHeader').style.display = 'none';
       document.getElementById('resultsWrap').style.display = 'none';
-      // Restore outer back row for next search use
       const _outerBack = document.getElementById('resultsWrapBackRow');
       if (_outerBack) _outerBack.style.display = '';
       const results = document.getElementById('results');
@@ -11945,7 +11944,6 @@
       if (searchInput) searchInput.value = '';
       const clearBtn = document.getElementById('clearBtn');
       if (clearBtn) clearBtn.style.display = 'none';
-      // Show shelves
       const _filteredEl = document.getElementById('discover-filtered-results');
       if (_filteredEl) {
         _filteredEl.style.display = 'none';
@@ -11955,12 +11953,49 @@
         if (_lbl) _lbl.style.display = '';
       }
       document.getElementById('discoverShelves').style.display = 'block';
-      // Restore vibe pill bar on home
       const _vbHome = document.getElementById('discoverVibeBar');
       if (_vbHome) _vbHome.style.display = '';
       document.querySelectorAll('.vibe-pill').forEach(p => p.classList.remove('active'));
       document.querySelector('.vibe-pill[data-id="all"]')?.classList.add('active');
       window.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // Booky landing page (logo / home). Shelves stay loaded underneath the overlay.
+    function showBookyLanding() {
+      navClearStack();
+      closeSearchOverlay();
+      resetUrlToHome();
+      document.getElementById('stationHeader').style.display = 'none';
+      document.getElementById('resultsWrap').style.display = 'none';
+      const _outerBack = document.getElementById('resultsWrapBackRow');
+      if (_outerBack) _outerBack.style.display = '';
+      const results = document.getElementById('results');
+      if (results) results.innerHTML = '';
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) searchInput.value = '';
+      const clearBtn = document.getElementById('clearBtn');
+      if (clearBtn) clearBtn.style.display = 'none';
+      const _filteredEl = document.getElementById('discover-filtered-results');
+      if (_filteredEl) {
+        _filteredEl.style.display = 'none';
+        const _bb = _filteredEl.querySelector('.discover-back-btn');
+        if (_bb) { _bb.style.display = ''; _bb.textContent = '← Back'; _bb.onclick = navBack; }
+        const _lbl = document.getElementById('discoverResultsLabel');
+        if (_lbl) _lbl.style.display = '';
+      }
+      document.getElementById('discoverShelves').style.display = 'block';
+      const _vbHome = document.getElementById('discoverVibeBar');
+      if (_vbHome) _vbHome.style.display = '';
+      document.querySelectorAll('.vibe-pill').forEach(p => p.classList.remove('active'));
+      document.querySelector('.vibe-pill[data-id="all"]')?.classList.add('active');
+      const landing = document.getElementById('landingOverlay');
+      landing.classList.remove('hidden');
+      landing.scrollTo({ top: 0, behavior: 'smooth' });
+    }
+
+    // goHome: logo tap and explicit "home" → Booky landing page
+    goHome = function() {
+      showBookyLanding();
     };
 
     // Helper: if a searchData key has no bookMetadata entry, synthesize one so
@@ -12061,7 +12096,7 @@
     // switchTab('more-like-this') called internally → treat as goHome in merged mode
     const _origSwitchTab = switchTab;
     switchTab = function(tab) {
-      if (tab === 'more-like-this') { goHome(); return; }
+      if (tab === 'more-like-this') { enterGuestMode(); showDiscoverShelves(); return; }
       _origSwitchTab(tab);
     };
 
@@ -14691,7 +14726,7 @@
       // /booky-library → existing discover shelves (Booky Library placeholder)
       if (path === '/booky-library' || path === '/booky-library/') {
         enterGuestMode();
-        goHome();
+        showDiscoverShelves();
         return;
       }
 
@@ -14823,10 +14858,8 @@
       window.addEventListener('popstate', () => {
         const p = window.location.pathname;
         if (p === '/') {
-          // Returned to home via browser back, restore home UI
           navClearStack();
-          resetUrlToHome();
-          if (typeof discoverShowAll === 'function') discoverShowAll();
+          showBookyLanding();
         } else if (p.startsWith('/books-like/') || p.startsWith('/genre/') || p.startsWith('/mood/') || p === '/booky-library' || p === '/booky-library/') {
           routeFromUrl();
         }
