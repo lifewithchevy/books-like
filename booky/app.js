@@ -6,6 +6,8 @@ const MAX_GUESSES = 6;
 const STATE_KEY = '90books_booky_word_v1';
 const STATS_KEY = '90books_booky_word_stats_v1';
 const SITE_URL = '90books.com/booky';
+const REDDIT_DAILY_THREAD = 'https://www.reddit.com/r/B00KY/comments/1upibhw/daily_results_thread_booky/';
+const SHARE_PLAY_LINK = 'https://90books.com/booky?utm_source=reddit&utm_medium=social&utm_campaign=b00ky_daily';
 
 // Slugs that have fully curated recommendation pages on 90books.com.
 // Only show a clickable link on the end screen for these — the rest show
@@ -329,7 +331,14 @@ $('stats-btn').addEventListener('click', () => {
 renderStatsModal();
 $('stats-modal').showModal();
 });
-$('share-btn').addEventListener('click', onShare);
+$('share-btn').addEventListener('click', openShareSheet);
+const shareSheet = $('share-sheet');
+if (shareSheet) {
+  $('share-sheet-close')?.addEventListener('click', () => shareSheet.close());
+  $('share-reddit-btn')?.addEventListener('click', onShareReddit);
+  $('share-copy-result-btn')?.addEventListener('click', onShareCopyResult);
+  $('share-copy-link-btn')?.addEventListener('click', onShareCopyLink);
+}
 $('end-modal').querySelector('[data-close-end]').addEventListener('click', (e) => {
 e.preventDefault();
 $('end-modal').close();
@@ -721,40 +730,64 @@ ul.appendChild(li);
 }
 }
 
-async function onShare() {
-const props = {
-word_number: DAY,
-won: STATE.status === 'won',
-guesses_used: STATE.guesses.length,
-streak: STATS.currentStreak,
-};
-// Wordle behavior: native share sheet on TOUCH devices only (one tap to
-// send). Desktop browsers also expose navigator.share, but the OS share
-// sheet there is clunky and unexpected, so desktop copies to clipboard
-// like Wordle does. Pointer check is more reliable than UA-sniffing.
-// Pass { text } ONLY — adding a url: field makes some targets (iMessage)
-// drop the emoji grid and share just the link. The URL lives in the text.
-const isTouch = window.matchMedia && window.matchMedia('(pointer: coarse)').matches;
-if (navigator.share && isTouch) {
-try {
-await navigator.share({ text: buildShareString() });
-showShareToast("shared! thanks for spreading the word 💜");
-posthog.capture('booky_share_clicked', { ...props, method: 'native' });
-return;
-} catch {
-// user cancelled or share failed — fall through to clipboard
+function shareProps() {
+  return {
+    word_number: DAY,
+    won: STATE.status === 'won',
+    guesses_used: STATE.guesses.length,
+    streak: STATS.currentStreak,
+  };
 }
+
+function captureShare(method) {
+  posthog.capture('booky_share_clicked', { ...shareProps(), method });
 }
-// Desktop / no Share API: copy to clipboard
-const text = buildShareString();
-try {
-await navigator.clipboard.writeText(text);
-showShareToast("copied! paste it anywhere 📋");
-posthog.capture('booky_share_clicked', { ...props, method: 'clipboard' });
-} catch {
-// Last resort: surface the text so the user can copy it manually
-window.prompt('Copy your result:', text);
+
+async function copyText(text) {
+  try {
+    await navigator.clipboard.writeText(text);
+    return true;
+  } catch {
+    try {
+      window.prompt('Copy:', text);
+      return true;
+    } catch {
+      return false;
+    }
+  }
 }
+
+function openShareSheet() {
+  const sheet = $('share-sheet');
+  const preview = $('share-preview');
+  if (!sheet || !preview) return;
+  preview.textContent = buildShareString();
+  if (typeof sheet.showModal === 'function') sheet.showModal();
+}
+
+async function onShareReddit() {
+  const text = buildShareString();
+  await copyText(text);
+  window.open(REDDIT_DAILY_THREAD, '_blank', 'noopener,noreferrer');
+  captureShare('reddit');
+  $('share-sheet')?.close();
+  showShareToast('Copied! Paste as a comment in r/B00KY 💜');
+}
+
+async function onShareCopyResult() {
+  const ok = await copyText(buildShareString());
+  if (!ok) return;
+  captureShare('clipboard');
+  $('share-sheet')?.close();
+  showShareToast('Copied! Paste it anywhere 📋');
+}
+
+async function onShareCopyLink() {
+  const ok = await copyText(SHARE_PLAY_LINK);
+  if (!ok) return;
+  captureShare('copy_link');
+  $('share-sheet')?.close();
+  showShareToast('Link copied! Send friends to Booky 🔗');
 }
 
 function showShareToast(msg) {
