@@ -885,25 +885,10 @@ body {
   padding: 18px 20px 22px;
 }
 .share-sheet-sub {
-  margin: -6px 0 14px;
+  margin: -6px 0 16px;
   font-size: 13px;
   color: var(--ink-dim);
   line-height: 1.45;
-}
-.share-preview {
-  margin: 0 0 16px;
-  padding: 12px 14px;
-  border-radius: 10px;
-  background: var(--bg-3);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
-  font-size: 11.5px;
-  line-height: 1.45;
-  color: var(--ink);
-  white-space: pre-wrap;
-  word-break: break-word;
-  max-height: 140px;
-  overflow-y: auto;
 }
 .share-options {
   display: flex;
@@ -951,7 +936,6 @@ body {
   display: block;
 }
 .share-option-icon-copy { font-size: 17px; background: rgba(217, 70, 168, 0.18); }
-.share-option-icon-link { font-size: 16px; background: rgba(139, 63, 211, 0.22); }
 .share-option-text {
   display: flex;
   flex-direction: column;
