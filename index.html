@@ -7916,13 +7916,11 @@
       if (!picks.length) return '';
 
       // Generic subtitle for personalized users, mentions their top genre but keeps copy universal.
-      // Non-personalized users get a generic teaser + a "Connect Goodreads" prompt.
+      // Non-personalized users get the Booky Library teaser copy.
       const subtitle = isPersonal
         ? 'Based on the books you loved, including your most read genre, here\'s your next favorite romantasy.'
         : 'Every romantasy book Booky has featured, all in one shelf. Great for finding your next read after you finish the puzzle.';
       const ctaLabel = isPersonal ? 'See your next read' : 'Browse the Booky Library';
-      // Secondary CTA only shown for non-GR users, prompts them to connect
-      const showConnectCta = !isPersonal;
 
       // Render up to 4 candidates; 4th is a hidden backup in case one fails
       const covers = picks.slice(0, 4).map(({ key }, i) => {
@@ -7945,11 +7943,6 @@
       const blurBg = bgUrl
         ? `<div class="discover-hero-bg-blur" style="background-image:url('${bgUrl}')"></div>`
         : '';
-      const connectBtn = showConnectCta
-        ? `<button class="discover-hero-cta-connect" onclick="event.stopPropagation();openConnectModal()">
-             <span class="discover-hero-cta-connect-icon">✨</span> Connect Goodreads
-           </button>`
-        : '';
       return `<div class="discover-hero-shelf" style="background:${config.gradient}" onclick="${config.onclick}">
         ${blurBg}
         <div class="discover-hero-overlay"></div>
@@ -7960,7 +7953,6 @@
             <button class="discover-hero-cta" onclick="event.stopPropagation();${config.onclick}">
               ${ctaLabel} <span class="discover-hero-cta-arrow">→</span>
             </button>
-            ${connectBtn}
           </div>
         </div>
         <div class="discover-hero-covers">${covers}</div>
