@@ -11918,12 +11918,19 @@
       if (_twDesc)  _twDesc.content  = 'Find your next romantasy. The reads real readers recommend to each other, handpicked by a fellow reader, not an algorithm.';
     }
 
+    function setBookyLibraryUrl() {
+      const path = window.location.pathname;
+      if (path !== '/booky-library' && path !== '/booky-library/') {
+        history.pushState({}, '', '/booky-library');
+      }
+    }
+
     // Show discover shelves (browse / booky-library). Hides the Booky landing overlay.
     function showDiscoverShelves() {
       navClearStack();
       closeSearchOverlay();
       document.getElementById('landingOverlay').classList.add('hidden');
-      resetUrlToHome();
+      setBookyLibraryUrl();
       document.getElementById('stationHeader').style.display = 'none';
       document.getElementById('resultsWrap').style.display = 'none';
       const _outerBack = document.getElementById('resultsWrapBackRow');
