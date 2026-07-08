@@ -101,6 +101,11 @@
       "permanent": false
     },
     {
+      "source": "/starside",
+      "destination": "/booky?utm_source=alexaster&utm_medium=author&utm_campaign=starside",
+      "permanent": false
+    },
+    {
       "source": "/r/romantasy",
       "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=romantasy",
       "permanent": false
