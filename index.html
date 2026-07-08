@@ -14688,6 +14688,13 @@
     function routeFromUrl() {
       const path = window.location.pathname;
 
+      // /booky-library → existing discover shelves (Booky Library placeholder)
+      if (path === '/booky-library' || path === '/booky-library/') {
+        enterGuestMode();
+        goHome();
+        return;
+      }
+
       // /genre/[slug], filter discover by tagClass
       let gm = path.match(/^\/genre\/(.+)$/);
       if (gm) {
@@ -14820,7 +14827,7 @@
           navClearStack();
           resetUrlToHome();
           if (typeof discoverShowAll === 'function') discoverShowAll();
-        } else if (p.startsWith('/books-like/') || p.startsWith('/genre/') || p.startsWith('/mood/')) {
+        } else if (p.startsWith('/books-like/') || p.startsWith('/genre/') || p.startsWith('/mood/') || p === '/booky-library' || p === '/booky-library/') {
           routeFromUrl();
         }
       });
