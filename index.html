@@ -13149,25 +13149,30 @@
     const VISITED_KEY = '90books_visited';
 
     function checkUserState() {
+      const path = window.location.pathname;
+      const isHome = path === '/' || path === '';
+
       const user    = getSavedUser();
       const visited = localStorage.getItem(VISITED_KEY);
       const taste   = (() => { try { return JSON.parse(localStorage.getItem('90books_taste') || '{}'); } catch(e) { return {}; } })();
       const hasInteracted = (taste._interactions || 0) > 0;
 
       if (user && user.goodreadsId) {
-        // Returning Goodreads user → straight to app
+        // Returning Goodreads user → straight to app (except on home refresh)
         GOODREADS_USER_ID = user.goodreadsId;
         GR_CACHE_KEY = 'gr_live_v4_' + user.goodreadsId;
-        document.getElementById('landingOverlay').classList.add('hidden');
+        if (!isHome) {
+          document.getElementById('landingOverlay').classList.add('hidden');
+        }
         updateHeaderForUser(user);
         loadGoodreadsData();
-      } else if (visited || hasInteracted) {
-        // Returning guest, they've been here before, skip the pitch
+      } else if (!isHome && (visited || hasInteracted)) {
+        // Returning guest on a deep link → skip the pitch
         document.getElementById('landingOverlay').classList.add('hidden');
         const avatarBtn = document.getElementById('profileAvatarBtn');
         if (avatarBtn) avatarBtn.onclick = openProfilePanel;
       }
-      // else: true first-time visitor → landing overlay stays visible
+      // else: home path or first-time visitor → landing overlay stays visible
     }
 
     function updateHeaderForUser(user) {
@@ -14841,6 +14846,12 @@
 
       // Route /books-like/[slug] URLs on direct load
       routeFromUrl();
+
+      // Full refresh at / always shows the Booky landing page
+      const homePath = window.location.pathname;
+      if (homePath === '/' || homePath === '') {
+        showBookyLanding();
+      }
 
       // Browser back/forward, re-route based on current URL
       window.addEventListener('popstate', () => {
