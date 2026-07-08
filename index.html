@@ -2624,6 +2624,7 @@
   </style>
 </head>
 <body>
+<script>try{if(location.pathname==='/'||location.pathname===''){document.documentElement.classList.add('landing-active');document.body.classList.add('landing-active');}}catch(e){}</script>
 
   <!-- ===== LANDING PAGE (new / guest users) ===== -->
   <div id="landingOverlay">
@@ -11912,11 +11913,17 @@
       }
     }
 
+    function setLandingMode(active) {
+      document.documentElement.classList.toggle('landing-active', active);
+      document.body.classList.toggle('landing-active', active);
+    }
+
     // Show discover shelves (browse / booky-library). Hides the Booky landing overlay.
     function showDiscoverShelves() {
       navClearStack();
       closeSearchOverlay();
       document.getElementById('landingOverlay').classList.add('hidden');
+      setLandingMode(false);
       setBookyLibraryUrl();
       document.getElementById('stationHeader').style.display = 'none';
       document.getElementById('resultsWrap').style.display = 'none';
@@ -11974,6 +11981,7 @@
       document.querySelector('.vibe-pill[data-id="all"]')?.classList.add('active');
       const landing = document.getElementById('landingOverlay');
       landing.classList.remove('hidden');
+      setLandingMode(true);
       landing.scrollTo({ top: 0, behavior: 'smooth' });
     }
 
@@ -13150,16 +13158,23 @@
         GR_CACHE_KEY = 'gr_live_v4_' + user.goodreadsId;
         if (!isHome) {
           document.getElementById('landingOverlay').classList.add('hidden');
+          setLandingMode(false);
+        } else {
+          setLandingMode(true);
         }
         updateHeaderForUser(user);
         loadGoodreadsData();
       } else if (!isHome && (visited || hasInteracted)) {
         // Returning guest on a deep link → skip the pitch
         document.getElementById('landingOverlay').classList.add('hidden');
+        setLandingMode(false);
         const avatarBtn = document.getElementById('profileAvatarBtn');
         if (avatarBtn) avatarBtn.onclick = openProfilePanel;
+      } else if (isHome) {
+        setLandingMode(true);
+      } else {
+        setLandingMode(false);
       }
-      // else: home path or first-time visitor → landing overlay stays visible
     }
 
     function updateHeaderForUser(user) {
@@ -13357,6 +13372,7 @@
     function finishConnect() {
       closeConnectModal();
       document.getElementById('landingOverlay').classList.add('hidden');
+      setLandingMode(false);
       const user = getSavedUser();
       if (user) updateHeaderForUser(user);
       loadGoodreadsData();
@@ -13365,6 +13381,7 @@
     function enterGuestMode() {
       localStorage.setItem(VISITED_KEY, '1'); // remember they've been here
       document.getElementById('landingOverlay').classList.add('hidden');
+      setLandingMode(false);
       const avatarBtn = document.getElementById('profileAvatarBtn');
       if (avatarBtn) avatarBtn.onclick = openProfilePanel;
     }
@@ -13733,11 +13750,23 @@
       .result-section { padding: 0; }
     }
 
+    html.landing-active,
+    body.landing-active {
+      overflow: hidden;
+      height: 100%;
+    }
+    body.landing-active > header,
+    body.landing-active > #appBookyPromoRibbon,
+    body.landing-active > .main {
+      display: none;
+    }
+
     /* ===== LANDING PAGE ===== */
     #landingOverlay {
       position: fixed; inset: 0; z-index: 500;
       background: var(--bg);
       overflow-y: auto;
+      overscroll-behavior: contain;
       scroll-snap-type: y proximity;
     }
     #landingOverlay.hidden { display: none; }
