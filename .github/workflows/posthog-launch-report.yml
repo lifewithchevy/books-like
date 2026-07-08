@@ -1,0 +1,28 @@
+name: PostHog launch report
+
+on:
+  workflow_dispatch:
+  schedule:
+    - cron: '0 12 * * 1'  # Mondays 12:00 UTC
+
+jobs:
+  report:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Generate launch report
+        env:
+          POSTHOG_PERSONAL_API_KEY: ${{ secrets.POSTHOG_PERSONAL_API_KEY }}
+          POSTHOG_HOST: https://us.i.posthog.com
+          LAUNCH_DATE: '2026-05-31'
+        run: node scripts/posthog-launch-report.mjs --out posthog-launch-report.html
+
+      - name: Upload report artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: posthog-launch-report
+          path: |
+            posthog-launch-report.html
+            posthog-launch-report.json
+          retention-days: 90
