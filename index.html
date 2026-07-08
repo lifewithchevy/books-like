@@ -7922,7 +7922,13 @@
       const subtitle = isPersonal
         ? 'Based on the books you loved, including your most read genre, here\'s your next favorite romantasy.'
         : 'Every romantasy book Booky has featured, all in one shelf. Great for finding your next read after you finish the puzzle.';
-      const ctaLabel = isPersonal ? 'See your next read' : 'Browse the Booky Library';
+      const ctaRow = isPersonal
+        ? `<div class="discover-hero-cta-row">
+            <button class="discover-hero-cta" onclick="event.stopPropagation();${config.onclick}">
+              See your next read <span class="discover-hero-cta-arrow">→</span>
+            </button>
+          </div>`
+        : '';
 
       // Render up to 4 candidates; 4th is a hidden backup in case one fails
       const covers = picks.slice(0, 4).map(({ key }, i) => {
@@ -7951,11 +7957,7 @@
         <div class="discover-hero-text">
           <div class="discover-hero-title">${config.title}</div>
           <div class="discover-hero-subtitle">${subtitle}</div>
-          <div class="discover-hero-cta-row">
-            <button class="discover-hero-cta" onclick="event.stopPropagation();${config.onclick}">
-              ${ctaLabel} <span class="discover-hero-cta-arrow">→</span>
-            </button>
-          </div>
+          ${ctaRow}
         </div>
         <div class="discover-hero-covers">${covers}</div>
       </div>`;
