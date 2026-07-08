@@ -132,6 +132,10 @@
     {
       "source": "/booky-library",
       "destination": "/"
+    },
+    {
+      "source": "/booky-library/",
+      "destination": "/"
     }
   ],
   "crons": [

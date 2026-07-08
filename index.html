@@ -2635,8 +2635,7 @@
         <span class="lp-nav-name">90books</span>
       </div>
       <div class="lp-nav-right">
-        <a href="/booky" class="lp-nav-daily">&#127918; <em>Booky</em></a>
-        <button class="lp-nav-browse" onclick="document.getElementById('lp-library').scrollIntoView({behavior:'smooth'})">Browse recs &darr;</button>
+        <a href="/booky" class="lp-nav-daily">&#127918; Play <em>Booky</em></a>
       </div>
     </nav>
 
@@ -2787,14 +2786,14 @@
       <div class="logo-icon">90</div>
       <div>
         <h1>90books</h1>
-        <span>Find Your Next Romantasy</span>
+        <span>Play your next romantasy</span>
       </div>
     </div>
     <div class="header-right">
       <!-- Booky game -->
       <a href="/booky" class="header-daily-btn" title="Play Booky, the daily romantasy word game" aria-label="Play Booky, the daily romantasy word game">
         <span class="header-daily-emoji">&#127918;</span>
-        <span class="header-daily-text">Booky</span>
+        <span class="header-daily-text">Play Booky</span>
       </a>
       <!-- Search icon -->
       <button class="header-search-btn" id="headerSearchBtn" onclick="openSearchOverlay()" title="Search books" aria-label="Search">
@@ -7303,8 +7302,8 @@
     const DISCOVER_SHELVES = [
       {
         id: 'new',
-        label: 'Romantasy Favorites',
-        description: 'The romantasy books readers recommend over and over. The ones that come up in every r/Romantasy "what should I read?" thread.',
+        label: 'Booky Library',
+        description: 'Every romantasy book Booky has featured, all in one shelf. Great for finding your next read after you finish the puzzle.',
         moodKey: null,
         // Backed by real Reddit data mined from r/Romantasy, r/RomanceBooks, and
         // r/Fantasy threads (May 2026). Each book here was mentioned in multiple
@@ -7882,11 +7881,9 @@
           picks = [...picks, ...extras];
         }
       } else {
-        // Fallback: Romantasy Favorites, the most-recommended romantasy across
-        // Reddit (r/Romantasy), BookTok, and Goodreads. Stable evergreen entry
-        // points for non-GR users coming in cold.
+        // Fallback: Booky Library, featured romantasy picks for non-GR users.
         config = {
-          title: 'Romantasy Favorites',
+          title: 'Booky Library',
           genreLabel: null,
           gradient: 'linear-gradient(135deg,#1A0518 0%,#4A0E38 55%,#2A0E50 100%)',
           onclick: "discoverSelectTrending()",
@@ -7926,8 +7923,8 @@
       // Non-personalized users get a generic teaser + a "Connect Goodreads" prompt.
       const subtitle = isPersonal
         ? 'Based on the books you loved, including your most read genre, here\'s your next favorite romantasy.'
-        : 'The books real readers can\'t stop recommending. Connect Goodreads to tune every pick to your taste and skip everything on your Read shelf.';
-      const ctaLabel = isPersonal ? 'See your next read' : 'See your next read';
+        : 'Every romantasy book Booky has featured, all in one shelf. Great for finding your next read after you finish the puzzle.';
+      const ctaLabel = isPersonal ? 'See your next read' : 'Browse the Booky Library';
       // Secondary CTA only shown for non-GR users, prompts them to connect
       const showConnectCta = !isPersonal;
 
@@ -8892,7 +8889,7 @@
       if (typeof loadCoversInView === 'function') loadCoversInView();
     }
 
-    // Navigate to the "Romantasy Favorites" curated trending page (non-GR users)
+    // Navigate to the Booky Library curated trending page (non-GR users)
     function discoverSelectTrending() {
       _navGo('trending', {});
       const _vb = document.getElementById('discoverVibeBar');
@@ -8901,9 +8898,9 @@
       const filteredEl = document.getElementById('discover-filtered-results');
       filteredEl.style.display = 'block';
       const labelEl = document.getElementById('discoverResultsLabel');
-      if (labelEl) labelEl.textContent = '🐉 Romantasy Favorites';
+      if (labelEl) labelEl.textContent = '📚 Booky Library';
       const descEl = document.getElementById('discoverResultsDesc');
-      if (descEl) descEl.innerHTML = `<p style="margin:0">The romantasy books readers recommend over and over across r/Romantasy, BookTok, and Goodreads.</p>`;
+      if (descEl) descEl.innerHTML = `<p style="margin:0">Every romantasy book Booky has featured, all in one shelf. Great for finding your next read after you finish the puzzle.</p>`;
       // Romantasy-only, strictly fantasy + romance. Ordered by Reddit/BookTok
       // mention frequency in 2024–2026 (Fourth Wing era + ACOTAR evergreen).
       const TRENDING_KEYS = [
@@ -11921,12 +11918,19 @@
       if (_twDesc)  _twDesc.content  = 'Find your next romantasy. The reads real readers recommend to each other, handpicked by a fellow reader, not an algorithm.';
     }
 
+    function setBookyLibraryUrl() {
+      const path = window.location.pathname;
+      if (path !== '/booky-library' && path !== '/booky-library/') {
+        history.pushState({}, '', '/booky-library');
+      }
+    }
+
     // Show discover shelves (browse / booky-library). Hides the Booky landing overlay.
     function showDiscoverShelves() {
       navClearStack();
       closeSearchOverlay();
       document.getElementById('landingOverlay').classList.add('hidden');
-      resetUrlToHome();
+      setBookyLibraryUrl();
       document.getElementById('stationHeader').style.display = 'none';
       document.getElementById('resultsWrap').style.display = 'none';
       const _outerBack = document.getElementById('resultsWrapBackRow');
@@ -13145,25 +13149,30 @@
     const VISITED_KEY = '90books_visited';
 
     function checkUserState() {
+      const path = window.location.pathname;
+      const isHome = path === '/' || path === '';
+
       const user    = getSavedUser();
       const visited = localStorage.getItem(VISITED_KEY);
       const taste   = (() => { try { return JSON.parse(localStorage.getItem('90books_taste') || '{}'); } catch(e) { return {}; } })();
       const hasInteracted = (taste._interactions || 0) > 0;
 
       if (user && user.goodreadsId) {
-        // Returning Goodreads user → straight to app
+        // Returning Goodreads user → straight to app (except on home refresh)
         GOODREADS_USER_ID = user.goodreadsId;
         GR_CACHE_KEY = 'gr_live_v4_' + user.goodreadsId;
-        document.getElementById('landingOverlay').classList.add('hidden');
+        if (!isHome) {
+          document.getElementById('landingOverlay').classList.add('hidden');
+        }
         updateHeaderForUser(user);
         loadGoodreadsData();
-      } else if (visited || hasInteracted) {
-        // Returning guest, they've been here before, skip the pitch
+      } else if (!isHome && (visited || hasInteracted)) {
+        // Returning guest on a deep link → skip the pitch
         document.getElementById('landingOverlay').classList.add('hidden');
         const avatarBtn = document.getElementById('profileAvatarBtn');
         if (avatarBtn) avatarBtn.onclick = openProfilePanel;
       }
-      // else: true first-time visitor → landing overlay stays visible
+      // else: home path or first-time visitor → landing overlay stays visible
     }
 
     function updateHeaderForUser(user) {
@@ -13763,14 +13772,6 @@
     .lp-nav-name {
       font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700;
     }
-    .lp-nav-browse {
-      background: none; border: 1.5px solid var(--border); border-radius: 20px;
-      padding: 7px 16px; font-size: 13px; cursor: pointer;
-      font-family: 'Inter', sans-serif; color: var(--text-muted);
-      transition: all 0.2s;
-    }
-    .lp-nav-browse:hover { border-color: var(--text); color: var(--text); }
-
     .lp-nav-right {
       display: flex; align-items: center; gap: 10px;
     }
@@ -14845,6 +14846,12 @@
 
       // Route /books-like/[slug] URLs on direct load
       routeFromUrl();
+
+      // Full refresh at / always shows the Booky landing page
+      const homePath = window.location.pathname;
+      if (homePath === '/' || homePath === '') {
+        showBookyLanding();
+      }
 
       // Browser back/forward, re-route based on current URL
       window.addEventListener('popstate', () => {
