@@ -201,8 +201,8 @@
     .header-search-btn:hover { background: var(--surface2); color: var(--text); }
     .header-search-btn svg { width: 20px; height: 20px; }
 
-    /* Booky game pill in the in-app header */
-    .header-daily-btn {
+    /* Play Booky pill — shared on landing nav and app header */
+    .booky-top-cta {
       display: inline-flex;
       align-items: center;
       gap: 6px;
@@ -211,20 +211,25 @@
       background: linear-gradient(135deg, #d946a8, #8b3fd3);
       color: #fff;
       text-decoration: none;
+      font-family: 'Inter', sans-serif;
       font-size: 13px;
-      font-weight: 600;
+      font-weight: 500;
       letter-spacing: 0.2px;
       box-shadow: 0 4px 14px rgba(217, 70, 168, 0.28);
       transition: transform 0.15s, box-shadow 0.15s;
       -webkit-tap-highlight-color: transparent;
     }
-    .header-daily-btn:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(217, 70, 168, 0.42);
+    .booky-top-cta em {
+      font-family: 'Cormorant Garamond', 'Playfair Display', serif;
+      font-style: italic;
+      font-weight: 600;
     }
-    .header-daily-emoji { font-size: 14px; line-height: 1; }
-    @media (max-width: 520px) {
-      .header-daily-btn { padding: 6px 10px; font-size: 12px; gap: 4px; }
+    .booky-top-cta:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(217, 70, 168, 0.4);
+    }
+    @media (max-width: 600px) {
+      .booky-top-cta { padding: 6px 11px; font-size: 12px; }
     }
 
     /* Header right cluster */
@@ -2636,7 +2641,7 @@
         <span class="lp-nav-name">90books</span>
       </div>
       <div class="lp-nav-right">
-        <a href="/booky" class="lp-nav-daily">&#127918; Play <em>Booky</em></a>
+        <a href="/booky" class="booky-top-cta">&#127918; Play <em>Booky</em></a>
       </div>
     </nav>
 
@@ -2780,10 +2785,7 @@
     </div>
     <div class="header-right">
       <!-- Booky game -->
-      <a href="/booky" class="header-daily-btn" title="Play Booky, the daily romantasy word game" aria-label="Play Booky, the daily romantasy word game">
-        <span class="header-daily-emoji">&#127918;</span>
-        <span class="header-daily-text">Play Booky</span>
-      </a>
+      <a href="/booky" class="booky-top-cta" title="Play Booky, the daily romantasy word game" aria-label="Play Booky, the daily romantasy word game">&#127918; Play <em>Booky</em></a>
       <!-- Search icon -->
       <button class="header-search-btn" id="headerSearchBtn" onclick="openSearchOverlay()" title="Search books" aria-label="Search">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -13771,24 +13773,6 @@
     .lp-nav-right {
       display: flex; align-items: center; gap: 10px;
     }
-    .lp-nav-daily {
-      display: inline-flex; align-items: center; gap: 6px;
-      padding: 7px 14px; border-radius: 20px;
-      background: linear-gradient(135deg, #d946a8, #8b3fd3);
-      color: #fff; text-decoration: none;
-      font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 500;
-      letter-spacing: 0.2px;
-      box-shadow: 0 4px 14px rgba(217, 70, 168, 0.28);
-      transition: transform 0.15s, box-shadow 0.15s;
-    }
-    .lp-nav-daily em {
-      font-family: 'Cormorant Garamond', 'Playfair Display', serif;
-      font-style: italic; font-weight: 600;
-    }
-    .lp-nav-daily:hover {
-      transform: translateY(-1px);
-      box-shadow: 0 6px 18px rgba(217, 70, 168, 0.4);
-    }
 
     /* Daily game ribbon */
     .lp-daily-ribbon {
@@ -13825,8 +13809,6 @@
     @media (max-width: 600px) {
       .lp-daily-ribbon { padding: 9px 14px; font-size: 12px; gap: 8px; }
       .lp-daily-ribbon-pill { font-size: 9px; padding: 2px 6px; }
-      .lp-nav-daily { padding: 6px 11px; font-size: 12px; }
-      .lp-nav-daily span { display: none; }
     }
 
     /* Hero */
