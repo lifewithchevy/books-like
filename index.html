@@ -2655,7 +2655,7 @@
         <h1 class="lp-headline">Booky, the daily romantasy word game</h1>
         <p class="lp-sub">Guess the 5-letter word hidden in a romantasy book, in 6 tries.</p>
         <div class="lp-ctas">
-          <a href="/booky" class="lp-btn-primary lp-btn-booky">Play today&rsquo;s word &rarr;</a>
+          <a href="/booky" class="lp-btn-primary lp-btn-booky">Play Booky</a>
         </div>
       </div>
       <a href="/booky" class="lp-hero-visual lp-board-preview-link" aria-label="Play Booky, the daily romantasy word game">
@@ -2769,13 +2769,6 @@
     </div>
   </div>
 
-  <!-- Jul 6 Weavingshaw promo — shown site-wide for returning users (landing has its own ribbon) -->
-  <a href="/booky" id="appBookyPromoRibbon" class="lp-daily-ribbon app-booky-promo-ribbon" data-booky-promo-ribbon hidden>
-    <span class="lp-daily-ribbon-pill">TODAY</span>
-    <span class="lp-daily-ribbon-text">Today&rsquo;s Booky word is hidden in <strong>Weavingshaw</strong></span>
-    <span class="lp-daily-ribbon-arrow">&rarr;</span>
-  </a>
-
   <!-- Header -->
   <header>
     <div class="logo" onclick="goHome()" style="cursor: pointer;" title="Back to Booky home">
@@ -2808,6 +2801,13 @@
     <!-- Hidden legacy element kept for any JS that touches userBadge by ID -->
     <div class="user-badge" id="userBadge" style="display:none;"></div>
   </header>
+
+  <!-- Booky promo ribbon — below header on library/app pages (landing has its own) -->
+  <a href="/booky" id="appBookyPromoRibbon" class="lp-daily-ribbon app-booky-promo-ribbon" data-booky-promo-ribbon hidden>
+    <span class="lp-daily-ribbon-pill">TODAY</span>
+    <span class="lp-daily-ribbon-text">Today&rsquo;s Booky word is hidden in <strong>Weavingshaw</strong></span>
+    <span class="lp-daily-ribbon-arrow">&rarr;</span>
+  </a>
 
   <!-- SEARCH OVERLAY, slides down on search icon tap -->
   <div id="searchOverlay" class="search-overlay" aria-hidden="true">
