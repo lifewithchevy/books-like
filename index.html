@@ -2701,13 +2701,6 @@
       <a href="/booky-library" class="lp-btn-secondary">Browse the Booky Library &rarr;</a>
     </section>
 
-    <section class="lp-browse-recs" id="lp-browse">
-      <div class="lp-section-label">WHAT ELSE 90BOOKS HAS</div>
-      <h2 class="lp-section-title">Find books like the ones you love</h2>
-      <p class="lp-section-desc">Search romantasy recs picked from what real readers actually recommend. No endless scrolling, just your next obsession.</p>
-      <button type="button" class="lp-btn-secondary" onclick="enterGuestMode()">Search book recs &rarr;</button>
-    </section>
-
     <!-- Goodreads: optional, demoted -->
     <section class="lp-goodreads-optional">
       <p class="lp-goodreads-copy">Want personalized recs? Connect your Goodreads and we&rsquo;ll skip what you&rsquo;ve already read.</p>
@@ -13975,8 +13968,7 @@
     }
 
     /* Scroll sections: library, recs, Goodreads */
-    .lp-library,
-    .lp-browse-recs {
+    .lp-library {
       max-width: 1100px;
       margin: 0 auto;
       padding: 56px 48px;
@@ -14271,7 +14263,7 @@
       .lp-ctas { align-items: center; }
       .lp-sub { margin-left: auto; margin-right: auto; }
       .lp-headline { font-size: 36px; }
-      .lp-library, .lp-browse-recs { padding: 48px 24px; }
+      .lp-library { padding: 48px 24px; }
       .lp-goodreads-optional { padding: 24px 24px 48px; }
       .lp-hero-visual { order: -1; }
     }
@@ -14285,7 +14277,7 @@
       .lp-board-preview { width: 100%; max-width: 260px; }
       .lp-section-title { font-size: 24px; }
       .lp-hero { padding: 28px 16px 24px; }
-      .lp-library, .lp-browse-recs { padding: 40px 16px; }
+      .lp-library { padding: 40px 16px; }
       .lp-goodreads-optional { padding: 20px 16px 40px; }
     }
   </style>
