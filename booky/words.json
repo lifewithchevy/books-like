@@ -1928,6 +1928,41 @@
       "hook": "Claim your sword, claim your fate.",
       "buyUrl": "https://www.amazon.com/dp/0063479796?tag=90books-20",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/B0FQV51HTY.01.LZZZZZZZ.jpg"
+    },
+    "DEVIL": {
+      "slug": "city-of-gods-and-monsters",
+      "title": "City of Gods and Monsters",
+      "author": "Kayla Edwards",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1998268012.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781998268016&i=stripbooks&tag=90books-20"
+    },
+    "LOREN": {
+      "slug": "city-of-gods-and-monsters",
+      "title": "City of Gods and Monsters",
+      "author": "Kayla Edwards",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1998268012.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781998268016&i=stripbooks&tag=90books-20"
+    },
+    "SEVEN": {
+      "slug": "city-of-gods-and-monsters",
+      "title": "City of Gods and Monsters",
+      "author": "Kayla Edwards",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1998268012.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781998268016&i=stripbooks&tag=90books-20"
+    },
+    "SLAYS": {
+      "slug": "city-of-gods-and-monsters",
+      "title": "City of Gods and Monsters",
+      "author": "Kayla Edwards",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1998268012.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781998268016&i=stripbooks&tag=90books-20"
+    },
+    "CALLA": {
+      "slug": "city-of-gods-and-monsters",
+      "title": "City of Gods and Monsters",
+      "author": "Kayla Edwards",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1998268012.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781998268016&i=stripbooks&tag=90books-20"
     }
   }
 }
