@@ -2628,6 +2628,7 @@
   <!-- ===== LANDING PAGE (new / guest users) ===== -->
   <div id="landingOverlay">
 
+    <div class="lp-viewport">
     <!-- Nav -->
     <nav class="lp-nav">
       <div class="lp-nav-logo">
@@ -2691,6 +2692,7 @@
         <p class="lp-visual-label">Tap to play today&rsquo;s puzzle</p>
       </a>
     </section>
+    </div>
 
     <!-- Booky Library + book recs (on scroll) -->
     <section class="lp-library" id="lp-library">
@@ -13745,9 +13747,17 @@
       position: fixed; inset: 0; z-index: 500;
       background: var(--bg);
       overflow-y: auto;
-      display: flex; flex-direction: column;
+      scroll-snap-type: y proximity;
     }
     #landingOverlay.hidden { display: none; }
+
+    .lp-viewport {
+      min-height: 100dvh;
+      display: flex;
+      flex-direction: column;
+      scroll-snap-align: start;
+      scroll-snap-stop: always;
+    }
 
     /* Nav */
     .lp-nav {
@@ -13830,9 +13840,11 @@
     /* Hero */
     .lp-hero {
       display: grid; grid-template-columns: 1fr 1fr;
-      gap: 48px; align-items: center;
-      max-width: 1100px; margin: 0 auto;
-      padding: 80px 48px 64px;
+      gap: 56px; align-items: center;
+      max-width: 1200px; margin: 0 auto;
+      padding: 48px 48px 56px;
+      width: 100%;
+      box-sizing: border-box;
     }
     .lp-pretitle {
       font-size: 13px; font-weight: 600; color: var(--accent-light);
@@ -13840,12 +13852,12 @@
     }
     .lp-headline {
       font-family: 'Playfair Display', serif;
-      font-size: 46px; font-weight: 700; line-height: 1.15;
-      color: var(--text); margin-bottom: 20px;
+      font-size: clamp(38px, 5.5vw, 60px); font-weight: 700; line-height: 1.1;
+      color: var(--text); margin-bottom: 24px;
     }
     .lp-sub {
-      font-size: 17px; color: var(--text-muted); line-height: 1.7;
-      margin-bottom: 36px; max-width: 460px;
+      font-size: clamp(17px, 2vw, 20px); color: var(--text-muted); line-height: 1.7;
+      margin-bottom: 40px; max-width: 480px;
     }
     .lp-ctas { display: flex; flex-direction: column; gap: 12px; align-items: flex-start; }
     .lp-btn-primary {
@@ -13858,7 +13870,7 @@
     a.lp-btn-primary { display: inline-block; text-decoration: none; text-align: center; }
     .lp-btn-booky {
       background: linear-gradient(135deg, #d946a8, #8b3fd3);
-      font-size: 17px; padding: 18px 32px;
+      font-size: 18px; padding: 20px 36px;
       box-shadow: 0 8px 28px rgba(217, 70, 168, 0.35);
     }
     .lp-btn-booky:hover {
@@ -13895,10 +13907,15 @@
     .lp-ghost-light:hover { color: #fff; }
 
     /* Hero visual: static Booky board preview */
-    .lp-hero-visual { display: flex; flex-direction: column; align-items: center; }
-    .lp-hero-booky { padding: 56px 48px 48px; }
-    .lp-hero-booky .lp-headline { max-width: 520px; }
-    .lp-hero-booky .lp-sub { max-width: 420px; }
+    .lp-hero-visual { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+    .lp-hero-booky {
+      flex: 1;
+      min-height: 0;
+      align-content: center;
+      padding: 32px 48px 48px;
+    }
+    .lp-hero-booky .lp-headline { max-width: 640px; }
+    .lp-hero-booky .lp-sub { max-width: 500px; }
     .lp-board-preview-link {
       text-decoration: none;
       color: inherit;
@@ -13906,12 +13923,12 @@
     }
     .lp-board-preview-link:hover { transform: translateY(-4px); }
     .lp-board-preview {
-      width: min(100%, 280px);
+      width: min(100%, 360px);
       background: linear-gradient(180deg, #1d1126 0%, #160c1d 100%);
       border: 1px solid #3a213e;
-      border-radius: 16px;
-      padding: 18px 16px;
-      box-shadow: 0 20px 48px rgba(26, 11, 31, 0.28);
+      border-radius: 18px;
+      padding: 22px 20px;
+      box-shadow: 0 24px 56px rgba(26, 11, 31, 0.32);
     }
     .lp-board-row {
       display: grid;
@@ -13928,7 +13945,7 @@
       justify-content: center;
       font-family: 'Inter', sans-serif;
       font-weight: 800;
-      font-size: clamp(16px, 4.5vw, 22px);
+      font-size: clamp(18px, 4.5vw, 26px);
       text-transform: uppercase;
       border: 2px solid transparent;
     }
@@ -13962,13 +13979,14 @@
       font-style: italic; margin-top: 12px;
     }
 
-    /* Scroll sections: library, recs, Goodreads */
+    /* Scroll sections: library */
     .lp-library {
       max-width: 1100px;
       margin: 0 auto;
-      padding: 56px 48px;
+      padding: 72px 48px 96px;
       text-align: center;
       border-top: 1px solid var(--border);
+      scroll-snap-align: start;
     }
     .lp-section-label {
       font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
@@ -14253,27 +14271,29 @@
     /* Landing page responsive */
     @media (max-width: 900px) {
       .lp-nav { padding: 14px 24px; }
-      .lp-hero { grid-template-columns: 1fr; padding: 48px 24px 40px; gap: 40px; text-align: center; }
-      .lp-hero-booky { padding: 40px 24px 32px; }
+      .lp-hero { grid-template-columns: 1fr; padding: 32px 24px 40px; gap: 36px; text-align: center; }
+      .lp-hero-booky { padding: 24px 24px 32px; }
+      .lp-hero-booky .lp-headline,
+      .lp-hero-booky .lp-sub { max-width: none; }
       .lp-ctas { align-items: center; }
       .lp-sub { margin-left: auto; margin-right: auto; }
-      .lp-headline { font-size: 36px; }
-      .lp-library { padding: 48px 24px; }
-      .lp-goodreads-optional { padding: 24px 24px 48px; }
+      .lp-headline { font-size: clamp(34px, 9vw, 44px); }
+      .lp-library { padding: 56px 24px 80px; }
       .lp-hero-visual { order: -1; }
+      .lp-board-preview { width: min(100%, 300px); }
     }
     @media (max-width: 600px) {
       .lp-nav { padding: 12px 16px; }
-      .lp-headline { font-size: 28px; }
-      .lp-sub { font-size: 15px; }
+      .lp-headline { font-size: clamp(30px, 8.5vw, 38px); }
+      .lp-sub { font-size: 16px; margin-bottom: 28px; }
+      .lp-btn-booky { font-size: 16px; padding: 18px 28px; }
       .lp-btn-primary, .lp-btn-secondary, .lp-btn-ghost { width: 100%; text-align: center; }
       .lp-btn-primary, .lp-btn-secondary { padding: 15px 20px; font-size: 15px; display: block; }
       .lp-ctas { width: 100%; }
-      .lp-board-preview { width: 100%; max-width: 260px; }
+      .lp-board-preview { width: 100%; max-width: 280px; padding: 18px 16px; }
       .lp-section-title { font-size: 24px; }
-      .lp-hero { padding: 28px 16px 24px; }
-      .lp-library { padding: 40px 16px; }
-      .lp-goodreads-optional { padding: 20px 16px 40px; }
+      .lp-hero { padding: 20px 16px 28px; gap: 28px; }
+      .lp-library { padding: 48px 16px 72px; }
     }
   </style>
 
