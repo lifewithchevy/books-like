@@ -942,10 +942,13 @@ body {
   flex-shrink: 0;
   background: rgba(255, 255, 255, 0.08);
 }
-.share-option-reddit .share-option-icon {
-  background: #ff4500;
-  color: #fff;
-  font-family: var(--font-serif);
+.share-option-icon-reddit {
+  background: transparent;
+}
+.share-reddit-logo {
+  width: 28px;
+  height: 28px;
+  display: block;
 }
 .share-option-icon-copy { font-size: 17px; background: rgba(217, 70, 168, 0.18); }
 .share-option-icon-link { font-size: 16px; background: rgba(139, 63, 211, 0.22); }
