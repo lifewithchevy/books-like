@@ -2636,7 +2636,7 @@
       </div>
       <div class="lp-nav-right">
         <a href="/booky" class="lp-nav-daily">&#127918; <em>Booky</em></a>
-        <button class="lp-nav-browse" onclick="enterGuestMode()">Browse first &rarr;</button>
+        <button class="lp-nav-browse" onclick="document.getElementById('lp-library').scrollIntoView({behavior:'smooth'})">Browse recs &darr;</button>
       </div>
     </nav>
 
@@ -2644,119 +2644,74 @@
     <a href="/booky" class="lp-daily-ribbon" data-booky-promo-ribbon>
       <span class="lp-daily-ribbon-pill">NEW</span>
       <span class="lp-daily-ribbon-text">
-        <strong>Booky</strong>, the daily romantasy word game, guess it in 6 tries
+        <strong>Booky</strong>, the daily romantasy word game &middot; guess it in 6 tries
       </span>
       <span class="lp-daily-ribbon-arrow">&rarr;</span>
     </a>
 
-    <!-- Hero -->
-    <section class="lp-hero">
+    <!-- Hero: Booky first -->
+    <section class="lp-hero lp-hero-booky">
       <div class="lp-hero-text">
-        <div class="lp-pretitle">&#10024; Romantasy book recommendations from real readers</div>
-        <h1 class="lp-headline">Spending more time hunting for your next romantasy than actually reading it?</h1>
-        <p class="lp-sub">You&rsquo;re not the only one. It&rsquo;s the #1 thing r/Romantasy can&rsquo;t stop talking about. Pick a romantasy you loved (Fourth Wing, ACOTAR, From Blood and Ash) and get your next obsession, picked from what real readers actually recommend. Connect Goodreads and I&rsquo;ll skip everything you&rsquo;ve already read.</p>
+        <h1 class="lp-headline">Booky, the daily romantasy word game</h1>
+        <p class="lp-sub">Guess the 5-letter word hidden in a romantasy book, in 6 tries.</p>
         <div class="lp-ctas">
-          <button class="lp-btn-primary" onclick="openConnectModal()">&#10024; Connect Goodreads, it&rsquo;s free</button>
-          <button class="lp-btn-ghost" onclick="enterGuestMode()">Browse without account &rarr;</button>
+          <a href="/booky" class="lp-btn-primary lp-btn-booky">Play today&rsquo;s word &rarr;</a>
         </div>
       </div>
-      <div class="lp-hero-visual">
-        <div class="lp-books-fan">
-          <!-- Romantasy-only lineup. 5 different series, 5 different authors.
-               Visually distinct covers (gold dragon, blue starry, fae emerald,
-               silver liquid, dark crown) so the fan reads as varied without
-               leaving the genre. -->
-          <img class="lp-book b1" src="https://covers.openlibrary.org/b/isbn/9781649374042-M.jpg" alt="Fourth Wing">
-          <img class="lp-book b2" src="https://covers.openlibrary.org/b/isbn/9781635575576-M.jpg" alt="A Court of Mist and Fury">
-          <img class="lp-book b3" src="https://covers.openlibrary.org/b/isbn/9780316310277-M.jpg" alt="The Cruel Prince">
-          <img class="lp-book b4" src="https://covers.openlibrary.org/b/isbn/9781399751285-M.jpg" alt="Quicksilver">
-          <img class="lp-book b5" src="https://covers.openlibrary.org/b/isbn/9781952457760-M.jpg" alt="From Blood and Ash">
-        </div>
-        <div class="lp-visual-label">Romantasy you&rsquo;ll love, none you&rsquo;ve read</div>
-      </div>
-    </section>
-
-    <!-- Problems, the 3 pain points readers recognize from r/Romantasy -->
-    <div class="lp-problems-head">
-      <div class="lp-section-label">Sound familiar?</div>
-      <h2 class="lp-section-title">If you read romantasy, you know the struggle</h2>
-    </div>
-    <section class="lp-features">
-      <div class="lp-feature-card">
-        <div class="lp-feature-icon">&#128565;</div>
-        <div class="lp-feature-title">Your TBR is 200 books deep, and you still can&rsquo;t pick one</div>
-        <div class="lp-feature-desc">Too many options, zero decisions. Decision fatigue is real. Pick a romantasy you loved and skip straight to the next read. No endless scrolling.</div>
-      </div>
-      <div class="lp-feature-card">
-        <div class="lp-feature-icon">&#11088;</div>
-        <div class="lp-feature-title">A 3.5-star book you adored. A 4.5 you forced through.</div>
-        <div class="lp-feature-desc">Star ratings never matched your taste. These picks come from readers who love what you love, real recommendations, not a number.</div>
-      </div>
-      <div class="lp-feature-card">
-        <div class="lp-feature-icon">&#129402;</div>
-        <div class="lp-feature-title">You finished something amazing, now everything feels flat</div>
-        <div class="lp-feature-desc">The book hangover. You start four books before one finally clicks. Start from the book that wrecked you and get reads that hit the same. On the first try.</div>
-      </div>
-    </section>
-
-    <!-- How it works -->
-    <section class="lp-how">
-      <div class="lp-section-label">HOW IT WORKS</div>
-      <h2 class="lp-section-title">Three steps to never have a reading slump again</h2>
-      <div class="lp-steps">
-        <div class="lp-step">
-          <div class="lp-step-num">1</div>
-          <div class="lp-step-body">
-            <div class="lp-step-title">Paste your Goodreads URL</div>
-            <div class="lp-step-desc">Go to your profile, copy the URL from your browser. No sign-up, no password, takes 10 seconds.</div>
+      <a href="/booky" class="lp-hero-visual lp-board-preview-link" aria-label="Play Booky, the daily romantasy word game">
+        <div class="lp-board-preview" aria-hidden="true">
+          <div class="lp-board-row">
+            <span class="lp-preview-tile correct">C</span>
+            <span class="lp-preview-tile present">O</span>
+            <span class="lp-preview-tile absent">U</span>
+            <span class="lp-preview-tile present">R</span>
+            <span class="lp-preview-tile correct">T</span>
+          </div>
+          <div class="lp-board-row">
+            <span class="lp-preview-tile filled">B</span>
+            <span class="lp-preview-tile filled">L</span>
+            <span class="lp-preview-tile filled">A</span>
+            <span class="lp-preview-tile filled">D</span>
+            <span class="lp-preview-tile empty"></span>
+          </div>
+          <div class="lp-board-row">
+            <span class="lp-preview-tile empty"></span>
+            <span class="lp-preview-tile empty"></span>
+            <span class="lp-preview-tile empty"></span>
+            <span class="lp-preview-tile empty"></span>
+            <span class="lp-preview-tile empty"></span>
+          </div>
+          <div class="lp-board-row">
+            <span class="lp-preview-tile empty"></span>
+            <span class="lp-preview-tile empty"></span>
+            <span class="lp-preview-tile empty"></span>
+            <span class="lp-preview-tile empty"></span>
+            <span class="lp-preview-tile empty"></span>
           </div>
         </div>
-        <div class="lp-step">
-          <div class="lp-step-num">2</div>
-          <div class="lp-step-body">
-            <div class="lp-step-title">Your shelves sync</div>
-            <div class="lp-step-desc">Your Read list, Want to Read, and star ratings all sync instantly, your taste profile builds on the spot.</div>
-          </div>
-        </div>
-        <div class="lp-step">
-          <div class="lp-step-num">3</div>
-          <div class="lp-step-body">
-            <div class="lp-step-title">Discover what&rsquo;s next</div>
-            <div class="lp-step-desc">Search by a book you loved, a trope, or a mood. Every result is tailored to you and cleared of everything you&rsquo;ve already read.</div>
-          </div>
-        </div>
-      </div>
+        <p class="lp-visual-label">Tap to play today&rsquo;s puzzle</p>
+      </a>
     </section>
 
-    <!-- Founder note styled as a Reddit post, the exact format readers came from,
-         so the story reads as "the post that started 90books." Same handle + avatar. -->
-    <section class="lp-founder">
-      <article class="rp-card">
-        <div class="rp-head">
-          <img class="rp-avatar" src="/oroman.png" alt="lifewithchevy" loading="lazy" onerror="this.style.display='none'">
-          <div class="rp-meta">
-            <a class="rp-author" href="https://www.reddit.com/user/lifewithchevy" target="_blank" rel="me noopener noreferrer">u/lifewithchevy</a>
-            <span class="rp-sub">Creator of 90books</span>
-          </div>
-          <span class="rp-dots" aria-hidden="true">&#8943;</span>
-        </div>
-        <h2 class="rp-title">I spend more time looking for my next read than actually reading&hellip; anyone else?</h2>
-        <span class="rp-flair">Why I built this</span>
-        <div class="rp-body">
-          <p>I kept spending more time <em>looking</em> for my next romantasy than actually reading one. After a book I loved, I&rsquo;d hit the hangover, fall down a rabbit hole of Reddit threads and Goodreads ratings that never matched my taste, and start four books before one finally clicked.</p>
-          <p>So I built 90books, the page I wished existed. Pick a book you loved and get the reads romantasy readers actually recommend to each other. No shelves to maintain, no five-star reviews you can&rsquo;t trust. Just your next book.</p>
-          <p class="rp-aside">It&rsquo;s just me behind this, and the picks come from the whole community, not only my opinion.</p>
-        </div>
-        <a class="rp-source" href="https://www.reddit.com/user/lifewithchevy" target="_blank" rel="noopener noreferrer">&#8599;&#65039; Read the original post on r/Romantasy</a>
-      </article>
+    <!-- Booky Library + book recs (on scroll) -->
+    <section class="lp-library" id="lp-library">
+      <div class="lp-section-label">BEYOND TODAY&rsquo;S WORD</div>
+      <h2 class="lp-section-title">Browse the Booky Library</h2>
+      <p class="lp-section-desc">Every romantasy book Booky has featured, all in one shelf. Great for finding your next read after you finish the puzzle.</p>
+      <a href="/booky-library" class="lp-btn-secondary">Browse the Booky Library &rarr;</a>
     </section>
 
-    <!-- Bottom CTA -->
-    <section class="lp-bottom">
-      <h2 class="lp-bottom-title">Ready to find your next romantasy?</h2>
-      <p class="lp-bottom-sub">Connect your Goodreads in 10 seconds. Free, always.</p>
-      <button class="lp-btn-primary lp-btn-large" onclick="openConnectModal()">&#10024; Connect Goodreads, it&rsquo;s free</button>
-      <button class="lp-btn-ghost lp-ghost-light" onclick="enterGuestMode()">Browse without account &rarr;</button>
+    <section class="lp-browse-recs" id="lp-browse">
+      <div class="lp-section-label">WHAT ELSE 90BOOKS HAS</div>
+      <h2 class="lp-section-title">Find books like the ones you love</h2>
+      <p class="lp-section-desc">Search romantasy recs picked from what real readers actually recommend. No endless scrolling, just your next obsession.</p>
+      <button type="button" class="lp-btn-secondary" onclick="enterGuestMode()">Search book recs &rarr;</button>
+    </section>
+
+    <!-- Goodreads: optional, demoted -->
+    <section class="lp-goodreads-optional">
+      <p class="lp-goodreads-copy">Want personalized recs? Connect your Goodreads and we&rsquo;ll skip what you&rsquo;ve already read.</p>
+      <button type="button" class="lp-btn-ghost" onclick="openConnectModal()">Connect Goodreads (free)</button>
     </section>
 
   </div>
@@ -13877,6 +13832,35 @@
       transition: all 0.2s; white-space: nowrap;
     }
     .lp-btn-primary:hover { background: #333; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+    a.lp-btn-primary { display: inline-block; text-decoration: none; text-align: center; }
+    .lp-btn-booky {
+      background: linear-gradient(135deg, #d946a8, #8b3fd3);
+      font-size: 17px; padding: 18px 32px;
+      box-shadow: 0 8px 28px rgba(217, 70, 168, 0.35);
+    }
+    .lp-btn-booky:hover {
+      background: linear-gradient(135deg, #e055b5, #9a4de0);
+      box-shadow: 0 12px 32px rgba(217, 70, 168, 0.45);
+    }
+    .lp-btn-secondary {
+      display: inline-block;
+      background: var(--surface);
+      color: var(--text);
+      border: 1.5px solid var(--border);
+      border-radius: 12px;
+      padding: 14px 24px;
+      font-size: 15px; font-weight: 600;
+      font-family: 'Inter', sans-serif;
+      cursor: pointer;
+      text-decoration: none;
+      transition: all 0.2s;
+    }
+    .lp-btn-secondary:hover {
+      border-color: #d946a8;
+      color: #8b3fd3;
+      transform: translateY(-1px);
+      box-shadow: 0 6px 18px rgba(217, 70, 168, 0.12);
+    }
     .lp-btn-large { padding: 18px 36px; font-size: 17px; }
     .lp-btn-ghost {
       background: none; border: none; color: var(--text-dim);
@@ -13887,36 +13871,112 @@
     .lp-ghost-light { color: rgba(255,255,255,0.65); }
     .lp-ghost-light:hover { color: #fff; }
 
-    /* Hero visual, book fan */
-    .lp-hero-visual { display: flex; flex-direction: column; align-items: center; gap: 16px; }
-    .lp-books-fan {
-      position: relative; width: 340px; height: 260px;
-      display: flex; align-items: center; justify-content: center;
+    /* Hero visual: static Booky board preview */
+    .lp-hero-visual { display: flex; flex-direction: column; align-items: center; }
+    .lp-hero-booky { padding: 56px 48px 48px; }
+    .lp-hero-booky .lp-headline { max-width: 520px; }
+    .lp-hero-booky .lp-sub { max-width: 420px; }
+    .lp-board-preview-link {
+      text-decoration: none;
+      color: inherit;
+      transition: transform 0.2s ease;
     }
-    .lp-book {
-      position: absolute;
-      width: 108px; height: 162px;
-      object-fit: cover; border-radius: 4px 8px 8px 4px;
-      box-shadow: 0 12px 32px rgba(0,0,0,0.22), 2px 0 6px rgba(0,0,0,0.1);
-      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    .lp-board-preview-link:hover { transform: translateY(-4px); }
+    .lp-board-preview {
+      width: min(100%, 280px);
+      background: linear-gradient(180deg, #1d1126 0%, #160c1d 100%);
+      border: 1px solid #3a213e;
+      border-radius: 16px;
+      padding: 18px 16px;
+      box-shadow: 0 20px 48px rgba(26, 11, 31, 0.28);
     }
-    .lp-book:hover { box-shadow: 0 20px 48px rgba(0,0,0,0.3); z-index: 10; }
-    .b1 { transform: rotate(-14deg) translate(-105px, 18px); }
-    .b2 { transform: rotate(-7deg) translate(-52px, 6px); }
-    .b3 { transform: rotate(0deg) translate(0px, 0px); z-index: 5; }
-    .b4 { transform: rotate(7deg) translate(52px, 6px); }
-    .b5 { transform: rotate(14deg) translate(105px, 18px); }
-    .b1:hover { transform: rotate(-14deg) translate(-105px, -12px) scale(1.06); }
-    .b2:hover { transform: rotate(-7deg) translate(-52px, -12px) scale(1.06); }
-    .b3:hover { transform: rotate(0deg) translate(0px, -12px) scale(1.06); }
-    .b4:hover { transform: rotate(7deg) translate(52px, -12px) scale(1.06); }
-    .b5:hover { transform: rotate(14deg) translate(105px, -12px) scale(1.06); }
+    .lp-board-row {
+      display: grid;
+      grid-template-columns: repeat(5, 1fr);
+      gap: 6px;
+      margin-bottom: 6px;
+    }
+    .lp-board-row:last-child { margin-bottom: 0; }
+    .lp-preview-tile {
+      aspect-ratio: 1;
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: 'Inter', sans-serif;
+      font-weight: 800;
+      font-size: clamp(16px, 4.5vw, 22px);
+      text-transform: uppercase;
+      border: 2px solid transparent;
+    }
+    .lp-preview-tile.empty {
+      border-color: #4a3558;
+      background: rgba(44, 26, 54, 0.35);
+    }
+    .lp-preview-tile.filled {
+      border-color: #5a4068;
+      background: #2c1a36;
+      color: #f3e3ee;
+    }
+    .lp-preview-tile.correct {
+      background: #9333d9;
+      border-color: #9333d9;
+      color: #fff;
+      box-shadow: 0 0 12px rgba(147, 51, 217, 0.4);
+    }
+    .lp-preview-tile.present {
+      background: #c79320;
+      border-color: #c79320;
+      color: #fff;
+    }
+    .lp-preview-tile.absent {
+      background: #3a2842;
+      border-color: #3a2842;
+      color: #9c7f95;
+    }
     .lp-visual-label {
       font-size: 12px; color: var(--text-dim); text-align: center;
-      font-style: italic;
+      font-style: italic; margin-top: 12px;
     }
 
-    /* Features */
+    /* Scroll sections: library, recs, Goodreads */
+    .lp-library,
+    .lp-browse-recs {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 56px 48px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .lp-section-label {
+      font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+      color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px;
+    }
+    .lp-section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 30px; font-weight: 700; margin: 0 auto 16px;
+      max-width: 560px;
+    }
+    .lp-section-desc {
+      font-size: 16px; color: var(--text-muted); line-height: 1.65;
+      max-width: 520px; margin: 0 auto 24px;
+    }
+    .lp-goodreads-optional {
+      max-width: 1100px;
+      margin: 0 auto 48px;
+      padding: 28px 48px 56px;
+      text-align: center;
+      border-top: 1px solid var(--border);
+    }
+    .lp-goodreads-copy {
+      font-size: 14px;
+      color: var(--text-muted);
+      line-height: 1.55;
+      margin: 0 auto 12px;
+      max-width: 420px;
+    }
+
+    /* Legacy landing blocks (unused on Booky homepage; kept for reference) */
     .lp-problems-head {
       max-width: 1100px; margin: 0 auto; padding: 8px 48px 0; text-align: center;
     }
@@ -14171,33 +14231,27 @@
     /* Landing page responsive */
     @media (max-width: 900px) {
       .lp-nav { padding: 14px 24px; }
-      .lp-hero { grid-template-columns: 1fr; padding: 48px 24px 40px; gap: 48px; text-align: center; }
+      .lp-hero { grid-template-columns: 1fr; padding: 48px 24px 40px; gap: 40px; text-align: center; }
+      .lp-hero-booky { padding: 40px 24px 32px; }
       .lp-ctas { align-items: center; }
       .lp-sub { margin-left: auto; margin-right: auto; }
       .lp-headline { font-size: 36px; }
-      .lp-features { grid-template-columns: 1fr; padding: 0 24px 48px; gap: 12px; }
-      .lp-how { padding: 0 24px 60px; }
-      .lp-bottom { padding: 56px 24px; }
-      .lp-bottom-title { font-size: 28px; }
+      .lp-library, .lp-browse-recs { padding: 48px 24px; }
+      .lp-goodreads-optional { padding: 24px 24px 48px; }
       .lp-hero-visual { order: -1; }
     }
     @media (max-width: 600px) {
       .lp-nav { padding: 12px 16px; }
       .lp-headline { font-size: 28px; }
       .lp-sub { font-size: 15px; }
-      .lp-btn-primary, .lp-btn-ghost { width: 100%; text-align: center; }
-      .lp-btn-primary { padding: 15px 20px; font-size: 15px; display: block; }
+      .lp-btn-primary, .lp-btn-secondary, .lp-btn-ghost { width: 100%; text-align: center; }
+      .lp-btn-primary, .lp-btn-secondary { padding: 15px 20px; font-size: 15px; display: block; }
       .lp-ctas { width: 100%; }
-      .lp-books-fan { width: 270px; height: 190px; }
-      .lp-book { width: 76px; height: 114px; }
-      .b1 { transform: rotate(-14deg) translate(-74px, 12px); }
-      .b2 { transform: rotate(-7deg) translate(-36px, 4px); }
-      .b3 { transform: rotate(0deg) translate(0px, 0px); }
-      .b4 { transform: rotate(7deg) translate(36px, 4px); }
-      .b5 { transform: rotate(14deg) translate(74px, 12px); }
-      .lp-feature-card { padding: 20px 18px; }
-      .lp-hero { padding: 28px 16px 28px; }
-      .lp-how { padding: 0 16px 48px; }
+      .lp-board-preview { width: 100%; max-width: 260px; }
+      .lp-section-title { font-size: 24px; }
+      .lp-hero { padding: 28px 16px 24px; }
+      .lp-library, .lp-browse-recs { padding: 40px 16px; }
+      .lp-goodreads-optional { padding: 20px 16px 40px; }
     }
   </style>
 
