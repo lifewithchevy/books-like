@@ -19,18 +19,22 @@
   </script>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>90books, Find Your Next Romantasy | Romantasy Book Recommendations</title>
-  <meta name="description" content="Find your next romantasy. Loved Fourth Wing, ACOTAR, or From Blood and Ash? Get the reads real readers recommend to each other. Made by a fellow romantasy reader, handpicked not algorithmic.">
+  <title>Booky, the Daily Romantasy Word Game by 90books</title>
+  <meta name="description" content="Play Booky, the daily romantasy word game: guess the 5-letter word hidden in a romantasy book, in 6 tries. Then browse handpicked romantasy recs from a fellow reader on 90books.">
   <meta name="keywords" content="romantasy books, books like fourth wing, books like acotar, books like quicksilver, romantasy recommendations, fantasy romance books, books like iron flame, dragon rider books, fae romance">
   <link rel="icon" href="/favicon.svg" type="image/svg+xml" />
   <link rel="canonical" href="https://90books.com/">
-  <meta property="og:title" content="90books, Find Your Next Romantasy">
-  <meta property="og:description" content="Find your next romantasy, handpicked by a fellow reader from what r/Romantasy and BookTok actually recommend. Pick a book you loved; connect Goodreads to skip what you've read.">
+  <meta property="og:title" content="Booky, the Daily Romantasy Word Game by 90books">
+  <meta property="og:description" content="Play Booky, the daily romantasy word game: guess the 5-letter word hidden in a romantasy book, in 6 tries. Then browse handpicked romantasy recs from a fellow reader on 90books.">
   <meta property="og:url" content="https://90books.com/">
   <meta property="og:type" content="website">
-  <meta name="twitter:card" content="summary">
-  <meta name="twitter:title" content="90books, Find Your Next Romantasy">
-  <meta name="twitter:description" content="Find your next romantasy. The reads real readers recommend to each other, handpicked by a fellow reader, not an algorithm.">
+  <meta property="og:image" content="https://90books.com/booky/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:image" content="https://90books.com/booky/og-image.png">
+  <meta name="twitter:title" content="Booky, the Daily Romantasy Word Game by 90books">
+  <meta name="twitter:description" content="Play Booky, the daily romantasy word game: guess the 5-letter word hidden in a romantasy book, in 6 tries. Then browse handpicked romantasy recs from a fellow reader on 90books.">
   <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;600;700&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
 
   <!-- Site + creator structured data. Names OROMAN as the human behind 90books so
@@ -41,7 +45,7 @@
     "@type": "WebSite",
     "name": "90books",
     "url": "https://90books.com",
-    "description": "Find your next romantasy, handpicked by a fellow reader from what r/Romantasy and BookTok actually recommend.",
+    "description": "Play Booky, the daily romantasy word game, then browse handpicked romantasy recs from a fellow reader.",
     "inLanguage": "en",
     "creator": { "@type": "Person", "name": "OROMAN" },
     "author": { "@type": "Person", "name": "OROMAN" }
@@ -2693,6 +2697,10 @@
         <p class="lp-visual-label">Tap to play today&rsquo;s puzzle</p>
       </a>
     </section>
+
+    <p class="lp-author-strip">
+      <a href="/authors">&#9997;&#65039; Are you a romantasy author? Get your book featured &rarr;</a>
+    </p>
     </div>
 
     <!-- Booky Library + book recs (on scroll) -->
@@ -2702,6 +2710,10 @@
       <p class="lp-section-desc">Every romantasy book Booky has featured, all in one shelf. Great for finding your next read after you finish the puzzle.</p>
       <a href="/booky-library" class="lp-btn-secondary">Browse the Booky Library &rarr;</a>
     </section>
+
+    <footer class="lp-site-footer">
+      <a href="/authors">&#9997;&#65039; Are you a romantasy author? Get your book featured &rarr;</a>
+    </footer>
 
   </div>
 
@@ -11893,17 +11905,18 @@
       if (window.location.pathname !== '/') {
         history.pushState({}, '', '/');
       }
-      document.title = '90books, Find Your Next Romantasy | Romantasy Book Recommendations';
+      document.title = 'Booky, the Daily Romantasy Word Game by 90books';
       const _ogTitle = document.querySelector('meta[property="og:title"]');
       const _ogDesc  = document.querySelector('meta[property="og:description"]');
       const _ogUrl   = document.querySelector('meta[property="og:url"]');
       const _twTitle = document.querySelector('meta[name="twitter:title"]');
       const _twDesc  = document.querySelector('meta[name="twitter:description"]');
-      if (_ogTitle) _ogTitle.content = '90books, Find Your Next Romantasy';
-      if (_ogDesc)  _ogDesc.content  = 'Find your next romantasy, handpicked by a fellow reader from what r/Romantasy and BookTok actually recommend. Pick a book you loved; connect Goodreads to skip what you\'ve read.';
+      const _homeDesc = 'Play Booky, the daily romantasy word game: guess the 5-letter word hidden in a romantasy book, in 6 tries. Then browse handpicked romantasy recs from a fellow reader on 90books.';
+      if (_ogTitle) _ogTitle.content = 'Booky, the Daily Romantasy Word Game by 90books';
+      if (_ogDesc)  _ogDesc.content  = _homeDesc;
       if (_ogUrl)   _ogUrl.content   = 'https://90books.com/';
-      if (_twTitle) _twTitle.content = '90books, Find Your Next Romantasy';
-      if (_twDesc)  _twDesc.content  = 'Find your next romantasy. The reads real readers recommend to each other, handpicked by a fellow reader, not an algorithm.';
+      if (_twTitle) _twTitle.content = 'Booky, the Daily Romantasy Word Game by 90books';
+      if (_twDesc)  _twDesc.content  = _homeDesc;
     }
 
     function setBookyLibraryUrl() {
@@ -13916,6 +13929,20 @@
     }
     .lp-hero-booky .lp-headline { max-width: 640px; }
     .lp-hero-booky .lp-sub { max-width: 500px; }
+    .lp-author-strip {
+      text-align: center;
+      padding: 0 24px 20px;
+      margin: -8px auto 0;
+      max-width: 1200px;
+      font-size: 14px;
+      color: var(--text-muted);
+    }
+    .lp-author-strip a {
+      color: #8b3fd3;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .lp-author-strip a:hover { text-decoration: underline; }
     .lp-board-preview-link {
       text-decoration: none;
       color: inherit;
@@ -14001,6 +14028,18 @@
       font-size: 16px; color: var(--text-muted); line-height: 1.65;
       max-width: 520px; margin: 0 auto 24px;
     }
+    .lp-site-footer {
+      text-align: center;
+      padding: 28px 24px 40px;
+      border-top: 1px solid var(--border);
+      font-size: 14px;
+    }
+    .lp-site-footer a {
+      color: #8b3fd3;
+      text-decoration: none;
+      font-weight: 500;
+    }
+    .lp-site-footer a:hover { text-decoration: underline; }
     .lp-goodreads-optional {
       max-width: 1100px;
       margin: 0 auto 48px;
@@ -14471,8 +14510,8 @@
 
     async function shareApp() {
       const shareData = {
-        title: '90books, Find Your Next Romantasy',
-        text: "Try 90books, handpicked romantasy recs from a fellow reader, not algorithms 🐉",
+        title: 'Booky, the Daily Romantasy Word Game by 90books',
+        text: "Play Booky, the daily romantasy word game, then browse handpicked romantasy recs on 90books",
         url: 'https://90books.com',
       };
       try {
