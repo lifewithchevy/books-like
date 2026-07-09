@@ -271,27 +271,6 @@
     text-decoration: underline;
     text-underline-offset: 3px;
   }
-  .featured-card {
-    display: grid;
-    grid-template-columns: 88px 1fr;
-    gap: 16px;
-    align-items: start;
-    margin-top: 8px;
-    padding: 16px;
-    background: #fdeef5;
-    border-radius: 14px;
-    border: 1px solid #f6dfe9;
-  }
-  .featured-cover {
-    width: 88px;
-    border-radius: 8px;
-    box-shadow: 0 6px 18px rgba(42, 10, 38, 0.12);
-    display: block;
-  }
-  .featured-meta {
-    font-size: 15px;
-    color: #4a2e4c;
-  }
   .featured-quote {
     margin: 20px 0 18px;
     padding: 22px 24px 20px;
@@ -382,8 +361,6 @@
   .foot a:hover { text-decoration: underline; }
   @media (max-width: 520px) {
     .hero-card, section { padding: 24px 18px; }
-    .featured-card { grid-template-columns: 72px 1fr; }
-    .featured-cover { width: 72px; }
     .featured-proof { grid-template-columns: 1fr; }
     .featured-story img { max-width: 220px; }
     .cta-row { flex-direction: column; }
@@ -439,6 +416,23 @@
   </div>
 
   <section>
+    <h2>Featured authors</h2>
+    <p>Booky&rsquo;s first featured book was Weavingshaw by Sunday Times bestseller Heba Al-Wasity. On feature day, 50+ readers played her word and every one of them met her book.</p>
+    <div class="featured-proof">
+      <blockquote class="featured-quote" cite="https://www.instagram.com/alwasityhh/">
+        <p>&ldquo;I am OBSESSED with the game Booky (Wordle for romantasy readers!)&rdquo;</p>
+        <cite>Heba Al-Wasity, author of Weavingshaw (shared to her Instagram)</cite>
+      </blockquote>
+      <figure class="featured-story">
+        <a href="https://www.instagram.com/alwasityhh/" rel="noopener noreferrer" aria-label="Heba Al-Wasity on Instagram">
+          <img src="/authors/heba-ig-story.png" alt="Screenshot of Heba Al-Wasity sharing Booky on her Instagram story" width="188" height="407" loading="lazy">
+        </a>
+        <figcaption>Heba&rsquo;s Instagram story</figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <section>
     <h2>How it works</h2>
     <ol>
       <li>Say hi. DM me on Instagram (<a href="https://www.instagram.com/lifewith_chevy/" rel="noopener noreferrer">@lifewith_chevy</a>) or email me (<a href="mailto:mylifewithchevy@gmail.com?subject=Booky%20featured%20word">mylifewithchevy@gmail.com</a>). Tell me your book. Bonus points: suggest the 5-letter word that sums it up (a real, guessable word so players can actually win it).</li>
@@ -475,31 +469,6 @@
       <li>A mention in that week&rsquo;s reader newsletter</li>
       <li>The honest report, real numbers, screenshots included</li>
     </ul>
-  </section>
-
-  <section>
-    <h2>Featured authors</h2>
-    <p>Booky&rsquo;s first featured book was Weavingshaw by Sunday Times bestseller Heba Al-Wasity. On feature day, 50+ readers played her word and every one of them met her book.</p>
-    <div class="featured-proof">
-      <blockquote class="featured-quote" cite="https://www.instagram.com/alwasityhh/">
-        <p>&ldquo;I am OBSESSED with the game Booky (Wordle for romantasy readers!)&rdquo;</p>
-        <cite>Heba Al-Wasity, author of Weavingshaw (shared to her Instagram)</cite>
-      </blockquote>
-      <figure class="featured-story">
-        <a href="https://www.instagram.com/alwasityhh/" rel="noopener noreferrer" aria-label="Heba Al-Wasity on Instagram">
-          <img src="/authors/heba-ig-story.png" alt="Screenshot of Heba Al-Wasity sharing Booky on her Instagram story" width="188" height="407" loading="lazy">
-        </a>
-        <figcaption>Heba&rsquo;s Instagram story</figcaption>
-      </figure>
-    </div>
-    <div class="featured-card">
-      <img class="featured-cover" src="https://images-na.ssl-images-amazon.com/images/P/0593982576.01.LZZZZZZZ.jpg" alt="Weavingshaw cover" width="88" height="132" loading="lazy">
-      <div class="featured-meta">
-        <strong>Weavingshaw</strong><br>
-        Heba Al-Wasity<br>
-        <span style="color:#8b3fd3;font-weight:600;">50+ readers on feature day</span>
-      </div>
-    </div>
   </section>
 
   <section>
