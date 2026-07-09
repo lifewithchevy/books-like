@@ -317,6 +317,37 @@
     font-weight: 600;
     color: #d946a8;
   }
+  .featured-proof {
+    display: grid;
+    grid-template-columns: minmax(0, 1fr) 188px;
+    gap: 18px;
+    align-items: start;
+    margin: 20px 0 18px;
+  }
+  .featured-proof .featured-quote { margin: 0; }
+  .featured-story {
+    margin: 0;
+    text-align: center;
+  }
+  .featured-story a {
+    display: block;
+    text-decoration: none;
+  }
+  .featured-story img {
+    width: 100%;
+    max-width: 188px;
+    border-radius: 16px;
+    border: 1px solid #ead4e2;
+    box-shadow: 0 12px 32px rgba(42, 10, 38, 0.14);
+    display: block;
+    margin: 0 auto;
+  }
+  .featured-story figcaption {
+    font-size: 12px;
+    color: #a587a9;
+    margin-top: 8px;
+    line-height: 1.4;
+  }
   .cta-block {
     text-align: center;
     padding: 32px 24px;
@@ -353,6 +384,8 @@
     .hero-card, section { padding: 24px 18px; }
     .featured-card { grid-template-columns: 72px 1fr; }
     .featured-cover { width: 72px; }
+    .featured-proof { grid-template-columns: 1fr; }
+    .featured-story img { max-width: 220px; }
     .cta-row { flex-direction: column; }
     .cta-or { display: none; }
     .btn { width: 100%; }
@@ -440,10 +473,18 @@
   <section>
     <h2>Featured authors</h2>
     <p>Booky&rsquo;s first featured book was Weavingshaw by Sunday Times bestseller Heba Al-Wasity. On feature day, 50+ readers played her word and every one of them met her book.</p>
-    <blockquote class="featured-quote" cite="https://www.instagram.com/alwasityhh/">
-      <p>&ldquo;I am OBSESSED with the game Booky (Wordle for romantasy readers!)&rdquo;</p>
-      <cite>Heba Al-Wasity, author of Weavingshaw (shared to her Instagram)</cite>
-    </blockquote>
+    <div class="featured-proof">
+      <blockquote class="featured-quote" cite="https://www.instagram.com/alwasityhh/">
+        <p>&ldquo;I am OBSESSED with the game Booky (Wordle for romantasy readers!)&rdquo;</p>
+        <cite>Heba Al-Wasity, author of Weavingshaw (shared to her Instagram)</cite>
+      </blockquote>
+      <figure class="featured-story">
+        <a href="https://www.instagram.com/alwasityhh/" rel="noopener noreferrer" aria-label="Heba Al-Wasity on Instagram">
+          <img src="/authors/heba-ig-story.png" alt="Screenshot of Heba Al-Wasity sharing Booky on her Instagram story" width="188" height="407" loading="lazy">
+        </a>
+        <figcaption>Heba&rsquo;s Instagram story</figcaption>
+      </figure>
+    </div>
     <div class="featured-card">
       <img class="featured-cover" src="https://images-na.ssl-images-amazon.com/images/P/0593982576.01.LZZZZZZZ.jpg" alt="Weavingshaw cover" width="88" height="132" loading="lazy">
       <div class="featured-meta">
