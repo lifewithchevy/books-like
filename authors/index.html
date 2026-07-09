@@ -140,6 +140,12 @@
     border-color: #d946a8;
     color: #8b3fd3;
   }
+  .hero-ctas {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 12px;
+    align-items: center;
+  }
   section {
     background: #fff;
     border: 1px solid #ead4e2;
@@ -287,18 +293,30 @@
     color: #4a2e4c;
   }
   .featured-quote {
-    display: none;
-    margin-top: 14px;
-    padding: 14px 16px;
-    border-left: 3px solid #d946a8;
-    background: #fff;
-    border-radius: 0 12px 12px 0;
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 19px;
-    font-style: italic;
-    color: #6a4a6c;
+    margin: 20px 0 18px;
+    padding: 22px 24px 20px;
+    border: none;
+    border-left: 4px solid #d946a8;
+    background: linear-gradient(135deg, #fdeef5 0%, #fff 100%);
+    border-radius: 0 16px 16px 0;
   }
-  .featured-quote.has-quote { display: block; }
+  .featured-quote p {
+    font-family: 'Cormorant Garamond', Georgia, serif;
+    font-size: clamp(22px, 4.5vw, 28px);
+    font-weight: 600;
+    font-style: italic;
+    line-height: 1.35;
+    color: #2a0a26;
+    margin: 0 0 10px;
+  }
+  .featured-quote cite {
+    display: block;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    font-size: 14px;
+    font-style: normal;
+    font-weight: 600;
+    color: #d946a8;
+  }
   .cta-block {
     text-align: center;
     padding: 32px 24px;
@@ -374,7 +392,10 @@
   <div class="hero-card">
     <h1>Your book, the word of the day</h1>
     <p class="lead">Booky is the daily romantasy word game by 90books. Every day, readers solve a 5-letter word hidden in a romantasy book. When they win, the book is revealed: cover, author, and a buy link. For one day, that book can be yours.</p>
-    <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=play_today" class="btn btn-primary">&#9654; See it live: play today&rsquo;s word</a>
+    <div class="hero-ctas">
+      <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=play_today" class="btn btn-primary">&#9654; See it live: play today&rsquo;s word</a>
+      <a href="#get-featured" class="btn btn-secondary">Get your book featured &rarr;</a>
+    </div>
   </div>
 
   <section>
@@ -419,6 +440,10 @@
   <section>
     <h2>Featured authors</h2>
     <p>Booky&rsquo;s first featured book was Weavingshaw by Sunday Times bestseller Heba Al-Wasity. On feature day, 50+ readers played her word and every one of them met her book.</p>
+    <blockquote class="featured-quote" cite="https://www.instagram.com/alwasityhh/">
+      <p>&ldquo;I am OBSESSED with the game Booky (Wordle for romantasy readers!)&rdquo;</p>
+      <cite>Heba Al-Wasity, author of Weavingshaw (shared to her Instagram)</cite>
+    </blockquote>
     <div class="featured-card">
       <img class="featured-cover" src="https://images-na.ssl-images-amazon.com/images/P/0593982576.01.LZZZZZZZ.jpg" alt="Weavingshaw cover" width="88" height="132" loading="lazy">
       <div class="featured-meta">
@@ -427,7 +452,6 @@
         <span style="color:#8b3fd3;font-weight:600;">50+ readers on feature day</span>
       </div>
     </div>
-    <blockquote class="featured-quote" id="featured-quote" cite=""></blockquote>
   </section>
 
   <section>
@@ -437,10 +461,10 @@
 
   <section>
     <h2>A small but mighty audience</h2>
-    <p>Booky is new and growing. A few dozen romantasy readers play every single day, and every one of them sees the day&rsquo;s book. No bots, no vanity numbers, just the exact readers you write for.</p>
+    <p>Booky is new and growing. 50 to 90 romantasy readers play every single day, and every one of them sees the day&rsquo;s book. No bots, no vanity numbers, just the exact readers you write for.</p>
   </section>
 
-  <div class="cta-block">
+  <div class="cta-block" id="get-featured">
     <h2>Get your book featured</h2>
     <div class="cta-row">
       <a href="https://www.instagram.com/lifewith_chevy/?utm_source=authors_page&amp;utm_medium=author&amp;utm_campaign=featured" class="btn btn-primary" rel="noopener noreferrer" onclick="trackAuthorsCta('instagram')">DM me on Instagram @lifewith_chevy</a>
