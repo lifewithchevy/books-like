@@ -409,6 +409,13 @@
   function trackAuthorsCta(channel) {
     try { window.posthog && posthog.capture && posthog.capture('authors_cta_clicked', { channel: channel, page: '/authors' }); } catch (e) {}
   }
+  document.getElementById('scroll-to-get-featured')?.addEventListener('click', function () {
+    document.getElementById('get-featured')?.scrollIntoView({ behavior: 'smooth' });
+  });
+  if (location.hash === '#get-featured') {
+    history.replaceState(null, '', '/authors');
+    document.getElementById('get-featured')?.scrollIntoView();
+  }
 </script>
 </head>
 <body>
@@ -427,7 +434,7 @@
     <p class="lead">Booky is the daily romantasy word game by 90books. Every day, readers solve a 5-letter word hidden in a romantasy book. When they win, the book is revealed: cover, author, and a buy link. For one day, that book can be yours.</p>
     <div class="hero-ctas">
       <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=play_today" class="btn btn-primary">&#9654; See it live: play today&rsquo;s word</a>
-      <a href="#get-featured" class="btn btn-secondary">Get your book featured &rarr;</a>
+      <button type="button" class="btn btn-secondary" id="scroll-to-get-featured">Get your book featured &rarr;</button>
     </div>
   </div>
 
