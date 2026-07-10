@@ -331,6 +331,12 @@ renderStatsModal();
 $('stats-modal').showModal();
 });
 $('share-btn').addEventListener('click', openShareSheet);
+$('rank-up-share-btn')?.addEventListener('click', async () => {
+const ok = await copyText(buildShareString());
+if (!ok) return;
+captureShare('rank_up');
+showShareToast('Copied! Share your new rank 📋');
+});
 const shareSheet = $('share-sheet');
 if (shareSheet) {
   $('share-sheet-close')?.addEventListener('click', () => shareSheet.close());
@@ -487,7 +493,7 @@ const BADGES = [
 { at: 30, icon: '🖤', name: 'Wingleader', blurb: 'A month unbroken. The wing follows you.' },
 { at: 45, icon: '⚔️', name: 'Lieutenant', blurb: 'Forty-five days. Commissioned.' },
 { at: 60, icon: '🔮', name: 'Sorceress', blurb: 'Magic mastered. Two months unbroken.' },
-{ at: 90, icon: '🌩️', name: 'Valkyrie', blurb: 'Ninety days. Chosen for the sky.' },
+{ at: 90, icon: '⚡', name: 'Valkyrie', blurb: 'Ninety days. Chosen for the sky.' },
 { at: 100, icon: '🏆', name: 'Champion', blurb: '100 days. You won the trial.' },
 { at: 200, icon: '👑', name: 'High Lady', blurb: '200 days. The court bows.' },
 { at: 365, icon: '💎', name: 'Empress', blurb: 'One year. The realm is yours.' },
@@ -504,8 +510,61 @@ else { next = b; break; }
 return { earned, next };
 }
 
+function rankUpBadge(streak) {
+return BADGES.find((b) => b.at === streak) || null;
+}
+
+function renderEndStreak(won, justRecorded) {
+const card = $('end-streak-card');
+const rankUpCard = $('rank-up-card');
+if (!card) return;
+if (!won || STATS.currentStreak < 1) {
+card.hidden = true;
+if (rankUpCard) rankUpCard.hidden = true;
+return;
+}
+
+const { earned, next } = badgeForStreak(STATS.currentStreak);
+const rankedUp = justRecorded && rankUpBadge(STATS.currentStreak);
+
+if (rankUpCard) {
+if (rankedUp) {
+rankUpCard.hidden = false;
+$('rank-up-icon').textContent = earned.icon;
+$('rank-up-name').textContent = earned.name;
+$('rank-up-blurb').textContent = earned.blurb;
+try {
+posthog.capture('booky_rank_up', {
+rank: earned.name,
+days: STATS.currentStreak,
+word_number: DAY,
+});
+} catch (e) {}
+} else {
+rankUpCard.hidden = true;
+}
+}
+
+$('end-streak-icon').textContent = earned.icon;
+$('end-streak-rank').textContent = earned.name;
+$('end-streak-meta').textContent = `🔥 ${STATS.currentStreak}-day streak`;
+card.hidden = false;
+
+const nextEl = $('end-streak-next');
+if (nextEl) {
+if (next) {
+const rem = next.at - STATS.currentStreak;
+nextEl.textContent = `${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}`;
+nextEl.hidden = false;
+} else {
+nextEl.hidden = true;
+}
+}
+}
+
 // ---- End screen ----
 function showEndScreen() {
+const justRecorded = !STATE.statsRecorded;
 recordFinish();
 
 const won = STATE.status === 'won';
@@ -525,16 +584,7 @@ $('celebration').classList.add('lost');
 $('end-word').textContent = ANSWER;
 $('end-puzzle-no').textContent = 'Booky #' + DAY;
 
-// Streak — kept but low priority: one compact line on win
-const streakEl = $('end-streak');
-if (won && STATS.currentStreak >= 1) {
-// Show the earned romantasy rank — the shareable bit. Milestone progress lives in the stats page.
-const { earned } = badgeForStreak(STATS.currentStreak);
-streakEl.textContent = `🔥 ${STATS.currentStreak}-day streak · ${earned.icon} ${earned.name}`;
-streakEl.hidden = false;
-} else {
-streakEl.hidden = true;
-}
+renderEndStreak(won, justRecorded && won);
 
 // Ward receipt — only shows on the day a Ward actually saved the streak
 const wardEl = $('end-ward');
@@ -661,13 +711,14 @@ function buildShareString() {
 // $referring_domain; the native/clipboard split lives on the
 // booky_share_clicked event's `method`.
 const shareUrl = SITE_URL.replace('.com', '.\u200Bcom');
-// The rank rides in the header — identity is the shareable bit (Spelling
-// Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
+// The rank leads the share card — identity is the shareable bit (Spelling
+// Bee's "Genius" effect): "🖤 Wingleader" makes a stranger ask what Booky is.
 let header = `📚 Booky #${DAY}`;
 let scoreLine;
+let rankLine = null;
 if (STATE.status === 'won') {
 const { earned } = badgeForStreak(STATS.currentStreak);
-if (earned) header += ` · ${earned.icon} ${earned.name}`;
+if (earned) rankLine = `${earned.icon} ${earned.name}`;
 const streak = STATS.currentStreak > 1 ? ` 🔥${STATS.currentStreak}` : '';
 scoreLine = `${STATE.guesses.length}/${MAX_GUESSES}${streak}`;
 } else {
@@ -681,7 +732,14 @@ const bookRec = DATA.wordBooks?.[ANSWER];
 const bookLine = bookRec ? `📖 From: ${bookRec.title}` : null;
 // Two trailing spaces before every \n = Reddit hard break; invisible on all other platforms
 const HB = '  \n';
-const lines = [header, scoreLine, ...rows, ...(bookLine ? [bookLine] : []), shareUrl];
+const lines = [
+...(rankLine ? [rankLine] : []),
+header,
+scoreLine,
+...rows,
+...(bookLine ? [bookLine] : []),
+shareUrl,
+];
 return lines.join(HB);
 }
 
