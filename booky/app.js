@@ -510,61 +510,8 @@ else { next = b; break; }
 return { earned, next };
 }
 
-function rankUpBadge(streak) {
-return BADGES.find((b) => b.at === streak) || null;
-}
-
-function renderEndStreak(won, justRecorded) {
-const card = $('end-streak-card');
-const rankUpCard = $('rank-up-card');
-if (!card) return;
-if (!won || STATS.currentStreak < 1) {
-card.hidden = true;
-if (rankUpCard) rankUpCard.hidden = true;
-return;
-}
-
-const { earned, next } = badgeForStreak(STATS.currentStreak);
-const rankedUp = justRecorded && rankUpBadge(STATS.currentStreak);
-
-if (rankUpCard) {
-if (rankedUp) {
-rankUpCard.hidden = false;
-$('rank-up-icon').textContent = earned.icon;
-$('rank-up-name').textContent = earned.name;
-$('rank-up-blurb').textContent = earned.blurb;
-try {
-posthog.capture('booky_rank_up', {
-rank: earned.name,
-days: STATS.currentStreak,
-word_number: DAY,
-});
-} catch (e) {}
-} else {
-rankUpCard.hidden = true;
-}
-}
-
-$('end-streak-icon').textContent = earned.icon;
-$('end-streak-rank').textContent = earned.name;
-$('end-streak-meta').textContent = `🔥 ${STATS.currentStreak}-day streak`;
-card.hidden = false;
-
-const nextEl = $('end-streak-next');
-if (nextEl) {
-if (next) {
-const rem = next.at - STATS.currentStreak;
-nextEl.textContent = `${rem} day${rem === 1 ? '' : 's'} to ${next.icon} ${next.name}`;
-nextEl.hidden = false;
-} else {
-nextEl.hidden = true;
-}
-}
-}
-
 // ---- End screen ----
 function showEndScreen() {
-const justRecorded = !STATE.statsRecorded;
 recordFinish();
 
 const won = STATE.status === 'won';
