@@ -331,12 +331,6 @@ renderStatsModal();
 $('stats-modal').showModal();
 });
 $('share-btn').addEventListener('click', openShareSheet);
-$('rank-up-share-btn')?.addEventListener('click', async () => {
-const ok = await copyText(buildShareString());
-if (!ok) return;
-captureShare('rank_up');
-showShareToast('Copied! Share your new rank 📋');
-});
 const shareSheet = $('share-sheet');
 if (shareSheet) {
   $('share-sheet-close')?.addEventListener('click', () => shareSheet.close());
@@ -531,7 +525,15 @@ $('celebration').classList.add('lost');
 $('end-word').textContent = ANSWER;
 $('end-puzzle-no').textContent = 'Booky #' + DAY;
 
-renderEndStreak(won, justRecorded && won);
+// Streak — kept but low priority: one compact line on win
+const streakEl = $('end-streak');
+if (won && STATS.currentStreak >= 1) {
+const { earned } = badgeForStreak(STATS.currentStreak);
+streakEl.textContent = `🔥 ${STATS.currentStreak}-day streak · ${earned.icon} ${earned.name}`;
+streakEl.hidden = false;
+} else {
+streakEl.hidden = true;
+}
 
 // Ward receipt — only shows on the day a Ward actually saved the streak
 const wardEl = $('end-ward');
@@ -658,14 +660,13 @@ function buildShareString() {
 // $referring_domain; the native/clipboard split lives on the
 // booky_share_clicked event's `method`.
 const shareUrl = SITE_URL.replace('.com', '.\u200Bcom');
-// The rank leads the share card — identity is the shareable bit (Spelling
-// Bee's "Genius" effect): "🖤 Wingleader" makes a stranger ask what Booky is.
+// The rank rides in the header — identity is the shareable bit (Spelling
+// Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
 let header = `📚 Booky #${DAY}`;
 let scoreLine;
-let rankLine = null;
 if (STATE.status === 'won') {
 const { earned } = badgeForStreak(STATS.currentStreak);
-if (earned) rankLine = `${earned.icon} ${earned.name}`;
+if (earned) header += ` · ${earned.icon} ${earned.name}`;
 const streak = STATS.currentStreak > 1 ? ` 🔥${STATS.currentStreak}` : '';
 scoreLine = `${STATE.guesses.length}/${MAX_GUESSES}${streak}`;
 } else {
@@ -679,14 +680,7 @@ const bookRec = DATA.wordBooks?.[ANSWER];
 const bookLine = bookRec ? `📖 From: ${bookRec.title}` : null;
 // Two trailing spaces before every \n = Reddit hard break; invisible on all other platforms
 const HB = '  \n';
-const lines = [
-...(rankLine ? [rankLine] : []),
-header,
-scoreLine,
-...rows,
-...(bookLine ? [bookLine] : []),
-shareUrl,
-];
+const lines = [header, scoreLine, ...rows, ...(bookLine ? [bookLine] : []), shareUrl];
 return lines.join(HB);
 }
 
