@@ -476,15 +476,18 @@ toastTimer = setTimeout(() => { t.hidden = true; }, 1600);
 
 // ---- Badge milestones ----
 // Tiered streak rewards traced as a romantasy heroine's journey:
-// outsider → bonded → cadet → rider → knight → mage → champion → ruler → divine.
+// initiate → bonded → cadet → rider → signet → wingleader → lieutenant → sorceress → valkyrie → champion → high lady → empress → goddess.
 // Each tier is hit at `at` days of current streak. Ascending.
 const BADGES = [
 { at: 1, icon: '✨', name: 'Initiate', blurb: 'You crossed the veil.' },
 { at: 3, icon: '💫', name: 'Bonded', blurb: 'Three days. Something just clicked.' },
 { at: 7, icon: '🗡️', name: 'Cadet', blurb: 'First week survived. The academy claims you.' },
 { at: 14, icon: '🐉', name: 'Rider', blurb: 'Two weeks. The dragon chose you.' },
-{ at: 30, icon: '⚔️', name: 'Knight', blurb: 'A month, sworn. Sharpened by ritual.' },
+{ at: 21, icon: '✴️', name: 'Signet', blurb: 'Your magic woke up.' },
+{ at: 30, icon: '🪽', name: 'Wingleader', blurb: 'A month unbroken. The wing follows you.' },
+{ at: 45, icon: '⚔️', name: 'Lieutenant', blurb: 'Forty-five days. Commissioned.' },
 { at: 60, icon: '🔮', name: 'Sorceress', blurb: 'Magic mastered. Two months unbroken.' },
+{ at: 90, icon: '🌩️', name: 'Valkyrie', blurb: 'Ninety days. Chosen for the sky.' },
 { at: 100, icon: '🏆', name: 'Champion', blurb: '100 days. You won the trial.' },
 { at: 200, icon: '👑', name: 'High Lady', blurb: '200 days. The court bows.' },
 { at: 365, icon: '💎', name: 'Empress', blurb: 'One year. The realm is yours.' },
