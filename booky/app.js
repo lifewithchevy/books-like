@@ -49,7 +49,7 @@ try {
 // Pull queue + dictionary in parallel. Dictionary is large (~80KB) but
 // only loaded once — browser caches it. The Set lookup is O(1).
 const [data, dictList] = await Promise.all([
-fetch('/booky/words.json?v=7', { cache: 'no-store' }).then(r => r.json()),
+fetch('/booky/words.json?v=8', { cache: 'no-store' }).then(r => r.json()),
 fetch('/booky/dictionary.json?v=12', { cache: 'force-cache' }).then(r => r.json()),
 ]);
 DATA = data;
