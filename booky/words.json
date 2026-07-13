@@ -55,7 +55,7 @@
     "TRIAL",
     "REALM",
     "BOUND",
-    "POWER",
+    "SIREN",
     "OATHS",
     "BLOOM",
     "MERYN",
@@ -68,7 +68,7 @@
     "FATED",
     "RUNES",
     "BRAVE",
-    "SIREN",
+    "POWER",
     "ASHES",
     "BONDS",
     "AMBER",
@@ -584,11 +584,11 @@
       "buyUrl": "https://www.amazon.com/s?k=9781728295336&i=stripbooks&tag=90books-20"
     },
     "SIREN": {
-      "slug": "a-touch-of-darkness",
-      "title": "A Touch of Darkness",
-      "author": "Scarlett St. Clair",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1949673294.01.LZZZZZZZ.jpg",
-      "buyUrl": "https://www.amazon.com/s?k=9781949039153&i=stripbooks&tag=90books-20"
+      "slug": "in-the-veins-of-the-drowning",
+      "title": "In the Veins of the Drowning",
+      "author": "Kalie Cassidy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316587605.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316587605?tag=90books-20"
     },
     "NIGHT": {
       "slug": "the-serpent-and-the-wings-of-night",
