@@ -2971,7 +2971,7 @@
             display: inline-flex; align-items: center; gap: 6px;
             font: 700 13px Inter,sans-serif; color: #8a3b0d;
             background: #ffe9c9; border: 1px solid #f6cf95;
-            padding: 7px 14px; border-radius: 999px; margin: 0 0 14px;
+            padding: 7px 14px; border-radius: 999px; margin: 14px 0 0;
             animation: bklPulse 2.4s ease-in-out infinite;
           }
           body.bkl-library-mode .lp-ctas { margin: 0 0 10px; }
@@ -8229,9 +8229,9 @@
         + '<p class="bkl-brand-mark">Booky Library</p>'
         + '<h1 class="bkl-title">The books <em>everyone\'s</em> playing</h1>'
         + '<p class="bkl-sub">Every romantasy book we\'ve featured in Booky, the daily romantasy word game. Hand-picked favorites from r/Romantasy and BookTok. Save what you want, then go guess today\'s word.</p>'
+        + '<div class="lp-ctas"><a href="/booky" class="lp-btn-primary lp-btn-booky bkl-cta" onclick="bklPh(\'library_play_bridge_clicked\',{has_streak:' + hasStreak + ',streak:' + n + '})">' + ctaLabel + '</a></div>'
         + streakLine
-        + '<div class="lp-ctas"><a href="/booky" class="lp-btn-primary lp-btn-booky bkl-cta" onclick="bklPh(\'library_play_bridge_clicked\',{has_streak:' + hasStreak + ',streak:' + n + '})">' + ctaLabel + '</a>'
-        + ctaNote + '</div>'
+        + ctaNote
         + '</div>'
         + '<div class="bkl-hero-stage" aria-hidden="true"><div class="bkl-fan">' + fan + '</div></div>'
         + '</section>'
