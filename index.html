@@ -2921,6 +2921,8 @@
             --bkl-surface: #ffffff;
             --bkl-line: rgba(20,20,20,.08);
             --bkl-mag: #9b1878;
+            --bkl-gutter: 64px;
+            --bkl-shelf-gap: 18px;
             background: var(--bkl-paper);
           }
           body.bkl-library-mode > header {
@@ -3023,7 +3025,7 @@
           body.bkl-library-mode .bkl-hint {
             font-size: 14px; color: var(--bkl-muted);
             background: var(--bkl-surface); border: none; border-radius: 0;
-            padding: 32px 64px 8px; margin: 0; backdrop-filter: none;
+            padding: 32px var(--bkl-gutter) 8px; margin: 0; backdrop-filter: none;
             max-width: none; text-align: left;
           }
           body.bkl-library-mode .bkl-hero-stage {
@@ -3069,7 +3071,7 @@
           }
           body.bkl-library-mode .shelf-row { padding-top: 52px; margin-bottom: 4px; }
           body.bkl-library-mode .shelf-header {
-            padding: 0 64px 12px;
+            padding: 0 var(--bkl-gutter) 12px;
             text-align: left;
             justify-content: space-between;
           }
@@ -3079,14 +3081,33 @@
             text-align: left; width: auto;
           }
           body.bkl-library-mode .shelf-subtitle {
-            padding: 0 64px 18px; font-size: 15px; color: var(--bkl-muted);
+            padding: 0 var(--bkl-gutter) 18px; font-size: 15px; color: var(--bkl-muted);
             max-width: 48ch; margin-left: 0; margin-right: 0;
             line-height: 1.5; text-align: left;
           }
+          /* Use flex spacers for horizontal inset. Padding on overflow-x flex
+             rows is unreliable (esp. with scroll-snap) and left some carousels
+             flush to the edge while titles stayed indented. */
           body.bkl-library-mode .shelf-books {
-            gap: 18px; padding: 6px 64px 28px;
-            scroll-snap-type: x mandatory;
+            gap: var(--bkl-shelf-gap);
+            padding: 6px 0 28px;
+            scroll-snap-type: x proximity;
+            scroll-padding-inline: var(--bkl-gutter);
             justify-content: flex-start;
+          }
+          body.bkl-library-mode .shelf-books::before,
+          body.bkl-library-mode .shelf-books::after {
+            content: '';
+            flex: 0 0 var(--bkl-gutter);
+            width: var(--bkl-gutter);
+            height: 1px;
+            pointer-events: none;
+          }
+          body.bkl-library-mode .shelf-books::before {
+            margin-inline-end: calc(var(--bkl-shelf-gap) * -1);
+          }
+          body.bkl-library-mode .shelf-books::after {
+            margin-inline-start: calc(var(--bkl-shelf-gap) * -1);
           }
           body.bkl-library-mode .shelf-book {
             width: 156px; scroll-snap-align: start;
@@ -3137,7 +3158,7 @@
           body.bkl-library-mode .bkl-buy:hover { border-bottom-color: var(--bkl-ink); }
 
           body.bkl-library-mode #bklBrowseDivider {
-            margin: 28px 64px 0; padding: 48px 0 12px;
+            margin: 28px var(--bkl-gutter) 0; padding: 48px 0 12px;
             border-top: 1px solid var(--bkl-line);
             background: var(--bkl-surface);
             text-align: left;
@@ -3195,6 +3216,7 @@
 
           /* Mid desktop: keep breathing room without overcrowding */
           @media (min-width: 821px) and (max-width: 1100px) {
+            body.bkl-library-mode { --bkl-gutter: 40px; }
             body.bkl-library-mode > header { padding-left: 40px; padding-right: 40px; }
             body.bkl-library-mode .bkl-hero {
               padding: 56px 40px 64px;
@@ -3215,11 +3237,10 @@
               width: 176px;
               height: 264px;
             }
-            body.bkl-library-mode .shelf-header,
-            body.bkl-library-mode .shelf-subtitle,
-            body.bkl-library-mode .shelf-books { padding-left: 40px; padding-right: 40px; }
-            body.bkl-library-mode .bkl-hint { padding-left: 40px; padding-right: 40px; }
-            body.bkl-library-mode #bklBrowseDivider { margin-left: 40px; margin-right: 40px; }
+            body.bkl-library-mode #bklBrowseDivider {
+              margin-left: var(--bkl-gutter);
+              margin-right: var(--bkl-gutter);
+            }
             body.bkl-library-mode #bklLibraryFooter { padding-left: 40px; padding-right: 40px; }
           }
 
@@ -3381,9 +3402,7 @@
               max-width: 26ch;
             }
             body.bkl-library-mode .shelf-row { padding-top: 32px; }
-            body.bkl-library-mode .shelf-header,
-            body.bkl-library-mode .shelf-subtitle,
-            body.bkl-library-mode .shelf-books { padding-left: 20px; padding-right: 20px; }
+            body.bkl-library-mode { --bkl-gutter: 20px; --bkl-shelf-gap: 12px; }
             body.bkl-library-mode #bklBrowseDivider,
             body.bkl-library-mode #bklLibraryFooter { margin-left: 0; margin-right: 0; padding-left: 20px; padding-right: 20px; }
             body.bkl-library-mode #bklBrowseDivider { margin-top: 8px; }
@@ -3395,7 +3414,7 @@
             }
             body.bkl-library-mode .shelf-book { width: 118px; }
             body.bkl-library-mode .shelf-cover-wrap { width: 118px; height: 177px; }
-            body.bkl-library-mode .shelf-books { gap: 12px; padding-bottom: 14px; }
+            body.bkl-library-mode .shelf-books { padding-bottom: 14px; }
             body.bkl-library-mode .shelf-title {
               font-size: clamp(1.3rem, 5.2vw, 1.6rem);
             }
