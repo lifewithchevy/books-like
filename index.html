@@ -8520,7 +8520,6 @@
       var intro = document.getElementById('bklIntro'); if (!intro) return;
       var n = bklStreak();
       var hasStreak = n >= 1;
-      var streakLine = hasStreak ? '<p class="bkl-streak">\ud83d\udd25 ' + n + '-day streak</p>' : '';
       var ctaLabel = 'Play Booky';
       var ctaNote = hasStreak ? '' : '<p class="bkl-ctanote">Takes about a minute.</p>';
       var covers = (coverUrls || []).filter(Boolean).slice(0, 5);
@@ -8544,7 +8543,6 @@
         + '<h1 class="bkl-title">The books <em>everyone\'s</em> playing</h1>'
         + '<p class="bkl-sub">Romantasy books from Booky, the daily word game. Find your next read after you finish the puzzle.</p>'
         + '<div class="lp-ctas"><a href="/booky" class="lp-btn-primary lp-btn-booky bkl-cta" onclick="bklPh(\'library_play_bridge_clicked\',{has_streak:' + hasStreak + ',streak:' + n + '})">' + ctaLabel + '</a></div>'
-        + streakLine
         + ctaNote
         + '</div>'
         + '<div class="bkl-hero-stage" aria-hidden="true"><div class="bkl-fan">' + fan + '</div></div>'
