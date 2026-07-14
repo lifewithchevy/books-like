@@ -7734,6 +7734,14 @@
       var cnt = document.getElementById('bklWtrCount'); if (cnt) cnt.textContent = keys.length;
       host.innerHTML = keys.map(function (k, i) { return renderShelfBook(k, bookMetadata[k], 'bkl-wtr', i); }).join('');
     }
+    function isBookyLibraryPath() {
+      var p = window.location.pathname;
+      return p === '/booky-library' || p === '/booky-library/';
+    }
+    function bklSetDiscoverHeroVisible(visible) {
+      var hero = document.querySelector('#discoverShelves > .discover-hero-shelf');
+      if (hero) hero.style.display = visible ? '' : 'none';
+    }
     function hideBklIntro(){ var i = document.getElementById('bklIntro'); if (i) i.style.display = 'none'; }
     function renderBklIntro(){
       var intro = document.getElementById('bklIntro'); if (!intro) return;
@@ -7761,7 +7769,9 @@
     window.showBookyLibrary = function(){
       enterGuestMode();
       showDiscoverShelves();
+      bklSetDiscoverHeroVisible(false);
       renderBklIntro();
+      setBookyLibraryUrl();
       bklPh('library_view', {});
     };
 
@@ -12009,11 +12019,11 @@
     // Show discover shelves (browse / booky-library). Hides the Booky landing overlay.
     function showDiscoverShelves() {
       hideBklIntro();
+      if (!isBookyLibraryPath()) bklSetDiscoverHeroVisible(true);
       navClearStack();
       closeSearchOverlay();
       document.getElementById('landingOverlay').classList.add('hidden');
       setLandingMode(false);
-      setBookyLibraryUrl();
       document.getElementById('stationHeader').style.display = 'none';
       document.getElementById('resultsWrap').style.display = 'none';
       const _outerBack = document.getElementById('resultsWrapBackRow');
@@ -12043,6 +12053,7 @@
     // Booky landing page (logo / home). Shelves stay loaded underneath the overlay.
     function showBookyLanding() {
       hideBklIntro();
+      bklSetDiscoverHeroVisible(true);
       navClearStack();
       closeSearchOverlay();
       resetUrlToHome();
