@@ -2925,17 +2925,30 @@
           }
           body.bkl-library-mode > header {
             background: var(--bkl-paper);
-            border-bottom-color: var(--bkl-line);
+            border-bottom: 1px solid var(--bkl-line);
+            box-shadow: none;
+            padding: 18px 64px;
+            max-width: 1240px;
+            width: 100%;
+            margin: 0 auto;
           }
           body.bkl-library-mode > .main {
             background: transparent;
-            max-width: 1120px;
+            max-width: 1240px;
+            width: 100%;
+            margin: 0 auto;
             --main-px: 0;
             --main-py: 0;
           }
+          body.bkl-library-mode .booky-top-cta {
+            box-shadow: 0 2px 10px rgba(217, 70, 168, 0.18);
+          }
+          body.bkl-library-mode .header-search-btn:hover {
+            background: rgba(20, 20, 20, 0.05);
+          }
           body.bkl-library-mode #discoverVibeBar { display: none !important; }
           body.bkl-library-mode #discoverShelves {
-            padding-bottom: 64px;
+            padding-bottom: 80px;
             background: var(--bkl-surface);
           }
           body.bkl-library-mode #bklIntro {
@@ -2947,95 +2960,95 @@
           body.bkl-library-mode .bkl-hero {
             position: relative;
             overflow: hidden;
-            min-height: min(70vh, 620px);
+            min-height: min(78vh, 700px);
             display: grid;
-            grid-template-columns: 1.05fr .95fr;
-            gap: 24px;
+            grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+            gap: 56px;
             align-items: center;
-            padding: 48px 40px 56px;
+            padding: 72px 64px 88px;
             border-radius: 0;
             background: var(--bkl-paper);
           }
           body.bkl-library-mode .bkl-hero-copy {
-            position: relative; z-index: 2; max-width: 34rem; padding-bottom: 0;
+            position: relative; z-index: 2; max-width: 32rem; padding-bottom: 0;
           }
           body.bkl-library-mode .bkl-brand-mark {
-            font: 600 11px/1 Inter,sans-serif; letter-spacing: .14em; text-transform: uppercase;
-            color: var(--bkl-muted); margin: 0 0 18px;
+            font: 600 11px/1 Inter,sans-serif; letter-spacing: .16em; text-transform: uppercase;
+            color: var(--bkl-muted); margin: 0 0 22px;
           }
           body.bkl-library-mode .bkl-title {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(2.7rem, 5.8vw, 4.2rem);
-            font-weight: 700; line-height: 1.02; letter-spacing: -.035em;
-            color: var(--bkl-ink); margin: 0 0 18px;
+            font-size: clamp(3rem, 5.2vw, 4.6rem);
+            font-weight: 700; line-height: 1.02; letter-spacing: -.04em;
+            color: var(--bkl-ink); margin: 0 0 20px;
           }
           body.bkl-library-mode .bkl-title em {
             font-style: italic; font-weight: 600; color: var(--bkl-ink);
             background: none; -webkit-background-clip: initial; background-clip: initial;
           }
           body.bkl-library-mode .bkl-sub {
-            font-size: 1.05rem; line-height: 1.55; color: var(--bkl-muted);
-            margin: 0 0 28px; max-width: 34ch; font-weight: 400;
+            font-size: 1.1rem; line-height: 1.55; color: var(--bkl-muted);
+            margin: 0 0 32px; max-width: 36ch; font-weight: 400;
           }
           body.bkl-library-mode .bkl-streak {
             display: block;
             font: 500 13px/1.4 Inter,sans-serif; color: var(--bkl-muted);
-            background: none; border: none; padding: 0; margin: 14px 0 0;
+            background: none; border: none; padding: 0; margin: 16px 0 0;
             animation: none; border-radius: 0;
           }
           body.bkl-library-mode .lp-ctas { margin: 0; }
           body.bkl-library-mode .bkl-cta.lp-btn-booky,
           body.bkl-library-mode .bkl-cta {
             display: inline-flex !important; align-items: center; justify-content: center;
-            font-size: 1rem !important; font-weight: 700 !important; letter-spacing: -.01em;
-            padding: 16px 28px !important; border-radius: 999px !important;
+            font-size: 1.05rem !important; font-weight: 700 !important; letter-spacing: -.01em;
+            padding: 17px 32px !important; border-radius: 999px !important;
             background: linear-gradient(135deg, #d946a8, #8b3fd3) !important;
             color: #fff !important;
-            box-shadow: 0 8px 24px rgba(217, 70, 168, 0.3) !important;
+            box-shadow: 0 8px 24px rgba(217, 70, 168, 0.28) !important;
             border: none !important;
             transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
           }
           body.bkl-library-mode .bkl-cta:hover {
             transform: translateY(-1px);
             background: linear-gradient(135deg, #e055b5, #9a4de0) !important;
-            box-shadow: 0 12px 28px rgba(217, 70, 168, 0.4) !important;
+            box-shadow: 0 12px 28px rgba(217, 70, 168, 0.38) !important;
           }
           body.bkl-library-mode .bkl-ctanote {
-            font-size: 13px; color: var(--bkl-muted); margin: 12px 0 0; font-weight: 400;
+            font-size: 13px; color: var(--bkl-muted); margin: 14px 0 0; font-weight: 400;
           }
           body.bkl-library-mode .bkl-hint {
-            font-size: 13.5px; color: var(--bkl-muted);
-            background: transparent; border: none; border-radius: 0;
-            padding: 20px 24px 4px; margin: 0; backdrop-filter: none;
+            font-size: 14px; color: var(--bkl-muted);
+            background: var(--bkl-surface); border: none; border-radius: 0;
+            padding: 32px 64px 8px; margin: 0; backdrop-filter: none;
             max-width: none; text-align: left;
           }
           body.bkl-library-mode .bkl-hero-stage {
-            position: relative; min-height: 360px; height: 100%;
+            position: relative; min-height: 440px; height: 100%;
             display: flex; align-items: center; justify-content: center;
-            perspective: 900px;
+            perspective: 1100px;
           }
           body.bkl-library-mode .bkl-fan {
-            position: relative; width: min(100%, 420px); height: 340px;
+            position: relative; width: min(100%, 540px); height: 440px;
             margin: 0 auto;
           }
           body.bkl-library-mode .bkl-fan img {
-            position: absolute; bottom: 20px; width: 148px; height: 222px;
+            position: absolute; bottom: 32px; width: 172px; height: 258px;
             object-fit: cover; border-radius: 4px;
-            box-shadow: 0 16px 40px rgba(0,0,0,.18);
+            box-shadow: 0 22px 50px rgba(0,0,0,.15);
             background: #e8e4e0;
             transition: transform .4s cubic-bezier(.2,.7,.2,1);
             animation: bklFloat 6s ease-in-out infinite;
           }
-          body.bkl-library-mode .bkl-fan img:nth-child(1) { left: 6%;  transform: rotate(-12deg) translateY(14px); animation-delay: 0s; z-index: 1; }
-          body.bkl-library-mode .bkl-fan img:nth-child(2) { left: 22%; transform: rotate(-5deg) translateY(4px);  animation-delay: .35s; z-index: 2; }
-          body.bkl-library-mode .bkl-fan img:nth-child(3) { left: 38%; transform: rotate(0deg) translateY(0);    animation-delay: .7s; z-index: 5; width: 170px; height: 255px; }
-          body.bkl-library-mode .bkl-fan img:nth-child(4) { left: 57%; transform: rotate(6deg) translateY(6px);  animation-delay: .2s; z-index: 3; }
-          body.bkl-library-mode .bkl-fan img:nth-child(5) { left: 72%; transform: rotate(13deg) translateY(16px); animation-delay: .55s; z-index: 1; }
-          body.bkl-library-mode .bkl-fan:hover img:nth-child(1) { transform: rotate(-15deg) translateY(6px); }
-          body.bkl-library-mode .bkl-fan:hover img:nth-child(2) { transform: rotate(-7deg) translateY(-2px); }
-          body.bkl-library-mode .bkl-fan:hover img:nth-child(3) { transform: rotate(0deg) translateY(-8px) scale(1.02); }
-          body.bkl-library-mode .bkl-fan:hover img:nth-child(4) { transform: rotate(8deg) translateY(0); }
-          body.bkl-library-mode .bkl-fan:hover img:nth-child(5) { transform: rotate(16deg) translateY(8px); }
+          body.bkl-library-mode .bkl-fan img:nth-child(1) { left: 2%;  transform: rotate(-13deg) translateY(18px); animation-delay: 0s; z-index: 1; }
+          body.bkl-library-mode .bkl-fan img:nth-child(2) { left: 18%; transform: rotate(-6deg) translateY(6px);  animation-delay: .35s; z-index: 2; }
+          body.bkl-library-mode .bkl-fan img:nth-child(3) { left: 34%; transform: rotate(0deg) translateY(0);    animation-delay: .7s; z-index: 5; width: 204px; height: 306px; }
+          body.bkl-library-mode .bkl-fan img:nth-child(4) { left: 55%; transform: rotate(7deg) translateY(8px);  animation-delay: .2s; z-index: 3; }
+          body.bkl-library-mode .bkl-fan img:nth-child(5) { left: 72%; transform: rotate(14deg) translateY(20px); animation-delay: .55s; z-index: 1; }
+          body.bkl-library-mode .bkl-fan:hover img:nth-child(1) { transform: rotate(-16deg) translateY(8px); }
+          body.bkl-library-mode .bkl-fan:hover img:nth-child(2) { transform: rotate(-8deg) translateY(-2px); }
+          body.bkl-library-mode .bkl-fan:hover img:nth-child(3) { transform: rotate(0deg) translateY(-10px) scale(1.02); }
+          body.bkl-library-mode .bkl-fan:hover img:nth-child(4) { transform: rotate(9deg) translateY(0); }
+          body.bkl-library-mode .bkl-fan:hover img:nth-child(5) { transform: rotate(17deg) translateY(10px); }
 
           body.bkl-library-mode #bklWtrShelf,
           body.bkl-library-mode #bklLibraryShelves .shelf-row,
@@ -3047,48 +3060,48 @@
           body.bkl-library-mode #discoverShelves > .shelf-row { animation-delay: .18s; }
 
           body.bkl-library-mode #bklLibraryShelves {
-            padding: 12px 0 8px;
+            padding: 24px 0 16px;
             background: var(--bkl-surface);
           }
-          body.bkl-library-mode .shelf-row { padding-top: 40px; margin-bottom: 4px; }
-          body.bkl-library-mode .shelf-header { padding: 0 28px 10px; }
+          body.bkl-library-mode .shelf-row { padding-top: 52px; margin-bottom: 4px; }
+          body.bkl-library-mode .shelf-header { padding: 0 64px 12px; }
           body.bkl-library-mode .shelf-title {
-            font-size: clamp(1.45rem, 2.8vw, 1.95rem);
-            letter-spacing: -.02em; color: var(--bkl-ink); font-weight: 700;
+            font-size: clamp(1.55rem, 2.4vw, 2.05rem);
+            letter-spacing: -.025em; color: var(--bkl-ink); font-weight: 700;
           }
           body.bkl-library-mode .shelf-subtitle {
-            padding: 0 28px 16px; font-size: 14px; color: var(--bkl-muted); max-width: 46ch;
-            line-height: 1.45;
+            padding: 0 64px 18px; font-size: 15px; color: var(--bkl-muted); max-width: 48ch;
+            line-height: 1.5;
           }
           body.bkl-library-mode .shelf-books {
-            gap: 16px; padding: 4px 28px 20px;
+            gap: 18px; padding: 6px 64px 28px;
             scroll-snap-type: x mandatory;
           }
           body.bkl-library-mode .shelf-book {
-            width: 148px; scroll-snap-align: start;
+            width: 156px; scroll-snap-align: start;
             transition: transform .22s ease;
           }
-          body.bkl-library-mode .shelf-book:hover { transform: translateY(-3px); }
+          body.bkl-library-mode .shelf-book:hover { transform: translateY(-4px); }
           body.bkl-library-mode .shelf-cover-wrap {
-            width: 148px; height: 222px; border-radius: 4px;
-            box-shadow: 0 8px 24px rgba(0,0,0,.12);
+            width: 156px; height: 234px; border-radius: 4px;
+            box-shadow: 0 10px 28px rgba(0,0,0,.11);
             overflow: hidden;
           }
           body.bkl-library-mode .shelf-book:hover .shelf-cover-wrap {
-            box-shadow: 0 14px 32px rgba(0,0,0,.16);
+            box-shadow: 0 16px 36px rgba(0,0,0,.15);
             transform: none;
           }
           body.bkl-library-mode .shelf-book-title {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: 14px; font-weight: 600; line-height: 1.25;
-            color: var(--bkl-ink); margin-top: 4px;
+            font-size: 14.5px; font-weight: 600; line-height: 1.25;
+            color: var(--bkl-ink); margin-top: 6px;
           }
           body.bkl-library-mode .shelf-book-author {
-            font-size: 12.5px; color: var(--bkl-muted);
+            font-size: 13px; color: var(--bkl-muted);
           }
           body.bkl-library-mode .shelf-book.bkl-featured .shelf-cover-wrap {
             outline: 1.5px solid #b8954a;
-            box-shadow: 0 10px 26px rgba(0,0,0,.14);
+            box-shadow: 0 10px 26px rgba(0,0,0,.12);
           }
           body.bkl-library-mode .bkl-ribbon {
             position: absolute; top: 10px; left: 0; z-index: 4;
@@ -3108,19 +3121,19 @@
           body.bkl-library-mode .bkl-buy:hover { border-bottom-color: var(--bkl-ink); }
 
           body.bkl-library-mode #bklBrowseDivider {
-            margin: 20px 28px 0; padding: 36px 0 8px;
+            margin: 28px 64px 0; padding: 48px 0 12px;
             border-top: 1px solid var(--bkl-line);
             background: var(--bkl-surface);
           }
           body.bkl-library-mode #bklBrowseDivider .bkl-div-title {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(1.4rem, 2.8vw, 1.85rem); margin: 0 0 6px; color: var(--bkl-ink);
+            font-size: clamp(1.5rem, 2.4vw, 1.95rem); margin: 0 0 8px; color: var(--bkl-ink);
           }
           body.bkl-library-mode #bklBrowseDivider .bkl-div-sub {
-            font-size: 14px; color: var(--bkl-muted); margin: 0;
+            font-size: 15px; color: var(--bkl-muted); margin: 0;
           }
           body.bkl-library-mode #bklLibraryFooter {
-            margin: 0; padding: 48px 28px 72px;
+            margin: 0; padding: 64px 64px 96px;
             border-top: 1px solid var(--bkl-line); text-align: center;
             background: var(--bkl-surface);
           }
@@ -3146,6 +3159,53 @@
           }
           body.bkl-library-mode #bklLibraryFooter .bkl-links a:hover { color: var(--bkl-ink); }
 
+          /* Wide desktop: a little more air around the hero composition */
+          @media (min-width: 1200px) {
+            body.bkl-library-mode .bkl-hero {
+              padding: 80px 72px 96px;
+              gap: 64px;
+              min-height: min(82vh, 720px);
+            }
+            body.bkl-library-mode .bkl-title {
+              font-size: clamp(3.25rem, 4.6vw, 4.75rem);
+            }
+            body.bkl-library-mode .bkl-hero-stage { min-height: 480px; }
+            body.bkl-library-mode .bkl-fan {
+              width: min(100%, 560px);
+              height: 460px;
+            }
+          }
+
+          /* Mid desktop: keep breathing room without overcrowding */
+          @media (min-width: 821px) and (max-width: 1100px) {
+            body.bkl-library-mode > header { padding-left: 40px; padding-right: 40px; }
+            body.bkl-library-mode .bkl-hero {
+              padding: 56px 40px 64px;
+              gap: 36px;
+              min-height: min(68vh, 620px);
+            }
+            body.bkl-library-mode .bkl-hero-stage { min-height: 360px; }
+            body.bkl-library-mode .bkl-fan {
+              width: min(100%, 420px);
+              height: 340px;
+            }
+            body.bkl-library-mode .bkl-fan img {
+              width: 148px;
+              height: 222px;
+              bottom: 24px;
+            }
+            body.bkl-library-mode .bkl-fan img:nth-child(3) {
+              width: 176px;
+              height: 264px;
+            }
+            body.bkl-library-mode .shelf-header,
+            body.bkl-library-mode .shelf-subtitle,
+            body.bkl-library-mode .shelf-books { padding-left: 40px; padding-right: 40px; }
+            body.bkl-library-mode .bkl-hint { padding-left: 40px; padding-right: 40px; }
+            body.bkl-library-mode #bklBrowseDivider { margin-left: 40px; margin-right: 40px; }
+            body.bkl-library-mode #bklLibraryFooter { padding-left: 40px; padding-right: 40px; }
+          }
+
           @keyframes bklFadeUp {
             from { opacity: 0; transform: translateY(14px); }
             to { opacity: 1; transform: translateY(0); }
@@ -3156,6 +3216,9 @@
           }
 
           @media (max-width: 820px) {
+            body.bkl-library-mode > header {
+              padding: 14px 16px;
+            }
             body.bkl-library-mode > .main {
               --main-px: 0;
               --main-py: 0;
