@@ -2907,6 +2907,17 @@
           #bklIntro .bkl-streak { display: inline-block; font: 700 13px 'Inter',sans-serif; color: #8a3b0d; background: #ffe9c9; border: 1px solid #f6cf95; padding: 6px 12px; border-radius: 999px; margin: 0 0 12px; }
           #bklIntro .lp-ctas { margin: 0 0 12px; }
           #bklIntro .bkl-hint { font-size: 12.5px; color: #8400E7; background: #f6ecff; border: 1px dashed #d9b8f0; border-radius: 12px; padding: 9px 12px; margin: 2px 0 8px; }
+          #bklLibraryShelves { padding: 0 16px; }
+          .shelf-book.bkl-featured .shelf-cover-wrap { box-shadow: 0 6px 18px rgba(201,138,43,.25); outline: 1.5px solid #c98a2b; }
+          .bkl-ribbon {
+            position: absolute; top: 8px; left: 0; z-index: 4;
+            background: #c98a2b; color: #fff; font: 800 10px 'Inter',sans-serif;
+            letter-spacing: .04em; padding: 4px 9px 4px 8px; border-radius: 0 999px 999px 0;
+          }
+          .bkl-day-tag {
+            font: 700 10px 'Inter',sans-serif; letter-spacing: .05em;
+            color: var(--text-muted,#8a6f7c); text-transform: uppercase; margin: 0 0 4px;
+          }
         </style>
         <div class="discover-shelves" id="discoverShelves"></div>
 
@@ -7710,6 +7721,105 @@
     // Reuses the site's existing shelf components; adds a heart-to-save toggle
     // and a library-framed intro (streak bridge + CTA) above the shelves.
     var BKL_TBR_KEY = '90books_tbr_v1';
+    var BKL_WORD_DATA = null;
+    var BKL_WORD_BY_SLUG = {};
+    var BKL_FEATURED_SLUGS = ['weavingshaw', 'starside'];
+    function bklComputeDayNumber(epochStr) {
+      var p = epochStr.split('-').map(Number);
+      var epochLocal = new Date(p[0], p[1] - 1, p[2], 0, 0, 0).getTime();
+      var now = new Date();
+      var todayLocal = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0).getTime();
+      return Math.floor((todayLocal - epochLocal) / 86400000) + 1;
+    }
+    function bklSlugToKey(slug) {
+      if (bookMetadata[slug]) return slug;
+      return Object.keys(bookMetadata).find(function (k) { return slugify(k) === slug; }) || null;
+    }
+    function bklResolveBook(wordBook) {
+      var key = bklSlugToKey(wordBook.slug) || wordBook.slug;
+      if (bookMetadata[key]) return { key: key, meta: bookMetadata[key] };
+      return { key: key, meta: { author: wordBook.author }, coverOverride: wordBook.cover, titleOverride: wordBook.title, slug: wordBook.slug };
+    }
+    function bklOpenBook(key, slug) {
+      if (bookMetadata[key]) { openBookDetail(key); return; }
+      var k = slug ? bklSlugToKey(slug) : null;
+      if (k && bookMetadata[k]) { openBookDetail(k); return; }
+      if (slug) window.location.href = '/books-like/' + slug;
+    }
+    function bklLoadWordData() {
+      if (BKL_WORD_DATA) return Promise.resolve(BKL_WORD_DATA);
+      return fetch('/booky/words.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (j) {
+        var wb = j.wordBooks || {}, queue = j.queue || [], seen = {}, slugOrder = [];
+        BKL_WORD_BY_SLUG = {};
+        queue.forEach(function (w) {
+          var b = wb[w];
+          if (b && b.slug && !seen[b.slug]) { seen[b.slug] = b; slugOrder.push(b.slug); BKL_WORD_BY_SLUG[b.slug] = b; }
+        });
+        var day = bklComputeDayNumber(j.epoch);
+        var recent = [], used = {};
+        for (var i = day - 2; i >= 0 && recent.length < 6; i--) {
+          var word = queue[i], b = wb[word];
+          if (b && b.slug && !used[b.slug]) {
+            used[b.slug] = 1;
+            recent.push({ day: i + 1, word: word, book: b });
+          }
+        }
+        var featured = BKL_FEATURED_SLUGS.filter(function (s) { return seen[s]; }).map(function (s) { return { slug: s, book: seen[s] }; });
+        var featSet = {};
+        featured.forEach(function (f) { featSet[f.slug] = 1; });
+        var allBooks = slugOrder.filter(function (s) { return !featSet[s]; }).map(function (s) { return { slug: s, book: seen[s] }; });
+        BKL_WORD_DATA = { day: day, recent: recent, featured: featured, allBooks: allBooks, count: slugOrder.length };
+        return BKL_WORD_DATA;
+      });
+    }
+    function bklRenderShelfRow(id, title, desc, booksHtml) {
+      return '<div class="shelf-row" data-shelf="' + id + '">'
+        + '<div class="shelf-header"><div class="shelf-title">' + title + '</div></div>'
+        + (desc ? '<div class="shelf-subtitle">' + desc + '</div>' : '')
+        + '<div class="shelf-books">' + booksHtml + '</div></div>';
+    }
+    function bklRenderLibraryShelves(data) {
+      var host = document.getElementById('bklLibraryShelves');
+      if (!host) return;
+      var html = '';
+      if (data.recent.length) {
+        var recentHtml = data.recent.map(function (r, i) {
+          var res = bklResolveBook(r.book);
+          return renderShelfBook(res.key, res.meta, 'bkl-recent', i, {
+            day: r.day, word: r.word, slug: r.book.slug,
+            coverOverride: res.coverOverride, titleOverride: res.titleOverride,
+          });
+        }).join('');
+        html += bklRenderShelfRow('bkl-recent', 'Recently in Booky', 'Past words only — nothing spoils today\u2019s puzzle.', recentHtml);
+      }
+      if (data.featured.length) {
+        var featHtml = data.featured.map(function (f, i) {
+          var res = bklResolveBook(f.book);
+          return renderShelfBook(res.key, res.meta, 'bkl-featured', i, {
+            featured: true, slug: f.slug,
+            coverOverride: res.coverOverride, titleOverride: res.titleOverride,
+          });
+        }).join('');
+        html += bklRenderShelfRow('bkl-featured', '\u2728 Featured in Booky', 'Authors we\u2019ve partnered with — pinned with love.', featHtml);
+      }
+      if (data.allBooks.length) {
+        var gameHtml = data.allBooks.map(function (b, i) {
+          var res = bklResolveBook(b.book);
+          return renderShelfBook(res.key, res.meta, 'bkl-game', i, {
+            slug: b.slug, coverOverride: res.coverOverride, titleOverride: res.titleOverride,
+          });
+        }).join('');
+        html += bklRenderShelfRow('bkl-game', 'Books featured in Booky', data.count + ' books and counting — every one has been a daily answer.', gameHtml);
+      }
+      host.innerHTML = html;
+      host.style.display = html ? '' : 'none';
+      scheduleCoverSort(host, 900);
+      scheduleCoverSort(host, 2500);
+    }
+    function hideBklLibraryShelves() {
+      var el = document.getElementById('bklLibraryShelves');
+      if (el) el.style.display = 'none';
+    }
     function bklGetTbr(){ try { var a = JSON.parse(localStorage.getItem(BKL_TBR_KEY)); return Array.isArray(a) ? a : []; } catch (e) { return []; } }
     function bklSetTbr(a){ try { localStorage.setItem(BKL_TBR_KEY, JSON.stringify(a)); } catch (e) {} }
     function bklIsTbr(key){ return bklGetTbr().indexOf(key) >= 0; }
@@ -7727,12 +7837,22 @@
     }
     function renderBklWantToRead(){
       var host = document.getElementById('bklWtrRow'); if (!host) return;
-      var keys = bklGetTbr().filter(function (k) { return bookMetadata[k]; });
+      var keys = bklGetTbr().filter(function (k) {
+        return bookMetadata[k] || BKL_WORD_BY_SLUG[k];
+      });
       var wrap = document.getElementById('bklWtrShelf');
       if (!keys.length) { if (wrap) wrap.style.display = 'none'; return; }
       if (wrap) wrap.style.display = '';
       var cnt = document.getElementById('bklWtrCount'); if (cnt) cnt.textContent = keys.length;
-      host.innerHTML = keys.map(function (k, i) { return renderShelfBook(k, bookMetadata[k], 'bkl-wtr', i); }).join('');
+      host.innerHTML = keys.map(function (k, i) {
+        if (bookMetadata[k]) return renderShelfBook(k, bookMetadata[k], 'bkl-wtr', i);
+        var wb = BKL_WORD_BY_SLUG[k];
+        if (!wb) return '';
+        var res = bklResolveBook(wb);
+        return renderShelfBook(res.key, res.meta, 'bkl-wtr', i, {
+          slug: wb.slug, coverOverride: res.coverOverride, titleOverride: res.titleOverride,
+        });
+      }).join('');
     }
     function isBookyLibraryPath() {
       var p = window.location.pathname;
@@ -7742,7 +7862,10 @@
       var hero = document.querySelector('#discoverShelves > .discover-hero-shelf');
       if (hero) hero.style.display = visible ? '' : 'none';
     }
-    function hideBklIntro(){ var i = document.getElementById('bklIntro'); if (i) i.style.display = 'none'; }
+    function hideBklIntro(){
+      var i = document.getElementById('bklIntro'); if (i) i.style.display = 'none';
+      hideBklLibraryShelves();
+    }
     function renderBklIntro(){
       var intro = document.getElementById('bklIntro'); if (!intro) return;
       var n = bklStreak();
@@ -7772,21 +7895,34 @@
       bklSetDiscoverHeroVisible(false);
       renderBklIntro();
       setBookyLibraryUrl();
-      bklPh('library_view', {});
+      bklLoadWordData().then(function (data) {
+        bklRenderLibraryShelves(data);
+        renderBklWantToRead();
+        bklPh('library_view', { books_count: data.count });
+      }).catch(function () {
+        bklPh('library_view', {});
+      });
     };
 
-    function renderShelfBook(key, meta, shelfId, idx) {
-      const coverUrl = getBookCoverUrl(key);
-      const title    = displayTitle(key);
+    function renderShelfBook(key, meta, shelfId, idx, opts) {
+      opts = opts || {};
+      const coverUrl = opts.coverOverride || getBookCoverUrl(key);
+      const title    = opts.titleOverride || displayTitle(key);
       const safeKey  = key.replace(/'/g, "\\'");
+      const safeSlug = (opts.slug || key).replace(/'/g, "\\'");
       const safeTitle  = title.replace(/'/g, "\\'");
       const safeAuthor = (meta.author || '').replace(/'/g, "\\'");
       const initial  = title.replace(/^(A |An |The )/i, '')[0] || title[0] || '?';
+      const featuredClass = opts.featured ? ' bkl-featured' : '';
+      const ribbon = opts.featured ? '<span class="bkl-ribbon">\u2728 Featured</span>' : '';
+      const dayTag = opts.day ? '<div class="bkl-day-tag">Day ' + opts.day + ' \u00b7 ' + opts.word + '</div>' : '';
+      const clickFn = bookMetadata[key] ? "openBookDetail('" + safeKey + "')" : "bklOpenBook('" + safeKey + "','" + safeSlug + "')";
       // If no ISBN cover URL, use a tiny blank gif so onload fires → triggers fetchCover
       const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
       const imgSrc = coverUrl || BLANK;
-      return `<div class="shelf-book" onclick="openBookDetail('${safeKey}')">
+      return `<div class="shelf-book${featuredClass}" onclick="${clickFn}">
         <div class="shelf-cover-wrap">
+          ${ribbon}
           <div class="shelf-cover-fallback" style="display:none;">
             <div class="shelf-cover-fallback-letter">${initial}</div>
             <div class="shelf-cover-fallback-title">${title}</div>
@@ -7797,6 +7933,7 @@
             onerror="shelfCoverError(this,'${safeTitle}','${safeAuthor}')">
           <button class="shelf-heart${bklIsTbr(key) ? ' on' : ''}" data-key="${safeKey}" aria-label="Want to read" aria-pressed="${bklIsTbr(key) ? 'true' : 'false'}" onclick="event.stopPropagation();bklToggleTbr('${safeKey}',this)">${bklIsTbr(key) ? '♥' : '♡'}</button>
         </div>
+        ${dayTag}
         <div class="shelf-book-title">${title}</div>
         <div class="shelf-book-author">${meta.author}</div>
       </div>`;
@@ -9121,6 +9258,7 @@
       if (!shelvesEl) return;
       // Library intro slot (populated + shown only in /booky-library mode).
       let html = '<div id="bklIntro" style="display:none;"></div>';
+      html += '<div id="bklLibraryShelves" style="display:none;"></div>';
       html += renderDiscoverHero();
       html += renderVibeShortcuts();
       // Discover by Genre removed in romantasy-only pivot, multi-genre browse
