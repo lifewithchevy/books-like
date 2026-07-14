@@ -8358,9 +8358,9 @@
       var intro = document.getElementById('bklIntro'); if (!intro) return;
       var n = bklStreak();
       var hasStreak = n >= 1;
-      var streakLine = hasStreak ? '<div class="bkl-streak">\ud83d\udd25 You are on a ' + n + '-day streak.</div>' : '';
+      var streakLine = hasStreak ? '<p class="bkl-streak">\ud83d\udd25 ' + n + '-day streak</p>' : '';
       var ctaLabel = 'Play Booky';
-      var ctaNote = hasStreak ? '<p class="bkl-ctanote">Keep the streak alive. It takes about a minute.</p>' : '<p class="bkl-ctanote">New here? It takes about a minute.</p>';
+      var ctaNote = hasStreak ? '' : '<p class="bkl-ctanote">Takes about a minute.</p>';
       var covers = (coverUrls || []).filter(Boolean).slice(0, 5);
       if (covers.length < 3) {
         covers = [
@@ -8387,7 +8387,7 @@
         + '</div>'
         + '<div class="bkl-hero-stage" aria-hidden="true"><div class="bkl-fan">' + fan + '</div></div>'
         + '</section>'
-        + '<div class="bkl-hint" id="bklTbrHint">Tap the heart on any book to start your want-to-read list. It saves on this device, no login needed.</div>'
+        + '<div class="bkl-hint" id="bklTbrHint">Tap \u2661 on any book to save it for later. Stays on this device.</div>'
         + '<div id="bklWtrShelf" class="shelf-row" style="display:none;">'
         + '<div class="shelf-header"><div class="shelf-title">Your want-to-read list (<span id="bklWtrCount">0</span>)</div></div>'
         + '<div class="shelf-books" id="bklWtrRow"></div>'
