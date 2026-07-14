@@ -14,7 +14,7 @@ import { next } from '@vercel/edge';
 import { BOOKS_LIKE_RECS } from './seo-recs.mjs';
 
 export const config = {
-  matcher: ['/books-like/:slug*', '/genre/:slug*', '/mood/:slug*'],
+  matcher: ['/books-like/:slug*', '/genre/:slug*', '/mood/:slug*', '/booky-library'],
 };
 
 // Canonical capitalisation for our most-trafficked slugs. Anything not here
@@ -108,6 +108,15 @@ const HOW_CHOSEN_FAQ = {
 
 function buildMeta(pathname) {
   let m;
+  if (pathname === '/booky-library' || pathname === '/booky-library/') {
+    return {
+      title: 'The Booky Library | Every romantasy book from Booky by 90books',
+      description: "Browse every romantasy book featured in Booky, the daily romantasy word game. Hand-picked fantasy romance, enemies to lovers, fae, dragons, and more. Start your want-to-read list.",
+      canonical: 'https://90books.com/booky-library',
+      pageKind: 'library',
+      label: 'The Booky Library',
+    };
+  }
   if ((m = pathname.match(/^\/books-like\/([^\/]+)\/?$/))) {
     const slug = m[1];
     const bookTitle = BOOK_TITLES[slug] || slugToTitle(slug);

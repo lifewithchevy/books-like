@@ -24,6 +24,14 @@
     <priority>0.8</priority>
   </url>
 
+  <!-- Booky Library — the reader-first shelf of every book featured in the game -->
+  <url>
+    <loc>https://90books.com/booky-library</loc>
+    <lastmod>2026-07-14</lastmod>
+    <changefreq>weekly</changefreq>
+    <priority>0.8</priority>
+  </url>
+
   <!-- Flagship Romantasy genre page -->
   <url>
     <loc>https://90books.com/genre/romantasy</loc>

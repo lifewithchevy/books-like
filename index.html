@@ -2630,6 +2630,117 @@
 <body>
 <script>try{if(location.pathname==='/'||location.pathname===''){document.documentElement.classList.add('landing-active');document.body.classList.add('landing-active');}}catch(e){}</script>
 
+  <!-- ===== BOOKY LIBRARY (reader-first shelf, /booky-library) ===== -->
+  <style>
+    #bookyLibraryView{position:fixed;inset:0;z-index:600;overflow-y:auto;overscroll-behavior:contain;
+      background:#fbf3f6;color:#2a1720;
+      font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Helvetica,Arial,sans-serif;
+      -webkit-font-smoothing:antialiased;}
+    #bookyLibraryView.hidden{display:none;}
+    #bookyLibraryView *{box-sizing:border-box;}
+    .bkl-wrap{max-width:520px;margin:0 auto;}
+    .bkl-serif{font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,'Times New Roman',serif;}
+    #bookyLibraryView .bkl-top{position:sticky;top:0;z-index:5;display:flex;align-items:center;justify-content:space-between;
+      padding:12px 16px;background:rgba(251,243,246,.94);backdrop-filter:blur(6px);border-bottom:1px solid #f0d9e6;}
+    .bkl-logo{font:800 18px inherit;letter-spacing:-.02em;color:#2a1720;background:none;border:none;cursor:pointer;padding:0;}
+    .bkl-logo span{color:#b5188b;}
+    .bkl-play{font:700 13px inherit;text-decoration:none;color:#fff;
+      background:linear-gradient(135deg,#b5188b,#7a1fa2);padding:9px 14px;border-radius:999px;}
+    .bkl-sec{padding:18px 16px;}
+    .bkl-hero{padding:22px 16px 20px;background:radial-gradient(120% 80% at 80% -10%,#fbe3f1 0%,rgba(251,227,241,0) 60%);}
+    .bkl-hero h1{font:800 34px/1.02 var(--_s,inherit);font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;
+      margin:0 0 8px;letter-spacing:-.01em;background:linear-gradient(120deg,#b5188b,#7a1fa2);
+      -webkit-background-clip:text;background-clip:text;color:transparent;}
+    .bkl-sub{font-size:14.5px;line-height:1.5;color:#5b4653;margin:0 0 6px;max-width:36ch;}
+    .bkl-trust{font-size:12.5px;color:#8a6f7c;margin:0 0 16px;}
+    .bkl-trust b{color:#2a1720;}
+    .bkl-streak{display:inline-flex;align-items:center;gap:6px;font:700 13px inherit;color:#8a3b0d;
+      background:#ffe9c9;border:1px solid #f6cf95;padding:6px 12px;border-radius:999px;margin-bottom:10px;}
+    .bkl-cta{display:block;text-align:center;text-decoration:none;color:#fff;font:800 17px inherit;
+      background:linear-gradient(135deg,#b5188b,#7a1fa2);padding:16px;border-radius:16px;
+      box-shadow:0 8px 22px rgba(160,20,120,.32);}
+    .bkl-ctanote{text-align:center;font-size:12px;color:#8a6f7c;margin:8px 0 0;}
+    .bkl-kicker{font:700 11px inherit;letter-spacing:.14em;text-transform:uppercase;color:#b5188b;margin:0 0 6px;}
+    .bkl-h2{font:800 19px inherit;font-family:'Iowan Old Style','Palatino Linotype',Palatino,Georgia,serif;margin:0 0 4px;}
+    .bkl-browse{font-size:20px;margin-top:14px;}
+    .bkl-subtle{font-size:12.5px;color:#8a6f7c;margin:0 0 10px;}
+    .bkl-div{border:none;border-top:1px solid #f0d9e6;margin:8px 0 2px;}
+    .bkl-row{display:flex;gap:12px;overflow-x:auto;padding:4px 2px 10px;scroll-snap-type:x mandatory;}
+    .bkl-row::-webkit-scrollbar{height:0;}
+    .bkl-grid{display:grid;grid-template-columns:1fr 1fr;gap:14px 12px;}
+    #bklMain{margin-top:14px;}
+    .bkl-card{background:#fff;border:1px solid #f0d9e6;border-radius:14px;overflow:hidden;position:relative;display:flex;flex-direction:column;}
+    .bkl-row .bkl-card{min-width:120px;max-width:120px;scroll-snap-align:start;}
+    .bkl-cw{position:relative;aspect-ratio:2/3;background:#efe0ea;}
+    .bkl-cw img{width:100%;height:100%;object-fit:cover;display:block;}
+    .bkl-heart{position:absolute;top:6px;right:6px;width:38px;height:38px;border-radius:999px;border:none;
+      background:rgba(255,255,255,.92);cursor:pointer;font-size:18px;line-height:38px;text-align:center;
+      box-shadow:0 2px 6px rgba(0,0,0,.15);padding:0;color:#b5188b;}
+    .bkl-heart.on{background:#b5188b;color:#fff;}
+    .bkl-meta{padding:8px 9px 10px;}
+    .bkl-bt{font:700 12.5px/1.25 inherit;margin:0 0 2px;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+    .bkl-ba{font-size:11px;color:#8a6f7c;margin:0 0 8px;}
+    .bkl-buy{font:700 11.5px inherit;color:#7a1fa2;text-decoration:none;}
+    .bkl-day{display:block;font:700 10px inherit;letter-spacing:.05em;color:#8a6f7c;text-transform:uppercase;margin:0 0 4px;}
+    .bkl-feat{border:1.5px solid #c98a2b;box-shadow:0 6px 18px rgba(201,138,43,.18);}
+    .bkl-ribbon{position:absolute;top:8px;left:0;background:#c98a2b;color:#fff;font:800 10px inherit;
+      letter-spacing:.04em;padding:4px 9px 4px 8px;border-radius:0 999px 999px 0;z-index:2;}
+    .bkl-feat .bkl-meta{background:linear-gradient(180deg,#fff,#fff7ea);}
+    .bkl-wtr{background:#fff;border:1px solid #f0d9e6;border-radius:16px;padding:14px;}
+    .bkl-wtr .bkl-row .bkl-card{min-width:96px;max-width:96px;}
+    .bkl-hint{font-size:12.5px;color:#7a1fa2;background:#fbeef6;border:1px dashed #e6b8d6;border-radius:12px;padding:10px 12px;}
+    .bkl-chips{display:flex;flex-wrap:wrap;gap:8px;}
+    .bkl-chip{font:600 12.5px inherit;color:#7a1fa2;background:#fbeef6;border:1px solid #f0d9e6;
+      padding:8px 13px;border-radius:999px;text-decoration:none;}
+    .bkl-authcta{display:block;margin:18px 16px;padding:16px;border-radius:16px;text-align:center;text-decoration:none;
+      background:linear-gradient(135deg,#2a1024,#4a1140);color:#fff;font:800 14px inherit;line-height:1.4;}
+    .bkl-foot{padding:22px 16px 34px;text-align:center;border-top:1px solid #f0d9e6;background:#fff;}
+    .bkl-brand{font:800 15px inherit;font-family:'Iowan Old Style',Palatino,Georgia,serif;color:#2a1720;}
+    .bkl-links{font-size:12px;color:#8a6f7c;margin-top:6px;}
+    .bkl-links a{color:#8a6f7c;text-decoration:none;}
+  </style>
+  <div id="bookyLibraryView" class="hidden" aria-hidden="true">
+    <div class="bkl-wrap">
+      <header class="bkl-top">
+        <button class="bkl-logo" id="bklLogo" type="button">90<span>books</span></button>
+        <a class="bkl-play" href="/booky" data-bkl-play>&#127918; Play Booky</a>
+      </header>
+      <section class="bkl-hero">
+        <h1>The Booky Library</h1>
+        <p class="bkl-sub">Every romantasy book we&#39;ve featured in Booky, the daily romantasy word game. All hand-picked, all reader favorites from r/Romantasy and BookTok.</p>
+        <p class="bkl-trust"><b id="bklCount">&hellip;</b> A new one every day since May 2026.</p>
+        <div class="bkl-streak" id="bklStreak" hidden></div>
+        <a class="bkl-cta" id="bklCta" href="/booky" data-bkl-play>Play today&#39;s word &rarr;</a>
+        <p class="bkl-ctanote" id="bklCtaNote"></p>
+      </section>
+      <section class="bkl-sec" id="bklWtrSec"></section>
+      <section class="bkl-sec">
+        <p class="bkl-kicker">Recently in Booky</p>
+        <h2 class="bkl-h2">The last few days</h2>
+        <p class="bkl-subtle">Past words only, so nothing spoils today&#39;s puzzle.</p>
+        <div class="bkl-row" id="bklRecent"></div>
+      </section>
+      <section class="bkl-sec">
+        <p class="bkl-kicker">The Booky shelf</p>
+        <h2 class="bkl-h2">Books featured in the game</h2>
+        <p class="bkl-subtle">Every one has been a daily answer. Authors we&#39;ve partnered with are pinned up top.</p>
+        <div class="bkl-grid" id="bklFeat"></div>
+        <div class="bkl-grid" id="bklMain"></div>
+      </section>
+      <section class="bkl-sec">
+        <hr class="bkl-div">
+        <h2 class="bkl-h2 bkl-browse">More romantasy to browse</h2>
+        <p class="bkl-subtle">The wider catalog. Tap any to explore.</p>
+        <div class="bkl-chips" id="bklChips"></div>
+      </section>
+      <a class="bkl-authcta" href="/authors">&#9997;&#65039; Are you a romantasy author? Get your book featured &rarr;</a>
+      <footer class="bkl-foot">
+        <div class="bkl-brand">Booky by 90books</div>
+        <div class="bkl-links"><a href="/">Home</a> &middot; <a href="/authors">Authors</a> &middot; <a href="/booky" data-bkl-play>Play Booky</a></div>
+      </footer>
+    </div>
+  </div>
+
   <!-- ===== LANDING PAGE (new / guest users) ===== -->
   <div id="landingOverlay">
 
@@ -11962,6 +12073,7 @@
 
     // Booky landing page (logo / home). Shelves stay loaded underneath the overlay.
     function showBookyLanding() {
+      if (window.hideBookyLibrary) hideBookyLibrary();
       navClearStack();
       closeSearchOverlay();
       resetUrlToHome();
@@ -14751,10 +14863,9 @@
     function routeFromUrl() {
       const path = window.location.pathname;
 
-      // /booky-library → existing discover shelves (Booky Library placeholder)
+      // /booky-library → reader-first Booky Library view
       if (path === '/booky-library' || path === '/booky-library/') {
-        enterGuestMode();
-        showDiscoverShelves();
+        showBookyLibrary();
         return;
       }
 
@@ -14899,6 +15010,118 @@
         }
       });
     });
+  </script>
+  <script>
+  /* ===== Booky Library (/booky-library) — reader-first shelf ===== */
+  (function(){
+    var TBR_KEY='90books_tbr_v1';
+    var STATS_KEY='90books_booky_word_stats_v1';
+    // Site-owned featured-author list. Match slug to the book's wordBooks slug.
+    // TODO paid-label when monetized: render a "Sponsored" tag when paid===true.
+    var FEATURED_AUTHORS=[
+      {slug:'weavingshaw',featuredDate:'2026-07-06',paid:false},
+      {slug:'starside',featuredDate:'2026-07-08',paid:false}
+    ];
+    var DATA=null;
+
+    function ph(evt,props){ try{ if(window.posthog&&posthog.capture) posthog.capture(evt,props||{});}catch(e){} }
+    function esc(s){ return String(s==null?'':s).replace(/[&<>"]/g,function(c){return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c];}); }
+    function getTbr(){ try{ var a=JSON.parse(localStorage.getItem(TBR_KEY)); return Array.isArray(a)?a:[]; }catch(e){ return []; } }
+    function setTbr(a){ try{ localStorage.setItem(TBR_KEY,JSON.stringify(a)); }catch(e){} }
+    function getStreak(){ try{ var s=JSON.parse(localStorage.getItem(STATS_KEY)); return (s&&typeof s.currentStreak==='number')?s.currentStreak:0; }catch(e){ return 0; } }
+    function computeDayNumber(epochStr){ var p=epochStr.split('-').map(Number); var e=new Date(p[0],p[1]-1,p[2],0,0,0).getTime(); var n=new Date(); var t=new Date(n.getFullYear(),n.getMonth(),n.getDate(),0,0,0).getTime(); return Math.floor((t-e)/86400000)+1; }
+
+    function loadData(){
+      if(DATA) return Promise.resolve(DATA);
+      return fetch('/booky/words.json',{cache:'no-cache'}).then(function(r){return r.json();}).then(function(j){
+        var wb=j.wordBooks||{}, queue=j.queue||[], seen={}, order=[];
+        queue.forEach(function(w){ var b=wb[w]; if(b&&!seen[b.slug]){ seen[b.slug]=b; order.push(b.slug); } });
+        var books=order.map(function(s){return seen[s];});
+        var day=computeDayNumber(j.epoch), recent=[], used={};
+        for(var i=day-2;i>=0&&recent.length<6;i--){ var w=queue[i], b=wb[w]; if(b&&!used[b.slug]){ used[b.slug]=1; recent.push(Object.assign({day:i+1,word:w},b)); } }
+        DATA={epoch:j.epoch,day:day,books:books,recent:recent,featuredSlugs:FEATURED_AUTHORS.map(function(f){return f.slug;})};
+        return DATA;
+      });
+    }
+
+    function card(b,opts){
+      opts=opts||{};
+      var on=getTbr().indexOf(b.slug)>=0;
+      var ribbon=opts.featured?'<span class="bkl-ribbon">&#10024; Featured</span>':'';
+      var daytag=opts.day?('<span class="bkl-day">Day '+opts.day+' &middot; '+esc(opts.word)+'</span>'):'';
+      return '<div class="bkl-card'+(opts.featured?' bkl-feat':'')+'">'+ribbon+
+        '<div class="bkl-cw"><img loading="lazy" src="'+esc(b.cover)+'" alt="'+esc(b.title)+'">'+
+        '<button class="bkl-heart'+(on?' on':'')+'" data-slug="'+esc(b.slug)+'" aria-label="Want to read" aria-pressed="'+on+'">'+(on?'♥':'♡')+'</button></div>'+
+        '<div class="bkl-meta">'+daytag+'<p class="bkl-bt">'+esc(b.title)+'</p><p class="bkl-ba">'+esc(b.author)+'</p>'+
+        '<a class="bkl-buy" href="'+esc(b.buyUrl)+'" target="_blank" rel="noopener sponsored" data-slug="'+esc(b.slug)+'" data-sec="'+esc(opts.section||'shelf')+'">Get the book &rarr;</a></div></div>';
+    }
+
+    function renderStreak(){
+      var n=getStreak(), pill=document.getElementById('bklStreak'), cta=document.getElementById('bklCta'), note=document.getElementById('bklCtaNote');
+      if(n>=1){ pill.hidden=false; pill.textContent='🔥 You are on a '+n+'-day streak.'; cta.innerHTML='Play today&#39;s word &rarr;'; note.textContent='Keep the streak alive. It takes about a minute.'; }
+      else { pill.hidden=true; cta.innerHTML='Play today&#39;s romantasy word &rarr;'; note.textContent='New here? It takes about a minute.'; }
+    }
+    function renderWtr(){
+      var tbr=getTbr(), sec=document.getElementById('bklWtrSec');
+      if(!tbr.length){ sec.innerHTML='<div class="bkl-hint">Tap the heart on any book to start your want-to-read list. It saves on this device, no login needed.</div>'; return; }
+      var bySlug={}; DATA.books.concat(DATA.recent).forEach(function(b){ if(!bySlug[b.slug]) bySlug[b.slug]=b; });
+      var items=tbr.map(function(s){return bySlug[s];}).filter(Boolean);
+      sec.innerHTML='<div class="bkl-wtr"><h2 class="bkl-h2">❤ Your want-to-read list ('+items.length+')</h2><div class="bkl-row">'+items.map(function(b){return card(b,{section:'wtr'});}).join('')+'</div></div>';
+    }
+    function renderChips(){
+      var links=[
+        ['Books like Fourth Wing','/books-like/fourth-wing'],
+        ['Books like ACOTAR','/books-like/a-court-of-thorns-and-roses'],
+        ['Books like From Blood and Ash','/books-like/from-blood-and-ash'],
+        ['Books like Six of Crows','/books-like/six-of-crows'],
+        ['Browse all romantasy','/']
+      ];
+      document.getElementById('bklChips').innerHTML=links.map(function(l){return '<a class="bkl-chip" href="'+l[1]+'">'+esc(l[0])+'</a>';}).join('');
+    }
+    function renderAll(){
+      var feats=DATA.books.filter(function(b){return DATA.featuredSlugs.indexOf(b.slug)>=0;});
+      var rest=DATA.books.filter(function(b){return DATA.featuredSlugs.indexOf(b.slug)<0;});
+      document.getElementById('bklCount').textContent=DATA.books.length+' books featured.';
+      document.getElementById('bklRecent').innerHTML=DATA.recent.map(function(b){return card(b,{day:b.day,word:b.word,section:'recent'});}).join('');
+      document.getElementById('bklFeat').innerHTML=feats.map(function(b){return card(b,{featured:true,section:'featured'});}).join('');
+      document.getElementById('bklMain').innerHTML=rest.map(function(b){return card(b,{section:'shelf'});}).join('');
+      renderChips(); renderStreak(); renderWtr();
+    }
+
+    function onClick(e){
+      var h=e.target.closest('.bkl-heart');
+      if(h){ e.preventDefault(); var s=h.dataset.slug, tbr=getTbr(), i=tbr.indexOf(s);
+        if(i>=0){ tbr.splice(i,1); ph('library_tbr_removed',{slug:s,section:'library'}); }
+        else { tbr.push(s); ph('library_tbr_added',{slug:s,section:'library'}); }
+        setTbr(tbr);
+        var nowOn=tbr.indexOf(s)>=0;
+        document.querySelectorAll('#bookyLibraryView .bkl-heart[data-slug="'+CSS.escape(s)+'"]').forEach(function(el){
+          el.classList.toggle('on',nowOn); el.textContent=nowOn?'♥':'♡'; el.setAttribute('aria-pressed',nowOn);
+        });
+        renderWtr(); return;
+      }
+      var buy=e.target.closest('.bkl-buy');
+      if(buy){ ph('library_book_clicked',{slug:buy.dataset.slug,section:buy.dataset.sec}); return; }
+      var play=e.target.closest('[data-bkl-play]');
+      if(play){ ph('library_play_bridge_clicked',{has_streak:getStreak()>=1,streak:getStreak()}); return; }
+    }
+
+    window.showBookyLibrary=function(){
+      var v=document.getElementById('bookyLibraryView');
+      var lo=document.getElementById('landingOverlay'); if(lo) lo.classList.add('hidden');
+      v.classList.remove('hidden'); v.setAttribute('aria-hidden','false');
+      if(location.pathname!=='/booky-library'&&location.pathname!=='/booky-library/') history.pushState({},'','/booky-library');
+      v.scrollTop=0;
+      loadData().then(function(){ renderAll(); ph('library_view',{books_count:DATA.books.length}); })
+        .catch(function(){ document.getElementById('bklMain').innerHTML='<p style="padding:8px 0;color:#8a6f7c;font-size:13px;">Could not load the shelf right now. Please refresh.</p>'; });
+    };
+    window.hideBookyLibrary=function(){ var v=document.getElementById('bookyLibraryView'); if(v){ v.classList.add('hidden'); v.setAttribute('aria-hidden','true'); } };
+
+    var view=document.getElementById('bookyLibraryView');
+    if(view) view.addEventListener('click',onClick);
+    var logo=document.getElementById('bklLogo');
+    if(logo) logo.addEventListener('click',function(){ hideBookyLibrary(); if(window.showBookyLanding) showBookyLanding(); });
+  })();
   </script>
 </body>
 </html>
