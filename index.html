@@ -2961,19 +2961,18 @@
             position: relative;
             overflow: hidden;
             min-height: min(78vh, 700px);
-            display: flex;
-            flex-direction: column;
+            display: grid;
+            grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+            gap: 56px;
             align-items: center;
-            justify-content: center;
-            gap: 40px;
-            padding: 72px 64px 64px;
+            padding: 72px 64px 88px;
             border-radius: 0;
             background: var(--bkl-paper);
-            text-align: center;
+            text-align: left;
           }
           body.bkl-library-mode .bkl-hero-copy {
-            position: relative; z-index: 2; max-width: 38rem;
-            margin: 0 auto; padding-bottom: 0; text-align: center;
+            position: relative; z-index: 2; max-width: 32rem;
+            margin: 0; padding-bottom: 0; text-align: left;
           }
           body.bkl-library-mode .bkl-brand-mark {
             font: 600 11px/1 Inter,sans-serif; letter-spacing: .16em; text-transform: uppercase;
@@ -2983,7 +2982,7 @@
             font-family: 'Playfair Display', Georgia, serif;
             font-size: clamp(3rem, 5.2vw, 4.6rem);
             font-weight: 700; line-height: 1.02; letter-spacing: -.04em;
-            color: var(--bkl-ink); margin: 0 auto 20px;
+            color: var(--bkl-ink); margin: 0 0 20px;
           }
           body.bkl-library-mode .bkl-title em {
             font-style: italic; font-weight: 600; color: var(--bkl-ink);
@@ -2991,16 +2990,16 @@
           }
           body.bkl-library-mode .bkl-sub {
             font-size: 1.1rem; line-height: 1.55; color: var(--bkl-muted);
-            margin: 0 auto 32px; max-width: 40ch; font-weight: 400;
+            margin: 0 0 32px; max-width: 36ch; font-weight: 400;
           }
           body.bkl-library-mode .bkl-streak {
             display: block;
             font: 500 13px/1.4 Inter,sans-serif; color: var(--bkl-muted);
-            background: none; border: none; padding: 0; margin: 16px auto 0;
-            animation: none; border-radius: 0; text-align: center;
+            background: none; border: none; padding: 0; margin: 16px 0 0;
+            animation: none; border-radius: 0; text-align: left;
           }
           body.bkl-library-mode .lp-ctas {
-            margin: 0; display: flex; justify-content: center;
+            margin: 0; display: flex; justify-content: flex-start;
           }
           body.bkl-library-mode .bkl-cta.lp-btn-booky,
           body.bkl-library-mode .bkl-cta {
@@ -3019,16 +3018,16 @@
             box-shadow: 0 12px 28px rgba(217, 70, 168, 0.38) !important;
           }
           body.bkl-library-mode .bkl-ctanote {
-            font-size: 13px; color: var(--bkl-muted); margin: 14px auto 0; font-weight: 400;
+            font-size: 13px; color: var(--bkl-muted); margin: 14px 0 0; font-weight: 400;
           }
           body.bkl-library-mode .bkl-hint {
             font-size: 14px; color: var(--bkl-muted);
             background: var(--bkl-surface); border: none; border-radius: 0;
             padding: 32px 64px 8px; margin: 0; backdrop-filter: none;
-            max-width: none; text-align: center;
+            max-width: none; text-align: left;
           }
           body.bkl-library-mode .bkl-hero-stage {
-            position: relative; min-height: 440px; width: 100%;
+            position: relative; min-height: 440px; height: 100%; width: auto;
             display: flex; align-items: center; justify-content: center;
             perspective: 1100px;
           }
@@ -3071,35 +3070,35 @@
           body.bkl-library-mode .shelf-row { padding-top: 52px; margin-bottom: 4px; }
           body.bkl-library-mode .shelf-header {
             padding: 0 64px 12px;
-            text-align: center;
-            justify-content: center;
+            text-align: left;
+            justify-content: space-between;
           }
           body.bkl-library-mode .shelf-title {
             font-size: clamp(1.55rem, 2.4vw, 2.05rem);
             letter-spacing: -.025em; color: var(--bkl-ink); font-weight: 700;
-            text-align: center; width: 100%;
+            text-align: left; width: auto;
           }
           body.bkl-library-mode .shelf-subtitle {
             padding: 0 64px 18px; font-size: 15px; color: var(--bkl-muted);
-            max-width: 48ch; margin-left: auto; margin-right: auto;
-            line-height: 1.5; text-align: center;
+            max-width: 48ch; margin-left: 0; margin-right: 0;
+            line-height: 1.5; text-align: left;
           }
           body.bkl-library-mode .shelf-books {
             gap: 18px; padding: 6px 64px 28px;
             scroll-snap-type: x mandatory;
-            justify-content: safe center;
+            justify-content: flex-start;
           }
           body.bkl-library-mode .shelf-book {
             width: 156px; scroll-snap-align: start;
             transition: transform .22s ease;
-            text-align: center;
+            text-align: left;
           }
           body.bkl-library-mode .shelf-book:hover { transform: translateY(-4px); }
           body.bkl-library-mode .shelf-cover-wrap {
             width: 156px; height: 234px; border-radius: 4px;
             box-shadow: 0 10px 28px rgba(0,0,0,.11);
             overflow: hidden;
-            margin: 0 auto;
+            margin: 0;
           }
           body.bkl-library-mode .shelf-book:hover .shelf-cover-wrap {
             box-shadow: 0 16px 36px rgba(0,0,0,.15);
@@ -3109,11 +3108,11 @@
             font-family: 'Playfair Display', Georgia, serif;
             font-size: 14.5px; font-weight: 600; line-height: 1.25;
             color: var(--bkl-ink); margin-top: 6px;
-            text-align: center;
+            text-align: left;
           }
           body.bkl-library-mode .shelf-book-author {
             font-size: 13px; color: var(--bkl-muted);
-            text-align: center;
+            text-align: left;
           }
           body.bkl-library-mode .shelf-book.bkl-featured .shelf-cover-wrap {
             outline: 1.5px solid #b8954a;
@@ -3128,7 +3127,7 @@
           body.bkl-library-mode .bkl-day-tag {
             font: 600 10px Inter,sans-serif; letter-spacing: .05em;
             color: var(--bkl-muted); text-transform: uppercase; margin: 0 0 4px;
-            text-align: center;
+            text-align: left;
           }
           body.bkl-library-mode .bkl-buy {
             display: inline-block; margin-top: 6px;
@@ -3141,14 +3140,14 @@
             margin: 28px 64px 0; padding: 48px 0 12px;
             border-top: 1px solid var(--bkl-line);
             background: var(--bkl-surface);
-            text-align: center;
+            text-align: left;
           }
           body.bkl-library-mode #bklBrowseDivider .bkl-div-title {
             font-family: 'Playfair Display', Georgia, serif;
-            font-size: clamp(1.5rem, 2.4vw, 1.95rem); margin: 0 auto 8px; color: var(--bkl-ink);
+            font-size: clamp(1.5rem, 2.4vw, 1.95rem); margin: 0 0 8px; color: var(--bkl-ink);
           }
           body.bkl-library-mode #bklBrowseDivider .bkl-div-sub {
-            font-size: 15px; color: var(--bkl-muted); margin: 0 auto; max-width: 42ch;
+            font-size: 15px; color: var(--bkl-muted); margin: 0; max-width: 42ch;
           }
           body.bkl-library-mode #bklLibraryFooter {
             margin: 0; padding: 64px 64px 96px;
@@ -3177,12 +3176,12 @@
           }
           body.bkl-library-mode #bklLibraryFooter .bkl-links a:hover { color: var(--bkl-ink); }
 
-          /* Wide desktop: a little more air around the hero composition */
+          /* Wide desktop: airy two-column Fable hero */
           @media (min-width: 1200px) {
             body.bkl-library-mode .bkl-hero {
-              padding: 80px 72px 72px;
-              gap: 48px;
-              min-height: min(82vh, 760px);
+              padding: 80px 72px 96px;
+              gap: 64px;
+              min-height: min(82vh, 720px);
             }
             body.bkl-library-mode .bkl-title {
               font-size: clamp(3.25rem, 4.6vw, 4.75rem);
@@ -3198,9 +3197,9 @@
           @media (min-width: 821px) and (max-width: 1100px) {
             body.bkl-library-mode > header { padding-left: 40px; padding-right: 40px; }
             body.bkl-library-mode .bkl-hero {
-              padding: 56px 40px 48px;
-              gap: 32px;
-              min-height: min(68vh, 640px);
+              padding: 56px 40px 64px;
+              gap: 36px;
+              min-height: min(68vh, 620px);
             }
             body.bkl-library-mode .bkl-hero-stage { min-height: 360px; }
             body.bkl-library-mode .bkl-fan {
@@ -3243,26 +3242,70 @@
               padding-bottom: 0;
             }
             body.bkl-library-mode .bkl-hero {
+              display: flex;
+              flex-direction: column;
+              grid-template-columns: none;
               min-height: auto;
               padding: 36px 24px 0;
               align-items: center;
+              justify-content: flex-start;
               gap: 28px;
               text-align: center;
               background: var(--bkl-paper);
             }
             body.bkl-library-mode .bkl-hero-copy {
+              order: 0;
               max-width: 26rem;
               margin: 0 auto;
               padding-bottom: 0;
               text-align: center;
             }
             body.bkl-library-mode .bkl-hero-stage {
+              order: 1;
               min-height: 0;
               height: 220px;
+              width: 100%;
               margin: 0;
               align-items: flex-end;
               justify-content: center;
               padding-bottom: 8px;
+            }
+            body.bkl-library-mode .lp-ctas {
+              justify-content: center;
+            }
+            body.bkl-library-mode .bkl-streak,
+            body.bkl-library-mode .bkl-ctanote {
+              text-align: center;
+            }
+            body.bkl-library-mode .shelf-header,
+            body.bkl-library-mode .shelf-title,
+            body.bkl-library-mode .shelf-subtitle,
+            body.bkl-library-mode #bklBrowseDivider,
+            body.bkl-library-mode #bklBrowseDivider .bkl-div-title,
+            body.bkl-library-mode #bklBrowseDivider .bkl-div-sub {
+              text-align: center;
+            }
+            body.bkl-library-mode .shelf-header {
+              justify-content: center;
+            }
+            body.bkl-library-mode .shelf-subtitle {
+              margin-left: auto;
+              margin-right: auto;
+            }
+            body.bkl-library-mode .shelf-books {
+              justify-content: safe center;
+            }
+            body.bkl-library-mode .shelf-book,
+            body.bkl-library-mode .shelf-book-title,
+            body.bkl-library-mode .shelf-book-author,
+            body.bkl-library-mode .bkl-day-tag {
+              text-align: center;
+            }
+            body.bkl-library-mode .shelf-cover-wrap {
+              margin: 0 auto;
+            }
+            body.bkl-library-mode .bkl-hint {
+              text-align: center;
             }
             body.bkl-library-mode .bkl-fan {
               height: 210px;
