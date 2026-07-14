@@ -9943,10 +9943,10 @@
       // Library intro slot (populated + shown only in /booky-library mode).
       let html = '<div id="bklIntro" style="display:none;"></div>';
       html += '<div id="bklLibraryShelves" style="display:none;"></div>';
+      html += renderDiscoverHero();
       html += '<div id="bklBrowseDivider" style="display:none;">'
         + '<div class="bkl-div-title">More romantasy to browse</div>'
         + '</div>';
-      html += renderDiscoverHero();
       html += renderVibeShortcuts();
       // Discover by Genre removed in romantasy-only pivot, multi-genre browse
       // doesn't fit a romantasy product. The /genre/* SEO pages still exist for
