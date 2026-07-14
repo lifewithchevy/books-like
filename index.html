@@ -8428,6 +8428,11 @@
     function bklRenderLibraryShelves(data) {
       var host = document.getElementById('bklLibraryShelves');
       if (!host) return;
+      // If Booky Library was already moved into this host, park it outside before
+      // we rewrite innerHTML so the curated shelf isn't destroyed.
+      var parked = host.querySelector('.shelf-row[data-shelf="new"]');
+      var shelvesRoot = document.getElementById('discoverShelves');
+      if (parked && shelvesRoot) shelvesRoot.appendChild(parked);
       var html = '';
       if (data.recent.length) {
         var recentHtml = data.recent.map(function (r, i) {
@@ -8452,8 +8457,29 @@
       }
       host.innerHTML = html;
       host.style.display = html ? '' : 'none';
+      bklPlaceBookyLibraryShelf();
       scheduleCoverSort(host, 900);
       scheduleCoverSort(host, 2500);
+    }
+    // On /booky-library, pull the curated "Booky Library" discover shelf up so it
+    // sits directly under Recently in Booky (above the game shelf + browse block).
+    function bklPlaceBookyLibraryShelf() {
+      var host = document.getElementById('bklLibraryShelves');
+      if (!host) return;
+      var bookyLib = document.querySelector('#discoverShelves > .shelf-row[data-shelf="new"]')
+        || host.querySelector('.shelf-row[data-shelf="new"]');
+      if (!bookyLib) return;
+      var recent = host.querySelector('[data-shelf="bkl-recent"]');
+      var game = host.querySelector('[data-shelf="bkl-game"]');
+      if (recent) {
+        if (recent.nextSibling !== bookyLib) recent.after(bookyLib);
+      } else if (game) {
+        host.insertBefore(bookyLib, game);
+      } else if (bookyLib.parentElement !== host) {
+        host.appendChild(bookyLib);
+      }
+      if (!host.innerHTML.trim() && !host.querySelector('.shelf-row')) return;
+      host.style.display = '';
     }
     function bklSetLibraryChrome(active) {
       document.body.classList.toggle('bkl-library-mode', !!active);
@@ -8565,6 +8591,7 @@
       bklSetDiscoverHeroVisible(false);
       bklSetLibraryChrome(true);
       renderBklIntro();
+      bklPlaceBookyLibraryShelf();
       setBookyLibraryUrl();
       bklLoadWordData().then(function (data) {
         var covers = [];
