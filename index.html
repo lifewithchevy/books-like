@@ -145,6 +145,16 @@
       font-weight: 400;
     }
 
+    /* Temporarily hide Goodreads profile entry points */
+    #profileAvatarBtn,
+    #profileDrawer,
+    #profileBackdrop,
+    #connectModalBg,
+    .discover-hero-cta-connect,
+    .profile-guest-connect-btn {
+      display: none !important;
+    }
+
     /* Profile avatar button, replaces old user-badge pill */
     .profile-avatar-btn {
       width: 36px;
@@ -2797,8 +2807,8 @@
           <path d="m21 21-4.35-4.35"/>
         </svg>
       </button>
-      <!-- Profile avatar -->
-      <button class="profile-avatar-btn" id="profileAvatarBtn" onclick="openProfilePanel()" title="Profile" aria-label="Profile">
+      <!-- Profile avatar (Goodreads) — temporarily hidden -->
+      <button class="profile-avatar-btn" id="profileAvatarBtn" hidden style="display:none !important;" onclick="openProfilePanel()" title="Profile" aria-label="Profile" aria-hidden="true" tabindex="-1">
         <svg class="avatar-icon" viewBox="0 0 24 24" fill="currentColor">
           <path d="M12 12c2.7 0 4.8-2.15 4.8-4.8S14.7 2.4 12 2.4 7.2 4.55 7.2 7.2 9.3 12 12 12zm0 2.4c-3.2 0-9.6 1.6-9.6 4.8v2.4h19.2v-2.4c0-3.2-6.4-4.8-9.6-4.8z"/>
         </svg>
@@ -8563,7 +8573,7 @@
     }
 
     function renderDiscoverHero() {
-      const personal = getPersonalizedHeroData();
+      const personal = GR_FEATURE_ENABLED ? getPersonalizedHeroData() : null;
       const isPersonal = personal && personal.picks.length >= 2;
 
       let config, picks;
@@ -8665,9 +8675,11 @@
     }
 
     // Vibe pill definitions (sticky strip at top, quick mood filter)
+    // Goodreads / Made For You temporarily hidden (GR_FEATURE_ENABLED = false).
+    const GR_FEATURE_ENABLED = false;
     const VIBE_PILLS = [
       { label: 'All',         id: 'all',           emoji: '' },
-      { label: 'Made For You', id: 'personal',      emoji: '✨' },
+      ...(GR_FEATURE_ENABLED ? [{ label: 'Made For You', id: 'personal', emoji: '✨' }] : []),
       { label: 'Dark',        id: 'dark',          emoji: '🌙', mood: 'dark' },
       { label: 'Swoony',      id: 'swoony',        emoji: '💕', mood: 'swoony' },
       { label: 'Cozy',        id: 'cozy',          emoji: '☕', mood: 'cozy' },
@@ -8688,7 +8700,7 @@
     // generic self-help (put myself first). Added romantasy-core tropes
     // (enemies to lovers, fated mates, dark academia, court intrigue).
     const SHORTCUT_VIBES = [
-      { label: 'Recommend based on what I like', emoji: '✨', prompt: 'personal',                          bg: '#1E3264' },
+      ...(GR_FEATURE_ENABLED ? [{ label: 'Recommend based on what I like', emoji: '✨', prompt: 'personal', bg: '#1E3264' }] : []),
       { label: 'Get me out of my reading slump', emoji: '🚀', prompt: 'get me out of my reading slump',   bg: '#E8115B' },
       { label: 'I need to escape reality',       emoji: '🐉', prompt: 'i need to escape reality',         bg: '#2D46B9' },
       { label: 'I need a bingeable book series', emoji: '📖', prompt: 'i need a bingeable book series',   bg: '#8400E7' },
@@ -13920,6 +13932,7 @@
 
     // openProfilePanel, called by avatar in guest mode (no user saved)
     function openProfilePanel() {
+      if (!GR_FEATURE_ENABLED) return;
       const user = getSavedUser();
       if (user) {
         openProfile();
@@ -13960,6 +13973,7 @@
     }
 
     function openProfile() {
+      if (!GR_FEATURE_ENABLED) return;
       const user = getSavedUser();
       if (!user) { openProfilePanel(); return; }
       document.getElementById('profileDrawer').classList.add('open');
@@ -13986,6 +14000,7 @@
     document.addEventListener('keydown', e => { if (e.key === 'Escape') closeProfile(); });
 
     function openConnectModal() {
+      if (!GR_FEATURE_ENABLED) return;
       document.getElementById('connectModalBg').classList.remove('hidden');
       setTimeout(() => { const i = document.getElementById('grUrlInput'); if(i) i.focus(); }, 80);
     }
