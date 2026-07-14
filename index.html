@@ -3278,20 +3278,21 @@
               grid-template-columns: none;
               flex: 1 1 auto;
               min-height: 0;
-              padding: 72px 24px 0;
+              padding: 96px 24px 0;
               align-items: center;
               justify-content: flex-start;
               gap: 0;
-              text-align: center;
+              text-align: center !important;
               background: var(--bkl-paper);
             }
-            body.bkl-library-mode .bkl-hero-copy {
+            body.bkl-library-mode .bkl-hero-copy,
+            body.bkl-library-mode #bklIntro .bkl-hero-copy {
               order: 0;
               width: 100%;
               max-width: 26rem;
               margin: 0 auto;
               padding-bottom: 0;
-              text-align: center;
+              text-align: center !important;
             }
             body.bkl-library-mode .bkl-hero-stage {
               order: 1;
@@ -3371,34 +3372,44 @@
             body.bkl-library-mode .bkl-fan:hover img:nth-child(4) {
               transform: none;
             }
-            body.bkl-library-mode .bkl-brand-mark {
-              margin: 0 auto 20px;
+            body.bkl-library-mode .bkl-brand-mark,
+            body.bkl-library-mode #bklIntro .bkl-brand-mark {
+              margin: 0 auto 22px;
               font-size: 10px;
               letter-spacing: .18em;
-              text-align: center;
+              text-align: center !important;
               width: 100%;
             }
-            body.bkl-library-mode .bkl-title {
+            body.bkl-library-mode .bkl-title,
+            body.bkl-library-mode #bklIntro .bkl-title {
               display: block;
-              width: 100%;
-              font-size: clamp(2.35rem, 10vw, 2.95rem);
-              margin: 0 auto 28px;
+              width: auto;
+              max-width: 12ch;
+              font-family: 'Playfair Display', Georgia, serif;
+              font-size: clamp(2.4rem, 10vw, 3rem);
+              font-weight: 700;
+              margin: 0 auto 28px !important;
               line-height: 1.06;
-              max-width: 11ch;
               letter-spacing: -.035em;
-              text-align: center;
+              text-align: center !important;
+              color: var(--bkl-ink);
             }
-            body.bkl-library-mode .bkl-sub {
+            body.bkl-library-mode .bkl-sub,
+            body.bkl-library-mode #bklIntro .bkl-sub {
               font-size: 1rem;
               line-height: 1.55;
-              margin: 0 auto 36px;
+              margin: 0 auto 36px !important;
               max-width: 30ch;
-              text-align: center;
+              text-align: center !important;
+              color: var(--bkl-muted);
             }
-            body.bkl-library-mode .lp-ctas {
+            body.bkl-library-mode .lp-ctas,
+            body.bkl-library-mode #bklIntro .lp-ctas {
               width: 100%;
               margin: 0;
+              display: flex;
               align-items: center;
+              justify-content: center;
             }
             body.bkl-library-mode .bkl-cta {
               width: 100%;
@@ -3408,14 +3419,16 @@
               padding: 16px 28px !important;
               box-sizing: border-box;
             }
-            body.bkl-library-mode .bkl-streak {
-              margin: 18px auto 0;
-              font-size: 13px;
+            body.bkl-library-mode .bkl-streak,
+            body.bkl-library-mode #bklIntro .bkl-streak {
+              display: none !important;
             }
-            body.bkl-library-mode .bkl-ctanote {
+            body.bkl-library-mode .bkl-ctanote,
+            body.bkl-library-mode #bklIntro .bkl-ctanote {
               margin: 12px auto 0;
               font-size: 12.5px;
               max-width: 26ch;
+              text-align: center;
             }
             body.bkl-library-mode .shelf-row { padding-top: 28px; }
             body.bkl-library-mode { --bkl-gutter: 20px; --bkl-shelf-gap: 12px; }
@@ -3456,37 +3469,41 @@
             body.bkl-library-mode #bklIntro {
               min-height: calc(100svh - 56px - 88px);
             }
-            body.bkl-library-mode .bkl-hero { padding: 56px 18px 0; }
+            body.bkl-library-mode .bkl-hero { padding: 80px 18px 0; }
             body.bkl-library-mode .bkl-hero-stage { height: 210px; }
             body.bkl-library-mode .bkl-fan { height: 200px; }
             body.bkl-library-mode .bkl-fan img { width: 96px; height: 144px; }
             body.bkl-library-mode .bkl-fan img:nth-child(3) { width: 114px; height: 171px; }
-            body.bkl-library-mode .bkl-brand-mark { margin: 0 auto 16px; }
-            body.bkl-library-mode .bkl-title {
-              font-size: 2.2rem;
-              max-width: 11ch;
-              margin: 0 auto 24px;
-              text-align: center;
+            body.bkl-library-mode .bkl-brand-mark,
+            body.bkl-library-mode #bklIntro .bkl-brand-mark { margin: 0 auto 18px; }
+            body.bkl-library-mode .bkl-title,
+            body.bkl-library-mode #bklIntro .bkl-title {
+              font-size: 2.25rem;
+              max-width: 12ch;
+              margin: 0 auto 24px !important;
+              text-align: center !important;
             }
-            body.bkl-library-mode .bkl-sub {
+            body.bkl-library-mode .bkl-sub,
+            body.bkl-library-mode #bklIntro .bkl-sub {
               font-size: .95rem;
-              margin: 0 auto 28px;
-              text-align: center;
+              margin: 0 auto 28px !important;
+              text-align: center !important;
             }
           }
 
-          /* Non-library fallbacks (kept for shared hearts / intro slot) */
-          #bklIntro { padding: 6px 16px 2px; }
-          #bklIntro .bkl-kicker { font: 700 11px/1 'Inter',sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #8400E7; margin: 0 0 8px; }
-          #bklIntro .bkl-title { font-family: 'Playfair Display',serif; font-size: 1.9rem; line-height: 1.1; margin: 0 0 10px; color: var(--text,#1A1A1A); }
-          #bklIntro .bkl-sub { font-size: .98rem; line-height: 1.5; color: var(--text-muted,#555); margin: 0 0 10px; max-width: 42ch; }
-          #bklIntro .bkl-trust { font-size: 12.5px; color: var(--text-muted,#8a6f7c); margin: 0 0 14px; }
-          #bklIntro .bkl-trust b { color: var(--text,#1A1A1A); }
-          #bklIntro .bkl-streak { display: inline-block; font: 700 13px 'Inter',sans-serif; color: #8a3b0d; background: #ffe9c9; border: 1px solid #f6cf95; padding: 6px 12px; border-radius: 999px; margin: 0 0 12px; }
-          #bklIntro .bkl-ctanote { font-size: 12px; color: var(--text-muted,#8a6f7c); margin: 8px 0 0; }
-          #bklIntro .lp-ctas { margin: 0 0 12px; }
-          #bklIntro .lp-btn-primary { font-size: 1.05rem; padding: 16px 22px; }
-          #bklIntro .bkl-hint { font-size: 12.5px; color: #8400E7; background: #f6ecff; border: 1px dashed #d9b8f0; border-radius: 12px; padding: 9px 12px; margin: 2px 0 8px; }
+          /* Non-library fallbacks (kept for shared hearts / intro slot).
+             Library mode overrides these via body.bkl-library-mode #bklIntro … */
+          body:not(.bkl-library-mode) #bklIntro { padding: 6px 16px 2px; }
+          body:not(.bkl-library-mode) #bklIntro .bkl-kicker { font: 700 11px/1 'Inter',sans-serif; letter-spacing: .14em; text-transform: uppercase; color: #8400E7; margin: 0 0 8px; }
+          body:not(.bkl-library-mode) #bklIntro .bkl-title { font-family: 'Playfair Display',serif; font-size: 1.9rem; line-height: 1.1; margin: 0 0 10px; color: var(--text,#1A1A1A); }
+          body:not(.bkl-library-mode) #bklIntro .bkl-sub { font-size: .98rem; line-height: 1.5; color: var(--text-muted,#555); margin: 0 0 10px; max-width: 42ch; }
+          body:not(.bkl-library-mode) #bklIntro .bkl-trust { font-size: 12.5px; color: var(--text-muted,#8a6f7c); margin: 0 0 14px; }
+          body:not(.bkl-library-mode) #bklIntro .bkl-trust b { color: var(--text,#1A1A1A); }
+          body:not(.bkl-library-mode) #bklIntro .bkl-streak { display: inline-block; font: 700 13px 'Inter',sans-serif; color: #8a3b0d; background: #ffe9c9; border: 1px solid #f6cf95; padding: 6px 12px; border-radius: 999px; margin: 0 0 12px; }
+          body:not(.bkl-library-mode) #bklIntro .bkl-ctanote { font-size: 12px; color: var(--text-muted,#8a6f7c); margin: 8px 0 0; }
+          body:not(.bkl-library-mode) #bklIntro .lp-ctas { margin: 0 0 12px; }
+          body:not(.bkl-library-mode) #bklIntro .lp-btn-primary { font-size: 1.05rem; padding: 16px 22px; }
+          body:not(.bkl-library-mode) #bklIntro .bkl-hint { font-size: 12.5px; color: #8400E7; background: #f6ecff; border: 1px dashed #d9b8f0; border-radius: 12px; padding: 9px 12px; margin: 2px 0 8px; }
           #bklLibraryShelves { padding: 0 16px; }
           #bklBrowseDivider { display: none; padding: 28px 16px 4px; border-top: 1px solid rgba(0,0,0,.08); margin-top: 10px; }
           #bklBrowseDivider .bkl-div-title { font-family: 'Playfair Display',serif; font-size: 1.35rem; margin: 0 0 4px; color: var(--text,#1A1A1A); }
