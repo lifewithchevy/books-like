@@ -3157,90 +3157,103 @@
             body.bkl-library-mode .bkl-hero {
               grid-template-columns: 1fr;
               min-height: auto;
-              padding: 12px 16px 20px;
+              padding: 28px 20px 8px;
               border-radius: 0 0 20px 20px;
               align-items: start;
-              gap: 4px;
+              gap: 18px;
+              text-align: center;
+              background:
+                radial-gradient(90% 60% at 50% 0%, #fbe3ef 0%, transparent 55%),
+                var(--bkl-blush);
             }
-            /* Covers first, but compact so headline + CTA stay near the fold */
+            /* Fable mobile order: brand → H1 → sub → CTA → visual */
+            body.bkl-library-mode .bkl-hero-copy {
+              order: 0;
+              max-width: 28rem;
+              margin: 0 auto;
+              padding-bottom: 0;
+              text-align: center;
+            }
             body.bkl-library-mode .bkl-hero-stage {
-              order: -1;
+              order: 1;
               min-height: 0;
-              height: 168px;
-              margin: 0 0 10px;
-              align-items: center;
+              height: 200px;
+              margin: 4px 0 0;
+              align-items: flex-end;
+              justify-content: center;
             }
             body.bkl-library-mode .bkl-fan {
-              height: 168px;
-              width: min(100%, 340px);
+              height: 200px;
+              width: min(100%, 360px);
             }
             body.bkl-library-mode .bkl-fan img {
-              width: 92px;
-              height: 138px;
-              box-shadow: 0 10px 24px rgba(40,10,30,.22);
-              animation: none; /* quieter on mobile */
+              width: 100px;
+              height: 150px;
+              box-shadow: 0 12px 28px rgba(40,10,30,.22);
+              animation: none;
             }
             body.bkl-library-mode .bkl-fan img:nth-child(1),
             body.bkl-library-mode .bkl-fan img:nth-child(5) {
-              display: none; /* 3-cover fan on tablet/phone */
+              display: none;
             }
             body.bkl-library-mode .bkl-fan img:nth-child(2) {
-              left: 18%;
-              transform: rotate(-8deg) translateY(8px);
+              left: 16%;
+              transform: rotate(-9deg) translateY(10px);
             }
             body.bkl-library-mode .bkl-fan img:nth-child(3) {
-              left: 36%;
-              width: 108px;
-              height: 162px;
+              left: 34%;
+              width: 118px;
+              height: 177px;
               transform: rotate(0deg) translateY(0);
             }
             body.bkl-library-mode .bkl-fan img:nth-child(4) {
-              left: 56%;
-              transform: rotate(9deg) translateY(8px);
+              left: 55%;
+              transform: rotate(10deg) translateY(10px);
             }
             body.bkl-library-mode .bkl-fan:hover img:nth-child(2),
             body.bkl-library-mode .bkl-fan:hover img:nth-child(3),
             body.bkl-library-mode .bkl-fan:hover img:nth-child(4) {
               transform: none;
             }
-            body.bkl-library-mode .bkl-hero-copy {
-              max-width: none;
-              padding-bottom: 0;
-            }
             body.bkl-library-mode .bkl-brand-mark {
-              margin: 0 0 8px;
+              margin: 0 0 12px;
               font-size: 10px;
+              letter-spacing: .18em;
             }
             body.bkl-library-mode .bkl-title {
-              font-size: clamp(1.85rem, 8.2vw, 2.35rem);
-              margin: 0 0 10px;
-              line-height: 1.02;
+              font-size: clamp(2.05rem, 9vw, 2.65rem);
+              margin: 0 auto 12px;
+              line-height: 1.05;
+              max-width: 14ch;
             }
             body.bkl-library-mode .bkl-sub {
-              font-size: .92rem;
-              line-height: 1.45;
-              margin: 0 0 14px;
-              max-width: none;
+              font-size: .95rem;
+              line-height: 1.5;
+              margin: 0 auto 18px;
+              max-width: 32ch;
             }
             body.bkl-library-mode .lp-ctas {
               width: 100%;
               margin: 0;
+              align-items: center;
             }
             body.bkl-library-mode .bkl-cta {
               width: 100%;
+              max-width: 360px;
               min-height: 52px;
-              font-size: 1rem !important;
-              padding: 15px 20px !important;
+              font-size: 1.02rem !important;
+              padding: 15px 22px !important;
               box-sizing: border-box;
             }
             body.bkl-library-mode .bkl-streak {
-              margin: 12px 0 0;
+              margin: 12px auto 0;
               font-size: 12.5px;
               padding: 6px 12px;
             }
             body.bkl-library-mode .bkl-ctanote {
-              margin: 8px 0 0;
+              margin: 8px auto 0;
               font-size: 12px;
+              max-width: 28ch;
             }
             body.bkl-library-mode .shelf-row { padding-top: 26px; }
             body.bkl-library-mode .shelf-header,
@@ -3252,6 +3265,7 @@
               margin: 14px 16px 2px;
               font-size: 12.5px;
               padding: 10px 12px;
+              text-align: left;
             }
             body.bkl-library-mode .shelf-book { width: 120px; }
             body.bkl-library-mode .shelf-cover-wrap { width: 120px; height: 180px; }
@@ -3267,12 +3281,13 @@
           }
 
           @media (max-width: 390px) {
-            body.bkl-library-mode .bkl-hero-stage { height: 148px; margin-bottom: 8px; }
-            body.bkl-library-mode .bkl-fan { height: 148px; }
-            body.bkl-library-mode .bkl-fan img { width: 82px; height: 123px; }
-            body.bkl-library-mode .bkl-fan img:nth-child(3) { width: 96px; height: 144px; }
-            body.bkl-library-mode .bkl-title { font-size: 1.75rem; }
-            body.bkl-library-mode .bkl-sub { font-size: .88rem; }
+            body.bkl-library-mode .bkl-hero { padding: 22px 16px 4px; gap: 14px; }
+            body.bkl-library-mode .bkl-hero-stage { height: 176px; }
+            body.bkl-library-mode .bkl-fan { height: 176px; }
+            body.bkl-library-mode .bkl-fan img { width: 88px; height: 132px; }
+            body.bkl-library-mode .bkl-fan img:nth-child(3) { width: 104px; height: 156px; }
+            body.bkl-library-mode .bkl-title { font-size: 1.9rem; max-width: 12ch; }
+            body.bkl-library-mode .bkl-sub { font-size: .9rem; }
           }
 
           /* Non-library fallbacks (kept for shared hearts / intro slot) */
