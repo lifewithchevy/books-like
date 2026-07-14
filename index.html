@@ -3262,15 +3262,24 @@
               --main-py: 0;
               padding-bottom: 0;
             }
+            /* Fable-style mobile focus: hero owns the first screen; next shelf
+               only barely peeks so the H1 + CTA stay the breakpoint. */
+            body.bkl-library-mode #bklIntro {
+              min-height: calc(100svh - 62px - 96px);
+              display: flex;
+              flex-direction: column;
+              box-sizing: border-box;
+            }
             body.bkl-library-mode .bkl-hero {
               display: flex;
               flex-direction: column;
               grid-template-columns: none;
-              min-height: auto;
-              padding: 36px 24px 0;
+              flex: 1 1 auto;
+              min-height: 0;
+              padding: 40px 24px 0;
               align-items: center;
               justify-content: flex-start;
-              gap: 28px;
+              gap: 0;
               text-align: center;
               background: var(--bkl-paper);
             }
@@ -3284,12 +3293,12 @@
             body.bkl-library-mode .bkl-hero-stage {
               order: 1;
               min-height: 0;
-              height: 220px;
+              height: 250px;
               width: 100%;
-              margin: 0;
+              margin: auto 0 0;
               align-items: flex-end;
               justify-content: center;
-              padding-bottom: 8px;
+              padding-bottom: 4px;
             }
             body.bkl-library-mode .lp-ctas {
               justify-content: center;
@@ -3325,16 +3334,13 @@
             body.bkl-library-mode .shelf-cover-wrap {
               margin: 0 auto;
             }
-            body.bkl-library-mode .bkl-hint {
-              text-align: center;
-            }
             body.bkl-library-mode .bkl-fan {
-              height: 210px;
+              height: 240px;
               width: min(100%, 360px);
             }
             body.bkl-library-mode .bkl-fan img {
-              width: 104px;
-              height: 156px;
+              width: 112px;
+              height: 168px;
               bottom: 8px;
               box-shadow: 0 12px 28px rgba(0,0,0,.16);
               animation: none;
@@ -3349,8 +3355,8 @@
             }
             body.bkl-library-mode .bkl-fan img:nth-child(3) {
               left: 33%;
-              width: 122px;
-              height: 183px;
+              width: 132px;
+              height: 198px;
               transform: rotate(0deg) translateY(0);
             }
             body.bkl-library-mode .bkl-fan img:nth-child(4) {
@@ -3363,20 +3369,21 @@
               transform: none;
             }
             body.bkl-library-mode .bkl-brand-mark {
-              margin: 0 0 14px;
+              margin: 0 0 22px;
               font-size: 10px;
-              letter-spacing: .16em;
+              letter-spacing: .18em;
             }
             body.bkl-library-mode .bkl-title {
-              font-size: clamp(2.15rem, 9vw, 2.75rem);
-              margin: 0 auto 14px;
-              line-height: 1.05;
-              max-width: 13ch;
+              font-size: clamp(2.35rem, 10vw, 2.95rem);
+              margin: 0 auto 28px;
+              line-height: 1.06;
+              max-width: 12ch;
+              letter-spacing: -.035em;
             }
             body.bkl-library-mode .bkl-sub {
-              font-size: .98rem;
-              line-height: 1.5;
-              margin: 0 auto 24px;
+              font-size: 1rem;
+              line-height: 1.55;
+              margin: 0 auto 36px;
               max-width: 30ch;
             }
             body.bkl-library-mode .lp-ctas {
@@ -3386,29 +3393,30 @@
             }
             body.bkl-library-mode .bkl-cta {
               width: 100%;
-              max-width: 320px;
-              min-height: 52px;
-              font-size: 1rem !important;
-              padding: 15px 24px !important;
+              max-width: 300px;
+              min-height: 54px;
+              font-size: 1.05rem !important;
+              padding: 16px 28px !important;
               box-sizing: border-box;
             }
             body.bkl-library-mode .bkl-streak {
-              margin: 14px auto 0;
+              margin: 18px auto 0;
               font-size: 13px;
             }
             body.bkl-library-mode .bkl-ctanote {
-              margin: 8px auto 0;
+              margin: 12px auto 0;
               font-size: 12.5px;
               max-width: 26ch;
             }
-            body.bkl-library-mode .shelf-row { padding-top: 32px; }
+            body.bkl-library-mode .shelf-row { padding-top: 28px; }
             body.bkl-library-mode { --bkl-gutter: 20px; --bkl-shelf-gap: 12px; }
             body.bkl-library-mode #bklBrowseDivider,
             body.bkl-library-mode #bklLibraryFooter { margin-left: 0; margin-right: 0; padding-left: 20px; padding-right: 20px; }
             body.bkl-library-mode #bklBrowseDivider { margin-top: 8px; }
             body.bkl-library-mode .bkl-hint {
+              flex: 0 0 auto;
               margin: 0;
-              padding: 18px 20px 6px;
+              padding: 20px 20px 10px;
               font-size: 13px;
               text-align: center;
             }
@@ -3424,25 +3432,36 @@
               top: 8px; right: 8px;
             }
             body.bkl-library-mode #discoverShelves {
-              border-radius: 24px 24px 0 0;
-              margin-top: -12px;
+              border-radius: 0;
+              margin-top: 0;
               position: relative;
               z-index: 1;
             }
             body.bkl-library-mode #bklLibraryShelves {
-              border-radius: 24px 24px 0 0;
-              padding-top: 8px;
+              border-radius: 0;
+              padding-top: 4px;
             }
           }
 
           @media (max-width: 390px) {
-            body.bkl-library-mode .bkl-hero { padding: 28px 18px 0; gap: 22px; }
-            body.bkl-library-mode .bkl-hero-stage { height: 190px; }
-            body.bkl-library-mode .bkl-fan { height: 180px; }
-            body.bkl-library-mode .bkl-fan img { width: 90px; height: 135px; }
-            body.bkl-library-mode .bkl-fan img:nth-child(3) { width: 106px; height: 159px; }
-            body.bkl-library-mode .bkl-title { font-size: 2rem; max-width: 12ch; }
-            body.bkl-library-mode .bkl-sub { font-size: .92rem; }
+            body.bkl-library-mode #bklIntro {
+              min-height: calc(100svh - 56px - 88px);
+            }
+            body.bkl-library-mode .bkl-hero { padding: 32px 18px 0; }
+            body.bkl-library-mode .bkl-hero-stage { height: 210px; }
+            body.bkl-library-mode .bkl-fan { height: 200px; }
+            body.bkl-library-mode .bkl-fan img { width: 96px; height: 144px; }
+            body.bkl-library-mode .bkl-fan img:nth-child(3) { width: 114px; height: 171px; }
+            body.bkl-library-mode .bkl-brand-mark { margin: 0 0 18px; }
+            body.bkl-library-mode .bkl-title {
+              font-size: 2.2rem;
+              max-width: 12ch;
+              margin: 0 auto 24px;
+            }
+            body.bkl-library-mode .bkl-sub {
+              font-size: .95rem;
+              margin: 0 auto 28px;
+            }
           }
 
           /* Non-library fallbacks (kept for shared hearts / intro slot) */
