@@ -8428,6 +8428,11 @@
     function bklRenderLibraryShelves(data) {
       var host = document.getElementById('bklLibraryShelves');
       if (!host) return;
+      // If Booky Library was already moved into this host, park it outside before
+      // we rewrite innerHTML so the curated shelf isn't destroyed.
+      var parked = host.querySelector('.shelf-row[data-shelf="new"]');
+      var shelvesRoot = document.getElementById('discoverShelves');
+      if (parked && shelvesRoot) shelvesRoot.appendChild(parked);
       var html = '';
       if (data.recent.length) {
         var recentHtml = data.recent.map(function (r, i) {
@@ -8461,18 +8466,20 @@
     function bklPlaceBookyLibraryShelf() {
       var host = document.getElementById('bklLibraryShelves');
       if (!host) return;
-      var bookyLib = document.querySelector('#discoverShelves > .shelf-row[data-shelf="new"], #bklLibraryShelves > .shelf-row[data-shelf="new"]');
+      var bookyLib = document.querySelector('#discoverShelves > .shelf-row[data-shelf="new"]')
+        || host.querySelector('.shelf-row[data-shelf="new"]');
       if (!bookyLib) return;
       var recent = host.querySelector('[data-shelf="bkl-recent"]');
       var game = host.querySelector('[data-shelf="bkl-game"]');
       if (recent) {
         if (recent.nextSibling !== bookyLib) recent.after(bookyLib);
       } else if (game) {
-        if (game !== bookyLib) host.insertBefore(bookyLib, game);
+        host.insertBefore(bookyLib, game);
       } else if (bookyLib.parentElement !== host) {
         host.appendChild(bookyLib);
       }
-      if (host.style.display === 'none') host.style.display = '';
+      if (!host.innerHTML.trim() && !host.querySelector('.shelf-row')) return;
+      host.style.display = '';
     }
     function bklSetLibraryChrome(active) {
       document.body.classList.toggle('bkl-library-mode', !!active);
