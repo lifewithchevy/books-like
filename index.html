@@ -8208,10 +8208,6 @@
       var streakLine = hasStreak ? '<div class="bkl-streak">\ud83d\udd25 You are on a ' + n + '-day streak.</div>' : '';
       var ctaLabel = hasStreak ? "Play today's word \u2192" : "Play today's romantasy word \u2192";
       var ctaNote = hasStreak ? '<p class="bkl-ctanote">Keep the streak alive. It takes about a minute.</p>' : '<p class="bkl-ctanote">New here? It takes about a minute.</p>';
-      var count = typeof booksCount === 'number' ? booksCount : (BKL_WORD_DATA && BKL_WORD_DATA.count) || 0;
-      var trust = count
-        ? '<p class="bkl-trust"><b>' + count + ' books featured.</b> A new one every day since May 2026.</p>'
-        : '<p class="bkl-trust">A new one every day since May 2026.</p>';
       var covers = (coverUrls || []).filter(Boolean).slice(0, 5);
       if (covers.length < 3) {
         covers = [
@@ -8232,7 +8228,6 @@
         + '<p class="bkl-brand-mark">Booky by 90books</p>'
         + '<h1 class="bkl-title">The books <em>everyone\'s</em> playing</h1>'
         + '<p class="bkl-sub">Every romantasy book we\'ve featured in Booky, the daily romantasy word game. Hand-picked favorites from r/Romantasy and BookTok. Save what you want, then go guess today\'s word.</p>'
-        + trust
         + streakLine
         + '<div class="lp-ctas"><a href="/booky" class="lp-btn-primary lp-btn-booky bkl-cta" onclick="bklPh(\'library_play_bridge_clicked\',{has_streak:' + hasStreak + ',streak:' + n + '})">' + ctaLabel + '</a>'
         + ctaNote + '</div>'
