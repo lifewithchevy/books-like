@@ -2992,8 +2992,8 @@
           body.bkl-library-mode .bkl-hint {
             font-size: 13px; color: var(--bkl-deep); background: rgba(255,255,255,.72);
             border: 1px solid rgba(181,24,139,.18); border-radius: 14px;
-            padding: 11px 14px; margin: 14px 0 0; backdrop-filter: blur(6px);
-            max-width: 38ch;
+            padding: 11px 14px; margin: 18px 24px 4px; backdrop-filter: blur(6px);
+            max-width: none;
           }
           body.bkl-library-mode .bkl-hero-stage {
             position: relative; min-height: 340px; height: 100%;
@@ -3153,6 +3153,7 @@
             body.bkl-library-mode .shelf-books { padding-left: 16px; padding-right: 16px; }
             body.bkl-library-mode #bklBrowseDivider,
             body.bkl-library-mode #bklLibraryFooter { margin-left: 16px; margin-right: 16px; }
+            body.bkl-library-mode .bkl-hint { margin-left: 16px; margin-right: 16px; }
             body.bkl-library-mode .shelf-book { width: 132px; }
             body.bkl-library-mode .shelf-cover-wrap { width: 132px; height: 198px; }
             body.bkl-library-mode .bkl-cta { width: 100%; }
@@ -8231,10 +8232,10 @@
         + streakLine
         + '<div class="lp-ctas"><a href="/booky" class="lp-btn-primary lp-btn-booky bkl-cta" onclick="bklPh(\'library_play_bridge_clicked\',{has_streak:' + hasStreak + ',streak:' + n + '})">' + ctaLabel + '</a>'
         + ctaNote + '</div>'
-        + '<div class="bkl-hint" id="bklTbrHint">Tap the heart on any book to start your want-to-read list. It saves on this device, no login needed.</div>'
         + '</div>'
         + '<div class="bkl-hero-stage" aria-hidden="true"><div class="bkl-fan">' + fan + '</div></div>'
         + '</section>'
+        + '<div class="bkl-hint" id="bklTbrHint">Tap the heart on any book to start your want-to-read list. It saves on this device, no login needed.</div>'
         + '<div id="bklWtrShelf" class="shelf-row" style="display:none;">'
         + '<div class="shelf-header"><div class="shelf-title">Your want-to-read list (<span id="bklWtrCount">0</span>)</div></div>'
         + '<div class="shelf-books" id="bklWtrRow"></div>'
