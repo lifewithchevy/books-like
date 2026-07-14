@@ -3158,6 +3158,7 @@
           body.bkl-library-mode .bkl-buy:hover { border-bottom-color: var(--bkl-ink); }
 
           body.bkl-library-mode #bklBrowseDivider {
+            display: block;
             margin: 28px var(--bkl-gutter) 0; padding: 48px 0 12px;
             border-top: 1px solid var(--bkl-line);
             background: var(--bkl-surface);
@@ -3171,6 +3172,7 @@
             font-size: 15px; color: var(--bkl-muted); margin: 0; max-width: 42ch;
           }
           body.bkl-library-mode #bklLibraryFooter {
+            display: block;
             margin: 0; padding: 64px 64px 96px;
             border-top: 1px solid var(--bkl-line); text-align: center;
             background: var(--bkl-surface);
@@ -8456,9 +8458,9 @@
     function bklSetLibraryChrome(active) {
       document.body.classList.toggle('bkl-library-mode', !!active);
       var div = document.getElementById('bklBrowseDivider');
-      if (div) div.style.display = active ? '' : 'none';
+      if (div) div.style.display = active ? 'block' : 'none';
       var foot = document.getElementById('bklLibraryFooter');
-      if (foot) foot.style.display = active ? '' : 'none';
+      if (foot) foot.style.display = active ? 'block' : 'none';
     }
     function hideBklLibraryShelves() {
       var el = document.getElementById('bklLibraryShelves');
@@ -9943,7 +9945,6 @@
       html += '<div id="bklLibraryShelves" style="display:none;"></div>';
       html += '<div id="bklBrowseDivider" style="display:none;">'
         + '<div class="bkl-div-title">More romantasy to browse</div>'
-        + '<p class="bkl-div-sub">The wider catalog. Tap any to explore.</p>'
         + '</div>';
       html += renderDiscoverHero();
       html += renderVibeShortcuts();
