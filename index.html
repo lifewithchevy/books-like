@@ -3175,7 +3175,7 @@
           }
           body.bkl-library-mode .bkl-day-tag {
             font: 600 10px Inter,sans-serif; letter-spacing: .05em;
-            color: var(--bkl-muted); text-transform: uppercase; margin: 10px 0 4px;
+            color: var(--bkl-muted); text-transform: uppercase; margin: 6px 0 0;
             text-align: left;
           }
           /* Fable rows: cover + title + author only (no heart / buy chrome) */
@@ -3565,7 +3565,7 @@
           }
           .bkl-day-tag {
             font: 700 10px 'Inter',sans-serif; letter-spacing: .05em;
-            color: var(--text-muted,#8a6f7c); text-transform: uppercase; margin: 0 0 4px;
+            color: var(--text-muted,#8a6f7c); text-transform: uppercase; margin: 6px 0 0;
           }
           .bkl-buy {
             display: inline-block; margin-top: 6px; font: 700 12px 'Inter',sans-serif;
@@ -8885,9 +8885,9 @@
             onerror="shelfCoverError(this,'${imgTitle}','${imgAuthor}')">
           ${heart}
         </div>
-        ${dayTag}
         <div class="shelf-book-title">${cardTitle}</div>
         <div class="shelf-book-author">${cardAuthor}</div>
+        ${dayTag}
         ${buy}
       </div>`;
     }
