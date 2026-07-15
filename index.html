@@ -3004,22 +3004,6 @@
           body.bkl-library-mode .lp-ctas {
             margin: 0; display: flex; justify-content: flex-start;
           }
-          body.bkl-library-mode .bkl-cta.lp-btn-booky,
-          body.bkl-library-mode .bkl-cta {
-            display: inline-flex !important; align-items: center; justify-content: center;
-            font-size: 1.05rem !important; font-weight: 700 !important; letter-spacing: -.01em;
-            padding: 17px 32px !important; border-radius: 999px !important;
-            background: linear-gradient(135deg, #d946a8, #8b3fd3) !important;
-            color: #fff !important;
-            box-shadow: 0 8px 24px rgba(217, 70, 168, 0.28) !important;
-            border: none !important;
-            transition: transform .2s ease, box-shadow .2s ease, background .2s ease;
-          }
-          body.bkl-library-mode .bkl-cta:hover {
-            transform: translateY(-1px);
-            background: linear-gradient(135deg, #e055b5, #9a4de0) !important;
-            box-shadow: 0 12px 28px rgba(217, 70, 168, 0.38) !important;
-          }
           body.bkl-library-mode .bkl-ctanote {
             font-size: 13px; color: var(--bkl-muted); margin: 14px 0 0; font-weight: 400;
           }
@@ -3454,14 +3438,6 @@
               display: flex;
               align-items: center;
               justify-content: center;
-            }
-            body.bkl-library-mode .bkl-cta {
-              width: 100%;
-              max-width: 300px;
-              min-height: 54px;
-              font-size: 1.05rem !important;
-              padding: 16px 28px !important;
-              box-sizing: border-box;
             }
             body.bkl-library-mode .bkl-streak,
             body.bkl-library-mode #bklIntro .bkl-streak {
@@ -8787,7 +8763,7 @@
         + '<p class="bkl-brand-mark">Booky Library</p>'
         + '<h1 class="bkl-title">The books <em>everyone\'s</em> playing</h1>'
         + '<p class="bkl-sub">Romantasy books from Booky, the daily word game. Find your next read after you finish the puzzle.</p>'
-        + '<div class="lp-ctas"><a href="/booky" class="lp-btn-primary lp-btn-booky bkl-cta" onclick="bklPh(\'library_play_bridge_clicked\',{has_streak:' + hasStreak + ',streak:' + n + '})">' + ctaLabel + '</a></div>'
+        + '<div class="lp-ctas"><a href="/booky" class="lp-btn-primary lp-btn-booky" onclick="bklPh(\'library_play_bridge_clicked\',{has_streak:' + hasStreak + ',streak:' + n + '})">' + ctaLabel + '</a></div>'
         + ctaNote
         + '</div>'
         + '<div class="bkl-hero-stage" aria-hidden="true"><div class="bkl-fan">' + fan + '</div></div>'
