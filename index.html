@@ -8553,6 +8553,11 @@
           var b = wb[w];
           if (b && b.slug && !seen[b.slug]) { seen[b.slug] = b; slugOrder.push(b.slug); BKL_WORD_BY_SLUG[b.slug] = b; }
         });
+        var slugFirstDay = {};
+        queue.forEach(function (w, idx) {
+          var b = wb[w];
+          if (b && b.slug && slugFirstDay[b.slug] === undefined) slugFirstDay[b.slug] = idx + 1;
+        });
         var day = bklComputeDayNumber(j.epoch);
         var recent = [];
         // Spoiler-safe: only days strictly before today (index day-2 and earlier).
@@ -8573,8 +8578,10 @@
         FEATURED_AUTHORS.forEach(function (f) { if (seen[f.slug]) featSet[f.slug] = 1; });
         var spotlight = FEATURED_AUTHORS.filter(function (f) { return seen[f.slug]; })
           .map(function (f) { return { slug: f.slug, book: seen[f.slug], featured: f }; });
-        var allBooks = slugOrder.map(function (s) { return { slug: s, book: seen[s] }; });
-        BKL_WORD_DATA = { day: day, recent: recent, spotlight: spotlight, allBooks: allBooks, count: slugOrder.length };
+        var allBooks = slugOrder.map(function (s) {
+          return { slug: s, book: seen[s], firstDay: slugFirstDay[s] || 0 };
+        });
+        BKL_WORD_DATA = { day: day, epoch: j.epoch, recent: recent, spotlight: spotlight, allBooks: allBooks, count: slugOrder.length };
         return BKL_WORD_DATA;
       });
     }
@@ -8601,6 +8608,12 @@
           opts.spoilerRevealDate = bklFormatFeaturedDate(feat.featuredDate);
         }
         if (feat.ctaUrl) opts.buyUrl = feat.ctaUrl;
+      }
+      if (section === 'all' && extra && extra.firstDay && extra.currentDay && extra.epoch) {
+        if (extra.firstDay > extra.currentDay) {
+          opts.spoilerLock = true;
+          opts.spoilerRevealDate = bklFormatPuzzleDate(extra.epoch, extra.firstDay);
+        }
       }
       return opts;
     }
@@ -8637,7 +8650,12 @@
       if (data.allBooks.length) {
         var allHtml = data.allBooks.map(function (b, i) {
           var res = bklResolveBook(b.book);
-          return renderShelfBook(res.key, res.meta, 'bkl-all', i, bklCardOpts(res, 'all'));
+          return renderShelfBook(res.key, res.meta, 'bkl-all', i, bklCardOpts(res, 'all', {
+            firstDay: b.firstDay,
+            currentDay: data.day,
+            epoch: data.epoch,
+            sortOrder: i,
+          }));
         }).join('');
         var allDesc = 'Every romantasy book that\'s been a daily Booky answer. '
           + data.count + ' so far.';
@@ -8811,7 +8829,8 @@
       const section = (opts.section || shelfId || 'shelf').replace(/'/g, "\\'");
       const initial  = title.replace(/^(A |An |The )/i, '')[0] || title[0] || '?';
       const spoilerLock = !!opts.spoilerLock;
-      const cardTitle = spoilerLock ? 'Mystery spotlight' : title;
+      const mysteryLabel = section === 'spotlight' ? 'Mystery spotlight' : 'Mystery book';
+      const cardTitle = spoilerLock ? mysteryLabel : title;
       const cardAuthor = spoilerLock
         ? ('Reveals ' + (opts.spoilerRevealDate || 'soon'))
         : (meta.author || '');
@@ -8837,7 +8856,9 @@
       // If no ISBN cover URL, use a tiny blank gif so onload fires → triggers fetchCover
       const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
       const imgSrc = coverUrl || BLANK;
-      const imgAlt = spoilerLock ? 'Upcoming Booky spotlight' : title;
+      const imgAlt = spoilerLock
+        ? (section === 'spotlight' ? 'Upcoming Booky spotlight' : 'Upcoming Booky book')
+        : title;
       const imgTitle = spoilerLock ? '' : safeTitle;
       const imgAuthor = spoilerLock ? '' : safeAuthor;
       const fallbackInitial = spoilerLock ? '?' : initial;
@@ -8846,7 +8867,8 @@
         ? ' data-order="' + opts.sortOrder + '"'
         : '';
       const ariaLabel = spoilerLock
-        ? ('Upcoming spotlight reveal on ' + (opts.spoilerRevealDate || 'a future date'))
+        ? ((section === 'spotlight' ? 'Upcoming spotlight reveal on ' : 'Upcoming book reveal on ')
+          + (opts.spoilerRevealDate || 'a future date'))
         : cardTitle;
       return `<div class="shelf-book${featuredClass}${spoilerClass}"${orderAttr}${interactAttr} aria-label="${ariaLabel.replace(/"/g, '&quot;')}">
         <div class="shelf-cover-wrap">
