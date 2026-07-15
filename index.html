@@ -8350,9 +8350,9 @@
     var BKL_TBR_KEY = '90books_tbr_v1';
     var BKL_WORD_DATA = null;
     var BKL_WORD_BY_SLUG = {};
-    // Site-owned featured-author list. Match slug to the book's wordBooks slug.
-    // TODO paid-label when monetized: when paid===true, render "Sponsored" /
-    // "Paid feature" instead of the neutral Featured tag.
+    // Editorial featured-author list (not paid partnerships). Match slug to
+    // the book's wordBooks slug. When monetized, paid===true should render
+    // "Sponsored" / "Paid feature" instead of the neutral Featured tag.
     var FEATURED_AUTHORS = [
       { slug: 'weavingshaw', featuredDate: '2026-07-06', paid: false, ctaUrl: '' },
       { slug: 'starside',    featuredDate: '2026-07-13', paid: false, ctaUrl: '' },
@@ -8482,7 +8482,7 @@
         html += bklRenderShelfRow(
           'bkl-game',
           'Books featured in the game',
-          'Every one has been a daily answer. Authors we\'ve partnered with are pinned up top.',
+          'Every title here was a daily Booky answer. Highlighted books are editorial spotlights — romantasy authors can request a feature too.',
           gameHtml
         );
       }
