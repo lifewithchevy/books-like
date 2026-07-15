@@ -8490,6 +8490,47 @@
     function bklFeaturedFor(slug) {
       return FEATURED_AUTHORS.find(function (f) { return f.slug === slug; }) || null;
     }
+    function bklBookFirstDay(slug, slugFirstDay) {
+      if (!slug || !slugFirstDay) return 0;
+      return slugFirstDay[slug] || 0;
+    }
+    function bklIsFutureBook(slug, ctx) {
+      if (!ctx || !ctx.currentDay) return false;
+      var firstDay = ctx.firstDay || bklBookFirstDay(slug, ctx.slugFirstDay);
+      return firstDay > ctx.currentDay;
+    }
+    function bklLockContext(data, extra) {
+      var base = data || BKL_WORD_DATA || {};
+      var ex = extra || {};
+      return {
+        epoch: ex.epoch || base.epoch || '',
+        currentDay: ex.currentDay || base.day || 0,
+        slugFirstDay: ex.slugFirstDay || base.slugFirstDay || {},
+        firstDay: ex.firstDay || 0,
+      };
+    }
+    function bklApplySpoilerLock(opts, slug, section, ctx) {
+      var lockCtx = bklLockContext(null, ctx);
+      var firstDay = lockCtx.firstDay || bklBookFirstDay(slug, lockCtx.slugFirstDay);
+      if (firstDay && lockCtx.currentDay && lockCtx.epoch && firstDay > lockCtx.currentDay) {
+        opts.spoilerLock = true;
+        opts.spoilerRevealDate = bklFormatPuzzleDate(lockCtx.epoch, firstDay);
+        return opts;
+      }
+      if (section === 'spotlight') {
+        var feat = bklFeaturedFor(slug);
+        if (feat) {
+          opts.featured = true;
+          opts.featuredLabel = '\u2728 Spotlight ' + bklFormatFeaturedDate(feat.featuredDate);
+          if (bklFeaturedIsLocked(feat)) {
+            opts.spoilerLock = true;
+            opts.spoilerRevealDate = bklFormatFeaturedDate(feat.featuredDate);
+          }
+          if (feat.ctaUrl) opts.buyUrl = feat.ctaUrl;
+        }
+      }
+      return opts;
+    }
     function bklSlugToKey(slug) {
       if (bookMetadata[slug]) return slug;
       return Object.keys(bookMetadata).find(function (k) { return slugify(k) === slug; }) || null;
@@ -8511,6 +8552,10 @@
       };
     }
     function bklOpenBook(key, slug, section) {
+      if (BKL_WORD_DATA && slug && bklIsFutureBook(slug, {
+        currentDay: BKL_WORD_DATA.day,
+        slugFirstDay: BKL_WORD_DATA.slugFirstDay,
+      })) return;
       if (document.body.classList.contains('bkl-library-mode')) {
         bklPh('library_book_clicked', { slug: slug || key, section: section || 'shelf' });
       }
@@ -8556,7 +8601,19 @@
         var allBooks = slugOrder.map(function (s) {
           return { slug: s, book: seen[s], firstDay: slugFirstDay[s] || 0 };
         });
-        BKL_WORD_DATA = { day: day, epoch: j.epoch, recent: recent, spotlight: spotlight, allBooks: allBooks, count: slugOrder.length };
+        var revealedCount = slugOrder.filter(function (s) {
+          return (slugFirstDay[s] || 0) <= day;
+        }).length;
+        BKL_WORD_DATA = {
+          day: day,
+          epoch: j.epoch,
+          recent: recent,
+          spotlight: spotlight,
+          allBooks: allBooks,
+          count: slugOrder.length,
+          revealedCount: revealedCount,
+          slugFirstDay: slugFirstDay,
+        };
         return BKL_WORD_DATA;
       });
     }
@@ -8567,7 +8624,6 @@
         + '<div class="shelf-books">' + booksHtml + '</div></div>';
     }
     function bklCardOpts(res, section, extra) {
-      var feat = bklFeaturedFor(res.slug);
       var opts = Object.assign({
         slug: res.slug,
         buyUrl: res.buyUrl,
@@ -8575,22 +8631,7 @@
         coverOverride: res.coverOverride,
         titleOverride: res.titleOverride,
       }, extra || {});
-      if (feat && section === 'spotlight') {
-        opts.featured = true;
-        opts.featuredLabel = '\u2728 Spotlight ' + bklFormatFeaturedDate(feat.featuredDate);
-        if (bklFeaturedIsLocked(feat)) {
-          opts.spoilerLock = true;
-          opts.spoilerRevealDate = bklFormatFeaturedDate(feat.featuredDate);
-        }
-        if (feat.ctaUrl) opts.buyUrl = feat.ctaUrl;
-      }
-      if (section === 'all' && extra && extra.firstDay && extra.currentDay && extra.epoch) {
-        if (extra.firstDay > extra.currentDay) {
-          opts.spoilerLock = true;
-          opts.spoilerRevealDate = bklFormatPuzzleDate(extra.epoch, extra.firstDay);
-        }
-      }
-      return opts;
+      return bklApplySpoilerLock(opts, res.slug, section, extra);
     }
     function bklRenderLibraryShelves(data) {
       var host = document.getElementById('bklLibraryShelves');
@@ -8601,6 +8642,7 @@
           var res = bklResolveBook(r.book);
           return renderShelfBook(res.key, res.meta, 'bkl-recent', i, bklCardOpts(res, 'recent', {
             day: r.day, word: r.word, puzzleDate: r.date, sortOrder: i,
+            epoch: data.epoch, currentDay: data.day, slugFirstDay: data.slugFirstDay,
           }));
         }).join('');
         html += bklRenderShelfRow(
@@ -8613,7 +8655,9 @@
       if (data.spotlight.length) {
         var spotHtml = data.spotlight.map(function (b, i) {
           var res = bklResolveBook(b.book);
-          return renderShelfBook(res.key, res.meta, 'bkl-spotlight', i, bklCardOpts(res, 'spotlight'));
+          return renderShelfBook(res.key, res.meta, 'bkl-spotlight', i, bklCardOpts(res, 'spotlight', {
+            epoch: data.epoch, currentDay: data.day, slugFirstDay: data.slugFirstDay, sortOrder: i,
+          }));
         }).join('');
         html += bklRenderShelfRow(
           'bkl-spotlight',
@@ -8629,11 +8673,12 @@
             firstDay: b.firstDay,
             currentDay: data.day,
             epoch: data.epoch,
+            slugFirstDay: data.slugFirstDay,
             sortOrder: i,
           }));
         }).join('');
         var allDesc = 'Every romantasy book that\'s been a daily Booky answer. '
-          + data.count + ' so far.';
+          + (data.revealedCount != null ? data.revealedCount : data.count) + ' so far.';
         html += bklRenderShelfRow(
           'bkl-all',
           'All books in the game',
@@ -8712,11 +8757,18 @@
       if (hint) hint.style.display = 'none';
       var cnt = document.getElementById('bklWtrCount'); if (cnt) cnt.textContent = keys.length;
       host.innerHTML = keys.map(function (k, i) {
-        if (bookMetadata[k]) return renderShelfBook(k, bookMetadata[k], 'bkl-wtr', i, { section: 'wtr' });
+        var lockCtx = BKL_WORD_DATA ? {
+          epoch: BKL_WORD_DATA.epoch,
+          currentDay: BKL_WORD_DATA.day,
+          slugFirstDay: BKL_WORD_DATA.slugFirstDay,
+        } : {};
         var wb = BKL_WORD_BY_SLUG[k];
+        if (!wb && bookMetadata[k]) {
+          wb = { slug: slugify(k), title: displayTitle(k), author: bookMetadata[k].author || '' };
+        }
         if (!wb) return '';
         var res = bklResolveBook(wb);
-        return renderShelfBook(res.key, res.meta, 'bkl-wtr', i, bklCardOpts(res, 'wtr'));
+        return renderShelfBook(res.key, res.meta, 'bkl-wtr', i, bklCardOpts(res, 'wtr', lockCtx));
       }).join('');
     }
     function isBookyLibraryPath() {
@@ -8783,6 +8835,7 @@
       bklLoadWordData().then(function (data) {
         var covers = [];
         (data.allBooks || []).forEach(function (b) {
+          if (b.firstDay > data.day) return;
           if (b.book && b.book.cover && covers.indexOf(b.book.cover) < 0) covers.push(b.book.cover);
         });
         renderBklIntro(data.count, covers);
