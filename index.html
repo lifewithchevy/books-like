@@ -8471,6 +8471,13 @@
       var d = new Date(p[0], p[1] - 1, p[2]);
       return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
     }
+    function bklFormatPuzzleDate(epochStr, dayNum) {
+      var p = epochStr.split('-').map(Number);
+      if (p.length < 3 || !p[0] || !dayNum) return '';
+      var d = new Date(p[0], p[1] - 1, p[2]);
+      d.setDate(d.getDate() + dayNum - 1);
+      return d.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+    }
     function bklFeaturedFor(slug) {
       return FEATURED_AUTHORS.find(function (f) { return f.slug === slug; }) || null;
     }
@@ -8513,15 +8520,20 @@
           if (b && b.slug && !seen[b.slug]) { seen[b.slug] = b; slugOrder.push(b.slug); BKL_WORD_BY_SLUG[b.slug] = b; }
         });
         var day = bklComputeDayNumber(j.epoch);
-        var recent = [], used = {};
+        var recent = [];
         // Spoiler-safe: only days strictly before today (index day-2 and earlier).
         for (var i = day - 2; i >= 0 && recent.length < 6; i--) {
           var word = queue[i], b = wb[word];
-          if (b && b.slug && !used[b.slug]) {
-            used[b.slug] = 1;
-            recent.push({ day: i + 1, word: word, book: b });
+          if (b && b.slug) {
+            recent.push({
+              day: i + 1,
+              word: word,
+              book: b,
+              date: bklFormatPuzzleDate(j.epoch, i + 1),
+            });
           }
         }
+        recent.sort(function (a, b) { return b.day - a.day; });
         var featSet = {};
         FEATURED_AUTHORS.forEach(function (f) { if (seen[f.slug]) featSet[f.slug] = 1; });
         var spotlight = FEATURED_AUTHORS.filter(function (f) { return seen[f.slug]; })
@@ -8562,12 +8574,12 @@
         var recentHtml = data.recent.map(function (r, i) {
           var res = bklResolveBook(r.book);
           return renderShelfBook(res.key, res.meta, 'bkl-recent', i, bklCardOpts(res, 'recent', {
-            day: r.day, word: r.word,
+            day: r.day, word: r.word, puzzleDate: r.date,
           }));
         }).join('');
         html += bklRenderShelfRow(
           'bkl-recent',
-          'Recent Booky Daily Words',
+          'Recent Booky Words',
           'Past puzzle days only. Won\'t spoil today\'s word.',
           recentHtml
         );
@@ -8761,7 +8773,12 @@
       const initial  = title.replace(/^(A |An |The )/i, '')[0] || title[0] || '?';
       const featuredClass = opts.featured ? ' bkl-featured' : '';
       const ribbon = opts.featured ? '<span class="bkl-ribbon">' + (opts.featuredLabel || '\u2728 Featured') + '</span>' : '';
-      const dayTag = opts.day ? '<div class="bkl-day-tag">Day ' + opts.day + ' \u00b7 ' + opts.word + '</div>' : '';
+      const dayTag = opts.day
+        ? '<div class="bkl-day-tag">'
+          + (opts.puzzleDate ? opts.puzzleDate + ' \u00b7 ' : '')
+          + 'Booky #' + opts.day + ' \u00b7 ' + opts.word
+          + '</div>'
+        : '';
       // Library mode matches Fable rows: cover + title + author only.
       // Want-to-read lives on the book detail page; buy CTAs live there too.
       const inLibrary = document.body.classList.contains('bkl-library-mode');
