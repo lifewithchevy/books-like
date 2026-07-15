@@ -518,6 +518,68 @@ return { earned, next };
 }
 
 // ---- End screen ----
+function hideBookRecCover(cover, coverLink) {
+cover.hidden = true;
+coverLink.hidden = true;
+}
+
+function isAmazonCoverPlaceholder(img) {
+return img.naturalWidth < 50 || img.naturalHeight < 50;
+}
+
+function loadOpenLibraryCover(cover, coverLink, bookRec, onReady) {
+const q = encodeURIComponent(`${bookRec.title} ${bookRec.author}`);
+fetch(`https://openlibrary.org/search.json?q=${q}&fields=cover_i&limit=1`)
+.then((r) => r.json())
+.then((data) => {
+const id = data.docs?.[0]?.cover_i;
+if (!id) {
+hideBookRecCover(cover, coverLink);
+onReady?.();
+return;
+}
+cover.onload = () => {
+if (isAmazonCoverPlaceholder(cover)) {
+hideBookRecCover(cover, coverLink);
+} else {
+cover.hidden = false;
+coverLink.hidden = false;
+}
+onReady?.();
+};
+cover.onerror = () => {
+hideBookRecCover(cover, coverLink);
+onReady?.();
+};
+cover.src = `https://covers.openlibrary.org/b/id/${id}-L.jpg`;
+cover.alt = `${bookRec.title} cover`;
+})
+.catch(() => {
+hideBookRecCover(cover, coverLink);
+onReady?.();
+});
+}
+
+function loadBookRecCover(cover, coverLink, bookRec, onReady) {
+hideBookRecCover(cover, coverLink);
+if (!bookRec.cover) {
+loadOpenLibraryCover(cover, coverLink, bookRec, onReady);
+return;
+}
+cover.onload = () => {
+if (isAmazonCoverPlaceholder(cover)) {
+loadOpenLibraryCover(cover, coverLink, bookRec, onReady);
+return;
+}
+cover.hidden = false;
+coverLink.hidden = false;
+onReady?.();
+};
+cover.onerror = () => loadOpenLibraryCover(cover, coverLink, bookRec, onReady);
+cover.src = bookRec.cover;
+cover.alt = `${bookRec.title} cover`;
+}
+
 function showEndScreen() {
 recordFinish();
 
@@ -569,21 +631,9 @@ $('book-rec-author').textContent = bookRec.author;
 
 const cover = $('book-rec-cover');
 const coverLink = $('book-rec-cover-link');
-if (bookRec.cover) {
-cover.src = bookRec.cover;
-cover.alt = `${bookRec.title} cover`;
-cover.hidden = false;
-cover.onerror = () => {
-cover.hidden = true;
-coverLink.hidden = true;
+const syncCoverLink = () => {
+coverLink.hidden = cover.hidden;
 };
-} else {
-cover.hidden = true;
-}
-
-// Hook line hidden for now (per Olga) — keep the element + data so it can
-// be re-enabled later by restoring the `bookRec.hook` conditional.
-$('book-rec-hook').hidden = true;
 
 // One secondary text link under the book (Share is the only primary CTA).
 // Prefer Amazon buy; fall back to curated books-like page. Cover uses the same URL.
@@ -606,7 +656,6 @@ linkEl.hidden = false;
 linkEl.onclick = trackAffiliateBuy;
 coverLink.href = bookRec.buyUrl;
 coverLink.rel = 'noopener sponsored';
-coverLink.hidden = cover.hidden;
 coverLink.onclick = trackAffiliateBuy;
 } else if (CURATED_SLUGS.has(bookRec.slug)) {
 linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
@@ -616,14 +665,17 @@ linkEl.hidden = false;
 linkEl.onclick = trackBooksLike;
 coverLink.href = linkEl.href;
 coverLink.rel = 'noopener';
-coverLink.hidden = cover.hidden;
 coverLink.onclick = trackBooksLike;
 } else {
 linkEl.hidden = true;
 linkEl.onclick = null;
-coverLink.hidden = true;
 coverLink.onclick = null;
 }
+loadBookRecCover(cover, coverLink, bookRec, syncCoverLink);
+
+// Hook line hidden for now (per Olga) — keep the element + data so it can
+// be re-enabled later by restoring the `bookRec.hook` conditional.
+$('book-rec-hook').hidden = true;
 recEl.hidden = false;
 } else {
 recEl.hidden = true;
