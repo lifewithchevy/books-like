@@ -8290,7 +8290,9 @@
     function getBookCoverUrl(key) {
       const k = key.toLowerCase();
       if (COVER_OVERRIDES[k]) return COVER_OVERRIDES[k];
-      const isbn = BOOK_ISBN[k];
+      const spaced = k.replace(/-/g, ' ');
+      if (COVER_OVERRIDES[spaced]) return COVER_OVERRIDES[spaced];
+      const isbn = BOOK_ISBN[k] || BOOK_ISBN[spaced];
       if (!isbn) return null;
       if (BAD_ISBN_COVERS.has(isbn)) return null; // force title-search fallback
       // ?default=false → 404 (not a placeholder image) when OL has no cover, so the
@@ -8407,31 +8409,70 @@
       if (fallback) fallback.style.display = 'flex';
     }
 
-    function shelfCoverLoaded(img) {
-      // OL/blank returns a 1×1 pixel when it has no cover, try the full fetch chain
-      if (img.naturalWidth < 50) {
-        const card = img.closest('.shelf-book');
-        if (!card) return;
-        // Prefer data attributes (set on series shelves where .shelf-book-author shows "#3" etc.)
-        const title  = img.dataset.bookTitle  || card.querySelector('.shelf-book-title')?.textContent  || '';
-        const author = img.dataset.bookAuthor || card.querySelector('.shelf-book-author')?.textContent || '';
-        if (title) {
-          img.onerror = () => shelfShowFallback(img);
-          img.onload  = () => { if (img.naturalWidth < 50) shelfShowFallback(img); };
-          fetchCover(title, author, img);
-        } else {
-          shelfShowFallback(img);
+    function shelfIsTinyCover(img) {
+      return !img || img.naturalWidth < 50 || img.naturalHeight < 50;
+    }
+
+    function shelfCoverOverrideUrl(img) {
+      const title = (img && img.dataset.bookTitle) || '';
+      const key = title.toLowerCase().replace(/['']/g, "'");
+      if (COVER_OVERRIDES[key]) return COVER_OVERRIDES[key];
+      const slug = slugify(title);
+      if (COVER_OVERRIDES[slug.replace(/-/g, ' ')]) return COVER_OVERRIDES[slug.replace(/-/g, ' ')];
+      const slugCover = BKL_COVER_BY_SLUG && BKL_COVER_BY_SLUG[slug];
+      if (slugCover) return slugCover;
+      return null;
+    }
+
+    function shelfTryCoverOverride(img, onDone) {
+      const url = shelfCoverOverrideUrl(img);
+      if (!url || img.src === url) return false;
+      img.onload = () => {
+        if (shelfIsTinyCover(img)) {
+          if (onDone) onDone();
+          else shelfShowFallback(img);
+          return;
         }
+        img.style.display = '';
+        const fallback = img.closest('.shelf-cover-wrap')?.querySelector('.shelf-cover-fallback');
+        if (fallback) fallback.style.display = 'none';
+      };
+      img.onerror = () => { if (onDone) onDone(); else shelfShowFallback(img); };
+      img.src = url;
+      return true;
+    }
+
+    function shelfCoverLoaded(img) {
+      // OL/Amazon blanks return a 1×1 pixel when they have no cover, try overrides then fetch chain
+      if (!shelfIsTinyCover(img)) return;
+      if (shelfTryCoverOverride(img, () => shelfCoverRetryFetch(img))) return;
+      shelfCoverRetryFetch(img);
+    }
+
+    function shelfCoverRetryFetch(img) {
+      const card = img.closest('.shelf-book');
+      if (!card) return;
+      const title  = img.dataset.bookTitle  || card.querySelector('.shelf-book-title')?.textContent  || '';
+      const author = img.dataset.bookAuthor || card.querySelector('.shelf-book-author')?.textContent || '';
+      if (title) {
+        img.onerror = () => shelfShowFallback(img);
+        img.onload  = () => { if (shelfIsTinyCover(img)) shelfShowFallback(img); };
+        fetchCover(title, author, img);
+      } else {
+        shelfShowFallback(img);
       }
     }
 
-    // Called when a shelf cover img errors, tries full cover chain, then shows styled fallback
+    // Called when a shelf cover img errors, tries overrides then full cover chain
     function shelfCoverError(img, title, author) {
       if (!img || img._fallbackTried) return;
       img._fallbackTried = true;
+      img.dataset.bookTitle = img.dataset.bookTitle || title || '';
+      img.dataset.bookAuthor = img.dataset.bookAuthor || author || '';
+      if (shelfTryCoverOverride(img, () => shelfCoverRetryFetch(img))) return;
       if (title) {
         img.onerror = () => shelfShowFallback(img);
-        img.onload  = () => { if (img.naturalWidth < 50) shelfShowFallback(img); };
+        img.onload  = () => { if (shelfIsTinyCover(img)) shelfShowFallback(img); };
         fetchCover(title, author || '', img);
       } else {
         shelfShowFallback(img);
@@ -8444,6 +8485,7 @@
     var BKL_TBR_KEY = '90books_tbr_v1';
     var BKL_WORD_DATA = null;
     var BKL_WORD_BY_SLUG = {};
+    var BKL_COVER_BY_SLUG = {};
     // Editorial featured-author list (not paid partnerships). Match slug to
     // the book's wordBooks slug. When monetized, paid===true should render
     // "Sponsored" / "Paid feature" instead of the neutral Featured tag.
@@ -8535,19 +8577,30 @@
       if (bookMetadata[slug]) return slug;
       return Object.keys(bookMetadata).find(function (k) { return slugify(k) === slug; }) || null;
     }
+    function bklCoverForBook(key, slug, wordCover) {
+      if (wordCover) return wordCover;
+      var k = (key || '').toLowerCase();
+      if (COVER_OVERRIDES[k]) return COVER_OVERRIDES[k];
+      var spaced = k.replace(/-/g, ' ');
+      if (COVER_OVERRIDES[spaced]) return COVER_OVERRIDES[spaced];
+      var s = (slug || '').toLowerCase();
+      if (BKL_COVER_BY_SLUG[s]) return BKL_COVER_BY_SLUG[s];
+      return null;
+    }
     function bklResolveBook(wordBook) {
       var key = bklSlugToKey(wordBook.slug) || wordBook.slug;
       var feat = bklFeaturedFor(wordBook.slug);
       var buyUrl = (feat && feat.ctaUrl) || wordBook.buyUrl || '';
+      var coverOverride = bklCoverForBook(key, wordBook.slug, wordBook.cover);
       if (bookMetadata[key]) {
-        return { key: key, meta: bookMetadata[key], slug: wordBook.slug, buyUrl: buyUrl, coverOverride: null, titleOverride: null };
+        return { key: key, meta: bookMetadata[key], slug: wordBook.slug, buyUrl: buyUrl, coverOverride: coverOverride, titleOverride: null };
       }
       return {
         key: key,
         meta: { author: wordBook.author },
         slug: wordBook.slug,
         buyUrl: buyUrl,
-        coverOverride: wordBook.cover,
+        coverOverride: coverOverride,
         titleOverride: wordBook.title,
       };
     }
@@ -8569,6 +8622,11 @@
       return fetch('/booky/words.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (j) {
         var wb = j.wordBooks || {}, queue = j.queue || [], seen = {}, slugOrder = [];
         BKL_WORD_BY_SLUG = {};
+        BKL_COVER_BY_SLUG = {};
+        Object.keys(wb).forEach(function (word) {
+          var b = wb[word];
+          if (b && b.slug && b.cover) BKL_COVER_BY_SLUG[b.slug] = b.cover;
+        });
         queue.forEach(function (w) {
           var b = wb[w];
           if (b && b.slug && !seen[b.slug]) { seen[b.slug] = b; slugOrder.push(b.slug); BKL_WORD_BY_SLUG[b.slug] = b; }
@@ -8690,8 +8748,6 @@
       host.style.display = html ? '' : 'none';
       bklPlaceBookyLibraryShelf();
       resetShelfScroll(host);
-      scheduleCoverSort(host, 900);
-      scheduleCoverSort(host, 2500);
     }
     // On /booky-library, keep library shelves visible and hide the static discover
     // "new" shelf (all game books render dynamically in bkl-all).
@@ -8890,6 +8946,9 @@
         : title;
       const imgTitle = spoilerLock ? '' : safeTitle;
       const imgAuthor = spoilerLock ? '' : safeAuthor;
+      const imgLoadAttrs = (inLibrary && coverUrl && idx < 8)
+        ? ' loading="eager" decoding="async" fetchpriority="high"'
+        : (coverUrl ? ' loading="lazy" decoding="async"' : '');
       const fallbackInitial = spoilerLock ? '?' : initial;
       const fallbackTitle = spoilerLock ? '???' : title;
       const orderAttr = (opts.sortOrder !== undefined && opts.sortOrder !== null)
@@ -8907,7 +8966,7 @@
             <div class="shelf-cover-fallback-title">${fallbackTitle}</div>
           </div>
           <img class="shelf-cover-img" src="${imgSrc}" alt="${imgAlt.replace(/"/g, '&quot;')}"
-            data-book-title="${imgTitle}" data-book-author="${imgAuthor}"
+            data-book-title="${imgTitle}" data-book-author="${imgAuthor}"${imgLoadAttrs}
             onload="shelfCoverLoaded(this)"
             onerror="shelfCoverError(this,'${imgTitle}','${imgAuthor}')">
           ${heart}
