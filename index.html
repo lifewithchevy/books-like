@@ -8533,7 +8533,8 @@
             });
           }
         }
-        recent.sort(function (a, b) { return a.day - b.day; });
+        // Yesterday left, older puzzle days to the right.
+        recent.sort(function (a, b) { return b.day - a.day; });
         var featSet = {};
         FEATURED_AUTHORS.forEach(function (f) { if (seen[f.slug]) featSet[f.slug] = 1; });
         var spotlight = FEATURED_AUTHORS.filter(function (f) { return seen[f.slug]; })
