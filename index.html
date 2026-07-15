@@ -4759,6 +4759,14 @@
 
     function _sortShelfRow(shelfBooksEl) {
       const books = [...shelfBooksEl.querySelectorAll(':scope > .shelf-book')];
+      // Fixed-order shelves (e.g. Recent Booky Words by puzzle date).
+      if (books.some(b => b.hasAttribute('data-order'))) {
+        books.sort(function (a, b) {
+          return Number(a.getAttribute('data-order')) - Number(b.getAttribute('data-order'));
+        });
+        books.forEach(function (b) { shelfBooksEl.appendChild(b); });
+        return;
+      }
       const loaded   = books.filter(_coverLoaded);
       const unloaded = books.filter(b => !_coverLoaded(b));
       if (!unloaded.length) return;           // nothing to move
@@ -8575,7 +8583,7 @@
         var recentHtml = data.recent.map(function (r, i) {
           var res = bklResolveBook(r.book);
           return renderShelfBook(res.key, res.meta, 'bkl-recent', i, bklCardOpts(res, 'recent', {
-            day: r.day, word: r.word, puzzleDate: r.date,
+            day: r.day, word: r.word, puzzleDate: r.date, sortOrder: i,
           }));
         }).join('');
         html += bklRenderShelfRow(
@@ -8791,7 +8799,10 @@
       // If no ISBN cover URL, use a tiny blank gif so onload fires → triggers fetchCover
       const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
       const imgSrc = coverUrl || BLANK;
-      return `<div class="shelf-book${featuredClass}" onclick="${clickFn}">
+      const orderAttr = (opts.sortOrder !== undefined && opts.sortOrder !== null)
+        ? ' data-order="' + opts.sortOrder + '"'
+        : '';
+      return `<div class="shelf-book${featuredClass}"${orderAttr} onclick="${clickFn}">
         <div class="shelf-cover-wrap">
           ${ribbon}
           <div class="shelf-cover-fallback" style="display:none;">
