@@ -7957,23 +7957,12 @@
     const DISCOVER_SHELVES = [
       {
         id: 'new',
-        label: 'Booky Library',
-        description: 'Every romantasy book Booky has featured, all in one shelf. Great for finding your next read after you finish the puzzle.',
+        label: 'All books in the game',
+        description: 'Every romantasy book featured as a daily Booky word.',
         moodKey: null,
-        // Backed by real Reddit data mined from r/Romantasy, r/RomanceBooks, and
-        // r/Fantasy threads (May 2026). Each book here was mentioned in multiple
-        // "best romantasy" / "books like [hit book]" / most-recommended-ever
-        // threads across the romantasy reader community.
-        curatedKeys: [
-          'fourth wing',                       // 40 threads (its own query), current peak romantasy
-          'a court of thorns and roses',       // 29 threads (Fourth Wing query) + 20 (acotar query)
-          'throne of glass',                   // 29 threads (Fourth Wing query), #1 SJM crossover
-          'iron flame',                        // Empyrean #2, active demand
-          'the cruel prince',                  // YA fae E2L blueprint, 11+ threads
-          'from blood and ash',                // JLA romantasy gateway, 9+ threads
-          'quicksilver',                       // Callie Hart breakout 2024
-          'the bridge kingdom',                // Arranged-marriage romantasy classic
-        ],
+        hidden: true,
+        // Rendered dynamically on /booky-library from booky/words.json (bkl-all).
+        curatedKeys: [],
         accent: '#E84393',
         gradients: ['#E84393','#FF6B9D','#C44569','#FF3CAC','#784BA0'],
       },
@@ -7984,8 +7973,9 @@
       {
         id: 'quick-reads',
         label: 'Standalones & Duologies',
-        description: 'Romantasy without the 7-book commitment. True standalones and complete duologies, start one this weekend and finish the whole story.',
+        description: 'Romantasy you can finish in a weekend. Standalones and complete duologies only.',
         moodKey: null,
+        hidden: true,
         curatedKeys: [
           'one dark window',                   // Shepherd King duology (2 books, complete)
           'heartless hunter',                  // Crimson Moth duology book 1 (2 books, complete)
@@ -8042,8 +8032,9 @@
       {
         id: 'adventurous',
         label: 'Epic Fantasy',
-        description: 'Big magical worlds, brutal stakes, characters who earn every scar. Fantasy with romance, no dystopia, no sci-fi.',
+        description: 'Big worlds, brutal stakes, and fantasy romance that earns every scar.',
         moodKey: 'adventurous',
+        hidden: true,
         // Strict fantasy (per romantasy-only pivot). Dropped The Hunger Games
         // (dystopian) and Red Rising (sci-fi/space opera), they're not
         // fantasy. Replaced with adult urban fantasy + Slavic fantasy with
@@ -8108,8 +8099,9 @@
       {
         id: 'enemies-to-lovers',
         label: 'Enemies to Lovers',
-        description: 'Every "best enemies to lovers?" thread on r/Romantasy. The romantasy answers that come up over and over.',
+        description: 'The romantasy E2L picks r/Romantasy won\'t stop recommending.',
         moodKey: null,
+        hidden: true,
         // Romantasy-strict. Contemporary E2L picks (Hating Game, Twisted Love,
         // King of Wrath) removed in the romantasy-only pivot.
         curatedKeys: [
@@ -8423,13 +8415,10 @@
         }
         var featSet = {};
         FEATURED_AUTHORS.forEach(function (f) { if (seen[f.slug]) featSet[f.slug] = 1; });
-        // Featured authors first (durable listing), then the rest of the game shelf.
-        var featured = FEATURED_AUTHORS.filter(function (f) { return seen[f.slug]; })
+        var spotlight = FEATURED_AUTHORS.filter(function (f) { return seen[f.slug]; })
           .map(function (f) { return { slug: f.slug, book: seen[f.slug], featured: f }; });
-        var allBooks = featured.concat(
-          slugOrder.filter(function (s) { return !featSet[s]; }).map(function (s) { return { slug: s, book: seen[s] }; })
-        );
-        BKL_WORD_DATA = { day: day, recent: recent, allBooks: allBooks, count: slugOrder.length };
+        var allBooks = slugOrder.map(function (s) { return { slug: s, book: seen[s] }; });
+        BKL_WORD_DATA = { day: day, recent: recent, spotlight: spotlight, allBooks: allBooks, count: slugOrder.length };
         return BKL_WORD_DATA;
       });
     }
@@ -8448,10 +8437,10 @@
         coverOverride: res.coverOverride,
         titleOverride: res.titleOverride,
       }, extra || {});
-      if (feat) {
+      if (feat && section === 'spotlight') {
         opts.featured = true;
         // TODO paid-label when monetized: if (feat.paid) use "Sponsored" label.
-        opts.featuredLabel = '\u2728 Featured ' + bklFormatFeaturedDate(feat.featuredDate);
+        opts.featuredLabel = '\u2728 Spotlight ' + bklFormatFeaturedDate(feat.featuredDate);
         if (feat.ctaUrl) opts.buyUrl = feat.ctaUrl;
       }
       return opts;
@@ -8459,11 +8448,6 @@
     function bklRenderLibraryShelves(data) {
       var host = document.getElementById('bklLibraryShelves');
       if (!host) return;
-      // If Booky Library was already moved into this host, park it outside before
-      // we rewrite innerHTML so the curated shelf isn't destroyed.
-      var parked = host.querySelector('.shelf-row[data-shelf="new"]');
-      var shelvesRoot = document.getElementById('discoverShelves');
-      if (parked && shelvesRoot) shelvesRoot.appendChild(parked);
       var html = '';
       if (data.recent.length) {
         var recentHtml = data.recent.map(function (r, i) {
@@ -8472,18 +8456,37 @@
             day: r.day, word: r.word,
           }));
         }).join('');
-        html += bklRenderShelfRow('bkl-recent', 'Recently in Booky', 'Past words only, so nothing spoils today\'s puzzle.', recentHtml);
+        html += bklRenderShelfRow(
+          'bkl-recent',
+          'Recent Booky Daily Words',
+          'Past puzzle days only. Won\'t spoil today\'s word.',
+          recentHtml
+        );
       }
-      if (data.allBooks.length) {
-        var gameHtml = data.allBooks.map(function (b, i) {
+      if (data.spotlight.length) {
+        var spotHtml = data.spotlight.map(function (b, i) {
           var res = bklResolveBook(b.book);
-          return renderShelfBook(res.key, res.meta, 'bkl-game', i, bklCardOpts(res, 'featured'));
+          return renderShelfBook(res.key, res.meta, 'bkl-spotlight', i, bklCardOpts(res, 'spotlight'));
         }).join('');
         html += bklRenderShelfRow(
-          'bkl-game',
-          'Books featured in the game',
-          'Every title here was a daily Booky answer. Highlighted books are editorial spotlights — romantasy authors can request a feature too.',
-          gameHtml
+          'bkl-spotlight',
+          'Romantasy Spotlight Shelf',
+          'Handpicked romantasy we\'re shouting about. Authors can request a feature.',
+          spotHtml
+        );
+      }
+      if (data.allBooks.length) {
+        var allHtml = data.allBooks.map(function (b, i) {
+          var res = bklResolveBook(b.book);
+          return renderShelfBook(res.key, res.meta, 'bkl-all', i, bklCardOpts(res, 'all'));
+        }).join('');
+        var allDesc = 'Every romantasy book that\'s been a daily Booky answer. '
+          + data.count + ' so far.';
+        html += bklRenderShelfRow(
+          'bkl-all',
+          'All books in the game',
+          allDesc,
+          allHtml
         );
       }
       host.innerHTML = html;
@@ -8492,23 +8495,13 @@
       scheduleCoverSort(host, 900);
       scheduleCoverSort(host, 2500);
     }
-    // On /booky-library, pull the curated "Booky Library" discover shelf up so it
-    // sits directly under Recently in Booky (above the game shelf + browse block).
+    // On /booky-library, keep library shelves visible and hide the static discover
+    // "new" shelf (all game books render dynamically in bkl-all).
     function bklPlaceBookyLibraryShelf() {
       var host = document.getElementById('bklLibraryShelves');
       if (!host) return;
-      var bookyLib = document.querySelector('#discoverShelves > .shelf-row[data-shelf="new"]')
-        || host.querySelector('.shelf-row[data-shelf="new"]');
-      if (!bookyLib) return;
-      var recent = host.querySelector('[data-shelf="bkl-recent"]');
-      var game = host.querySelector('[data-shelf="bkl-game"]');
-      if (recent) {
-        if (recent.nextSibling !== bookyLib) recent.after(bookyLib);
-      } else if (game) {
-        host.insertBefore(bookyLib, game);
-      } else if (bookyLib.parentElement !== host) {
-        host.appendChild(bookyLib);
-      }
+      var staticNew = document.querySelector('#discoverShelves > .shelf-row[data-shelf="new"]');
+      if (staticNew) staticNew.style.display = 'none';
       if (!host.innerHTML.trim() && !host.querySelector('.shelf-row')) return;
       host.style.display = '';
     }
@@ -8617,7 +8610,7 @@
         + '</section>'
         + '<div class="bkl-hint" id="bklTbrHint">Open any book and tap Want to read to save it for later. Stays on this device.</div>'
         + '<div id="bklWtrShelf" class="shelf-row" style="display:none;">'
-        + '<div class="shelf-header"><div class="shelf-title">Your want-to-read list (<span id="bklWtrCount">0</span>)</div></div>'
+        + '<div class="shelf-header"><div class="shelf-title">Your Want-to-Read List (<span id="bklWtrCount">0</span>)</div></div>'
         + '<div class="shelf-books" id="bklWtrRow"></div>'
         + '</div>';
       intro.style.display = '';
@@ -8861,7 +8854,7 @@
       } else {
         // Fallback: Booky Library, featured romantasy picks for non-GR users.
         config = {
-          title: 'Booky Library',
+          title: 'All books in the game',
           genreLabel: null,
           gradient: 'linear-gradient(135deg,#1A0518 0%,#4A0E38 55%,#2A0E50 100%)',
           onclick: "discoverSelectTrending()",
@@ -9119,9 +9112,9 @@
       }).join('');
       return `<div class="shelf-row" data-shelf="books-like">
         <div class="shelf-header">
-          <div class="shelf-title">Books Like...</div>
+          <div class="shelf-title">Romantasy Books Like Your Favorites</div>
         </div>
-        <div class="shelf-subtitle">Pick a romantasy that wrecked you. I'll find what hits the same.</div>
+        <div class="shelf-subtitle">Finished one? Find romantasy that hits the same.</div>
         <div class="shelf-books">${cards}</div>
       </div>`;
     }
@@ -9556,9 +9549,9 @@
       }).join('');
       return `<div class="shelf-row" data-shelf="shortcuts">
         <div class="shelf-header">
-          <div class="shelf-title">Discover by Vibe</div>
+          <div class="shelf-title">Romantasy Vibes to Browse</div>
         </div>
-        <div class="shelf-subtitle">Tell me the romantasy you're in the mood for. I'll match the book.</div>
+        <div class="shelf-subtitle">Tell me the mood. I'll match the book.</div>
         <div class="shelf-books shortcuts-strip">${cards}</div>
       </div>`;
     }
@@ -9873,9 +9866,9 @@
       const filteredEl = document.getElementById('discover-filtered-results');
       filteredEl.style.display = 'block';
       const labelEl = document.getElementById('discoverResultsLabel');
-      if (labelEl) labelEl.textContent = '📚 Booky Library';
+      if (labelEl) labelEl.textContent = '\ud83d\udcda All books in the game';
       const descEl = document.getElementById('discoverResultsDesc');
-      if (descEl) descEl.innerHTML = `<p style="margin:0">Every romantasy book Booky has featured, all in one shelf. Great for finding your next read after you finish the puzzle.</p>`;
+      if (descEl) descEl.innerHTML = '<p style="margin:0">Every romantasy book that\'s been a daily Booky answer.</p>';
       // Romantasy-only, strictly fantasy + romance. Ordered by Reddit/BookTok
       // mention frequency in 2024–2026 (Fourth Wing era + ACOTAR evergreen).
       const TRENDING_KEYS = [
@@ -10016,7 +10009,8 @@
       html += '<div id="bklLibraryShelves" style="display:none;"></div>';
       html += renderDiscoverHero();
       html += '<div id="bklBrowseDivider" style="display:none;">'
-        + '<div class="bkl-div-title">More romantasy to browse</div>'
+        + '<div class="bkl-div-title">More Romantasy Shelves</div>'
+        + '<p class="bkl-div-sub">Browse by vibe, trope, and reader favorites beyond the daily game.</p>'
         + '</div>';
       html += renderVibeShortcuts();
       // Discover by Genre removed in romantasy-only pivot, multi-genre browse
