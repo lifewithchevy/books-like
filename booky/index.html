@@ -52,6 +52,78 @@
     }
   } catch (e) {}
 </script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "VideoGame",
+      "@id": "https://90books.com/booky#game",
+      "name": "Booky",
+      "alternateName": "Booky, the daily romantasy word game",
+      "url": "https://90books.com/booky",
+      "description": "Booky is a free daily word game for romantasy readers. Like Wordle, but every 5-letter word hides a romantasy book. Guess it in 6 tries, build your streak, and meet your next read.",
+      "genre": ["Word game", "Puzzle"],
+      "gamePlatform": "Web browser",
+      "playMode": "SinglePlayer",
+      "applicationCategory": "GameApplication",
+      "operatingSystem": "Any modern web browser",
+      "inLanguage": "en",
+      "isAccessibleForFree": true,
+      "image": "https://90books.com/booky/og-image.png",
+      "author": { "@type": "Organization", "name": "90books", "url": "https://90books.com" },
+      "publisher": { "@type": "Organization", "name": "90books", "url": "https://90books.com" },
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" }
+    },
+    {
+      "@type": "FAQPage",
+      "@id": "https://90books.com/booky#faq",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "Is there a Wordle for romantasy books?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes. Booky, the daily romantasy word game, is a free daily word puzzle for romantasy readers. It plays like Wordle, but every 5-letter word hides a romantasy book. Guess it in 6 tries and you meet the book behind the word."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "How do you play Booky?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "You get 6 tries to guess a hidden 5-letter word. Green means the letter is correct and in the right spot, yellow means it is in the word but a different spot, gray means it is not in the word. Solve it and you meet the romantasy book that word came from."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "Is Booky free to play?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Yes, Booky is completely free. A new romantasy word goes live every day, and you can build a streak by playing daily."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "What is romantasy?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "Romantasy is romance-driven fantasy, think Fourth Wing, A Court of Thorns and Roses, and From Blood and Ash. Every book behind a Booky word is a hand-picked reader favorite from r/Romantasy and BookTok."
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "When does a new Booky puzzle come out?",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "A new word goes live every day. Come back daily to keep your streak alive and meet a new romantasy book."
+          }
+        }
+      ]
+    }
+  ]
+}
+</script>
 </head>
 <body>
 <div class="bg-glow" aria-hidden="true"></div>
@@ -265,6 +337,41 @@ required
 
 <!-- Floating toast (invalid guess, etc.) -->
 <div id="floating-toast" class="float-toast" hidden></div>
+
+<!-- SEO FAQ (visible, matches FAQPage JSON-LD). Below the game, does not touch play. -->
+<section class="booky-faq" aria-label="About Booky, the daily romantasy word game">
+<h2>Booky, the daily romantasy word game: FAQ</h2>
+<details>
+<summary>Is there a Wordle for romantasy books?</summary>
+<p>Yes. Booky, the daily romantasy word game, is a free daily word puzzle for romantasy readers. It plays like Wordle, but every 5-letter word hides a romantasy book. Guess it in 6 tries and you meet the book behind the word.</p>
+</details>
+<details>
+<summary>How do you play Booky?</summary>
+<p>You get 6 tries to guess a hidden 5-letter word. Green means the letter is correct and in the right spot, yellow means it is in the word but a different spot, gray means it is not in the word. Solve it and you meet the romantasy book that word came from.</p>
+</details>
+<details>
+<summary>Is Booky free to play?</summary>
+<p>Yes, Booky is completely free. A new romantasy word goes live every day, and you can build a streak by playing daily.</p>
+</details>
+<details>
+<summary>What is romantasy?</summary>
+<p>Romantasy is romance-driven fantasy, think Fourth Wing, A Court of Thorns and Roses, and From Blood and Ash. Every book behind a Booky word is a hand-picked reader favorite from r/Romantasy and BookTok.</p>
+</details>
+<details>
+<summary>When does a new Booky puzzle come out?</summary>
+<p>A new word goes live every day. Come back daily to keep your streak alive and meet a new romantasy book.</p>
+</details>
+</section>
+<style>
+.booky-faq{max-width:560px;margin:48px auto 40px;padding:0 20px;font-family:'Inter',sans-serif;}
+.booky-faq h2{font-family:'Cormorant Garamond',serif;font-size:1.6rem;font-weight:600;margin:0 0 16px;text-align:center;opacity:.92;}
+.booky-faq details{border-bottom:1px solid rgba(150,90,140,.22);padding:14px 2px;}
+.booky-faq summary{cursor:pointer;font-weight:700;font-size:.98rem;list-style:none;opacity:.9;}
+.booky-faq summary::-webkit-details-marker{display:none;}
+.booky-faq summary::after{content:'+';float:right;opacity:.6;font-weight:600;}
+.booky-faq details[open] summary::after{content:'\2013';}
+.booky-faq p{margin:10px 2px 2px;line-height:1.55;font-size:.92rem;opacity:.8;}
+</style>
 
 <script src="/booky/app.js?v=39" defer></script>
 </body>

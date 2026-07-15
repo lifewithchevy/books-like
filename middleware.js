@@ -13,6 +13,29 @@
 import { next } from '@vercel/edge';
 import { BOOKS_LIKE_RECS } from './seo-recs.mjs';
 
+// Read the Booky shelf (unique books, deduped by slug) from the Booky-owned
+// booky/words.json at runtime. We READ this file, never write it (chat
+// boundary). Fetched the same way we fetch index.html below, so the list
+// auto-updates whenever the Booky side adds a book.
+async function getLibraryBooks(origin) {
+  try {
+    const r = await fetch(`${origin}/booky/words.json`, {
+      headers: { 'user-agent': '90books-edge-middleware' },
+    });
+    if (!r.ok) return [];
+    const data = await r.json();
+    const wb = data.wordBooks || {};
+    const bySlug = {};
+    for (const w in wb) {
+      const b = wb[w];
+      if (b && b.slug && !bySlug[b.slug]) bySlug[b.slug] = b;
+    }
+    return Object.values(bySlug); // ~26 { slug, title, author, cover, buyUrl }
+  } catch (e) {
+    return [];
+  }
+}
+
 export const config = {
   matcher: ['/books-like/:slug*', '/genre/:slug*', '/mood/:slug*', '/booky-library'],
 };
@@ -187,7 +210,7 @@ function buildMeta(pathname) {
 // SEO body block, visible to Googlebot before JS hydrates, hidden from
 // users once the SPA takes over. The SPA looks for #seo-static-block and
 // removes it on initDiscoverTab (added to the home init flow).
-function buildSeoBlock(meta) {
+function buildSeoBlock(meta, books) {
   const safeLabel = escapeHtml(meta.label);
   let h1Text, bodyHtml;
 
@@ -264,6 +287,19 @@ function buildSeoBlock(meta) {
   } else if (meta.pageKind === 'mood') {
     h1Text = `${safeLabel} Books`;
     bodyHtml = `<p>Books for when you're in the mood for something <strong>${safeLabel.toLowerCase()}</strong>. Curated picks from real reader threads, no algorithm slop.</p>`;
+  } else if (meta.pageKind === 'library') {
+    const count = (books && books.length) || 0;
+    h1Text = 'The Booky Library';
+    const items = (books || []).map((b) => {
+      const t = escapeHtml(b.title);
+      const a = escapeHtml(b.author);
+      return `<li style="margin:0 0 10px;line-height:1.5;"><strong>${t}</strong> by ${a}</li>`;
+    }).join('');
+    bodyHtml = `
+      <p style="line-height:1.6;font-size:1.05rem;margin-bottom:20px;">Every romantasy book we have featured in Booky, the daily romantasy word game. ${count} hand-picked reader favorites from r/Romantasy and BookTok, a new one every day since May 2026. Find your next obsession, then go guess today's word.</p>
+      <p style="margin:0 0 28px;"><a href="/booky" style="display:inline-flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;padding:12px 24px;border-radius:12px;background:linear-gradient(135deg,#3D0070 0%,#8400E7 100%);color:#fff;text-decoration:none;">Play today's romantasy word →</a></p>
+      <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin:0 0 12px;">${count} romantasy books featured in Booky</h2>
+      <ul style="list-style:none;padding:0;margin:0;">${items}</ul>`;
   } else {
     return '';
   }
@@ -274,7 +310,7 @@ function buildSeoBlock(meta) {
   </div>`;
 }
 
-function jsonLd(meta) {
+function jsonLd(meta, books) {
   // CollectionPage with about reference, tells Google "this is a curated list
   // of recommendations related to <BOOK NAME>". Rich snippets eligible.
   const base = {
@@ -316,6 +352,21 @@ function jsonLd(meta) {
       };
     }
   }
+  if (meta.pageKind === 'library' && books && books.length) {
+    base.mainEntity = {
+      '@type': 'ItemList',
+      numberOfItems: books.length,
+      itemListElement: books.map((b, i) => ({
+        '@type': 'ListItem',
+        position: i + 1,
+        item: {
+          '@type': 'Book',
+          name: b.title,
+          author: { '@type': 'Person', name: b.author },
+        },
+      })),
+    };
+  }
   return base;
 }
 
@@ -335,6 +386,12 @@ export default async function middleware(request) {
   if (!res.ok) return next();
   let html = await res.text();
 
+  // The Booky Library lists the real game shelf (read from booky/words.json).
+  let libraryBooks = [];
+  if (meta.pageKind === 'library') {
+    libraryBooks = await getLibraryBooks(origin);
+  }
+
   const t = escapeHtml(meta.title);
   const d = escapeHtml(meta.description);
   const c = escapeHtml(meta.canonical);
@@ -353,7 +410,7 @@ export default async function middleware(request) {
     .replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${c}">`);
 
   // Inject JSON-LD just before </head> (canonical was handled above)
-  const ld = JSON.stringify(jsonLd(meta));
+  const ld = JSON.stringify(jsonLd(meta, libraryBooks));
   html = html.replace(/<\/head>/i, `  <script type="application/ld+json">${ld}</script>\n</head>`);
 
   // Inject a static SEO block at the start of <body> so Googlebot sees the
@@ -361,7 +418,7 @@ export default async function middleware(request) {
   // The block is hidden from real users via JS on load (the SPA hides it
   // when it takes over). For Google: indexable. For users: a brief skeleton
   // they barely see before the SPA replaces the page.
-  const seoBlock = buildSeoBlock(meta);
+  const seoBlock = buildSeoBlock(meta, libraryBooks);
   html = html.replace(/<body[^>]*>/i, (m) => `${m}\n${seoBlock}`);
 
   return new Response(html, {
