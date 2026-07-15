@@ -3150,12 +3150,27 @@
             color: var(--bkl-muted); text-transform: uppercase; margin: 0 0 4px;
             text-align: left;
           }
+          /* Fable rows: cover + title + author only (no heart / buy chrome) */
+          body.bkl-library-mode .shelf-heart,
           body.bkl-library-mode .bkl-buy {
-            display: inline-block; margin-top: 6px;
-            font: 600 12.5px Inter,sans-serif; color: var(--bkl-ink);
-            text-decoration: none; border-bottom: 1px solid rgba(20,20,20,.2);
+            display: none !important;
           }
           body.bkl-library-mode .bkl-buy:hover { border-bottom-color: var(--bkl-ink); }
+
+          body.bkl-library-mode .bkl-detail-tbr {
+            display: inline-flex; align-items: center; gap: 8px;
+            margin: 0 0 14px; padding: 10px 16px;
+            border-radius: 999px; border: 1px solid var(--bkl-line);
+            background: var(--bkl-paper); color: var(--bkl-ink);
+            font: 600 14px/1 Inter,sans-serif; cursor: pointer;
+            transition: background .15s ease, border-color .15s ease, color .15s ease;
+          }
+          body.bkl-library-mode .bkl-detail-tbr .bkl-detail-tbr-icon { font-size: 16px; color: #b5188b; }
+          body.bkl-library-mode .bkl-detail-tbr.on {
+            background: #b5188b; border-color: #b5188b; color: #fff;
+          }
+          body.bkl-library-mode .bkl-detail-tbr.on .bkl-detail-tbr-icon { color: #fff; }
+          body.bkl-library-mode .bkl-detail-tbr:hover { border-color: #b5188b; }
 
           body.bkl-library-mode #bklBrowseDivider {
             display: block;
@@ -3311,32 +3326,33 @@
             body.bkl-library-mode .bkl-ctanote {
               text-align: center;
             }
+            /* Fable shelf chrome: left-align section titles + book meta */
             body.bkl-library-mode .shelf-header,
             body.bkl-library-mode .shelf-title,
             body.bkl-library-mode .shelf-subtitle,
             body.bkl-library-mode #bklBrowseDivider,
             body.bkl-library-mode #bklBrowseDivider .bkl-div-title,
             body.bkl-library-mode #bklBrowseDivider .bkl-div-sub {
-              text-align: center;
+              text-align: left;
             }
             body.bkl-library-mode .shelf-header {
-              justify-content: center;
+              justify-content: space-between;
             }
             body.bkl-library-mode .shelf-subtitle {
-              margin-left: auto;
-              margin-right: auto;
+              margin-left: 0;
+              margin-right: 0;
             }
             body.bkl-library-mode .shelf-books {
-              justify-content: safe center;
+              justify-content: flex-start;
             }
             body.bkl-library-mode .shelf-book,
             body.bkl-library-mode .shelf-book-title,
             body.bkl-library-mode .shelf-book-author,
             body.bkl-library-mode .bkl-day-tag {
-              text-align: center;
+              text-align: left;
             }
             body.bkl-library-mode .shelf-cover-wrap {
-              margin: 0 auto;
+              margin: 0;
             }
             body.bkl-library-mode .bkl-fan {
               height: 240px;
@@ -3449,10 +3465,6 @@
               font-size: clamp(1.3rem, 5.2vw, 1.6rem);
             }
             body.bkl-library-mode .shelf-book-title { font-size: 13px; }
-            body.bkl-library-mode .shelf-heart {
-              width: 38px; height: 38px; line-height: 38px; font-size: 17px;
-              top: 8px; right: 8px;
-            }
             body.bkl-library-mode #discoverShelves {
               border-radius: 0;
               margin-top: 0;
@@ -8520,11 +8532,20 @@
     function bklToggleTbr(key, btn){
       var tbr = bklGetTbr(), i = tbr.indexOf(key), nowOn;
       var section = (btn && btn.closest && btn.closest('[data-shelf]')) ? btn.closest('[data-shelf]').getAttribute('data-shelf') : 'shelf';
+      if (btn && btn.classList && btn.classList.contains('bkl-detail-tbr')) section = 'book_detail';
       if (i >= 0) { tbr.splice(i, 1); nowOn = false; bklPh('library_tbr_removed', { slug: key, section: section }); }
       else { tbr.push(key); nowOn = true; bklPh('library_tbr_added', { slug: key, section: section }); }
       bklSetTbr(tbr);
       document.querySelectorAll('.shelf-heart[data-key="' + CSS.escape(key) + '"]').forEach(function (el) {
         el.classList.toggle('on', nowOn); el.textContent = nowOn ? '♥' : '♡'; el.setAttribute('aria-pressed', nowOn);
+      });
+      document.querySelectorAll('.bkl-detail-tbr[data-key="' + CSS.escape(key) + '"]').forEach(function (el) {
+        el.classList.toggle('on', nowOn);
+        el.setAttribute('aria-pressed', nowOn);
+        var icon = el.querySelector('.bkl-detail-tbr-icon');
+        var label = el.querySelector('.bkl-detail-tbr-label');
+        if (icon) icon.textContent = nowOn ? '♥' : '♡';
+        if (label) label.textContent = nowOn ? 'Saved for later' : 'Want to read';
       });
       renderBklWantToRead();
     }
@@ -8594,7 +8615,7 @@
         + '</div>'
         + '<div class="bkl-hero-stage" aria-hidden="true"><div class="bkl-fan">' + fan + '</div></div>'
         + '</section>'
-        + '<div class="bkl-hint" id="bklTbrHint">Tap \u2661 on any book to save it for later. Stays on this device.</div>'
+        + '<div class="bkl-hint" id="bklTbrHint">Open any book and tap Want to read to save it for later. Stays on this device.</div>'
         + '<div id="bklWtrShelf" class="shelf-row" style="display:none;">'
         + '<div class="shelf-header"><div class="shelf-title">Your want-to-read list (<span id="bklWtrCount">0</span>)</div></div>'
         + '<div class="shelf-books" id="bklWtrRow"></div>'
@@ -8639,9 +8660,13 @@
       const featuredClass = opts.featured ? ' bkl-featured' : '';
       const ribbon = opts.featured ? '<span class="bkl-ribbon">' + (opts.featuredLabel || '\u2728 Featured') + '</span>' : '';
       const dayTag = opts.day ? '<div class="bkl-day-tag">Day ' + opts.day + ' \u00b7 ' + opts.word + '</div>' : '';
-      const buy = opts.buyUrl
+      // Library mode matches Fable rows: cover + title + author only.
+      // Want-to-read lives on the book detail page; buy CTAs live there too.
+      const inLibrary = document.body.classList.contains('bkl-library-mode');
+      const buy = (!inLibrary && opts.buyUrl)
         ? '<a class="bkl-buy" href="' + String(opts.buyUrl).replace(/"/g, '&quot;') + '" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation();bklPh(\'library_book_clicked\',{slug:\'' + safeSlug + '\',section:\'' + section + '\'})">Get the book \u2192</a>'
         : '';
+      const heart = inLibrary ? '' : `<button class="shelf-heart${bklIsTbr(key) ? ' on' : ''}" data-key="${safeKey}" aria-label="Want to read" aria-pressed="${bklIsTbr(key) ? 'true' : 'false'}" onclick="event.stopPropagation();bklToggleTbr('${safeKey}',this)">${bklIsTbr(key) ? '♥' : '♡'}</button>`;
       const clickFn = "bklOpenBook('" + safeKey + "','" + safeSlug + "','" + section + "')";
       // If no ISBN cover URL, use a tiny blank gif so onload fires → triggers fetchCover
       const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
@@ -8657,7 +8682,7 @@
             data-book-title="${safeTitle}" data-book-author="${safeAuthor}"
             onload="shelfCoverLoaded(this)"
             onerror="shelfCoverError(this,'${safeTitle}','${safeAuthor}')">
-          <button class="shelf-heart${bklIsTbr(key) ? ' on' : ''}" data-key="${safeKey}" aria-label="Want to read" aria-pressed="${bklIsTbr(key) ? 'true' : 'false'}" onclick="event.stopPropagation();bklToggleTbr('${safeKey}',this)">${bklIsTbr(key) ? '♥' : '♡'}</button>
+          ${heart}
         </div>
         ${dayTag}
         <div class="shelf-book-title">${title}</div>
@@ -13383,6 +13408,12 @@
       const _bdBookshopUrl  = bookshopAffiliateUrl(key);
       const _bdBookshopCta  = renderBookshopCta(titleStr, _bdBookshopUrl);
       const _bdAmazonCta    = renderAmazonCta(titleStr, authorStr, isbn, !!_bdBookshopUrl, key);
+      const _bdInLibrary = document.body.classList.contains('bkl-library-mode');
+      const _bdTbrOn = _bdInLibrary && typeof bklIsTbr === 'function' && bklIsTbr(key);
+      const _bdSafeKey = key.replace(/'/g, "\\'");
+      const _bdTbrBtn = _bdInLibrary
+        ? `<button type="button" class="bkl-detail-tbr${_bdTbrOn ? ' on' : ''}" data-key="${_bdSafeKey}" aria-pressed="${_bdTbrOn ? 'true' : 'false'}" onclick="bklToggleTbr('${_bdSafeKey}',this)"><span class="bkl-detail-tbr-icon">${_bdTbrOn ? '♥' : '♡'}</span><span class="bkl-detail-tbr-label">${_bdTbrOn ? 'Saved for later' : 'Want to read'}</span></button>`
+        : '';
       // Social-proof buzz block, aggregated from BookTok / Goodreads awards / Reddit / Google trends / NYT etc.
       const _bdBuzz = meta.buzz;
       const _bdBuzzHtml = _bdBuzz ? `
@@ -13401,6 +13432,7 @@
           ${renderMetaChips({ title: titleStr })}
           ${meta.pitch ? `<div class="book-pitch" style="margin-top:12px;margin-bottom:16px;">${meta.pitch}</div>` : '<div style="height:14px;"></div>'}
           ${_bdBuzzHtml}
+          ${_bdTbrBtn}
           <div class="book-cta-row">${_bdBookshopCta}${_bdAmazonCta}${_bdGoodreadsCta}</div>
           <div class="affiliate-disclosure">${_bdBookshopCta ? 'As an Amazon Associate and a Bookshop.org affiliate' : 'As an Amazon Associate'}, 90books earns from qualifying purchases.</div>
         </div>
