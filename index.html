@@ -1701,6 +1701,7 @@
       gap: 14px;
       padding: 0 16px 8px;
       overflow-x: auto;
+      overflow-anchor: none;
       scrollbar-width: none;
       -webkit-overflow-scrolling: touch;
     }
@@ -3091,9 +3092,9 @@
           body.bkl-library-mode .shelf-books {
             gap: var(--bkl-shelf-gap);
             padding: 6px 0 28px;
-            scroll-snap-type: x proximity;
             scroll-padding-inline: var(--bkl-gutter);
             justify-content: flex-start;
+            overflow-anchor: none;
           }
           body.bkl-library-mode .shelf-books::before,
           body.bkl-library-mode .shelf-books::after {
@@ -3110,7 +3111,7 @@
             margin-inline-start: calc(var(--bkl-shelf-gap) * -1);
           }
           body.bkl-library-mode .shelf-book {
-            width: 156px; scroll-snap-align: start;
+            width: 156px;
             transition: transform .22s ease;
             text-align: left;
           }
@@ -4757,6 +4758,12 @@
       return img.naturalWidth >= 50 && !img.src.startsWith('data:');
     }
 
+    function resetShelfScroll(containerEl) {
+      (containerEl || document).querySelectorAll('.shelf-books').forEach(function (el) {
+        el.scrollLeft = 0;
+      });
+    }
+
     function _sortShelfRow(shelfBooksEl) {
       const books = [...shelfBooksEl.querySelectorAll(':scope > .shelf-book')];
       // Fixed-order shelves (e.g. Recent Booky Words by puzzle date).
@@ -4765,12 +4772,14 @@
           return Number(a.getAttribute('data-order')) - Number(b.getAttribute('data-order'));
         });
         books.forEach(function (b) { shelfBooksEl.appendChild(b); });
+        shelfBooksEl.scrollLeft = 0;
         return;
       }
       const loaded   = books.filter(_coverLoaded);
       const unloaded = books.filter(b => !_coverLoaded(b));
       if (!unloaded.length) return;           // nothing to move
       unloaded.forEach(b => shelfBooksEl.appendChild(b));
+      shelfBooksEl.scrollLeft = 0;
     }
 
     // Schedule a sort pass for every shelf row in a container, after `delay` ms
@@ -4779,6 +4788,7 @@
         (containerEl || document).querySelectorAll('.shelf-books').forEach(sb => {
           _sortShelfRow(sb);
         });
+        resetShelfScroll(containerEl);
       }, delay || 1000);
     }
 
@@ -8622,6 +8632,7 @@
       host.innerHTML = html;
       host.style.display = html ? '' : 'none';
       bklPlaceBookyLibraryShelf();
+      resetShelfScroll(host);
       scheduleCoverSort(host, 900);
       scheduleCoverSort(host, 2500);
     }
@@ -10163,6 +10174,7 @@
         + '<div class="bkl-links"><a href="/">Home</a> &middot; <a href="/authors">Authors</a> &middot; <a href="/booky">Play Booky</a></div>'
         + '</div>';
       shelvesEl.innerHTML = html;
+      resetShelfScroll(shelvesEl);
       // After initial render, sort each shelf so books still loading move to the end.
       // Two passes: one early (quick covers in place), one late (stragglers settle).
       scheduleCoverSort(shelvesEl, 900);
