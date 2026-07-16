@@ -129,6 +129,11 @@
       "source": "/booktokreddit",
       "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=booktokreddit",
       "permanent": false
+    },
+    {
+      "source": "/booky/booktokreddit",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=booktokreddit",
+      "permanent": false
     }
   ],
   "rewrites": [
