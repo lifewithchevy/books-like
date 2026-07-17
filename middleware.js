@@ -13,13 +13,13 @@
 import { next } from '@vercel/edge';
 import { BOOKS_LIKE_RECS } from './seo-recs.mjs';
 
-// Read the Booky shelf (unique books, deduped by slug) from the Booky-owned
-// booky/words.json at runtime. We READ this file, never write it (chat
-// boundary). Fetched the same way we fetch index.html below, so the list
-// auto-updates whenever the Booky side adds a book.
+// Read the Booky shelf (unique books, deduped by slug) from
+// booky/daily-words.json at runtime (same payload as words.json; alternate
+// path bypasses a stuck CDN object on /booky/words.json). We READ this file,
+// never write it (chat boundary).
 async function getLibraryBooks(origin) {
   try {
-    const r = await fetch(`${origin}/booky/words.json`, {
+    const r = await fetch(`${origin}/booky/daily-words.json`, {
       headers: { 'user-agent': '90books-edge-middleware' },
     });
     if (!r.ok) return [];
