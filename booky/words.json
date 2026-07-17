@@ -59,16 +59,16 @@
     "OATHS",
     "HONEY",
     "VENIN",
-    "EMBER",
+    "MERYN",
     "DEVIL",
+    "BRIDE",
     "TWINS",
-    "GHOUL",
     "SOLIS",
-    "MADRA",
-    "ROSES",
+    "WITCH",
+    "ORAYA",
     "RUNES",
     "VALOR",
-    "MERYN",
+    "EMBER",
     "ASHES",
     "STARK",
     "AMBER",
@@ -86,11 +86,11 @@
     "CRYPT",
     "ASHEN",
     "SILKS",
-    "BRIDE",
+    "FERRY",
     "TAROT",
     "HENRY",
     "ORION",
-    "WITCH",
+    "MADRA",
     "ASHES",
     "PAINT",
     "MATED",
@@ -787,11 +787,11 @@
       "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
     },
     "BRIDE": {
-      "slug": "the-bridge-kingdom",
-      "title": "The Bridge Kingdom",
-      "author": "Danielle L. Jensen",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg",
-      "buyUrl": "https://www.amazon.com/s?k=9781734506204&i=stripbooks&tag=90books-20"
+      "slug": "bride",
+      "title": "Bride",
+      "author": "Ali Hazelwood",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593550404.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0593550404?tag=90books-20"
     },
     "TAROT": {
       "slug": "one-dark-window",
@@ -2124,6 +2124,209 @@
       "author": "Callie Hart",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
       "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "ORAYA": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781728295336&i=stripbooks&tag=90books-20"
+    },
+    "RAIHN": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781728295336&i=stripbooks&tag=90books-20"
+    },
+    "FERRY": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781734506204&i=stripbooks&tag=90books-20"
+    },
+    "STORM": {
+      "slug": "onyx-storm",
+      "title": "Onyx Storm",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374186.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1649374186?tag=90books-20"
+    },
+    "RUINS": {
+      "slug": "a-court-of-wings-and-ruin",
+      "title": "A Court of Wings and Ruin",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1635575583?tag=90books-20"
+    },
+    "AMREN": {
+      "slug": "a-court-of-wings-and-ruin",
+      "title": "A Court of Wings and Ruin",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1635575583?tag=90books-20"
+    },
+    "HOUSE": {
+      "slug": "house-of-sky-and-breath",
+      "title": "House of Sky and Breath",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574072.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1635574072?tag=90books-20"
+    },
+    "SKIES": {
+      "slug": "house-of-sky-and-breath",
+      "title": "House of Sky and Breath",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574072.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1635574072?tag=90books-20"
+    },
+    "LIDIA": {
+      "slug": "house-of-flame-and-shadow",
+      "title": "House of Flame and Shadow",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635579945.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1635579945?tag=90books-20"
+    },
+    "THANE": {
+      "slug": "house-of-flame-and-shadow",
+      "title": "House of Flame and Shadow",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635579945.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1635579945?tag=90books-20"
+    },
+    "RIVAL": {
+      "slug": "divine-rivals",
+      "title": "Divine Rivals",
+      "author": "Rebecca Ross",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250857430.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250857430?tag=90books-20"
+    },
+    "ROMAN": {
+      "slug": "divine-rivals",
+      "title": "Divine Rivals",
+      "author": "Rebecca Ross",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250857430.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250857430?tag=90books-20"
+    },
+    "INKED": {
+      "slug": "divine-rivals",
+      "title": "Divine Rivals",
+      "author": "Rebecca Ross",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250857430.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250857430?tag=90books-20"
+    },
+    "POEMS": {
+      "slug": "divine-rivals",
+      "title": "Divine Rivals",
+      "author": "Rebecca Ross",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250857430.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250857430?tag=90books-20"
+    },
+    "JACKS": {
+      "slug": "once-upon-a-broken-heart",
+      "title": "Once Upon a Broken Heart",
+      "author": "Stephanie Garber",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250268397.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250268397?tag=90books-20"
+    },
+    "DEALS": {
+      "slug": "once-upon-a-broken-heart",
+      "title": "Once Upon a Broken Heart",
+      "author": "Stephanie Garber",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250268397.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250268397?tag=90books-20"
+    },
+    "FOXES": {
+      "slug": "once-upon-a-broken-heart",
+      "title": "Once Upon a Broken Heart",
+      "author": "Stephanie Garber",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250268397.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250268397?tag=90books-20"
+    },
+    "TELLA": {
+      "slug": "caraval",
+      "title": "Caraval",
+      "author": "Stephanie Garber",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250095255.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250095255?tag=90books-20"
+    },
+    "STAGE": {
+      "slug": "caraval",
+      "title": "Caraval",
+      "author": "Stephanie Garber",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250095255.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250095255?tag=90books-20"
+    },
+    "RAEVE": {
+      "slug": "when-the-moon-hatched",
+      "title": "When the Moon Hatched",
+      "author": "Sarah A. Parker",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0063415801.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0063415801?tag=90books-20"
+    },
+    "MOONS": {
+      "slug": "when-the-moon-hatched",
+      "title": "When the Moon Hatched",
+      "author": "Sarah A. Parker",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0063415801.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0063415801?tag=90books-20"
+    },
+    "CROSS": {
+      "slug": "shield-of-sparrows",
+      "title": "Shield of Sparrows",
+      "author": "Devney Perry",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649378513.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1649378513?tag=90books-20"
+    },
+    "WOLFE": {
+      "slug": "shield-of-sparrows",
+      "title": "Shield of Sparrows",
+      "author": "Devney Perry",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649378513.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1649378513?tag=90books-20"
+    },
+    "TURAH": {
+      "slug": "shield-of-sparrows",
+      "title": "Shield of Sparrows",
+      "author": "Devney Perry",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649378513.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1649378513?tag=90books-20"
+    },
+    "DIANA": {
+      "slug": "the-book-of-azrael",
+      "title": "The Book of Azrael",
+      "author": "Amber V. Nicole",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1737706776.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1737706776?tag=90books-20"
+    },
+    "KADEN": {
+      "slug": "the-book-of-azrael",
+      "title": "The Book of Azrael",
+      "author": "Amber V. Nicole",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1737706776.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1737706776?tag=90books-20"
+    },
+    "TOMES": {
+      "slug": "the-book-of-azrael",
+      "title": "The Book of Azrael",
+      "author": "Amber V. Nicole",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1737706776.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1737706776?tag=90books-20"
+    },
+    "KAINE": {
+      "slug": "alchemised",
+      "title": "Alchemised",
+      "author": "SenLinYu",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593972708.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0593972708?tag=90books-20"
+    },
+    "HELEN": {
+      "slug": "alchemised",
+      "title": "Alchemised",
+      "author": "SenLinYu",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593972708.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0593972708?tag=90books-20"
     }
   }
 }
