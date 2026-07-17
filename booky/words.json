@@ -57,18 +57,18 @@
     "BOUND",
     "SIREN",
     "OATHS",
+    "HONEY",
     "BLOOM",
-    "MERYN",
     "EMBER",
     "DEVIL",
     "SHADE",
     "HAUNT",
-    "FERAL",
+    "SOLIS",
     "GLEAM",
     "FATED",
     "RUNES",
     "BRAVE",
-    "POWER",
+    "MERYN",
     "ASHES",
     "BONDS",
     "AMBER",
@@ -1495,11 +1495,11 @@
       "buyUrl": "https://www.amazon.com/s?k=9781728295336&i=stripbooks&tag=90books-20"
     },
     "HONEY": {
-      "slug": "gild",
-      "title": "Gild",
-      "author": "Raven Kennedy",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg",
-      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
     },
     "SYLPH": {
       "slug": "quicksilver",
@@ -1899,6 +1899,13 @@
       "author": "Sable Sorensen",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601489.01.LZZZZZZZ.jpg",
       "buyUrl": "https://www.amazon.com/s?k=9780316601481&i=stripbooks&tag=90books-20"
+    },
+    "SOLIS": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
     },
     "BONDS": {
       "slug": "dire-bound",
