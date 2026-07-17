@@ -1,0 +1,82 @@
+name: Force Booky prod (HONEY)
+
+# Emergency: 90books.com (book-recs-app) is stuck on a frozen CDN/alias while
+# booky-deploy already serves Jul 18 = HONEY. Redeploy production + purge
+# /booky paths so players on 90books.com get the live queue.
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/force-booky-prod.yml'
+
+env:
+  VERCEL_ORG_ID: team_wSIVDUUd5X2zNAVCEshu4PDl
+  # book-recs-app (90books.com)
+  VERCEL_PROJECT_ID: prj_i6QIlyGNgvBL0jBJEB8dpI0vdB10
+
+jobs:
+  deploy-and-purge:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Pull production env + deploy book-recs-app
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          vercel deploy --prod --yes --token="$VERCEL_TOKEN"
+
+      - name: Purge frozen /booky CDN paths
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          # Best-effort purge. Vercel purge API shapes vary; try path purge then full.
+          set +e
+          curl -sS -X POST "https://api.vercel.com/v1/purge?teamId=${VERCEL_ORG_ID}" \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "{\"projectIdOrName\":\"${VERCEL_PROJECT_ID}\",\"paths\":[\"/booky\",\"/booky/\",\"/booky/words.json\",\"/booky/app.js\",\"/booky/styles.css\",\"/api/booky-words\",\"/api/booky-app\"]}"
+          echo
+          curl -sS -X POST "https://api.vercel.com/v1/purge?teamId=${VERCEL_ORG_ID}" \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" \
+            -H "Content-Type: application/json" \
+            -d "{\"projectIdOrName\":\"${VERCEL_PROJECT_ID}\"}"
+          echo
+          set -e
+
+      - name: Verify Jul 18 = HONEY on 90books.com
+        run: |
+          sleep 20
+          echo "── /api/booky-words ──"
+          code=$(curl -s -o /tmp/w.json -w "%{http_code}" "https://90books.com/api/booky-words")
+          echo "HTTP $code"
+          if [ "$code" = "200" ]; then
+            node -e '
+              const d=require("/tmp/w.json");
+              const epoch=new Date(d.epoch+"T00:00:00Z");
+              const target=new Date("2026-07-18T00:00:00Z");
+              const day=Math.round((target-epoch)/86400000)+1;
+              const w=d.queue[day-1];
+              console.log("Jul 18 day", day, "=", w, d.wordBooks[w]?.title);
+              if (w!=="HONEY") process.exit(2);
+            '
+          else
+            echo "API still missing; checking booky-deploy fallback + /booky headers"
+          fi
+          echo "── /booky headers ──"
+          curl -sI "https://90books.com/booky" | tr -d '\r' | grep -iE 'HTTP/|x-edge-middleware|x-vercel-cache|age:|etag:' || true
+          echo "── booky-deploy control ──"
+          curl -s "https://booky-deploy.vercel.app/api/booky-words" | node -e '
+            let s=""; process.stdin.on("data",d=>s+=d); process.stdin.on("end",()=>{
+              const d=JSON.parse(s);
+              const epoch=new Date(d.epoch+"T00:00:00Z");
+              const target=new Date("2026-07-18T00:00:00Z");
+              const day=Math.round((target-epoch)/86400000)+1;
+              console.log("booky-deploy Jul18=", d.queue[day-1]);
+            });
+          '
