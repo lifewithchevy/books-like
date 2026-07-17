@@ -61,7 +61,7 @@
     "BLOOM",
     "EMBER",
     "DEVIL",
-    "SHADE",
+    "TWINS",
     "HAUNT",
     "SOLIS",
     "GLEAM",
@@ -75,7 +75,7 @@
     "ALTAR",
     "MERCY",
     "BLAZE",
-    "VINES",
+    "DARCY",
     "FANGS",
     "SYBIL",
     "SWORE",
@@ -89,7 +89,7 @@
     "BRIDE",
     "TAROT",
     "HENRY",
-    "GHOUL",
+    "ORION",
     "WITCH",
     "ASHES",
     "PAINT",
@@ -103,7 +103,7 @@
     "TOPAZ",
     "OMENS",
     "SPIES",
-    "STARK",
+    "VEGAS",
     "FLARE",
     "BONES",
     "VAULT",
@@ -117,7 +117,7 @@
     "GUILE",
     "DUSKY",
     "OPALS",
-    "PIXIE",
+    "HEIRS",
     "TIDES",
     "POPPY",
     "COALS",
@@ -193,7 +193,7 @@
     "BRIBE",
     "GROVE",
     "COVEN",
-    "HEIRS",
+    "ANGER",
     "SAINT",
     "TALON",
     "CHIME",
@@ -1453,11 +1453,11 @@
       "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
     },
     "HEIRS": {
-      "slug": "throne-of-glass",
-      "title": "Throne of Glass",
-      "author": "Sarah J. Maas",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
-      "buyUrl": "https://amzn.to/4aeI6DP"
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1916926258.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
     },
     "SAINT": {
       "slug": "from-blood-and-ash",
@@ -2026,6 +2026,90 @@
       "author": "Sheila Masterson",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
       "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "DARCY": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1916926258.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "ORION": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1916926258.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "CALEB": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1916926258.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "ACRUX": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1916926258.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "RIGEL": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1916926258.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "VEGAS": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1916926258.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "TWINS": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1916926258.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "LANCE": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1916926258.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "IGNIS": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1916926258.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "TERRA": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1916926258.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "SOLAR": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1916926258.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "AWAKE": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1916926258.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
     }
   }
 }
