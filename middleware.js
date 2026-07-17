@@ -394,14 +394,12 @@ export default async function middleware(request) {
   // /booky on that host — otherwise fetching upstream /booky recurses.
   const isLiveBookyHost = url.hostname === 'booky-deploy.vercel.app';
 
-  // Booky game page: 90books.com /booky static CDN is frozen (Jul 18 still
-  // BLOOM). Send players to booky-deploy, which has the live queue (HONEY).
-  // vercel.json also redirects /booky → booky-deploy; this is a belt-and-
-  // suspenders path when middleware actually runs.
-  if (!isLiveBookyHost && (url.pathname === '/booky' || url.pathname === '/booky/')) {
-    const dest = new URL(`${BOOKY_DEPLOY}/booky`);
-    url.searchParams.forEach((v, k) => dest.searchParams.set(k, v));
-    return Response.redirect(dest.toString(), 302);
+  // /booky on 90books.com must be served from this deployment (fresh alias).
+  // Do NOT external-redirect to booky-deploy — vercel.json is shared and that
+  // created a redirect loop on booky-deploy itself. Live queue comes from
+  // /api/booky-words (and index.html → /api/booky-app).
+  if (url.pathname === '/booky' || url.pathname === '/booky/') {
+    return next();
   }
 
   // Booky word queue: /booky/* static assets on the 90books.com project
