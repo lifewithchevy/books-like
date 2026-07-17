@@ -8733,7 +8733,7 @@
     }
     function bklLoadWordData() {
       if (BKL_WORD_DATA) return Promise.resolve(BKL_WORD_DATA);
-      return fetch('/booky/words.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (j) {
+      return fetch('/booky/daily-words.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (j) {
         var wb = j.wordBooks || {}, queue = j.queue || [], seen = {}, slugOrder = [];
         BKL_WORD_BY_SLUG = {};
         BKL_COVER_BY_SLUG = {};
