@@ -62,9 +62,10 @@ try {
 // Pull queue + dictionary in parallel. Dictionary is large (~80KB) but
 // only loaded once — browser caches it. The Set lookup is O(1).
 const [data, dictList] = await Promise.all([
-// daily-words path also proxied by middleware; keep fetching words.json so
-// older cached app.js bundles still work once middleware is live.
-fetch('/booky/words.json?v=11', { cache: 'no-store' }).then(r => r.json()),
+// Prefer /api/booky-words — on 90books.com /booky/words.json is a frozen CDN
+// object (middleware often never runs for that static path). The API proxies
+// the live queue from booky-deploy (Jul 18+ schedule).
+fetch('/api/booky-words', { cache: 'no-store' }).then(r => r.json()),
 fetch('/booky/dictionary.json?v=12', { cache: 'force-cache' }).then(r => r.json()),
 ]);
 DATA = data;

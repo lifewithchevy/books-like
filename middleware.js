@@ -18,26 +18,37 @@ import { BOOKS_LIKE_RECS } from './seo-recs.mjs';
 // path bypasses a stuck CDN object on /booky/words.json). We READ this file,
 // never write it (chat boundary).
 async function getLibraryBooks(origin) {
-  try {
-    const r = await fetch(`${origin}/booky/daily-words.json`, {
-      headers: { 'user-agent': '90books-edge-middleware' },
-    });
-    if (!r.ok) return [];
-    const data = await r.json();
-    const wb = data.wordBooks || {};
-    const bySlug = {};
-    for (const w in wb) {
-      const b = wb[w];
-      if (b && b.slug && !bySlug[b.slug]) bySlug[b.slug] = b;
-    }
-    return Object.values(bySlug); // ~26 { slug, title, author, cover, buyUrl }
-  } catch (e) {
-    return [];
+  // Prefer booky-deploy — /booky/*.json on 90books.com is often a frozen CDN
+  // object (or 404 for newer filenames). Fall back to same-origin API.
+  const urls = [
+    'https://booky-deploy.vercel.app/booky/words.json',
+    `${origin}/api/booky-words`,
+  ];
+  for (const u of urls) {
+    try {
+      const r = await fetch(u, {
+        headers: { 'user-agent': '90books-edge-middleware' },
+      });
+      if (!r.ok) continue;
+      const data = await r.json();
+      const wb = data.wordBooks || {};
+      const bySlug = {};
+      for (const w in wb) {
+        const b = wb[w];
+        if (b && b.slug && !bySlug[b.slug]) bySlug[b.slug] = b;
+      }
+      return Object.values(bySlug); // ~26 { slug, title, author, cover, buyUrl }
+    } catch (e) { /* try next */ }
   }
+  return [];
 }
 
 export const config = {
-  matcher: ['/', '/booky/words.json', '/booky/daily-words.json', '/books-like/:slug*', '/genre/:slug*', '/mood/:slug*', '/booky-library'],
+  // /booky is included so we can bypass the frozen static CDN object for the
+  // game page (same pattern as '/'). /booky/*.json stay listed but the edge
+  // often serves those static files without invoking middleware — the live
+  // queue is therefore also exposed at /api/booky-words.
+  matcher: ['/', '/booky', '/booky/', '/booky/words.json', '/booky/daily-words.json', '/books-like/:slug*', '/genre/:slug*', '/mood/:slug*', '/booky-library'],
 };
 
 // Canonical capitalisation for our most-trafficked slugs. Anything not here
@@ -370,17 +381,56 @@ function jsonLd(meta, books) {
   return base;
 }
 
+const BOOKY_DEPLOY = 'https://booky-deploy.vercel.app';
+const BOOKY_NO_STORE = {
+  'cache-control': 'no-store, no-cache, must-revalidate, max-age=0',
+  'cdn-cache-control': 'no-store',
+  'vercel-cdn-cache-control': 'no-store',
+};
+
 export default async function middleware(request) {
   const url = new URL(request.url);
+  // booky-deploy is the live source of Booky static assets. Never proxy
+  // /booky on that host — otherwise fetching upstream /booky recurses.
+  const isLiveBookyHost = url.hostname === 'booky-deploy.vercel.app';
+
+  // Booky game page: /booky on 90books.com is a frozen CDN HTML object (same
+  // class of bug as words.json). Proxy live HTML from booky-deploy and point
+  // scripts at /api/booky-app (which loads the live queue via /api/booky-words).
+  if (!isLiveBookyHost && (url.pathname === '/booky' || url.pathname === '/booky/')) {
+    try {
+      const r = await fetch(`${BOOKY_DEPLOY}/booky`, {
+        headers: { 'user-agent': '90books-edge-middleware' },
+      });
+      if (r.ok) {
+        let html = await r.text();
+        html = html
+          .replace(/\/booky\/styles\.css[^"']*/g, `${BOOKY_DEPLOY}/booky/styles.css`)
+          .replace(/\/booky\/app\.js[^"']*/g, '/api/booky-app')
+          .replace(/\/booky\/og-image\.png/g, `${BOOKY_DEPLOY}/booky/og-image.png`);
+        return new Response(html, {
+          status: 200,
+          headers: {
+            'content-type': 'text/html; charset=utf-8',
+            ...BOOKY_NO_STORE,
+            'x-edge-middleware': '90books-booky-page-proxy',
+          },
+        });
+      }
+    } catch (e) { /* fall through */ }
+    return next();
+  }
 
   // Booky word queue: /booky/* static assets on the 90books.com project
   // (book-recs-app) are stuck on a frozen CDN generation — new deploys update
   // middleware but not those objects (words.json keeps an 08:59 etag; new
   // files under /booky/ 404). Proxy the live queue from booky-deploy, which
   // does receive fresh booky/ uploads, and return no-store.
-  if (url.pathname === '/booky/words.json' || url.pathname === '/booky/daily-words.json') {
+  // NOTE: the edge often still serves the frozen static object for these
+  // paths (no x-edge-middleware). Prefer /api/booky-words from the client.
+  if (!isLiveBookyHost && (url.pathname === '/booky/words.json' || url.pathname === '/booky/daily-words.json')) {
     try {
-      const upstream = 'https://booky-deploy.vercel.app/booky/words.json';
+      const upstream = `${BOOKY_DEPLOY}/booky/words.json`;
       const r = await fetch(upstream, {
         headers: { 'user-agent': '90books-edge-middleware' },
       });
@@ -390,9 +440,7 @@ export default async function middleware(request) {
           status: 200,
           headers: {
             'content-type': 'application/json; charset=utf-8',
-            'cache-control': 'no-store, no-cache, must-revalidate, max-age=0',
-            'cdn-cache-control': 'no-store',
-            'vercel-cdn-cache-control': 'no-store',
+            ...BOOKY_NO_STORE,
             'x-edge-middleware': '90books-words-proxy',
           },
         });
