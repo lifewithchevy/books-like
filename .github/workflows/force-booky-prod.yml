@@ -8,6 +8,10 @@ on:
     branches: [main]
     paths:
       - '.github/workflows/force-booky-prod.yml'
+      - 'vercel.json'
+      - 'middleware.js'
+      - 'booky/**'
+      - 'api/booky-*.js'
 
 env:
   VERCEL_ORG_ID: team_wSIVDUUd5X2zNAVCEshu4PDl
