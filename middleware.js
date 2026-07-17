@@ -394,31 +394,14 @@ export default async function middleware(request) {
   // /booky on that host — otherwise fetching upstream /booky recurses.
   const isLiveBookyHost = url.hostname === 'booky-deploy.vercel.app';
 
-  // Booky game page: /booky on 90books.com is a frozen CDN HTML object (same
-  // class of bug as words.json). Proxy live HTML from booky-deploy and point
-  // scripts at /api/booky-app (which loads the live queue via /api/booky-words).
+  // Booky game page: 90books.com /booky static CDN is frozen (Jul 18 still
+  // BLOOM). Send players to booky-deploy, which has the live queue (HONEY).
+  // vercel.json also redirects /booky → booky-deploy; this is a belt-and-
+  // suspenders path when middleware actually runs.
   if (!isLiveBookyHost && (url.pathname === '/booky' || url.pathname === '/booky/')) {
-    try {
-      const r = await fetch(`${BOOKY_DEPLOY}/booky`, {
-        headers: { 'user-agent': '90books-edge-middleware' },
-      });
-      if (r.ok) {
-        let html = await r.text();
-        html = html
-          .replace(/\/booky\/styles\.css[^"']*/g, `${BOOKY_DEPLOY}/booky/styles.css`)
-          .replace(/\/booky\/app\.js[^"']*/g, '/api/booky-app')
-          .replace(/\/booky\/og-image\.png/g, `${BOOKY_DEPLOY}/booky/og-image.png`);
-        return new Response(html, {
-          status: 200,
-          headers: {
-            'content-type': 'text/html; charset=utf-8',
-            ...BOOKY_NO_STORE,
-            'x-edge-middleware': '90books-booky-page-proxy',
-          },
-        });
-      }
-    } catch (e) { /* fall through */ }
-    return next();
+    const dest = new URL(`${BOOKY_DEPLOY}/booky`);
+    url.searchParams.forEach((v, k) => dest.searchParams.set(k, v));
+    return Response.redirect(dest.toString(), 302);
   }
 
   // Booky word queue: /booky/* static assets on the 90books.com project
