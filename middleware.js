@@ -37,7 +37,7 @@ async function getLibraryBooks(origin) {
 }
 
 export const config = {
-  matcher: ['/', '/books-like/:slug*', '/genre/:slug*', '/mood/:slug*', '/booky-library'],
+  matcher: ['/', '/booky/words.json', '/booky/daily-words.json', '/books-like/:slug*', '/genre/:slug*', '/mood/:slug*', '/booky-library'],
 };
 
 // Canonical capitalisation for our most-trafficked slugs. Anything not here
@@ -372,6 +372,34 @@ function jsonLd(meta, books) {
 
 export default async function middleware(request) {
   const url = new URL(request.url);
+
+  // Booky word queue: /booky/* static assets on the 90books.com project
+  // (book-recs-app) are stuck on a frozen CDN generation — new deploys update
+  // middleware but not those objects (words.json keeps an 08:59 etag; new
+  // files under /booky/ 404). Proxy the live queue from booky-deploy, which
+  // does receive fresh booky/ uploads, and return no-store.
+  if (url.pathname === '/booky/words.json' || url.pathname === '/booky/daily-words.json') {
+    try {
+      const upstream = 'https://booky-deploy.vercel.app/booky/words.json';
+      const r = await fetch(upstream, {
+        headers: { 'user-agent': '90books-edge-middleware' },
+      });
+      if (r.ok) {
+        const body = await r.text();
+        return new Response(body, {
+          status: 200,
+          headers: {
+            'content-type': 'application/json; charset=utf-8',
+            'cache-control': 'no-store, no-cache, must-revalidate, max-age=0',
+            'cdn-cache-control': 'no-store',
+            'vercel-cdn-cache-control': 'no-store',
+            'x-edge-middleware': '90books-words-proxy',
+          },
+        });
+      }
+    } catch (e) { /* fall through */ }
+    return next();
+  }
 
   // Homepage: serve index.html dynamically with no-store. A '/' object got
   // stuck in Vercel's edge cache (age ~20h, x-vercel-cache HIT) and normal
