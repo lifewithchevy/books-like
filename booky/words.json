@@ -88,7 +88,7 @@
     "SILKS",
     "BRIDE",
     "TAROT",
-    "FIERY",
+    "HENRY",
     "GHOUL",
     "WITCH",
     "ASHES",
@@ -1970,6 +1970,62 @@
       "author": "Kayla Edwards",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1998268012.01.LZZZZZZZ.jpg",
       "buyUrl": "https://www.amazon.com/s?k=9781998268016&i=stripbooks&tag=90books-20"
+    },
+    "HENRY": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "VIXEN": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "TOXIN": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "ASHER": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "HAVEN": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "AIDIA": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "DRAIN": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "VIGIL": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
     }
   }
 }
