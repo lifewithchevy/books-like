@@ -37,7 +37,7 @@ async function getLibraryBooks(origin) {
 }
 
 export const config = {
-  matcher: ['/books-like/:slug*', '/genre/:slug*', '/mood/:slug*', '/booky-library'],
+  matcher: ['/', '/books-like/:slug*', '/genre/:slug*', '/mood/:slug*', '/booky-library'],
 };
 
 // Canonical capitalisation for our most-trafficked slugs. Anything not here
@@ -372,6 +372,35 @@ function jsonLd(meta, books) {
 
 export default async function middleware(request) {
   const url = new URL(request.url);
+
+  // Homepage: serve index.html dynamically with no-store. A '/' object got
+  // stuck in Vercel's edge cache (age ~20h, x-vercel-cache HIT) and normal
+  // deploys + a no-store header in vercel.json did NOT evict it (the edge kept
+  // serving the frozen copy instead of re-fetching the new deployment). Routing
+  // '/' through middleware returns a fresh per-request response that bypasses
+  // that static edge cache entirely, the same way /booky-library is served.
+  if (url.pathname === '/') {
+    try {
+      const r = await fetch(`${url.origin}/index.html`, {
+        headers: { 'user-agent': '90books-edge-middleware' },
+      });
+      if (r.ok) {
+        const homeHtml = await r.text();
+        return new Response(homeHtml, {
+          status: 200,
+          headers: {
+            'content-type': 'text/html; charset=utf-8',
+            'cache-control': 'no-store, no-cache, must-revalidate, max-age=0',
+            'cdn-cache-control': 'no-store',
+            'vercel-cdn-cache-control': 'no-store',
+            'x-edge-middleware': '90books-home-nostore',
+          },
+        });
+      }
+    } catch (e) { /* fall through to static serving */ }
+    return next();
+  }
+
   const meta = buildMeta(url.pathname);
   if (!meta) return next();
 
