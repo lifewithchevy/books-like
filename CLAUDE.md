@@ -28,8 +28,18 @@ Guidance for Claude when working in this repository.
 
 ## Deployment
 
-The site is a Vercel project (90books.com) wired to Git — **production deploys
-are triggered when changes land on `main`** (there is no Vercel CLI or token in
-the web/agent environment). Deploy by merging to `main`. Vercel posts
-deployment status back to the merge commit on GitHub; the live site itself may
-not be reachable from restricted network environments.
+The site is a Vercel project (`90books.com`, project `book-recs-app`) wired to
+Git. Merging to `main` triggers a Vercel production deploy — **but that alone
+is not enough for the custom domain**.
+
+`90books.com` can stay pinned to an older deployment even when GitHub shows a
+successful Vercel status on the merge commit. The durable fix is the GitHub
+Actions workflow `.github/workflows/force-booky-prod.yml` (**Force production
+alias**): on **every** push to `main` it runs `vercel deploy --prod` and
+re-aliases `90books.com`, `www.90books.com`, and `book-recs-app.vercel.app` to
+that deploy, then smoke-checks `/`, `/booky`, and `/api/booky-words`.
+
+Deploy by merging to `main`. Do not rely on the Git-integration deploy URL alone
+as proof the live domain updated — wait for the force-alias workflow (or check
+https://90books.com/ directly). There is no Vercel CLI/token in the web/agent
+environment by default; the workflow uses `secrets.VERCEL_TOKEN`.
