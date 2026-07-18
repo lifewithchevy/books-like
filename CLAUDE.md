@@ -25,6 +25,10 @@ Guidance for Claude when working in this repository.
   launch. Surface these suggestions per month.
 - Avoid two consecutive days mapping to the same book where possible (existing
   quality guard; see `scripts/reshuffle_after_jun7.py`).
+- **Every queue answer must be in the dictionary:** scheduled words missing from
+  `booky/dictionary.json` are unwinnable (`app.js` rejects guesses not in DICT).
+  Enforce with `python3 scripts/validate_winnable.py` before shipping queue or
+  dictionary changes.
 
 ## Deployment
 

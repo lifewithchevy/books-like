@@ -6,6 +6,9 @@
 
 const UPSTREAM = 'https://booky-deploy.vercel.app/booky/app.js';
 const NO_STORE = 'no-store, no-cache, must-revalidate, max-age=0';
+// Bump with dictionary.json edits so /api/booky-app always emits a fresh URL
+// even if upstream booky-deploy app.js is briefly still on an older ?v=.
+const DICT_CACHE_V = 13;
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -43,11 +46,11 @@ module.exports = async (req, res) => {
       );
     }
     // Dictionary on 90books.com /booky/ may also be stale; load from booky-deploy
-    // (ACAO *). Skip if already absolute.
+    // (ACAO *). Always emit DICT_CACHE_V so returning players bust force-cache.
     if (js.includes("fetch('/booky/dictionary.json") || js.includes('fetch("/booky/dictionary.json')) {
       js = js.replace(
         /fetch\(\s*['"]\/booky\/dictionary\.json[^'"]*['"]/g,
-        "fetch('https://booky-deploy.vercel.app/booky/dictionary.json'"
+        `fetch('https://booky-deploy.vercel.app/booky/dictionary.json?v=${DICT_CACHE_V}'`
       );
     }
     res.setHeader('Content-Type', 'application/javascript; charset=utf-8');
