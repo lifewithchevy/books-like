@@ -63,7 +63,7 @@ jobs:
         run: |
           sleep 15
           echo "── 90books.com/ FAQ heading ──"
-          curl -sS "https://90books.com/" | grep -q 'BOOKY game FAQ' && echo "✓ FAQ heading live" || (echo "✗ FAQ heading missing" && exit 2)
+          curl -sS "https://90books.com/" | grep -q 'Booky Game FAQ' && echo "✓ FAQ heading live" || (echo "✗ FAQ heading missing" && exit 2)
           echo "── 90books.com/booky ──"
           curl -sI "https://90books.com/booky" | tr -d '\r' | grep -iE 'HTTP/|location:|x-edge|age:|x-vercel-cache' || true
           echo "── 90books.com/api/booky-words ──"
