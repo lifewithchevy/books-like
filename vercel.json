@@ -249,6 +249,11 @@
       "source": "/booky/booktokreddit",
       "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=booktokreddit",
       "permanent": false
+    },
+    {
+      "source": "/r/fbaa",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=fbaa",
+      "permanent": false
     }
   ],
   "rewrites": [
