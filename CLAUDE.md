@@ -43,3 +43,24 @@ Deploy by merging to `main`. Do not rely on the Git-integration deploy URL alone
 as proof the live domain updated — wait for the force-alias workflow (or check
 https://90books.com/ directly). There is no Vercel CLI/token in the web/agent
 environment by default; the workflow uses `secrets.VERCEL_TOKEN`.
+
+### Standing rule: always verify production
+
+**After any change lands on `main` (merge or direct push), always confirm the
+change is live on https://90books.com before treating the task as done.**
+
+Required checklist every time:
+
+1. Wait for **Force production alias** (`.github/workflows/force-booky-prod.yml`)
+   to finish successfully on the merge commit — or trigger it via
+   `workflow_dispatch` if it did not run.
+2. Fetch the **live** URLs that the change affects (not only the Vercel preview /
+   Git deploy URL). At minimum hit `https://90books.com/` for landing changes;
+   use `/booky`, `/api/booky-words`, `/authors`, etc. when those paths changed.
+3. Assert a **change-specific string or behavior** from the merge (copy,
+   heading, word-of-the-day, route header, etc.) is present on the live
+   response. Green Vercel status on the commit is **not** sufficient proof.
+4. If prod still shows the old content: re-run the force-alias workflow, then
+   re-check live. Do not close out until prod matches `main`.
+
+Report the live check result to the user (what URL, what marker, pass/fail).
