@@ -1,7 +1,9 @@
 name: Force Booky prod (HONEY)
 
-# Emergency: point 90books.com at a fresh book-recs-app production deploy so
-# Jul 18 = HONEY reaches players. Previous deploys only aliased the team URL.
+# Emergency: point 90books.com at a fresh book-recs-app production deploy.
+# Git pushes to main deploy via Vercel Git integration, but 90books.com can stay
+# pinned to an older deployment until we explicitly re-alias. Also run on
+# landing-page (index.html) changes — those do not touch booky paths alone.
 on:
   workflow_dispatch: {}
   push:
@@ -10,6 +12,7 @@ on:
       - '.github/workflows/force-booky-prod.yml'
       - 'vercel.json'
       - 'middleware.js'
+      - 'index.html'
       - 'booky/**'
       - 'api/booky-*.js'
 
@@ -56,9 +59,11 @@ jobs:
             -H "Authorization: Bearer ${VERCEL_TOKEN}" | head -c 2000
           echo
 
-      - name: Verify HONEY paths
+      - name: Verify prod paths
         run: |
           sleep 15
+          echo "── 90books.com/ FAQ heading ──"
+          curl -sS "https://90books.com/" | grep -q 'BOOKY game FAQ' && echo "✓ FAQ heading live" || (echo "✗ FAQ heading missing" && exit 2)
           echo "── 90books.com/booky ──"
           curl -sI "https://90books.com/booky" | tr -d '\r' | grep -iE 'HTTP/|location:|x-edge|age:|x-vercel-cache' || true
           echo "── 90books.com/api/booky-words ──"
