@@ -1,20 +1,16 @@
-name: Force Booky prod (HONEY)
+name: Force production alias
 
-# Emergency: point 90books.com at a fresh book-recs-app production deploy.
-# Git pushes to main deploy via Vercel Git integration, but 90books.com can stay
-# pinned to an older deployment until we explicitly re-alias. Also run on
-# landing-page (index.html) changes — those do not touch booky paths alone.
+# Vercel Git integration creates a production deployment on every push to main,
+# but the custom domain 90books.com can stay pinned to an older deployment.
+# This workflow always deploys with the CLI and re-aliases 90books.com (and
+# www / book-recs-app.vercel.app) so merges actually reach the live site.
+#
+# Runs on EVERY push to main — no path filters. Path-filtered runs were why
+# landing FAQ / index.html changes looked "merged" but stayed invisible in prod.
 on:
   workflow_dispatch: {}
   push:
     branches: [main]
-    paths:
-      - '.github/workflows/force-booky-prod.yml'
-      - 'vercel.json'
-      - 'middleware.js'
-      - 'index.html'
-      - 'booky/**'
-      - 'api/booky-*.js'
 
 env:
   VERCEL_ORG_ID: team_wSIVDUUd5X2zNAVCEshu4PDl
@@ -33,19 +29,30 @@ jobs:
         env:
           VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
         run: |
-          set -e
+          set -euo pipefail
           vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
           URL=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN" | tee /tmp/deploy.out | tail -n 1)
           echo "Deployed: $URL"
-          # Explicitly attach the custom domain + primary aliases to THIS deploy.
-          # Without this, 90books.com can stay pinned to an older frozen deployment.
-          vercel alias set "$URL" 90books.com --token="$VERCEL_TOKEN" --scope omrvieito-9694s-projects || \
-          vercel alias set "$URL" 90books.com --token="$VERCEL_TOKEN" || true
-          vercel alias set "$URL" book-recs-app.vercel.app --token="$VERCEL_TOKEN" --scope omrvieito-9694s-projects || \
-          vercel alias set "$URL" book-recs-app.vercel.app --token="$VERCEL_TOKEN" || true
-          vercel alias set "$URL" www.90books.com --token="$VERCEL_TOKEN" --scope omrvieito-9694s-projects || \
-          vercel alias set "$URL" www.90books.com --token="$VERCEL_TOKEN" || true
-          echo "── aliases for deploy ──"
+          if [ -z "$URL" ] || [[ "$URL" != https://* ]]; then
+            echo "✗ Unexpected deploy URL: $URL"
+            cat /tmp/deploy.out
+            exit 1
+          fi
+
+          alias_set() {
+            local host="$1"
+            if vercel alias set "$URL" "$host" --token="$VERCEL_TOKEN" --scope omrvieito-9694s-projects; then
+              return 0
+            fi
+            vercel alias set "$URL" "$host" --token="$VERCEL_TOKEN"
+          }
+
+          # Fail the job if any production host cannot be pointed at this deploy.
+          alias_set 90books.com
+          alias_set www.90books.com
+          alias_set book-recs-app.vercel.app
+
+          echo "── aliases (sample) ──"
           vercel alias ls --token="$VERCEL_TOKEN" --scope omrvieito-9694s-projects 2>/dev/null | head -40 || true
 
       - name: Inspect domains via API
@@ -61,32 +68,49 @@ jobs:
 
       - name: Verify prod paths
         run: |
+          set -euo pipefail
           sleep 15
-          echo "── 90books.com/ FAQ heading ──"
-          curl -sS "https://90books.com/" | grep -q 'Booky Game FAQ' && echo "✓ FAQ heading live" || (echo "✗ FAQ heading missing" && exit 2)
-          echo "── 90books.com/booky ──"
-          curl -sI "https://90books.com/booky" | tr -d '\r' | grep -iE 'HTTP/|location:|x-edge|age:|x-vercel-cache' || true
-          echo "── 90books.com/api/booky-words ──"
-          code=$(curl -s -o /tmp/w.json -w "%{http_code}" "https://90books.com/api/booky-words")
+
+          echo "── 90books.com/ ──"
+          code=$(curl -sS -o /tmp/home.html -w "%{http_code}" "https://90books.com/")
           echo "HTTP $code"
-          if [ "$code" = "200" ]; then
-            node -e '
-              const d=require("/tmp/w.json");
-              const epoch=new Date(d.epoch+"T00:00:00Z");
-              const target=new Date("2026-07-18T00:00:00Z");
-              const day=Math.round((target-epoch)/86400000)+1;
-              const w=d.queue[day-1];
-              console.log("Jul 18 =", w, d.wordBooks[w]?.title);
-              if (w!=="HONEY") process.exit(2);
-            '
-          fi
-          echo "── booky-deploy control ──"
-          curl -s "https://booky-deploy.vercel.app/api/booky-words" | node -e '
-            let s="";process.stdin.on("data",d=>s+=d);process.stdin.on("end",()=>{
-              const d=JSON.parse(s);
-              const epoch=new Date(d.epoch+"T00:00:00Z");
-              const target=new Date("2026-07-18T00:00:00Z");
-              const day=Math.round((target-epoch)/86400000)+1;
-              console.log("booky-deploy Jul18=", d.queue[day-1]);
-            });
+          [ "$code" = "200" ] || exit 2
+          # Durable smoke checks (not copy-specific — FAQ wording changes often)
+          grep -q 'id="lp-faq"' /tmp/home.html && echo "✓ landing FAQ section present"
+          grep -qi 'Booky' /tmp/home.html && echo "✓ Booky mentioned on homepage"
+          # Confirm we are not stuck on a frozen static object without middleware
+          hdr=$(curl -sSI "https://90books.com/" | tr -d '\r')
+          echo "$hdr" | grep -qi 'x-edge-middleware: 90books-home-nostore' && echo "✓ homepage via edge middleware" || echo "⚠ missing x-edge-middleware (check cache)"
+
+          echo "── 90books.com/booky ──"
+          curl -sSI "https://90books.com/booky" | tr -d '\r' | grep -iE 'HTTP/|location:|x-edge|age:|x-vercel-cache' || true
+          bcode=$(curl -sS -o /dev/null -w "%{http_code}" "https://90books.com/booky")
+          echo "booky HTTP $bcode"
+          [ "$bcode" = "200" ] || exit 2
+
+          echo "── 90books.com/api/booky-words ──"
+          wcode=$(curl -sS -o /tmp/w.json -w "%{http_code}" "https://90books.com/api/booky-words")
+          echo "HTTP $wcode"
+          [ "$wcode" = "200" ] || exit 2
+          node -e '
+            const d = require("/tmp/w.json");
+            if (!Array.isArray(d.queue) || d.queue.length < 30) {
+              console.error("✗ queue missing or too short", d.queue && d.queue.length);
+              process.exit(2);
+            }
+            if (!d.epoch || !d.wordBooks) {
+              console.error("✗ missing epoch/wordBooks");
+              process.exit(2);
+            }
+            const epoch = new Date(d.epoch + "T00:00:00Z");
+            const today = new Date();
+            const utc = new Date(Date.UTC(today.getUTCFullYear(), today.getUTCMonth(), today.getUTCDate()));
+            const day = Math.round((utc - epoch) / 86400000) + 1;
+            const w = d.queue[day - 1];
+            console.log("today (UTC) day", day, "=", w, d.wordBooks[w]?.title || "(no book map)");
+            if (!w || typeof w !== "string" || w.length !== 5) {
+              console.error("✗ today word missing/invalid");
+              process.exit(2);
+            }
+            console.log("✓ booky-words healthy");
           '
