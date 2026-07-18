@@ -15792,7 +15792,8 @@
       .lp-faq { padding: 48px 24px 40px; }
       .lp-auth-cta-wrap { margin-top: 28px; }
       .lp-auth-cta { font-size: 14px; padding: 15px 18px; }
-      .lp-site-footer { padding-bottom: max(48px, calc(env(safe-area-inset-bottom, 0px) + 32px)); }
+      /* Authors CTA lives in FAQ; skip duplicate footer link on small screens */
+      .lp-site-footer { display: none; }
       .lp-hero-visual { order: -1; }
       .lp-board-preview { width: min(100%, 300px); }
     }
@@ -15808,12 +15809,8 @@
       .lp-section-title { font-size: 24px; }
       .lp-hero { padding: 20px 16px 28px; gap: 28px; }
       .lp-library { padding: 48px 16px 56px; }
-      .lp-faq { padding: 40px 16px 32px; }
+      .lp-faq { padding: 40px 16px max(56px, calc(env(safe-area-inset-bottom, 0px) + 40px)); }
       .lp-auth-cta-wrap { margin-top: 24px; }
-      .lp-site-footer {
-        padding: 20px 16px max(56px, calc(env(safe-area-inset-bottom, 0px) + 40px));
-        font-size: 13px;
-      }
     }
   </style>
 
