@@ -226,6 +226,11 @@
       "permanent": false
     },
     {
+      "source": "/booky/kaylaedwards",
+      "destination": "/booky?utm_source=kaylaedwards&utm_medium=author&utm_campaign=cityofgodsandmonsters",
+      "permanent": false
+    },
+    {
       "source": "/r/romantasy",
       "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=romantasy",
       "permanent": false
