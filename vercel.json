@@ -259,6 +259,11 @@
       "source": "/r/fbaa",
       "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=fbaa",
       "permanent": false
+    },
+    {
+      "source": "/booky/tiktok",
+      "destination": "/booky?utm_source=tiktok&utm_medium=social&utm_campaign=tiktok",
+      "permanent": false
     }
   ],
   "rewrites": [
