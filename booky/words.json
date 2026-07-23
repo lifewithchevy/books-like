@@ -66,7 +66,7 @@
     "SOLIS",
     "WITCH",
     "ORAYA",
-    "RUNES",
+    "WAKEN",
     "VALOR",
     "EMBER",
     "ORION",
@@ -238,7 +238,8 @@
     "SHINE",
     "POPPY",
     "WRATH",
-    "CRYPT"
+    "CRYPT",
+    "RUNES"
   ],
   "wordBooks": {
     "COURT": {
@@ -590,6 +591,13 @@
       "author": "Kalie Cassidy",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/0316587605.01.LZZZZZZZ.jpg",
       "buyUrl": "https://www.amazon.com/dp/0316587605?tag=90books-20"
+    },
+    "WAKEN": {
+      "slug": "in-the-wake-of-the-ruined",
+      "title": "In the Wake of the Ruined",
+      "author": "Kalie Cassidy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316587587.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316587587?tag=90books-20"
     },
     "NIGHT": {
       "slug": "the-serpent-and-the-wings-of-night",
