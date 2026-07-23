@@ -67,14 +67,14 @@
     "SOLIS",
     "ORAYA",
     "BONDS",
-    "ORION",
-    "STARK",
     "CHAOL",
-    "EMBER",
-    "ASHES",
+    "STARK",
+    "ORION",
     "MOONS",
+    "ASHES",
+    "EMBER",
     "ASHEN",
-    "BLAZE",
+    "VENOM",
     "DARCY",
     "FANGS",
     "SYBIL",
@@ -241,7 +241,8 @@
     "CRYPT",
     "RUNES",
     "WAKEN",
-    "ALTAR"
+    "ALTAR",
+    "BLAZE"
   ],
   "wordBooks": {
     "COURT": {
