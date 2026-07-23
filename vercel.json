@@ -261,6 +261,11 @@
       "permanent": false
     },
     {
+      "source": "/r/zodiac",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=zodiac",
+      "permanent": false
+    },
+    {
       "source": "/booky/tiktok",
       "destination": "/booky?utm_source=tiktok&utm_medium=social&utm_campaign=tiktok",
       "permanent": false
