@@ -19,6 +19,11 @@ Guidance for Claude when working in this repository.
   contain at least one word mapped to *From Blood and Ash* (Jennifer L.
   Armentrout, slug `from-blood-and-ash`). Enforce with
   `python3 scripts/validate_fbaa_weekly.py` before shipping queue changes.
+- **Zodiac Academy on Thursdays:** words mapped to *Zodiac Academy* (Caroline
+  Peckham & Susanne Valenti, slug `zodiac-academy`) should land on **Thursday**
+  for the weekly r/ZodiacAcademy post cadence. When moving other words, do not
+  leave a ZA answer on a non-Thursday — swap it onto the nearest Thursday
+  instead.
 - **Monthly author outreach:** when planning or revising a month's words,
   cross-reference upcoming book **release dates** and propose that month's
   featured titles/authors so the team can reach out to authors around their
