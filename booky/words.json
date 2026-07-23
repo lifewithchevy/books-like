@@ -80,13 +80,13 @@
     "SYBIL",
     "SWORE",
     "MERCY",
-    "QUILL",
+    "WHEEL",
     "SIGIL",
     "MOTIF",
     "BAGEL",
     "ASHEN",
     "SILKS",
-    "WHEEL",
+    "VENOM",
     "TAROT",
     "HENRY",
     "AMBER",
@@ -243,7 +243,8 @@
     "WAKEN",
     "ALTAR",
     "EMBER",
-    "FERRY"
+    "FERRY",
+    "QUILL"
   ],
   "wordBooks": {
     "COURT": {
@@ -429,11 +430,11 @@
       "buyUrl": "https://amzn.to/4ox0w8K"
     },
     "VENOM": {
-      "slug": "the-serpent-and-the-wings-of-night",
-      "title": "The Serpent and the Wings of Night",
-      "author": "Carissa Broadbent",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
     },
     "RUNES": {
       "slug": "quicksilver",
