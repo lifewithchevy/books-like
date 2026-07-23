@@ -66,13 +66,13 @@
     "SOLIS",
     "WITCH",
     "ORAYA",
-    "WAKEN",
+    "BONDS",
     "VALOR",
     "EMBER",
     "ORION",
     "STARK",
     "ASHES",
-    "ALTAR",
+    "MOONS",
     "ASHEN",
     "BLAZE",
     "DARCY",
@@ -239,7 +239,9 @@
     "POPPY",
     "WRATH",
     "CRYPT",
-    "RUNES"
+    "RUNES",
+    "WAKEN",
+    "ALTAR"
   ],
   "wordBooks": {
     "COURT": {
@@ -1917,11 +1919,11 @@
       "buyUrl": "https://amzn.to/49prybO"
     },
     "BONDS": {
-      "slug": "dire-bound",
-      "title": "Dire Bound",
-      "author": "Sable Sorensen",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601489.01.LZZZZZZZ.jpg",
-      "buyUrl": "https://www.amazon.com/s?k=9780316601481&i=stripbooks&tag=90books-20"
+      "slug": "in-the-wake-of-the-ruined",
+      "title": "In the Wake of the Ruined",
+      "author": "Kalie Cassidy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316587587.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316587587?tag=90books-20"
     },
     "STARK": {
       "slug": "dire-bound",
