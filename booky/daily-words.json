@@ -76,7 +76,7 @@
     "ASHEN",
     "FANGS",
     "DARCY",
-    "VENOM",
+    "BLAZE",
     "SYBIL",
     "SWORE",
     "MERCY",
@@ -241,8 +241,7 @@
     "CRYPT",
     "RUNES",
     "WAKEN",
-    "ALTAR",
-    "BLAZE"
+    "ALTAR"
   ],
   "wordBooks": {
     "COURT": {
