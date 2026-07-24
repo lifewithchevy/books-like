@@ -885,3 +885,115 @@ document.body.innerHTML = `<main style="padding:40px 20px;max-width:480px;margin
 <p style="margin-top:20px"><a href="/" style="color:#f8b6da">← Back to 90books</a></p>
 </main>`;
 }
+
+// Pull-to-refresh: body is overflow:hidden (Wordle fit), so the native
+// browser gesture never fires. Custom PTR reloads and stays on /booky.
+// Marker: ptr-v1
+function installPullToRefresh() {
+  const THRESHOLD = 72;
+  const MAX_PULL = 118;
+  const IGNORE = 'input, textarea, select, button, a, [role="button"], .key, dialog, .sheet';
+
+  let indicator = document.getElementById('ptrIndicator');
+  if (!indicator) {
+    indicator = document.createElement('div');
+    indicator.id = 'ptrIndicator';
+    indicator.className = 'ptr-indicator';
+    indicator.setAttribute('aria-hidden', 'true');
+    indicator.dataset.ptr = 'v1';
+    indicator.innerHTML = '<div class="ptr-indicator-inner"><span class="ptr-spinner" aria-hidden="true"></span><span class="ptr-label">Pull to refresh</span></div>';
+    document.body.appendChild(indicator);
+  }
+  const labelEl = indicator.querySelector('.ptr-label');
+  const spinnerEl = indicator.querySelector('.ptr-spinner');
+
+  let startY = 0;
+  let armed = false;
+  let pulling = false;
+  let pull = 0;
+  let refreshing = false;
+
+  function dialogOpen() {
+    const end = $('end-dialog');
+    const share = $('share-sheet');
+    if (end && end.open) return true;
+    if (share && share.open) return true;
+    return false;
+  }
+
+  function setPullVisual(dist) {
+    const ready = dist >= THRESHOLD;
+    indicator.classList.toggle('ptr-visible', dist > 6);
+    if (labelEl) labelEl.textContent = refreshing ? 'Refreshing…' : (ready ? 'Release to refresh' : 'Pull to refresh');
+    if (spinnerEl && !refreshing) {
+      spinnerEl.style.transform = `rotate(${Math.min(360, (dist / THRESHOLD) * 220)}deg)`;
+    }
+    indicator.style.transform = dist > 6
+      ? `translate3d(0, ${Math.min(28, dist * 0.18)}px, 0)`
+      : '';
+  }
+
+  function resetVisual() {
+    if (refreshing) return;
+    indicator.classList.remove('ptr-visible', 'ptr-refreshing');
+    indicator.style.transform = '';
+    if (spinnerEl) spinnerEl.style.transform = '';
+    if (labelEl) labelEl.textContent = 'Pull to refresh';
+  }
+
+  function doRefresh() {
+    refreshing = true;
+    indicator.classList.add('ptr-visible', 'ptr-refreshing');
+    if (labelEl) labelEl.textContent = 'Refreshing…';
+    setTimeout(() => { location.reload(); }, 180);
+  }
+
+  function onStart(e) {
+    if (refreshing || dialogOpen()) { armed = false; return; }
+    if (!e.touches || e.touches.length !== 1) { armed = false; return; }
+    if (e.target && e.target.closest && e.target.closest(IGNORE)) { armed = false; return; }
+    startY = e.touches[0].clientY;
+    armed = true;
+    pulling = false;
+    pull = 0;
+  }
+
+  function onMove(e) {
+    if (!armed || refreshing) return;
+    const dy = e.touches[0].clientY - startY;
+    if (dy <= 0) {
+      if (pulling) {
+        pulling = false;
+        pull = 0;
+        resetVisual();
+      }
+      return;
+    }
+    pull = Math.min(MAX_PULL, dy * 0.5);
+    pulling = true;
+    if (dy > 10) e.preventDefault();
+    setPullVisual(pull);
+  }
+
+  function onEnd() {
+    if (!armed) return;
+    const should = pulling && pull >= THRESHOLD;
+    armed = false;
+    pulling = false;
+    const dist = pull;
+    pull = 0;
+    if (should) doRefresh();
+    else if (dist > 0) resetVisual();
+  }
+
+  document.addEventListener('touchstart', onStart, { passive: true, capture: true });
+  document.addEventListener('touchmove', onMove, { passive: false, capture: true });
+  document.addEventListener('touchend', onEnd, { passive: true, capture: true });
+  document.addEventListener('touchcancel', onEnd, { passive: true, capture: true });
+}
+
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', installPullToRefresh);
+} else {
+  installPullToRefresh();
+}

@@ -97,6 +97,59 @@ html, body {
   -webkit-font-smoothing: antialiased;
   height: 100dvh;
   overflow: hidden;          /* No scroll. Wordle fits in the viewport. */
+  /* overflow:hidden also blocks native browser pull-to-refresh — Booky
+     installs a custom PTR gesture in app.js instead. */
+}
+
+/* Custom pull-to-refresh (body is non-scrolling) */
+.ptr-indicator {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  z-index: 100000;
+  display: flex;
+  justify-content: center;
+  pointer-events: none;
+  opacity: 0;
+  transform: translate3d(0, -12px, 0);
+  transition: opacity 0.18s ease, transform 0.18s ease;
+}
+.ptr-indicator.ptr-visible {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+.ptr-indicator.ptr-refreshing .ptr-spinner {
+  animation: ptr-spin 0.7s linear infinite;
+}
+.ptr-indicator-inner {
+  margin-top: max(10px, env(safe-area-inset-top, 0px));
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 7px 12px;
+  background: color-mix(in srgb, var(--bg) 90%, transparent);
+  border: 1px solid color-mix(in srgb, var(--ink) 12%, transparent);
+  border-radius: 10px;
+  box-shadow: 0 6px 18px rgba(0, 0, 0, 0.18);
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: color-mix(in srgb, var(--ink) 72%, transparent);
+}
+.ptr-spinner {
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 2px solid color-mix(in srgb, var(--ink) 18%, transparent);
+  border-top-color: var(--ink);
+  flex-shrink: 0;
+  transform: rotate(0deg);
+}
+@keyframes ptr-spin {
+  to { transform: rotate(360deg); }
 }
 
 body {
