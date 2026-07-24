@@ -187,10 +187,9 @@
       min-height: 100vh;
     }
 
-    /* Header — shared lp-nav chrome on app pages (library shows search too) */
+    /* Header — shared lp-nav chrome on app pages (search stays off on library) */
     header.lp-nav { z-index: 100; }
     header.lp-nav .header-search-btn { display: none; }
-    body.bkl-library-mode > header.lp-nav .header-search-btn { display: flex; }
 
     .logo {
       display: flex;
@@ -3053,9 +3052,6 @@
             margin: 0 auto;
             --main-px: 0;
             --main-py: 0;
-          }
-          body.bkl-library-mode .header-search-btn:hover {
-            background: rgba(20, 20, 20, 0.05);
           }
           body.bkl-library-mode #discoverVibeBar { display: none !important; }
           body.bkl-library-mode #discoverShelves {
