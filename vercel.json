@@ -167,6 +167,19 @@
           "value": "public, s-maxage=60, stale-while-revalidate=86400"
         }
       ]
+    },
+    {
+      "source": "/book/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "public, s-maxage=60, stale-while-revalidate=86400"
+        }
+      ]
     }
   ],
   "redirects": [
@@ -274,6 +287,10 @@
   "rewrites": [
     {
       "source": "/books-like/:slug*",
+      "destination": "/"
+    },
+    {
+      "source": "/book/:slug*",
       "destination": "/"
     },
     {

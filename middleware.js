@@ -48,7 +48,7 @@ export const config = {
   // game page (same pattern as '/'). /booky/*.json stay listed but the edge
   // often serves those static files without invoking middleware — the live
   // queue is therefore also exposed at /api/booky-words.
-  matcher: ['/', '/booky', '/booky/', '/booky/words.json', '/booky/daily-words.json', '/books-like/:slug*', '/genre/:slug*', '/mood/:slug*', '/booky-library'],
+  matcher: ['/', '/booky', '/booky/', '/booky/words.json', '/booky/daily-words.json', '/books-like/:slug*', '/book/:slug*', '/genre/:slug*', '/mood/:slug*', '/booky-library'],
 };
 
 // Canonical capitalisation for our most-trafficked slugs. Anything not here
@@ -183,6 +183,17 @@ function buildMeta(pathname) {
       label: alias ? `${bookTitle} (${alias})` : bookTitle,
     };
   }
+  if ((m = pathname.match(/^\/book\/([^\/]+)\/?$/))) {
+    const slug = m[1];
+    const bookTitle = BOOK_TITLES[slug] || slugToTitle(slug);
+    return {
+      title: `${bookTitle} | 90books`,
+      description: `${bookTitle} — tropes, vibes, and where to read next. Browse the Booky Library and find your next romantasy obsession.`,
+      canonical: `https://90books.com/book/${slug}`,
+      pageKind: 'book',
+      label: bookTitle,
+    };
+  }
   if ((m = pathname.match(/^\/genre\/([^\/]+)\/?$/))) {
     const slug = m[1];
     const genre = GENRE_LABELS[slug] || slugToTitle(slug);
@@ -298,6 +309,9 @@ function buildSeoBlock(meta, books) {
   } else if (meta.pageKind === 'mood') {
     h1Text = `${safeLabel} Books`;
     bodyHtml = `<p>Books for when you're in the mood for something <strong>${safeLabel.toLowerCase()}</strong>. Curated picks from real reader threads, no algorithm slop.</p>`;
+  } else if (meta.pageKind === 'book') {
+    h1Text = safeLabel;
+    bodyHtml = `<p><strong>${safeLabel}</strong> on 90books — tropes, vibes, and where to read next. <a href="/booky-library">Browse the Booky Library</a> or find <a href="/books-like/${escapeHtml(meta.canonical.split('/').pop())}">books like ${safeLabel}</a>.</p>`;
   } else if (meta.pageKind === 'library') {
     const count = (books && books.length) || 0;
     h1Text = 'The Booky Library';
@@ -377,6 +391,10 @@ function jsonLd(meta, books) {
         },
       })),
     };
+  }
+  if (meta.pageKind === 'book') {
+    base['@type'] = 'WebPage';
+    base.about = { '@type': 'Book', name: meta.label };
   }
   return base;
 }

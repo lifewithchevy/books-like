@@ -13384,7 +13384,7 @@
       // If we soft-navigated away from a section page, clear the stale URL so
       // pull-to-refresh does not jump back into /mood|/genre|/books-like.
       // Skip when already on / or /booky-library (e.g. showBookyLibrary boot).
-      if (/^\/(books-like|genre|mood)\//.test(window.location.pathname)) {
+      if (/^\/(books-like|book|genre|mood)\//.test(window.location.pathname)) {
         syncUrlToCurrentBrowseHome();
       }
       document.getElementById('landingOverlay').classList.add('hidden');
@@ -13609,9 +13609,7 @@
     }
 
     function navBack() {
-      // Soft history entries (book detail) share the parent URL. Use history.back()
-      // so the in-app ← Back and the mobile browser/gesture back take the same path
-      // and land on the previous page — not the marketing landing.
+      // Soft history entries (legacy same-path book detail) — prefer history.back().
       if (history.state && history.state.softView) {
         history.back();
         return;
@@ -13620,7 +13618,7 @@
       // history.back() when we navigated here in-session so Back restores the
       // real previous page (library/shelves/mood) instead of stacking a new URL.
       const _path = window.location.pathname;
-      const _onSectionUrl = _path.startsWith('/books-like/') || _path.startsWith('/genre/') || _path.startsWith('/mood/');
+      const _onSectionUrl = _path.startsWith('/books-like/') || _path.startsWith('/book/') || _path.startsWith('/genre/') || _path.startsWith('/mood/');
       if (_onSectionUrl && _navStack.length > 0) {
         history.back();
         return;
@@ -13633,8 +13631,8 @@
         // If we restored to a view that doesn't match the current section URL, reset
         // so pull-to-refresh reloads the visible page (library or home), not the stale section.
         const _p = window.location.pathname;
-        const _stillSection = _p.startsWith('/books-like/') || _p.startsWith('/genre/') || _p.startsWith('/mood/');
-        if (_stillSection && _navView !== 'station' && _navView !== 'search' && _navView !== 'mood' && _navView !== 'genre') {
+        const _stillSection = _p.startsWith('/books-like/') || _p.startsWith('/book/') || _p.startsWith('/genre/') || _p.startsWith('/mood/');
+        if (_stillSection && _navView !== 'station' && _navView !== 'search' && _navView !== 'mood' && _navView !== 'genre' && _navView !== 'bookDetail') {
           syncUrlToCurrentBrowseHome();
         }
       } else {
@@ -13842,16 +13840,6 @@
       if (typeof isHiddenBook === 'function' && isHiddenBook(key)) { goHome(); return; }
       _navGo('bookDetail', { key });       // ← push previous view, record this one
 
-      // Soft history entry so mobile browser/gesture back returns to the parent
-      // page (library, mood, books-like, shelves) instead of skipping to landing.
-      if (!_navRestoring) {
-        const _softPath = window.location.pathname + window.location.search;
-        const _cur = history.state || {};
-        if (!(_cur.softView === 'bookDetail' && _cur.key === key)) {
-          history.pushState({ softView: 'bookDetail', key }, '', _softPath);
-        }
-      }
-
       // Fuzzy key resolution, if no exact match, try getBookMeta normalization
       if (!bookMetadata[key]) {
         const resolved = getBookMeta(key.replace(/\b\w/g, c => c.toUpperCase())); // titleCase for getBookMeta
@@ -13859,6 +13847,18 @@
           const foundKey = Object.keys(bookMetadata).find(k => bookMetadata[k] === resolved);
           if (foundKey) key = foundKey;
         }
+      }
+
+      // Real /book/[slug] URL so pull-to-refresh stays on this book page
+      // (and so share/back work like other section routes).
+      const _bookSlug = slugify(key);
+      const _bookPath = '/book/' + _bookSlug;
+      if (window.location.pathname !== _bookPath) {
+        // During popstate restore, replace — don't push a new entry on top of history.back()
+        if (_navRestoring) history.replaceState({ bookDetail: key }, '', _bookPath);
+        else history.pushState({ bookDetail: key }, '', _bookPath);
+      } else {
+        history.replaceState({ bookDetail: key }, '', _bookPath);
       }
 
       recordTasteInteraction(key);
@@ -13871,6 +13871,12 @@
       const authorStr = meta.author || '';
       const moods     = meta.moods  || [];
       const tropes    = meta.tropes || [];
+
+      if (typeof updateSectionMeta === 'function') {
+        const _desc = meta.pitch
+          || (authorStr ? (titleStr + ' by ' + authorStr + ' — tropes, vibes, and where to read next.') : (titleStr + ' — tropes, vibes, and where to read next.'));
+        updateSectionMeta(titleStr, _desc, _bookPath);
+      }
 
       // Switch views
       document.getElementById('discoverShelves').style.display           = 'none';
@@ -16360,6 +16366,26 @@
         return;
       }
 
+      // /book/[slug] → individual book detail page (refresh-safe)
+      let bm = path.match(/^\/book\/(.+)$/);
+      if (bm) {
+        const rawSlug = decodeURIComponent(bm[1]).replace(/\/$/, '');
+        const keyGuess = rawSlug.replace(/-/g, ' ').toLowerCase().trim();
+        let bookKey = bookMetadata[keyGuess] ? keyGuess : null;
+        if (!bookKey) {
+          bookKey = Object.keys(bookMetadata).find(k => slugify(k) === rawSlug) || null;
+        }
+        if (!bookKey && typeof searchData !== 'undefined') {
+          if (searchData[keyGuess]) bookKey = keyGuess;
+          else bookKey = Object.keys(searchData).find(k => slugify(k) === rawSlug) || null;
+        }
+        if (bookKey) {
+          if (typeof _ensureBookMeta === 'function') _ensureBookMeta(bookKey);
+          openBookDetail(bookKey);
+        }
+        return;
+      }
+
       // /genre/[slug], filter discover by tagClass
       let gm = path.match(/^\/genre\/(.+)$/);
       if (gm) {
@@ -16496,7 +16522,7 @@
         const p = window.location.pathname;
         const st = e.state || {};
 
-        // Soft book-detail entry (same path as parent). Forward/back within soft stack.
+        // Legacy soft book-detail entries (same path as parent, pre-/book/ URLs)
         if (st.softView === 'bookDetail' && st.key) {
           _navRestoring = true;
           openBookDetail(st.key);
@@ -16510,7 +16536,7 @@
           routeFromUrl();
           return;
         }
-        if (p.startsWith('/books-like/') || p.startsWith('/genre/') || p.startsWith('/mood/')) {
+        if (p.startsWith('/book/') || p.startsWith('/books-like/') || p.startsWith('/genre/') || p.startsWith('/mood/')) {
           routeFromUrl();
           return;
         }
