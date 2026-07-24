@@ -8703,8 +8703,31 @@
       return opts;
     }
     function bklSlugToKey(slug) {
+      if (!slug) return null;
       if (bookMetadata[slug]) return slug;
-      return Object.keys(bookMetadata).find(function (k) { return slugify(k) === slug; }) || null;
+      var spaced = String(slug).replace(/-/g, ' ').toLowerCase();
+      if (bookMetadata[spaced]) return spaced;
+      var slugifyFn = (typeof slugify === 'function') ? slugify : function (str) {
+        return (str || '').toLowerCase().replace(/['']/g, '').replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+      };
+      return Object.keys(bookMetadata).find(function (k) { return slugifyFn(k) === slug; }) || null;
+    }
+    function bklEnsureBookMeta(key, slug, wordBook) {
+      key = (key || '').toLowerCase().trim();
+      if (!key) return null;
+      if (bookMetadata[key]) return key;
+      var wb = wordBook || (slug && BKL_WORD_BY_SLUG[slug]) || (BKL_WORD_BY_SLUG[key]) || null;
+      bookMetadata[key] = {
+        author: (wb && wb.author) || '',
+        rating: '',
+        tag: 'Romantasy',
+        tagClass: 'tag-romantasy',
+        pitch: '',
+        moods: [],
+        tropes: [],
+        _fromLibrary: true,
+      };
+      return key;
     }
     function bklCoverForBook(key, slug, wordCover) {
       if (wordCover) return wordCover;
@@ -8741,9 +8764,20 @@
       if (document.body.classList.contains('bkl-library-mode')) {
         bklPh('library_book_clicked', { slug: slug || key, section: section || 'shelf' });
       }
-      if (bookMetadata[key]) { openBookDetail(key); return; }
-      var k = slug ? bklSlugToKey(slug) : null;
-      if (k && bookMetadata[k]) { openBookDetail(k); return; }
+      // Always open the in-app book page at /book/[slug] so refresh stays here.
+      // Never bounce to /books-like/ from a library shelf tap.
+      var detailKey = null;
+      if (key && bookMetadata[key]) detailKey = key;
+      if (!detailKey && slug) detailKey = bklSlugToKey(slug);
+      if (!detailKey) {
+        detailKey = (key || (slug || '').replace(/-/g, ' ') || '').toLowerCase().trim();
+        detailKey = bklEnsureBookMeta(detailKey, slug) || detailKey;
+      }
+      if (detailKey) {
+        if (typeof _ensureBookMeta === 'function') _ensureBookMeta(detailKey);
+        openBookDetail(detailKey);
+        return;
+      }
       if (slug) window.location.href = '/books-like/' + slug;
     }
     function bklLoadWordData() {
@@ -13835,9 +13869,25 @@
     // ── BOOK DETAIL PAGE ─────────────────────────────────────────────────────
     // Rich detail page: hero card → series → more by author → discovered on → recs
     // ──────────────────────────────────────────────────────────────────────────
+    // Slug helper available in this script (slugify() lives in a later script block)
+    function slugifyBookKey(str) {
+      if (typeof slugify === 'function') return slugify(str);
+      return (str || '').toLowerCase()
+        .replace(/['']/g, '')
+        .replace(/[^a-z0-9]+/g, '-')
+        .replace(/^-|-$/g, '');
+    }
+
     function openBookDetail(key) {
       key = (key || '').toLowerCase().trim();
       if (typeof isHiddenBook === 'function' && isHiddenBook(key)) { goHome(); return; }
+
+      // Book pages are app routes — never leave the marketing landing on top.
+      try {
+        document.getElementById('landingOverlay')?.classList.add('hidden');
+        if (typeof setLandingMode === 'function') setLandingMode(false);
+      } catch (e) {}
+
       _navGo('bookDetail', { key });       // ← push previous view, record this one
 
       // Fuzzy key resolution, if no exact match, try getBookMeta normalization
@@ -13848,10 +13898,13 @@
           if (foundKey) key = foundKey;
         }
       }
+      if (!bookMetadata[key] && typeof bklEnsureBookMeta === 'function') {
+        bklEnsureBookMeta(key, slugifyBookKey(key));
+      }
 
       // Real /book/[slug] URL so pull-to-refresh stays on this book page
       // (and so share/back work like other section routes).
-      const _bookSlug = slugify(key);
+      const _bookSlug = slugifyBookKey(key);
       const _bookPath = '/book/' + _bookSlug;
       if (window.location.pathname !== _bookPath) {
         // During popstate restore, replace — don't push a new entry on top of history.back()
@@ -13860,6 +13913,7 @@
       } else {
         history.replaceState({ bookDetail: key }, '', _bookPath);
       }
+      try { sessionStorage.setItem('90books_open_book', key); } catch (e) {}
 
       recordTasteInteraction(key);
       trackViewedBook(key); // mark as seen, Made For You won't re-surface it
@@ -13913,10 +13967,13 @@
       const _bdBookshopUrl  = bookshopAffiliateUrl(key);
       const _bdBookshopCta  = renderBookshopCta(titleStr, _bdBookshopUrl);
       const _bdAmazonCta    = renderAmazonCta(titleStr, authorStr, isbn, !!_bdBookshopUrl, key);
-      const _bdInLibrary = document.body.classList.contains('bkl-library-mode');
-      const _bdTbrOn = _bdInLibrary && typeof bklIsTbr === 'function' && bklIsTbr(key);
+      // Want-to-read on book pages (library mode or any /book/ URL after refresh)
+      const _bdShowTbr = document.body.classList.contains('bkl-library-mode')
+        || window.location.pathname.startsWith('/book/')
+        || (typeof bklGetTbr === 'function' && bklGetTbr().length > 0);
+      const _bdTbrOn = _bdShowTbr && typeof bklIsTbr === 'function' && bklIsTbr(key);
       const _bdSafeKey = key.replace(/'/g, "\\'");
-      const _bdTbrBtn = _bdInLibrary
+      const _bdTbrBtn = _bdShowTbr
         ? `<button type="button" class="bkl-detail-tbr${_bdTbrOn ? ' on' : ''}" data-key="${_bdSafeKey}" aria-pressed="${_bdTbrOn ? 'true' : 'false'}" onclick="bklToggleTbr('${_bdSafeKey}',this)"><span class="bkl-detail-tbr-icon">${_bdTbrOn ? '♥' : '♡'}</span><span class="bkl-detail-tbr-label">${_bdTbrOn ? 'Saved for later' : 'Want to read'}</span></button>`
         : '';
       // Social-proof buzz block, aggregated from BookTok / Goodreads awards / Reddit / Google trends / NYT etc.
@@ -14679,16 +14736,18 @@
         }
         updateHeaderForUser(user);
         loadGoodreadsData();
-      } else if (!isHome && (visited || hasInteracted)) {
-        // Returning guest on a deep link → skip the pitch
+      } else if (!isHome) {
+        // Any deep link (/book, /booky-library, /mood, …) skips the marketing
+        // landing — including first visits — so refresh on a book page cannot
+        // get covered by the landing overlay.
         document.getElementById('landingOverlay').classList.add('hidden');
         setLandingMode(false);
         const avatarBtn = document.getElementById('profileAvatarBtn');
         if (avatarBtn) avatarBtn.onclick = openProfilePanel;
+        if (visited || hasInteracted) { /* already remembered */ }
+        else { try { localStorage.setItem(VISITED_KEY, '1'); } catch (e) {} }
       } else if (isHome) {
         setLandingMode(true);
-      } else {
-        setLandingMode(false);
       }
     }
 
@@ -16369,17 +16428,32 @@
       // /book/[slug] → individual book detail page (refresh-safe)
       let bm = path.match(/^\/book\/(.+)$/);
       if (bm) {
+        try {
+          document.getElementById('landingOverlay')?.classList.add('hidden');
+          if (typeof setLandingMode === 'function') setLandingMode(false);
+        } catch (e) {}
         const rawSlug = decodeURIComponent(bm[1]).replace(/\/$/, '');
         const keyGuess = rawSlug.replace(/-/g, ' ').toLowerCase().trim();
         let bookKey = bookMetadata[keyGuess] ? keyGuess : null;
+        if (!bookKey && typeof bklSlugToKey === 'function') {
+          bookKey = bklSlugToKey(rawSlug);
+        }
         if (!bookKey) {
-          bookKey = Object.keys(bookMetadata).find(k => slugify(k) === rawSlug) || null;
+          bookKey = Object.keys(bookMetadata).find(k => (typeof slugify === 'function' ? slugify(k) : slugifyBookKey(k)) === rawSlug) || null;
         }
         if (!bookKey && typeof searchData !== 'undefined') {
           if (searchData[keyGuess]) bookKey = keyGuess;
-          else bookKey = Object.keys(searchData).find(k => slugify(k) === rawSlug) || null;
+          else bookKey = Object.keys(searchData).find(k => (typeof slugify === 'function' ? slugify(k) : slugifyBookKey(k)) === rawSlug) || null;
         }
+        if (!bookKey) {
+          try {
+            const saved = sessionStorage.getItem('90books_open_book');
+            if (saved && slugifyBookKey(saved) === rawSlug) bookKey = saved;
+          } catch (e) {}
+        }
+        if (!bookKey) bookKey = keyGuess;
         if (bookKey) {
+          if (typeof bklEnsureBookMeta === 'function') bklEnsureBookMeta(bookKey, rawSlug);
           if (typeof _ensureBookMeta === 'function') _ensureBookMeta(bookKey);
           openBookDetail(bookKey);
         }
