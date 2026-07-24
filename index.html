@@ -10167,6 +10167,8 @@
 
     function discoverShowAll() {
       navClearStack();
+      // Align URL with shelves so pull-to-refresh stays here (not a stale section page)
+      syncUrlToCurrentBrowseHome();
       document.getElementById('discover-filtered-results').style.display = 'none';
       document.getElementById('discoverShelves').style.display = 'block';
       document.getElementById('resultsWrap').style.display = 'none';
@@ -13330,6 +13332,39 @@
       }
     }
 
+    // Keep the address bar aligned with the visible browse/library home.
+    // Soft-nav can leave /mood, /genre, or /books-like in the URL after the UI
+    // already shows shelves — mobile pull-to-refresh then reopens that stale
+    // section instead of the page the user is looking at. replaceState corrects
+    // the URL without adding a history entry.
+    function syncUrlToCurrentBrowseHome() {
+      if (document.body.classList.contains('bkl-library-mode')) {
+        const path = window.location.pathname;
+        if (path !== '/booky-library' && path !== '/booky-library/') {
+          history.replaceState({ section: 'library' }, '', '/booky-library');
+        }
+        document.title = 'The Booky Library | Every romantasy book from Booky by 90books';
+        const _ogUrl = document.querySelector('meta[property="og:url"]');
+        if (_ogUrl) _ogUrl.content = 'https://90books.com/booky-library';
+        return;
+      }
+      if (window.location.pathname !== '/' && window.location.pathname !== '') {
+        history.replaceState({}, '', '/');
+        document.title = 'Booky, the Daily Romantasy Word Game by 90books';
+        const _ogTitle = document.querySelector('meta[property="og:title"]');
+        const _ogDesc  = document.querySelector('meta[property="og:description"]');
+        const _ogUrl   = document.querySelector('meta[property="og:url"]');
+        const _twTitle = document.querySelector('meta[name="twitter:title"]');
+        const _twDesc  = document.querySelector('meta[name="twitter:description"]');
+        const _homeDesc = 'Play Booky, the daily romantasy word game: guess the 5-letter word hidden in a romantasy book, in 6 tries. Then browse handpicked romantasy recs from a fellow reader on 90books.';
+        if (_ogTitle) _ogTitle.content = 'Booky, the Daily Romantasy Word Game by 90books';
+        if (_ogDesc)  _ogDesc.content  = _homeDesc;
+        if (_ogUrl)   _ogUrl.content   = 'https://90books.com/';
+        if (_twTitle) _twTitle.content = 'Booky, the Daily Romantasy Word Game by 90books';
+        if (_twDesc)  _twDesc.content  = _homeDesc;
+      }
+    }
+
     function setLandingMode(active) {
       document.documentElement.classList.toggle('landing-active', active);
       document.body.classList.toggle('landing-active', active);
@@ -13341,6 +13376,12 @@
       if (!isBookyLibraryPath()) bklSetDiscoverHeroVisible(true);
       navClearStack();
       closeSearchOverlay();
+      // If we soft-navigated away from a section page, clear the stale URL so
+      // pull-to-refresh does not jump back into /mood|/genre|/books-like.
+      // Skip when already on / or /booky-library (e.g. showBookyLibrary boot).
+      if (/^\/(books-like|genre|mood)\//.test(window.location.pathname)) {
+        syncUrlToCurrentBrowseHome();
+      }
       document.getElementById('landingOverlay').classList.add('hidden');
       setLandingMode(false);
       document.getElementById('stationHeader').style.display = 'none';
@@ -13559,15 +13600,14 @@
         restore(); // _navView/_navParams updated inside restore call via _navGo
         _navRestoring = false;
         // If we restored to a view that doesn't match the current section URL, reset
+        // so pull-to-refresh reloads the visible page (library or home), not the stale section.
         const _p = window.location.pathname;
         const _onSectionUrl = _p.startsWith('/books-like/') || _p.startsWith('/genre/') || _p.startsWith('/mood/');
         if (_onSectionUrl && _navView !== 'station' && _navView !== 'search' && _navView !== 'mood' && _navView !== 'genre') {
-          resetUrlToHome();
+          syncUrlToCurrentBrowseHome();
         }
       } else {
-        // Already at base, go home
-        navClearStack();
-        resetUrlToHome();
+        // Already at base → browse/library home (URL must match for mobile refresh)
         discoverShowAll();
       }
     }
@@ -14045,6 +14085,7 @@
     function closeStation() {
       navClearStack();
       _currentStationIdx = null; // clear so GR data reload doesn't re-render a closed station
+      syncUrlToCurrentBrowseHome();
       const filteredEl = document.getElementById('discover-filtered-results');
       if (filteredEl) {
         filteredEl.style.display = 'none';
