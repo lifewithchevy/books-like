@@ -83,6 +83,7 @@ const BOOK_TITLES = {
   'the-housemaid': 'The Housemaid',
   'happy-place': 'Happy Place',
   'book-lovers': 'Book Lovers',
+  'bride': 'Bride',
   'the-invisible-life-of-addie-larue': 'The Invisible Life of Addie LaRue',
   'eleanor-oliphant-is-completely-fine': 'Eleanor Oliphant Is Completely Fine',
   'one-dark-window': 'One Dark Window',

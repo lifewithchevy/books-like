@@ -219,6 +219,11 @@
       "permanent": true
     },
     {
+      "source": "/books-like/bride",
+      "destination": "/book/bride",
+      "permanent": false
+    },
+    {
       "source": "/books-like/powerless",
       "destination": "/",
       "permanent": false

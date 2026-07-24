@@ -5953,6 +5953,19 @@
         tropes: ['fake dating', 'enemies to lovers', 'witty'],
         pitch: "A PhD candidate fake-dates a brooding professor. Enemies-to-lovers in STEM with electric chemistry."
       },
+      "bride": {
+        author: 'Ali Hazelwood', rating: '3.9/5',
+        tag: 'Paranormal Romance', tagClass: 'tag-romance',
+        pages: 416, spice: 'explicit', cliffhanger: false,
+        series: { name: 'Bride', book: 1, total: 2, complete: false },
+        moods: ['funny', 'swoony', 'dark'], pace: 'fast',
+        tropes: ['enemies to lovers', 'arranged marriage', 'werewolf', 'vampire', 'fated mates'],
+        pitch: "A vampire woman is married off to a werewolf alpha as a political alliance. Enemies-to-lovers with fangs, genuine wit, and spice that earns its reputation.",
+        buzz: {
+          summary: 'Ali Hazelwood\'s paranormal debut, the BookTok bridge from STEM rom-coms into fangs-and-mates chaos.',
+          stats: ['🔥 BookTok paranormal romance staple', '📈 NYT bestseller', '💬 Viral for the banter + bite']
+        }
+      },
       "beach read": {
         author: 'Emily Henry', rating: '3.9/5',
         tag: 'Contemporary Romance', tagClass: 'tag-romance',
@@ -8118,6 +8131,7 @@
       'the serpent and the wings of night': '9781728295336',
       'the things we leave unfinished':     '9781682815885',
       'the love hypothesis':                '9780593336823',
+      'bride':                              '9780593550403',
       'funny story':                        '9780593441282',
       'blue lily, lily blue':               '9780545424967',
       'the raven boys':                     '9780545424929',
@@ -8715,19 +8729,42 @@
     function bklEnsureBookMeta(key, slug, wordBook) {
       key = (key || '').toLowerCase().trim();
       if (!key) return null;
-      if (bookMetadata[key]) return key;
-      var wb = wordBook || (slug && BKL_WORD_BY_SLUG[slug]) || (BKL_WORD_BY_SLUG[key]) || null;
-      bookMetadata[key] = {
-        author: (wb && wb.author) || '',
-        rating: '',
-        tag: 'Romantasy',
-        tagClass: 'tag-romantasy',
-        pitch: '',
-        moods: [],
-        tropes: [],
-        _fromLibrary: true,
-      };
-      return key;
+      if (bookMetadata[key] && bookMetadata[key].author) return key;
+      var wb = wordBook || (slug && BKL_WORD_BY_SLUG[slug]) || BKL_WORD_BY_SLUG[key] || null;
+      if (!wb && slug) {
+        // title-case fallback from slug alone is not enough for a real page
+      }
+      if (!bookMetadata[key]) {
+        bookMetadata[key] = {
+          author: (wb && wb.author) || '',
+          rating: '',
+          tag: 'Romantasy',
+          tagClass: 'tag-romantasy',
+          pitch: wb ? ((wb.title || key) + ' by ' + (wb.author || 'an author we featured in Booky') + '.') : '',
+          moods: ['adventurous'],
+          tropes: [],
+          _fromLibrary: true,
+        };
+      } else if (!bookMetadata[key].author && wb && wb.author) {
+        bookMetadata[key].author = wb.author;
+      }
+      return bookMetadata[key].author ? key : null;
+    }
+    function bklHasBookPage(key, slug) {
+      if (key && bookMetadata[key] && bookMetadata[key].author) return true;
+      if (slug) {
+        var k = bklSlugToKey(slug);
+        if (k && bookMetadata[k] && bookMetadata[k].author) return true;
+      }
+      return false;
+    }
+    function bklSeedWordBookPages() {
+      Object.keys(BKL_WORD_BY_SLUG || {}).forEach(function (slug) {
+        var wb = BKL_WORD_BY_SLUG[slug];
+        if (!wb) return;
+        var key = bklSlugToKey(slug) || String(slug).replace(/-/g, ' ').toLowerCase();
+        bklEnsureBookMeta(key, slug, wb);
+      });
     }
     function bklCoverForBook(key, slug, wordCover) {
       if (wordCover) return wordCover;
@@ -8764,21 +8801,22 @@
       if (document.body.classList.contains('bkl-library-mode')) {
         bklPh('library_book_clicked', { slug: slug || key, section: section || 'shelf' });
       }
-      // Always open the in-app book page at /book/[slug] so refresh stays here.
-      // Never bounce to /books-like/ from a library shelf tap.
+      // Prefer a real /book/[slug] page. Never bounce to the old empty /books-like shell.
       var detailKey = null;
-      if (key && bookMetadata[key]) detailKey = key;
+      if (key && bookMetadata[key] && bookMetadata[key].author) detailKey = key;
       if (!detailKey && slug) detailKey = bklSlugToKey(slug);
-      if (!detailKey) {
-        detailKey = (key || (slug || '').replace(/-/g, ' ') || '').toLowerCase().trim();
-        detailKey = bklEnsureBookMeta(detailKey, slug) || detailKey;
+      if (!detailKey && slug && BKL_WORD_BY_SLUG[slug]) {
+        detailKey = bklEnsureBookMeta(String(slug).replace(/-/g, ' ').toLowerCase(), slug, BKL_WORD_BY_SLUG[slug]);
       }
-      if (detailKey) {
+      if (!detailKey && key) {
+        detailKey = bklEnsureBookMeta(key, slug);
+      }
+      if (detailKey && bookMetadata[detailKey] && bookMetadata[detailKey].author) {
         if (typeof _ensureBookMeta === 'function') _ensureBookMeta(detailKey);
         openBookDetail(detailKey);
         return;
       }
-      if (slug) window.location.href = '/books-like/' + slug;
+      // No book page available — do nothing (shelf card should not be clickable).
     }
     function bklLoadWordData() {
       if (BKL_WORD_DATA) return Promise.resolve(BKL_WORD_DATA);
@@ -8835,6 +8873,8 @@
           revealedCount: revealedCount,
           slugFirstDay: slugFirstDay,
         };
+        // Ensure every Booky word-book has a /book/[slug] page entry.
+        if (typeof bklSeedWordBookPages === 'function') bklSeedWordBookPages();
         return BKL_WORD_DATA;
       });
     }
@@ -9100,7 +9140,9 @@
       const heart = inLibrary ? '' : `<button class="shelf-heart${bklIsTbr(key) ? ' on' : ''}" data-key="${safeKey}" aria-label="Want to read" aria-pressed="${bklIsTbr(key) ? 'true' : 'false'}" onclick="event.stopPropagation();bklToggleTbr('${safeKey}',this)">${bklIsTbr(key) ? '♥' : '♡'}</button>`;
       const interactAttr = spoilerLock
         ? ' aria-disabled="true"'
-        : ' role="button" onclick="bklOpenBook(\'' + safeKey + '\',\'' + safeSlug + '\',\'' + section + '\')"';
+        : (typeof bklHasBookPage === 'function' && bklHasBookPage(key, opts.slug)
+          ? ' role="button" onclick="bklOpenBook(\'' + safeKey + '\',\'' + safeSlug + '\',\'' + section + '\')"'
+          : ' aria-disabled="true" title="Book page coming soon" style="cursor:default;opacity:0.85;"');
       // If no ISBN cover URL, use a tiny blank gif so onload fires → triggers fetchCover
       const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
       const imgSrc = coverUrl || BLANK;
@@ -9479,6 +9521,7 @@
       'twisted love':                       '#1A0A0A', // dark possessive black
       'funny story':                        '#A8C4E0', // light playful blue
       'the love hypothesis':                '#3A6FA5', // STEM blue
+      'bride':                              '#6B2D5B', // vampire wine
       'king of wrath':                      '#1F1A24', // dark billionaire charcoal
       'eleanor oliphant is completely fine':'#E8B23A', // pale yellow (book cover)
       'one dark window':                    '#1A0E2A', // gothic deep purple-black
@@ -11717,7 +11760,7 @@
       { label: "Assistant to the Villain", author: "Hannah Nicole Maehrer", key: "__dynamic__", aliases: ["assistant to the villain", "maehrer"] },
       { label: "King of Wrath", author: "Ana Huang", key: "__dynamic__", aliases: ["king of wrath", "kings of sin"] },
       { label: "The Love Hypothesis", author: "Ali Hazelwood", key: "__dynamic__", aliases: ["love hypothesis", "hazelwood", "ali hazelwood"] },
-      { label: "Bride", author: "Ali Hazelwood", key: "__dynamic__", aliases: ["bride hazelwood"] },
+      { label: "Bride", author: "Ali Hazelwood", key: "bride", aliases: ["bride hazelwood", "ali hazelwood bride"] },
       { label: "Punk 57", author: "Penelope Douglas", key: "__dynamic__", aliases: ["punk 57", "penelope douglas"] },
       { label: "Birthday Girl", author: "Penelope Douglas", key: "__dynamic__", aliases: ["birthday girl"] },
       { label: "Credence", author: "Penelope Douglas", key: "__dynamic__", aliases: ["credence"] },
@@ -14136,9 +14179,10 @@
         });
       }
 
-      // Single canonical recs CTA, sends user to /books-like/[slug] (the one rec page).
-      // Shows for any book that has either curated searchData OR enough algorithmic recs.
-      const _hasRecs = !!(searchData[key] || (bookMetadata[key] && getBooksLikeRecs(key, bookMetadata[key], 3).length >= 3));
+      // Single canonical recs CTA — only for curated /books-like/ pages.
+      // Thin algorithmic shells (no searchData) look like the old empty design
+      // and should stay hidden; the book detail page itself is enough.
+      const _hasRecs = !!(searchData[key] && searchData[key].source);
       const _recsCta = _hasRecs ? `
         <div style="padding:40px 16px 20px;text-align:center;background:var(--surface);border-top:1px solid var(--border);margin-top:20px;">
           <div style="font-family:'Playfair Display',serif;font-size:22px;font-weight:700;color:var(--text);margin-bottom:6px;line-height:1.2;">
@@ -16385,9 +16429,18 @@
 
     function navigateToBooksLike(key) {
       if (typeof isHiddenBook === 'function' && isHiddenBook(key)) { goHome(); return; }
+      // Only open curated /books-like/ pages. Thin/empty algorithmic shells are
+      // the old design users keep landing on — send them to /book/[slug] instead.
+      if (!searchData[key] || !searchData[key].source) {
+        if (typeof openBookDetail === 'function') openBookDetail(key);
+        return;
+      }
       let data = searchData[key];
       if (!data) data = _buildAlgoSearchData(key);
-      if (!data) return;
+      if (!data) {
+        if (typeof openBookDetail === 'function') openBookDetail(key);
+        return;
+      }
       const slug = slugify(key);
       if (window.location.pathname !== '/books-like/' + slug) {
         history.pushState({ booksLike: key }, '', '/books-like/' + slug);
@@ -16500,17 +16553,21 @@
         dataKey = Object.keys(searchData).find(k => slugify(k) === rawSlug) || null;
       }
 
-      if (dataKey) {
+      if (dataKey && searchData[dataKey] && searchData[dataKey].source) {
         navigateToBooksLike(dataKey);
-      } else if (bookMetadata[key]) {
-        // No curated recs, generate algorithmic recs from bookMetadata
-        navigateToBooksLike(key);
-      } else {
-        // Try slug match across bookMetadata keys too
-        const metaKey = Object.keys(bookMetadata).find(k => slugify(k) === rawSlug);
-        if (metaKey) navigateToBooksLike(metaKey);
+        return;
       }
-      // else: no match, home page loads normally
+
+      // No curated books-like page — open the book detail page instead of the
+      // old empty shelves shell (e.g. /books-like/bride).
+      let bookKey = bookMetadata[key] ? key : null;
+      if (!bookKey) bookKey = Object.keys(bookMetadata).find(k => slugify(k) === rawSlug) || null;
+      if (!bookKey && typeof bklSlugToKey === 'function') bookKey = bklSlugToKey(rawSlug);
+      if (!bookKey) bookKey = dataKey || key;
+      if (bookKey) {
+        if (typeof bklEnsureBookMeta === 'function') bklEnsureBookMeta(bookKey, rawSlug);
+        openBookDetail(bookKey);
+      }
     }
 
     // Swap the homepage ribbon on featured Booky days (author collabs, etc.)
