@@ -13310,6 +13310,9 @@
     function resetUrlToHome() {
       if (window.location.pathname !== '/') {
         history.pushState({}, '', '/');
+      } else if (history.state && (history.state.view || history.state.softView || history.state.section)) {
+        // Clear shelves/soft markers so a later back/refresh treats / as landing
+        history.replaceState({}, '', '/');
       }
       document.title = 'Booky, the Daily Romantasy Word Game by 90books';
       const _ogTitle = document.querySelector('meta[property="og:title"]');
@@ -13349,7 +13352,7 @@
         return;
       }
       if (window.location.pathname !== '/' && window.location.pathname !== '') {
-        history.replaceState({}, '', '/');
+        history.replaceState({ view: 'shelves' }, '', '/');
         document.title = 'Booky, the Daily Romantasy Word Game by 90books';
         const _ogTitle = document.querySelector('meta[property="og:title"]');
         const _ogDesc  = document.querySelector('meta[property="og:description"]');
@@ -13362,6 +13365,8 @@
         if (_ogUrl)   _ogUrl.content   = 'https://90books.com/';
         if (_twTitle) _twTitle.content = 'Booky, the Daily Romantasy Word Game by 90books';
         if (_twDesc)  _twDesc.content  = _homeDesc;
+      } else if (!history.state || history.state.view !== 'shelves') {
+        history.replaceState({ view: 'shelves' }, '', window.location.pathname || '/');
       }
     }
 
@@ -13565,7 +13570,7 @@
     let _navParams    = {};      // params for the current view
 
     function _navSnapshot() {
-      // Returns a closure that re-opens the current view, or null for home (base state)
+      // Returns a closure that re-opens the current view, or null if nothing to restore
       const v = _navView, p = Object.assign({}, _navParams);
       if (v === 'station')    return () => openStation(p.idx);
       if (v === 'mood')       return () => discoverSelectVibe(p.moodKey, p.label);
@@ -13574,7 +13579,17 @@
       if (v === 'search')     return () => { document.getElementById('searchInput') && (document.getElementById('searchInput').value = p.query); showResults(); };
       if (v === 'genre')      return () => discoverSelectGenre(p.tagClass, p.label, p.description);
       if (v === 'trending')   return () => discoverSelectTrending();
-      return null; // home, nothing to restore
+      if (v === 'home') {
+        // Browse/library shelves — never the marketing landing page
+        if (document.body.classList.contains('bkl-library-mode') || isBookyLibraryPath()) {
+          return () => showBookyLibrary();
+        }
+        return () => {
+          if (typeof enterGuestMode === 'function') enterGuestMode();
+          showDiscoverShelves();
+        };
+      }
+      return null;
     }
 
     function _navGo(view, params) {
@@ -13594,6 +13609,22 @@
     }
 
     function navBack() {
+      // Soft history entries (book detail) share the parent URL. Use history.back()
+      // so the in-app ← Back and the mobile browser/gesture back take the same path
+      // and land on the previous page — not the marketing landing.
+      if (history.state && history.state.softView) {
+        history.back();
+        return;
+      }
+      // Section URLs already have history entries (pushState on open). Prefer
+      // history.back() when we navigated here in-session so Back restores the
+      // real previous page (library/shelves/mood) instead of stacking a new URL.
+      const _path = window.location.pathname;
+      const _onSectionUrl = _path.startsWith('/books-like/') || _path.startsWith('/genre/') || _path.startsWith('/mood/');
+      if (_onSectionUrl && _navStack.length > 0) {
+        history.back();
+        return;
+      }
       if (_navStack.length > 0) {
         _navRestoring = true;
         const restore = _navStack.pop();
@@ -13602,8 +13633,8 @@
         // If we restored to a view that doesn't match the current section URL, reset
         // so pull-to-refresh reloads the visible page (library or home), not the stale section.
         const _p = window.location.pathname;
-        const _onSectionUrl = _p.startsWith('/books-like/') || _p.startsWith('/genre/') || _p.startsWith('/mood/');
-        if (_onSectionUrl && _navView !== 'station' && _navView !== 'search' && _navView !== 'mood' && _navView !== 'genre') {
+        const _stillSection = _p.startsWith('/books-like/') || _p.startsWith('/genre/') || _p.startsWith('/mood/');
+        if (_stillSection && _navView !== 'station' && _navView !== 'search' && _navView !== 'mood' && _navView !== 'genre') {
           syncUrlToCurrentBrowseHome();
         }
       } else {
@@ -13810,6 +13841,16 @@
       key = (key || '').toLowerCase().trim();
       if (typeof isHiddenBook === 'function' && isHiddenBook(key)) { goHome(); return; }
       _navGo('bookDetail', { key });       // ← push previous view, record this one
+
+      // Soft history entry so mobile browser/gesture back returns to the parent
+      // page (library, mood, books-like, shelves) instead of skipping to landing.
+      if (!_navRestoring) {
+        const _softPath = window.location.pathname + window.location.search;
+        const _cur = history.state || {};
+        if (!(_cur.softView === 'bookDetail' && _cur.key === key)) {
+          history.pushState({ softView: 'bookDetail', key }, '', _softPath);
+        }
+      }
 
       // Fuzzy key resolution, if no exact match, try getBookMeta normalization
       if (!bookMetadata[key]) {
@@ -14850,11 +14891,19 @@
     }
 
     function enterGuestMode() {
+      const landing = document.getElementById('landingOverlay');
+      const wasLanding = landing && !landing.classList.contains('hidden');
       localStorage.setItem(VISITED_KEY, '1'); // remember they've been here
-      document.getElementById('landingOverlay').classList.add('hidden');
+      if (landing) landing.classList.add('hidden');
       setLandingMode(false);
       const avatarBtn = document.getElementById('profileAvatarBtn');
       if (avatarBtn) avatarBtn.onclick = openProfilePanel;
+      // Leaving the marketing landing at / → record shelves in history so Back
+      // from a later book/section page returns here instead of forcing landing.
+      const path = window.location.pathname;
+      if (wasLanding && (path === '/' || path === '') && !(history.state && history.state.view === 'shelves')) {
+        history.pushState({ view: 'shelves' }, '', '/');
+      }
     }
 
     // Enter key on URL input
@@ -16275,7 +16324,11 @@
       if (!data) data = _buildAlgoSearchData(key);
       if (!data) return;
       const slug = slugify(key);
-      history.pushState({ booksLike: key }, '', '/books-like/' + slug);
+      if (window.location.pathname !== '/books-like/' + slug) {
+        history.pushState({ booksLike: key }, '', '/books-like/' + slug);
+      } else {
+        history.replaceState({ booksLike: key }, '', '/books-like/' + slug);
+      }
       const resultsEl = document.getElementById('results');
       document.getElementById('discoverShelves').style.display = 'none';
       const _fr = document.getElementById('discover-filtered-results');
@@ -16437,14 +16490,37 @@
         showBookyLanding();
       }
 
-      // Browser back/forward, re-route based on current URL
-      window.addEventListener('popstate', () => {
+      // Browser back/forward — restore the page for this URL/state.
+      // Never force the marketing landing when history says we were browsing shelves.
+      window.addEventListener('popstate', (e) => {
         const p = window.location.pathname;
-        if (p === '/') {
-          navClearStack();
-          showBookyLanding();
-        } else if (p.startsWith('/books-like/') || p.startsWith('/genre/') || p.startsWith('/mood/') || p === '/booky-library' || p === '/booky-library/') {
+        const st = e.state || {};
+
+        // Soft book-detail entry (same path as parent). Forward/back within soft stack.
+        if (st.softView === 'bookDetail' && st.key) {
+          _navRestoring = true;
+          openBookDetail(st.key);
+          _navRestoring = false;
+          return;
+        }
+
+        navClearStack();
+
+        if (p === '/booky-library' || p === '/booky-library/') {
           routeFromUrl();
+          return;
+        }
+        if (p.startsWith('/books-like/') || p.startsWith('/genre/') || p.startsWith('/mood/')) {
+          routeFromUrl();
+          return;
+        }
+        if (p === '/' || p === '') {
+          if (st.view === 'shelves') {
+            enterGuestMode();
+            showDiscoverShelves();
+          } else {
+            showBookyLanding();
+          }
         }
       });
     });
