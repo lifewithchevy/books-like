@@ -8621,6 +8621,9 @@
     // ── Booky Library: want-to-read (TBR) + library intro ──────────────────
     // Reuses the site's existing shelf components; adds a heart-to-save toggle
     // and a library-framed intro (streak bridge + CTA) above the shelves.
+    // TBR UI is off for now — keep storage/helpers so we can re-enable later
+    // (likely as a paid-user perk) without rebuilding the feature.
+    var BKL_TBR_ENABLED = false;
     var BKL_TBR_KEY = '90books_tbr_v1';
     var BKL_WORD_DATA = null;
     var BKL_WORD_BY_SLUG = {};
@@ -8977,6 +8980,7 @@
     function bklPh(evt, props){ try { if (window.posthog && posthog.capture) posthog.capture(evt, props || {}); } catch (e) {} }
     function bklStreak(){ try { var s = JSON.parse(localStorage.getItem('90books_booky_word_stats_v1')); return (s && typeof s.currentStreak === 'number') ? s.currentStreak : 0; } catch (e) { return 0; } }
     function bklToggleTbr(key, btn){
+      if (!BKL_TBR_ENABLED) return;
       var tbr = bklGetTbr(), i = tbr.indexOf(key), nowOn;
       var section = (btn && btn.closest && btn.closest('[data-shelf]')) ? btn.closest('[data-shelf]').getAttribute('data-shelf') : 'shelf';
       if (btn && btn.classList && btn.classList.contains('bkl-detail-tbr')) section = 'book_detail';
@@ -8998,6 +9002,13 @@
     }
     function renderBklWantToRead(){
       var host = document.getElementById('bklWtrRow'); if (!host) return;
+      if (!BKL_TBR_ENABLED) {
+        var wrapOff = document.getElementById('bklWtrShelf');
+        var hintOff = document.getElementById('bklTbrHint');
+        if (wrapOff) wrapOff.style.display = 'none';
+        if (hintOff) hintOff.style.display = 'none';
+        return;
+      }
       var keys = bklGetTbr().filter(function (k) {
         return bookMetadata[k] || BKL_WORD_BY_SLUG[k];
       });
@@ -9072,11 +9083,14 @@
         + '</div>'
         + '<div class="bkl-hero-stage" aria-hidden="true"><div class="bkl-fan">' + fan + '</div></div>'
         + '</section>'
-        + '<div class="bkl-hint" id="bklTbrHint">Open any book and tap Want to read to save it for later. Stays on this device.</div>'
-        + '<div id="bklWtrShelf" class="shelf-row" style="display:none;">'
-        + '<div class="shelf-header"><div class="shelf-title">Your Want-to-Read List (<span id="bklWtrCount">0</span>)</div></div>'
-        + '<div class="shelf-books" id="bklWtrRow"></div>'
-        + '</div>';
+        + (BKL_TBR_ENABLED
+          ? '<div class="bkl-hint" id="bklTbrHint">Open any book and tap Want to read to save it for later. Stays on this device.</div>'
+            + '<div id="bklWtrShelf" class="shelf-row" style="display:none;">'
+            + '<div class="shelf-header"><div class="shelf-title">Your Want-to-Read List (<span id="bklWtrCount">0</span>)</div></div>'
+            + '<div class="shelf-books" id="bklWtrRow"></div>'
+            + '</div>'
+          : '')
+        ;
       intro.style.display = '';
       renderBklWantToRead();
     }
@@ -9131,7 +9145,7 @@
       const buy = (!inLibrary && opts.buyUrl)
         ? '<a class="bkl-buy" href="' + String(opts.buyUrl).replace(/"/g, '&quot;') + '" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation();bklPh(\'library_book_clicked\',{slug:\'' + safeSlug + '\',section:\'' + section + '\'})">Get the book \u2192</a>'
         : '';
-      const heart = inLibrary ? '' : `<button class="shelf-heart${bklIsTbr(key) ? ' on' : ''}" data-key="${safeKey}" aria-label="Want to read" aria-pressed="${bklIsTbr(key) ? 'true' : 'false'}" onclick="event.stopPropagation();bklToggleTbr('${safeKey}',this)">${bklIsTbr(key) ? '♥' : '♡'}</button>`;
+      const heart = (!BKL_TBR_ENABLED || inLibrary) ? '' : `<button class="shelf-heart${bklIsTbr(key) ? ' on' : ''}" data-key="${safeKey}" aria-label="Want to read" aria-pressed="${bklIsTbr(key) ? 'true' : 'false'}" onclick="event.stopPropagation();bklToggleTbr('${safeKey}',this)">${bklIsTbr(key) ? '♥' : '♡'}</button>`;
       const interactAttr = spoilerLock
         ? ' aria-disabled="true"'
         : (typeof bklHasBookPage === 'function' && bklHasBookPage(key, opts.slug)
@@ -14004,10 +14018,12 @@
       const _bdBookshopUrl  = bookshopAffiliateUrl(key);
       const _bdBookshopCta  = renderBookshopCta(titleStr, _bdBookshopUrl);
       const _bdAmazonCta    = renderAmazonCta(titleStr, authorStr, isbn, !!_bdBookshopUrl, key);
-      // Want-to-read on book pages (library mode or any /book/ URL after refresh)
-      const _bdShowTbr = document.body.classList.contains('bkl-library-mode')
+      // Want-to-read on book pages — gated off for now (paid perk later).
+      const _bdShowTbr = BKL_TBR_ENABLED && (
+        document.body.classList.contains('bkl-library-mode')
         || window.location.pathname.startsWith('/book/')
-        || (typeof bklGetTbr === 'function' && bklGetTbr().length > 0);
+        || (typeof bklGetTbr === 'function' && bklGetTbr().length > 0)
+      );
       const _bdTbrOn = _bdShowTbr && typeof bklIsTbr === 'function' && bklIsTbr(key);
       const _bdSafeKey = key.replace(/'/g, "\\'");
       const _bdTbrBtn = _bdShowTbr
