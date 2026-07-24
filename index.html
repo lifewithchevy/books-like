@@ -9038,23 +9038,25 @@
       var i = document.getElementById('bklIntro'); if (i) i.style.display = 'none';
       hideBklLibraryShelves();
     }
+    // Library hero fan — curated flat front covers only (Amazon Empyrean
+    // .01.LZZZZZZZ shots are 3D product mocks and break the fan style).
+    // Center slot is Fourth Wing.
+    var BKL_HERO_FAN_COVERS = [
+      'https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg', // ACOTAR
+      'https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg', // The Bridge Kingdom
+      'https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg', // Fourth Wing (flat)
+      'https://covers.openlibrary.org/b/id/10643508-L.jpg', // A Court of Silver Flames
+      'https://covers.openlibrary.org/b/id/12431959-L.jpg', // One Dark Window
+    ];
     function renderBklIntro(booksCount, coverUrls){
       var intro = document.getElementById('bklIntro'); if (!intro) return;
       var n = bklStreak();
       var hasStreak = n >= 1;
       var ctaLabel = 'Play Booky';
       var ctaNote = hasStreak ? '' : '<p class="bkl-ctanote">Takes about a minute.</p>';
-      var covers = (coverUrls || []).filter(Boolean).slice(0, 5);
-      if (covers.length < 3) {
-        covers = [
-          'https://images-na.ssl-images-amazon.com/images/P/1649374046.01.LZZZZZZZ.jpg',
-          'https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg',
-          'https://images-na.ssl-images-amazon.com/images/P/1250170990.01.LZZZZZZZ.jpg',
-          'https://images-na.ssl-images-amazon.com/images/P/1649374178.01.LZZZZZZZ.jpg',
-          'https://images-na.ssl-images-amazon.com/images/P/0593982576.01.LZZZZZZZ.jpg',
-        ].slice(0, 5);
-      }
-      while (covers.length < 5) covers.push(covers[covers.length - 1]);
+      // Always use the curated flat fan — word-queue cover order used to put
+      // Iron Flame's 3D Amazon mock in the center slot.
+      var covers = BKL_HERO_FAN_COVERS.slice();
       var fan = covers.map(function (src, i) {
         return '<img src="' + String(src).replace(/"/g, '&quot;') + '" alt="" loading="' + (i < 3 ? 'eager' : 'lazy') + '" decoding="async">';
       }).join('');
@@ -9088,12 +9090,7 @@
       bklPlaceBookyLibraryShelf();
       setBookyLibraryUrl();
       bklLoadWordData().then(function (data) {
-        var covers = [];
-        (data.allBooks || []).forEach(function (b) {
-          if (b.firstDay > data.day) return;
-          if (b.book && b.book.cover && covers.indexOf(b.book.cover) < 0) covers.push(b.book.cover);
-        });
-        renderBklIntro(data.count, covers);
+        renderBklIntro(data.count, BKL_HERO_FAN_COVERS);
         bklRenderLibraryShelves(data);
         renderBklWantToRead();
         bklPh('library_view', { books_count: data.count });
