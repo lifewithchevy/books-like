@@ -15,10 +15,13 @@ Guidance for Claude when working in this repository.
 
 ### Standing rules for the word queue
 
-- **From Blood and Ash every week:** every calendar week (ISO Mon–Sun) must
-  contain at least one word mapped to *From Blood and Ash* (Jennifer L.
-  Armentrout, slug `from-blood-and-ash`). Enforce with
-  `python3 scripts/validate_fbaa_weekly.py` before shipping queue changes.
+- **From Blood and Ash every week + Saturdays:** every calendar week (ISO
+  Mon–Sun) must contain at least one word mapped to *From Blood and Ash*
+  (Jennifer L. Armentrout, slug `from-blood-and-ash`). Prefer scheduling those
+  words on **Saturday** for the weekly r/frombloodandash post cadence — when
+  reshuffling, put FBAA on Saturday rather than midweek when possible. Enforce
+  the weekly minimum with `python3 scripts/validate_fbaa_weekly.py` before
+  shipping queue changes.
 - **Zodiac Academy on Thursdays:** words mapped to *Zodiac Academy* (Caroline
   Peckham & Susanne Valenti, slug `zodiac-academy`) should land on **Thursday**
   for the weekly r/ZodiacAcademy post cadence. When moving other words, do not
