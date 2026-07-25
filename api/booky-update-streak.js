@@ -36,24 +36,45 @@ module.exports = async (req, res) => {
   }
 
   try {
-    // Upsert the contact — POST with same email updates existing record
-    const r = await fetch(
-      `https://api.resend.com/audiences/${RESEND_AUDIENCE_ID}/contacts`,
+    // PATCH, not POST. This fires on every completed game for every
+    // subscriber, so it is the most frequent write to a contact — and a POST
+    // body without `last_name` risks clearing it. `last_name` holds the
+    // giveaway entry tag, so clobbering it would silently drop entrants from
+    // the draw. PATCH is a partial update: it touches first_name and nothing
+    // else. (It also actually updates the streak on existing contacts, which
+    // a POST returning 422 may never have done.)
+    let r = await fetch(
+      `https://api.resend.com/audiences/${RESEND_AUDIENCE_ID}/contacts/${encodeURIComponent(cleanEmail)}`,
       {
-        method: 'POST',
+        method: 'PATCH',
         headers: {
           Authorization: `Bearer ${RESEND_API_KEY}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({
-          email: cleanEmail,
-          unsubscribed: false,
-          first_name: String(cleanStreak),
-        }),
+        body: JSON.stringify({ first_name: String(cleanStreak) }),
       }
     );
 
-    // 422 = contact already exists and was updated
+    // Contact doesn't exist yet (e.g. localStorage says subscribed but the
+    // contact was removed) — fall back to creating it.
+    if (r.status === 404) {
+      r = await fetch(
+        `https://api.resend.com/audiences/${RESEND_AUDIENCE_ID}/contacts`,
+        {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${RESEND_API_KEY}`,
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            email: cleanEmail,
+            unsubscribed: false,
+            first_name: String(cleanStreak),
+          }),
+        }
+      );
+    }
+
     if (r.ok || r.status === 422) {
       res.status(200).json({ ok: true, streak: cleanStreak });
       return;
