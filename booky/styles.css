@@ -39,6 +39,16 @@
   /* Progress bar trough */
   --trough: rgba(0, 0, 0, 0.3);
 
+  /* Giveaway card — gold, deliberately distinct from the pink book card */
+  --giveaway-border: rgba(199, 147, 32, 0.45);
+  --giveaway-bg-from: rgba(199, 147, 32, 0.13);
+  --giveaway-bg-to: rgba(217, 70, 168, 0.08);
+  --giveaway-ink: #e0b44a;
+  --giveaway-ink-dim: #8a7340;
+  --giveaway-field-border: #4a3a1e;
+  --giveaway-fine: #8a7340;
+  --giveaway-hover: rgba(224, 180, 74, 0.12);
+
   --font-serif: "Cormorant Garamond", Georgia, serif;
   --font-sans: "Inter", -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
 }
@@ -76,6 +86,16 @@
     --streak-bg-from: rgba(200, 57, 143, 0.10);
     --streak-bg-to:   rgba(139, 63, 211, 0.10);
     --streak-border:  rgba(200, 57, 143, 0.30);
+
+    /* Giveaway gold, darkened for contrast on the cream background */
+    --giveaway-border: rgba(180, 130, 20, 0.42);
+    --giveaway-bg-from: rgba(212, 160, 23, 0.13);
+    --giveaway-bg-to: rgba(200, 57, 143, 0.07);
+    --giveaway-ink: #96700c;
+    --giveaway-ink-dim: #b09250;
+    --giveaway-field-border: #e3d0b0;
+    --giveaway-fine: #a08a6a;
+    --giveaway-hover: rgba(184, 134, 11, 0.09);
     --streak-icon-shadow: rgba(200, 57, 143, 0.35);
 
     --trough: rgba(42, 10, 38, 0.15);
@@ -725,6 +745,111 @@ body {
 }
 .reminder-success { color: var(--accent-2); }
 .reminder-error   { color: #ff8aa3; }
+
+/* ---- Giveaway card (win screen, date-driven) ----
+   Gold so it never competes with the pink book-hero card directly above it.
+   Cover left + everything stacked right keeps it ~112px tall; going much
+   taller pushes the countdown off a small phone. */
+.giveaway {
+  border: 1px solid var(--giveaway-border);
+  border-radius: 11px;
+  background: linear-gradient(135deg, var(--giveaway-bg-from), var(--giveaway-bg-to));
+  padding: 10px 11px;
+  display: flex;
+  gap: 10px;
+  align-items: center;
+}
+.giveaway-cover {
+  width: 38px;
+  height: 57px;
+  flex: 0 0 auto;
+  border-radius: 4px;
+  object-fit: cover;
+  background: var(--bg-3);
+  box-shadow: 0 3px 10px rgba(0, 0, 0, 0.18);
+}
+.giveaway-body { flex: 1; min-width: 0; }
+.giveaway-label {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 6px;
+  font-size: 9.5px;
+  font-weight: 700;
+  letter-spacing: 1.2px;
+  text-transform: uppercase;
+  color: var(--giveaway-ink);
+  margin: 0 0 3px;
+}
+.giveaway-days { color: var(--giveaway-ink-dim); letter-spacing: 0.6px; flex: 0 0 auto; }
+.giveaway-days.last { color: var(--accent); }
+.giveaway-title {
+  font-family: var(--font-serif);
+  font-size: 15.5px;
+  font-weight: 600;
+  color: var(--ink);
+  margin: 0 0 6px;
+  line-height: 1.1;
+}
+.giveaway-form { display: grid; grid-template-columns: 1fr auto; gap: 6px; }
+#giveaway-email {
+  background: var(--bg);
+  border: 1px solid var(--giveaway-field-border);
+  border-radius: 7px;
+  color: var(--ink);
+  padding: 7px 9px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  outline: none;
+  min-width: 0;
+  transition: border-color 0.15s;
+}
+#giveaway-email:focus { border-color: var(--giveaway-ink); }
+#giveaway-email::placeholder { color: var(--ink-faint); }
+#giveaway-submit, .giveaway-btn-wide {
+  background: transparent;
+  border: 1.5px solid var(--giveaway-ink);
+  color: var(--giveaway-ink);
+  border-radius: 7px;
+  cursor: pointer;
+  font-family: var(--font-sans);
+  font-weight: 600;
+  white-space: nowrap;
+  transition: background-color 0.15s;
+}
+#giveaway-submit { padding: 0 11px; font-size: 12.5px; }
+.giveaway-btn-wide { width: 100%; padding: 7px 12px; font-size: 12.5px; }
+#giveaway-submit:hover:not(:disabled),
+.giveaway-btn-wide:hover:not(:disabled) { background: var(--giveaway-hover); }
+#giveaway-submit:disabled, .giveaway-btn-wide:disabled { opacity: 0.6; cursor: not-allowed; }
+.giveaway-fine {
+  font-size: 9.5px;
+  color: var(--giveaway-fine);
+  line-height: 1.4;
+  margin: 8px 0 0;
+}
+.giveaway-fine.is-error { color: #ff8aa3; }
+.giveaway-entered { justify-content: center; text-align: center; padding: 12px 11px; }
+.giveaway-in-title {
+  font-family: var(--font-serif);
+  font-weight: 600;
+  font-size: 16px;
+  color: var(--giveaway-ink);
+  margin: 0 0 2px;
+}
+.giveaway-in-sub { font-size: 10.5px; color: var(--ink-dim); line-height: 1.4; margin: 0; }
+
+/* Short phones (iPhone SE): tighten the end screen so the giveaway card
+   doesn't push the countdown off-screen. */
+@media (max-height: 700px) {
+  #end-modal .end-inner { padding: 18px 20px 14px; gap: 10px; }
+  #end-modal .celebration-title { font-size: 31px; }
+  #end-modal .book-hero { padding: 11px; }
+  #end-modal .book-hero-cover { width: 50px; height: 75px; }
+  #end-modal .book-hero-title { font-size: 17.5px; }
+  #end-modal .book-hero-label { margin-bottom: 8px; }
+  #end-modal .end-word { font-size: 21px; margin-bottom: 3px; }
+}
 
 /* ---- Book recommendation (text link) ---- */
 /* Book hero — the word's book (curated rec or sponsored feature) */

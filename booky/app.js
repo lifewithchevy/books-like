@@ -358,6 +358,168 @@ e.preventDefault();
 $('end-modal').close();
 });
 $('reminder-form').addEventListener('submit', onReminderSubmit);
+$('giveaway-form').addEventListener('submit', onGiveawaySubmit);
+$('giveaway-tap').addEventListener('click', onGiveawayTap);
+}
+
+// ---- Giveaway ----
+// Everything below is inert unless words.json has a `giveaway` whose
+// start..end range covers today. Dates are compared at LOCAL midnight, the
+// same rollover the word itself uses, so the card flips exactly when the
+// word does. There is deliberately no on/off switch: when `end` passes, the
+// card disappears and the reminder form comes back by itself.
+
+const GIVEAWAY_ENTERED_KEY = '90books_booky_giveaway_entered';
+
+function localMidnight(dateStr) {
+const [y, m, d] = String(dateStr).split('-').map(Number);
+if (!y || !m || !d) return null;
+return new Date(y, m - 1, d, 0, 0, 0).getTime();
+}
+
+// Returns the giveaway object if today falls inside its window, else null.
+function activeGiveaway() {
+const g = DATA?.giveaway;
+if (!g || !g.start || !g.end) return null;
+const start = localMidnight(g.start);
+const end = localMidnight(g.end);
+if (start == null || end == null) return null;
+const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0).getTime();
+return today >= start && today <= end ? g : null;
+}
+
+// Renders the card (or the confirmed state) and returns whether it's live.
+function renderGiveaway() {
+const card = $('giveaway');
+const done = $('giveaway-in');
+const g = activeGiveaway();
+
+if (!g) {
+card.hidden = true;
+done.hidden = true;
+return false;
+}
+
+// Already entered → show only the confirmation strip.
+if (localStorage.getItem(GIVEAWAY_ENTERED_KEY) === g.tag) {
+card.hidden = true;
+$('giveaway-in-sub').textContent =
+`winner announced ${g.announce} · 📩 daily reminders on`;
+done.hidden = false;
+return true;
+}
+done.hidden = true;
+
+// Days remaining, inclusive of the final day.
+const end = localMidnight(g.end);
+const now = new Date();
+const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0).getTime();
+const daysLeft = Math.round((end - today) / 86_400_000);
+const daysEl = $('giveaway-days');
+daysEl.textContent = daysLeft <= 0 ? 'last day' : `${daysLeft} day${daysLeft === 1 ? '' : 's'} left`;
+daysEl.classList.toggle('last', daysLeft <= 0);
+
+$('giveaway-title').textContent = g.title || '';
+
+const coverEl = $('giveaway-cover');
+if (g.cover) {
+coverEl.src = g.cover;
+coverEl.alt = g.title || '';
+coverEl.hidden = false;
+// A broken cover must never leave a gap or a broken-image icon.
+coverEl.onerror = () => { coverEl.hidden = true; };
+} else {
+coverEl.hidden = true;
+}
+
+// Two states only: subscribers get one tap, everyone else types.
+const subscribed = localStorage.getItem('90books_booky_reminder_sub');
+$('giveaway-form').hidden = !!subscribed;
+$('giveaway-tap').hidden = !subscribed;
+$('giveaway-fine').className = 'giveaway-fine';
+$('giveaway-fine').textContent = subscribed
+? `Free, worldwide. Ends ${g.end === '2026-08-03' ? 'Aug 3' : g.end}.`
+: `Free, worldwide. Ends ${g.end === '2026-08-03' ? 'Aug 3' : g.end}. Starts your daily email.`;
+
+card.hidden = false;
+return true;
+}
+
+function showGiveawayEntered(g) {
+localStorage.setItem(GIVEAWAY_ENTERED_KEY, g.tag);
+$('giveaway').hidden = true;
+$('giveaway-in-sub').textContent =
+`winner announced ${g.announce} · 📩 daily reminders on`;
+$('giveaway-in').hidden = false;
+}
+
+async function enterGiveaway(email, btn, originalLabel) {
+const g = activeGiveaway();
+if (!g) return;
+const fine = $('giveaway-fine');
+
+btn.disabled = true;
+btn.textContent = 'entering…';
+
+try {
+const res = await fetch('/api/booky-subscribe', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({
+email,
+source: 'giveaway',
+giveawayTag: g.tag,
+giveawayTitle: g.title,
+giveawayAnnounce: g.announce,
+giveawayCover: g.cover,
+streak: STATS.currentStreak,
+}),
+});
+if (!res.ok) throw new Error('subscribe-failed');
+
+const alreadySubscribed = !!localStorage.getItem('90books_booky_reminder_sub');
+localStorage.setItem('90books_booky_reminder_sub', email);
+
+// Keep the historical north-star event comparable, and add a dedicated
+// one so entries can be separated from ordinary signups.
+posthog.capture('email_signup_completed', {
+source: 'booky_endscreen',
+giveaway: true,
+word_number_at_signup: DAY,
+});
+posthog.capture('giveaway_entered', {
+giveaway: g.tag,
+already_subscribed: alreadySubscribed,
+word_number: DAY,
+});
+
+showGiveawayEntered(g);
+} catch {
+fine.className = 'giveaway-fine is-error';
+fine.textContent = "couldn't save that right now. try again in a sec?";
+btn.disabled = false;
+btn.textContent = originalLabel;
+}
+}
+
+function onGiveawaySubmit(e) {
+e.preventDefault();
+const input = $('giveaway-email');
+const fine = $('giveaway-fine');
+const email = (input.value || '').trim();
+if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+fine.className = 'giveaway-fine is-error';
+fine.textContent = 'hmm, that email looks off. mind checking it?';
+return;
+}
+enterGiveaway(email, $('giveaway-submit'), 'enter');
+}
+
+function onGiveawayTap() {
+const email = localStorage.getItem('90books_booky_reminder_sub');
+if (!email) return;
+enterGiveaway(email, $('giveaway-tap'), '🎟️ count me in');
 }
 
 async function onReminderSubmit(e) {
@@ -684,11 +846,18 @@ recEl.hidden = false;
 recEl.hidden = true;
 }
 
-// Reminder form — only show if user hasn't already subscribed
+// Giveaway card — date-driven, so it turns itself on and off with no
+// manual flag to remember. While it's live it takes over as the single
+// email ask (the reminder form hides below).
+const giveawayLive = renderGiveaway();
+
+// Reminder form — hidden if already subscribed, or while the giveaway is
+// running (entering the giveaway subscribes you to the same daily email,
+// so showing both would ask for the same address twice).
 const subscribed = localStorage.getItem('90books_booky_reminder_sub');
 const reminderForm = $('reminder-form');
-reminderForm.style.display = subscribed ? 'none' : 'block';
-$('reminder-active').hidden = !subscribed;
+reminderForm.style.display = (subscribed || giveawayLive) ? 'none' : 'block';
+$('reminder-active').hidden = !subscribed || giveawayLive;
 
 // Tomorrow tease — optional per-word copy in words.json `teases`, keyed by
 // TOMORROW's word (queue is 0-indexed, so index DAY = day DAY+1). Open loop
