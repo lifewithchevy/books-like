@@ -12,21 +12,41 @@ const UPSTREAM = 'https://booky-deploy.vercel.app/booky/words.json';
 const NO_STORE = 'no-store, no-cache, must-revalidate, max-age=0';
 const LOCAL_WORDS = path.join(__dirname, '..', 'booky', 'words.json');
 
-// The word QUEUE is owned upstream (booky-deploy), but the giveaway card is
-// owned by THIS repo — so layer the local `giveaway` object onto the proxied
-// payload. Without this the card can never render, because the client only
-// ever sees the upstream file and that file has no `giveaway` key.
+// The word QUEUE is owned upstream (booky-deploy). THIS repo owns:
+//   - `giveaway` (date-driven promo card; upstream may lack it entirely)
+//   - `wordBooks[].cover` overrides (Amazon ASINs go dead; local fixes must
+//     reach /api/booky-words even when booky-deploy's static words.json is a
+//     sticky CDN HIT)
 // Fails open: any problem here just returns the upstream body untouched.
-function withLocalGiveaway(body) {
+function withLocalOverlays(body) {
   try {
     const local = JSON.parse(fs.readFileSync(LOCAL_WORDS, 'utf8'));
-    if (!local || !local.giveaway) return body;
+    if (!local) return { body, parts: [] };
     const upstream = JSON.parse(body);
-    upstream.giveaway = local.giveaway;
-    return JSON.stringify(upstream);
+    const parts = [];
+
+    if (local.giveaway) {
+      upstream.giveaway = local.giveaway;
+      parts.push('giveaway');
+    }
+
+    if (local.wordBooks && upstream.wordBooks) {
+      let coverFixes = 0;
+      for (const [word, book] of Object.entries(local.wordBooks)) {
+        if (!book || typeof book.cover !== 'string' || !book.cover) continue;
+        const up = upstream.wordBooks[word];
+        if (!up || up.cover === book.cover) continue;
+        up.cover = book.cover;
+        coverFixes += 1;
+      }
+      if (coverFixes) parts.push(`covers:${coverFixes}`);
+    }
+
+    if (!parts.length) return { body, parts };
+    return { body: JSON.stringify(upstream), parts };
   } catch (e) {
-    console.error('[booky-words] giveaway merge skipped:', e && e.message);
-    return body;
+    console.error('[booky-words] local overlay skipped:', e && e.message);
+    return { body, parts: [] };
   }
 }
 
@@ -55,11 +75,14 @@ module.exports = async (req, res) => {
       res.status(502).json({ error: 'upstream words.json failed', status: r.status });
       return;
     }
-    const body = await r.text();
-    const merged = withLocalGiveaway(body);
+    const upstreamBody = await r.text();
+    const { body, parts } = withLocalOverlays(upstreamBody);
+    const tag = parts.length
+      ? `proxy-booky-deploy+${parts.join('+')}`
+      : 'proxy-booky-deploy';
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
-    res.setHeader('X-Booky-Words', merged === body ? 'proxy-booky-deploy' : 'proxy-booky-deploy+giveaway');
-    res.status(200).send(merged);
+    res.setHeader('X-Booky-Words', tag);
+    res.status(200).send(body);
   } catch (e) {
     res.status(502).json({ error: 'upstream words.json error', message: String(e && e.message || e) });
   }
