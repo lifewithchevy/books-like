@@ -100,7 +100,7 @@
     "HALOS",
     "DREAD",
     "VOWED",
-    "TOPAZ",
+    "KNAVE",
     "OMENS",
     "SYBIL",
     "FLARE",
@@ -246,8 +246,8 @@
     "FERRY",
     "QUILL",
     "BLAZE",
-    "SILKS",
-    "RIDOC"
+    "RIDOC",
+    "TOPAZ"
   ],
   "wordBooks": {
     "COURT": {
@@ -776,11 +776,11 @@
       "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
     },
     "KNAVE": {
-      "slug": "the-cruel-prince",
-      "title": "The Cruel Prince",
-      "author": "Holly Black",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
-      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+      "slug": "the-knave-and-the-moon",
+      "title": "The Knave and the Moon",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601849.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316601849?tag=90books-20"
     },
     "CRYPT": {
       "slug": "the-serpent-and-the-wings-of-night",
