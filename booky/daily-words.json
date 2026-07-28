@@ -84,7 +84,7 @@
     "SIGIL",
     "MOTIF",
     "BAGEL",
-    "SILKS",
+    "HOUSE",
     "ASHEN",
     "VENOM",
     "TAROT",
@@ -246,8 +246,8 @@
     "FERRY",
     "QUILL",
     "BLAZE",
-    "SPIES",
-    "OPALS"
+    "OPALS",
+    "SILKS"
   ],
   "wordBooks": {
     "COURT": {
@@ -2192,11 +2192,11 @@
       "buyUrl": "https://www.amazon.com/dp/1635575583?tag=90books-20"
     },
     "HOUSE": {
-      "slug": "house-of-sky-and-breath",
-      "title": "House of Sky and Breath",
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
       "author": "Sarah J. Maas",
-      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574072.01.LZZZZZZZ.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635574072?tag=90books-20"
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
     },
     "SKIES": {
       "slug": "house-of-sky-and-breath",
