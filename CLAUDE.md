@@ -15,6 +15,12 @@ Guidance for Claude when working in this repository.
 
 ### Standing rules for the word queue
 
+- **Never change today or past slots:** the queue word for **today**
+  (local midnight, same rollover as `computeDayNumber` in `booky/app.js`) and
+  every **past** date must never be modified when editing the queue. Only
+  **future** dates may change. Displaced words must go to the queue tail or other
+  future slots — never into today or past. Enforce with
+  `python3 scripts/validate_queue_lock.py` before shipping queue changes.
 - **From Blood and Ash every week + Saturdays:** every calendar week (ISO
   Mon–Sun) must contain at least one word mapped to *From Blood and Ash*
   (Jennifer L. Armentrout, slug `from-blood-and-ash`). Prefer scheduling those
