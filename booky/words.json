@@ -88,9 +88,9 @@
     "PAINT",
     "DARCY",
     "ELITE",
-    "ASHEN",
-    "STORM",
     "WHEEL",
+    "STORM",
+    "TOPAZ",
     "HOUSE",
     "MOTIF",
     "BAGEL",
@@ -257,7 +257,7 @@
     "QUILL",
     "BLAZE",
     "RIDOC",
-    "TOPAZ"
+    "ASHEN"
   ],
   "wordBooks": {
     "COURT": {
