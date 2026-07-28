@@ -1,8 +1,8 @@
 {
   "epoch": "2026-05-25",
-  "_comment": "Curated 5-letter words from the romantasy lexicon. Order = daily sequence. wordBooks maps each word to a related book shown on the end screen. teases maps a word to an optional one-line hint shown on the PREVIOUS day's end screen (never hint at the word itself, only the book's vibe). Kept empty for now — add an entry ONLY for a selected author-promo day, not for every daily book.",
+  "_comment": "Curated 5-letter words from the romantasy lexicon. Order = daily sequence. wordBooks maps each word to a related book shown on the end screen. teases maps a word to an optional one-line hint shown on the PREVIOUS day's end screen (never hint at the word itself, only the book's vibe). Kept empty for now \u2014 add an entry ONLY for a selected author-promo day, not for every daily book.",
   "teases": {},
-  "_giveawayComment": "Optional giveaway card on the win screen. Shows on every day from start..end INCLUSIVE (local midnight, same rollover as the word). Purely date-driven so it turns itself off — never add a manual on/off flag. Delete or leave stale after it ends; out-of-range means it never renders.",
+  "_giveawayComment": "Optional giveaway card on the win screen. Shows on every day from start..end INCLUSIVE (local midnight, same rollover as the word). Purely date-driven so it turns itself off \u2014 never add a manual on/off flag. Delete or leave stale after it ends; out-of-range means it never renders.",
   "giveaway": {
     "start": "2026-07-26",
     "end": "2026-08-03",
@@ -87,7 +87,7 @@
     "FANGS",
     "PAINT",
     "DARCY",
-    "SYBIL",
+    "ELITE",
     "ASHEN",
     "MERCY",
     "WHEEL",
@@ -99,7 +99,7 @@
     "VENOM",
     "TAROT",
     "HENRY",
-    "AMBER",
+    "PURGE",
     "MADRA",
     "STORM",
     "ASHES",
@@ -255,7 +255,9 @@
     "EMBER",
     "FERRY",
     "QUILL",
-    "BLAZE"
+    "BLAZE",
+    "SYBIL",
+    "AMBER"
   ],
   "wordBooks": {
     "COURT": {
@@ -892,7 +894,7 @@
       "slug": "weavingshaw",
       "title": "Weavingshaw",
       "author": "Heba Al-Wasity",
-      "hook": "The price to enter… is your darkest secret.",
+      "hook": "The price to enter\u2026 is your darkest secret.",
       "buyUrl": "https://www.amazon.com/dp/0593982576?tag=90books-20",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/0593982576.01.LZZZZZZZ.jpg"
     },
@@ -2380,6 +2382,20 @@
       "author": "Jennifer L. Armentrout",
       "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
       "buyUrl": "https://amzn.to/49prybO"
+    },
+    "ELITE": {
+      "slug": "powerless",
+      "title": "Powerless",
+      "author": "Lauren Roberts",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1398540194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1398540194?tag=90books-20"
+    },
+    "PURGE": {
+      "slug": "powerless",
+      "title": "Powerless",
+      "author": "Lauren Roberts",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1398540194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1398540194?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
