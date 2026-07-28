@@ -31,6 +31,8 @@ Guidance for Claude when working in this repository.
   cross-reference upcoming book **release dates** and propose that month's
   featured titles/authors so the team can reach out to authors around their
   launch. Surface these suggestions per month.
+- **Release timing:** schedule words tied to an upcoming release at least
+  **2 weeks before** release day (e.g. series promo words ahead of a finale).
 - Avoid two consecutive days mapping to the same book where possible (existing
   quality guard; see `scripts/reshuffle_after_jun7.py`).
 - **Never drop a displaced word:** when scheduling a new word onto a date that
