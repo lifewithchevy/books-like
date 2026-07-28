@@ -91,7 +91,7 @@
     "HENRY",
     "AMBER",
     "MADRA",
-    "BLAZE",
+    "STORM",
     "ASHES",
     "MATED",
     "VALOR",
@@ -244,7 +244,8 @@
     "ALTAR",
     "EMBER",
     "FERRY",
-    "QUILL"
+    "QUILL",
+    "BLAZE"
   ],
   "wordBooks": {
     "COURT": {
