@@ -66,7 +66,7 @@ const [data, dictList] = await Promise.all([
 // object (middleware often never runs for that static path). The API proxies
 // the live queue from booky-deploy (Jul 18+ schedule).
 fetch('/api/booky-words', { cache: 'no-store' }).then(r => r.json()),
-fetch('/booky/dictionary.json?v=13', { cache: 'force-cache' }).then(r => r.json()),
+fetch('/booky/dictionary.json?v=14', { cache: 'force-cache' }).then(r => r.json()),
 ]);
 DATA = data;
 DICT = new Set(dictList);

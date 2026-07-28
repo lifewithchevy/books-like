@@ -13,7 +13,7 @@ const UPSTREAM = 'https://booky-deploy.vercel.app/booky/app.js';
 const NO_STORE = 'no-store, no-cache, must-revalidate, max-age=0';
 // Bump with dictionary.json edits so /api/booky-app always emits a fresh URL
 // even if upstream booky-deploy app.js is briefly still on an older ?v=.
-const DICT_CACHE_V = 13;
+const DICT_CACHE_V = 14;
 const LOCAL_APP = path.join(__dirname, '..', 'booky', 'app.js');
 
 function rewriteAppJs(js) {
