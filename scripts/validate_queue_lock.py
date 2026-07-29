@@ -15,6 +15,7 @@ import subprocess
 import sys
 from datetime import date, datetime, timedelta
 from pathlib import Path
+from typing import Optional  # `X | None` needs Python 3.10; macOS ships 3.9
 
 ROOT = Path(__file__).resolve().parents[1]
 WORDS = ROOT / 'booky' / 'words.json'
@@ -30,7 +31,7 @@ def load_json(path: Path) -> dict:
     return json.loads(path.read_text())
 
 
-def load_baseline(path: str | None) -> dict:
+def load_baseline(path: Optional[str]) -> dict:
     if path:
         return load_json(Path(path))
     proc = subprocess.run(

@@ -21,13 +21,12 @@ Guidance for Claude when working in this repository.
   **future** dates may change. Displaced words must go to the queue tail or other
   future slots — never into today or past. Enforce with
   `python3 scripts/validate_queue_lock.py` before shipping queue changes.
-- **From Blood and Ash every week + Saturdays:** every calendar week (ISO
-  Mon–Sun) must contain at least one word mapped to *From Blood and Ash*
-  (Jennifer L. Armentrout, slug `from-blood-and-ash`). Prefer scheduling those
-  words on **Saturday** for the weekly r/frombloodandash post cadence — when
-  reshuffling, put FBAA on Saturday rather than midweek when possible. Enforce
-  the weekly minimum with `python3 scripts/validate_fbaa_weekly.py` before
-  shipping queue changes.
+- **Saturdays are the fandom-post slot:** r/frombloodandash posts used to run
+  every Saturday off a guaranteed weekly *From Blood and Ash* word. That rule was
+  **retired 2026-07-29** — the FBAA words were pulled from the queue until there
+  are fresh ones worth scheduling, and `scripts/validate_fbaa_weekly.py` was
+  deleted with it (recover both from git history if FBAA comes back). Saturday is
+  still the natural slot for whichever fandom word is being promoted that week.
 - **Zodiac Academy on Thursdays:** words mapped to *Zodiac Academy* (Caroline
   Peckham & Susanne Valenti, slug `zodiac-academy`) should land on **Thursday**
   for the weekly r/ZodiacAcademy post cadence. When moving other words, do not
