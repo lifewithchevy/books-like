@@ -4,13 +4,13 @@
   "teases": {},
   "_giveawayComment": "Optional giveaway card on the win screen. Shows on every day from start..end INCLUSIVE (local midnight, same rollover as the word). Purely date-driven so it turns itself off \u2014 never add a manual on/off flag. Delete or leave stale after it ends; out-of-range means it never renders.",
   "giveaway": {
-    "start": "2026-07-26",
-    "end": "2026-08-03",
-    "announce": "August 4",
-    "tag": "giveaway-nyaxia",
-    "title": "The Lion & the Deathless Dark",
-    "author": "Carissa Broadbent",
-    "cover": "https://images-na.ssl-images-amazon.com/images/P/1250367840.01.LZZZZZZZ.jpg"
+    "start": "2026-08-23",
+    "end": "2026-08-31",
+    "announce": "September 1",
+    "tag": "giveaway-knave",
+    "title": "The Knave and the Moon",
+    "author": "Rachel Gillig",
+    "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601849.01.LZZZZZZZ.jpg"
   },
   "queue": [
     "COURT",
@@ -103,7 +103,7 @@
     "MADRA",
     "MERCY",
     "QUILL",
-    "MATED",
+    "OMENS",
     "VALOR",
     "SPARK",
     "SWORE",
@@ -111,7 +111,7 @@
     "DREAD",
     "FERRY",
     "KNAVE",
-    "OMENS",
+    "MATED",
     "SYBIL",
     "FLARE",
     "VEGAS",

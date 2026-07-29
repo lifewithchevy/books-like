@@ -93,7 +93,7 @@
     "MADRA",
     "MERCY",
     "QUILL",
-    "MATED",
+    "OMENS",
     "VALOR",
     "SPARK",
     "SWORE",
@@ -101,7 +101,7 @@
     "DREAD",
     "FERRY",
     "KNAVE",
-    "OMENS",
+    "MATED",
     "SYBIL",
     "FLARE",
     "VEGAS",
@@ -2402,5 +2402,14 @@
       "buyUrl": "https://www.amazon.com/dp/1682818084?tag=90books-20"
     }
   },
-  "_deploy": "2026-07-17T22:21Z"
+  "_deploy": "2026-07-17T22:21Z",
+  "giveaway": {
+    "start": "2026-08-23",
+    "end": "2026-08-31",
+    "announce": "September 1",
+    "tag": "giveaway-knave",
+    "title": "The Knave and the Moon",
+    "author": "Rachel Gillig",
+    "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601849.01.LZZZZZZZ.jpg"
+  }
 }
