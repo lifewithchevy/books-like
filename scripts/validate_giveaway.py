@@ -10,12 +10,65 @@ Run before shipping any change to booky/words.json:
     python3 scripts/validate_giveaway.py
 """
 import json
+import subprocess
 import os
 import sys
 from datetime import date
 
 REPO = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 WORDS = os.path.join(REPO, "booky", "words.json")
+
+
+def shipped_giveaways():
+    """The `giveaway` value currently on origin/main, or None if unavailable."""
+    proc = subprocess.run(
+        ["git", "show", "origin/main:booky/words.json"],
+        cwd=REPO, capture_output=True, text=True, check=False,
+    )
+    if proc.returncode != 0:
+        return None
+    try:
+        raw = json.loads(proc.stdout).get("giveaway")
+    except ValueError:
+        return None
+    if raw is None:
+        return []
+    return raw if isinstance(raw, list) else [raw]
+
+
+def check_against_shipped(current):
+    """Yield an error if a giveaway that is LIVE on origin/main got dropped or
+    had its window moved. This is the exact 2026-07-29 regression."""
+    shipped = shipped_giveaways()
+    if shipped is None:
+        return
+    today = date.today()
+    by_tag = {g.get("tag"): g for g in current if isinstance(g, dict)}
+    for old in shipped:
+        if not isinstance(old, dict):
+            continue
+        try:
+            start = date.fromisoformat(old["start"])
+            end = date.fromisoformat(old["end"])
+        except (ValueError, KeyError, TypeError):
+            continue
+        if not (start <= today <= end):
+            continue  # wasn't live, safe to change
+        tag = old.get("tag")
+        new = by_tag.get(tag)
+        if new is None:
+            yield (
+                f"FAIL: giveaway '{tag}' is LIVE right now ({start}..{end}) but is\n"
+                f"  missing from your change. Removing it kills the card on the win\n"
+                f"  screen immediately, before the end date readers were promised.\n"
+                f"  APPEND new giveaways instead of replacing existing ones."
+            )
+        elif new.get("start") != old["start"] or new.get("end") != old["end"]:
+            yield (
+                f"FAIL: giveaway '{tag}' is LIVE right now and you changed its window\n"
+                f"  ({old['start']}..{old['end']} -> {new.get('start')}..{new.get('end')}).\n"
+                f"  Shortening or moving a running giveaway breaks a public promise."
+            )
 
 
 def main() -> int:
@@ -34,6 +87,13 @@ def main() -> int:
             "  overwrites one that may still be running. Wrap it in [ ] and\n"
             "  append future giveaways instead."
         )
+        return 1
+
+    # The failure this whole script exists to catch: a giveaway that was live
+    # in the last shipped version is gone or had its dates moved. Compare
+    # against origin/main rather than trusting the diff to look obvious.
+    for msg in check_against_shipped(raw):
+        print(msg)
         return 1
 
     today = date.today()

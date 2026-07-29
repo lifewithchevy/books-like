@@ -2,7 +2,7 @@
   "epoch": "2026-05-25",
   "_comment": "Curated 5-letter words from the romantasy lexicon. Order = daily sequence. wordBooks maps each word to a related book shown on the end screen. teases maps a word to an optional one-line hint shown on the PREVIOUS day's end screen (never hint at the word itself, only the book's vibe). Kept empty for now \u2014 add an entry ONLY for a selected author-promo day, not for every daily book.",
   "teases": {},
-  "_giveawayComment": "ARRAY of giveaway cards. app.js picks whichever window covers today (start..end INCLUSIVE, local midnight, same rollover as the word). ALWAYS APPEND a future giveaway as a new array item — never replace an entry that is still running, or the live card dies mid-window (this happened 2026-07-29). Purely date-driven: no on/off flag, past entries can stay forever.",
+  "_giveawayComment": "⚠️ ARRAY — APPEND, NEVER REPLACE. One of these may be LIVE RIGHT NOW. app.js shows whichever start..end window covers today (inclusive, local midnight). Adding a future giveaway by overwriting an entry kills the live card mid-window with no error — this happened 2026-07-29, five days before a publicly promised end date. Past entries can stay forever (out of range = not rendered), so there is no cleanup. `tag` is written to the Resend contact's last_name and is the ONLY record of who entered: never reuse or rename it after a giveaway starts. Never add an on/off flag. Run: python3 scripts/validate_giveaway.py",
   "giveaway": [
     {
       "start": "2026-07-26",

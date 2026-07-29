@@ -12,6 +12,29 @@ Guidance for Claude when working in this repository.
   `booky/app.js` → `computeDayNumber`).
 - `wordBooks` — maps each word to the book shown on the end screen
   (`slug`, `title`, `author`, `cover`).
+- `giveaway` — **an ARRAY** of giveaway cards shown on the win screen. See
+  "Giveaways" below before touching it.
+
+### ⚠️ Before you ship ANY change to `booky/words.json`
+
+Run all three. They take a second and each one exists because something broke:
+
+```bash
+python3 scripts/validate_queue_lock.py   # today/past slots unchanged
+python3 scripts/validate_winnable.py     # every answer is in dictionary.json
+python3 scripts/validate_giveaway.py     # giveaway array valid, shows what's live
+```
+
+**Also know where the live data actually comes from.** `/api/booky-words` serves
+the queue by **proxying `booky-deploy.vercel.app`**, a *separate* Vercel project —
+this repo's `booky/words.json` is NOT served directly. `api/booky-words.js` then
+overlays a few locally-owned keys (`giveaway`, `wordBooks[].cover` fixes) onto that
+proxied payload. So:
+
+- Editing `queue` here does **not** change the live word unless booky-deploy has it.
+- Editing an *overlaid* key (like `giveaway`) **does** reach production.
+- To check what players actually get:
+  `curl -s https://90books.com/api/booky-words | python3 -m json.tool | head`
 
 ### Standing rules for the word queue
 
@@ -43,6 +66,32 @@ Guidance for Claude when working in this repository.
 - **Never drop a displaced word:** when scheduling a new word onto a date that
   already has one, keep the queue length and word set intact — move the old word
   to a future date (typically append to the end of `queue`), do not delete it.
+
+### Giveaways (`giveaway` in words.json)
+
+`giveaway` is an **ARRAY**. `booky/app.js` → `activeGiveaway()` shows whichever
+entry's `start..end` window (inclusive, local midnight) covers today, and shows
+nothing outside every window. It is purely date-driven — there is no on/off flag,
+and there must never be one, because anything a human has to switch off gets left
+on or switched off early.
+
+- **APPEND a new giveaway. NEVER replace an entry that is still running.**
+  On 2026-07-29 a future giveaway was written over the live one while it was
+  mid-window; the card vanished from the win screen five days before the end date
+  that had been promised to readers on Reddit and by email. That is what the array
+  and `scripts/validate_giveaway.py` exist to prevent.
+- **Past entries can stay forever.** Out-of-range means it simply doesn't render,
+  so there is no cleanup step and nothing to remember.
+- Each entry needs `start`, `end`, `announce`, `tag`, `title` (plus `author`,
+  `cover`). Windows must not overlap and every `tag` must be unique — the
+  validator enforces both.
+- **`tag` is the entry key and is load-bearing.** `api/booky-subscribe.js` writes
+  it to the Resend contact's `last_name`, which is the only record of who entered
+  and the only way to draw a winner. Never reuse or rename a `tag` after a
+  giveaway has started, or you merge two giveaways' entrants.
+- While a giveaway is live the streak-reminder form is hidden, so the giveaway is
+  the single email ask on the win screen. It returns by itself when the window
+  ends.
 - **Every queue answer must be in the dictionary:** scheduled words missing from
   `booky/dictionary.json` are unwinnable (`app.js` rejects guesses not in DICT).
   Enforce with `python3 scripts/validate_winnable.py` before shipping queue or
