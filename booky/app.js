@@ -378,15 +378,24 @@ return new Date(y, m - 1, d, 0, 0, 0).getTime();
 }
 
 // Returns the giveaway object if today falls inside its window, else null.
+// `giveaway` may be a single object OR an array of them. The array form is
+// what you want: scheduling a FUTURE giveaway must never overwrite one that
+// is currently running. (That happened on 2026-07-29 — giveaway #2 was
+// dropped into the single slot mid-window and killed the live card.)
 function activeGiveaway() {
-const g = DATA?.giveaway;
-if (!g || !g.start || !g.end) return null;
-const start = localMidnight(g.start);
-const end = localMidnight(g.end);
-if (start == null || end == null) return null;
+const raw = DATA?.giveaway;
+if (!raw) return null;
+const list = Array.isArray(raw) ? raw : [raw];
 const now = new Date();
 const today = new Date(now.getFullYear(), now.getMonth(), now.getDate(), 0, 0, 0).getTime();
-return today >= start && today <= end ? g : null;
+for (const g of list) {
+if (!g || !g.start || !g.end) continue;
+const start = localMidnight(g.start);
+const end = localMidnight(g.end);
+if (start == null || end == null) continue;
+if (today >= start && today <= end) return g;
+}
+return null;
 }
 
 // Renders the card (or the confirmed state) and returns whether it's live.

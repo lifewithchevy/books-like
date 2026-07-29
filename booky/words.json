@@ -2,16 +2,27 @@
   "epoch": "2026-05-25",
   "_comment": "Curated 5-letter words from the romantasy lexicon. Order = daily sequence. wordBooks maps each word to a related book shown on the end screen. teases maps a word to an optional one-line hint shown on the PREVIOUS day's end screen (never hint at the word itself, only the book's vibe). Kept empty for now \u2014 add an entry ONLY for a selected author-promo day, not for every daily book.",
   "teases": {},
-  "_giveawayComment": "Optional giveaway card on the win screen. Shows on every day from start..end INCLUSIVE (local midnight, same rollover as the word). Purely date-driven so it turns itself off \u2014 never add a manual on/off flag. Delete or leave stale after it ends; out-of-range means it never renders.",
-  "giveaway": {
-    "start": "2026-08-23",
-    "end": "2026-08-31",
-    "announce": "September 1",
-    "tag": "giveaway-knave",
-    "title": "The Knave and the Moon",
-    "author": "Rachel Gillig",
-    "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601849.01.LZZZZZZZ.jpg"
-  },
+  "_giveawayComment": "ARRAY of giveaway cards. app.js picks whichever window covers today (start..end INCLUSIVE, local midnight, same rollover as the word). ALWAYS APPEND a future giveaway as a new array item — never replace an entry that is still running, or the live card dies mid-window (this happened 2026-07-29). Purely date-driven: no on/off flag, past entries can stay forever.",
+  "giveaway": [
+    {
+      "start": "2026-07-26",
+      "end": "2026-08-03",
+      "announce": "August 4",
+      "tag": "giveaway-nyaxia",
+      "title": "The Lion & the Deathless Dark",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250367840.01.LZZZZZZZ.jpg"
+    },
+    {
+      "start": "2026-08-23",
+      "end": "2026-08-31",
+      "announce": "September 1",
+      "tag": "giveaway-knave",
+      "title": "The Knave and the Moon",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601849.01.LZZZZZZZ.jpg"
+    }
+  ],
   "queue": [
     "COURT",
     "BLADE",
