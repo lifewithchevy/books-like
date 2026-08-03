@@ -203,12 +203,21 @@ body: JSON.stringify({ email: subEmail, streak: STATS.currentStreak }),
 }
 
 // PostHog: game complete (fires once per game via statsRecorded guard above)
+// book/book_title identify the featured book on the event itself. Without
+// them, "how many people saw this author's book" needs a word_number -> book
+// join against words.json, whose LIVE source is a different Vercel project —
+// so the join was neither reproducible nor safe to quote to an author. With
+// them, reach and buy-click CTR come from one group-by on book_title.
+const completedBook = DATA?.wordBooks?.[ANSWER] || null;
 posthog.capture('booky_game_complete', {
 word_number: DAY,
 won: STATE.status === 'won',
 guesses_used: STATE.guesses.length,
 current_streak: STATS.currentStreak,
 answer: ANSWER,
+book: completedBook?.slug || null,
+book_title: completedBook?.title || null,
+book_author: completedBook?.author || null,
 });
 }
 
@@ -812,15 +821,29 @@ coverLink.hidden = cover.hidden;
 // One secondary text link under the book (Share is the only primary CTA).
 // Prefer Amazon buy; fall back to curated books-like page. Cover uses the same URL.
 const linkEl = $('book-rec-link');
+// `book_title`/`retailer`/`source_type`/`source_page` mirror the site-side
+// tracker in index.html so ONE query answers "how many buy-clicks did this
+// book get, and from where". They used to disagree: Booky sent `title`, the
+// site sent `book_title`, so any group-by silently returned nulls for half
+// the data. `title`/`book` stay for the events already in PostHog.
 const trackAffiliateBuy = () => posthog.capture('affiliate_buy_clicked', {
 word_number: DAY,
 book: bookRec.slug,
 title: bookRec.title,
+book_title: bookRec.title,
+book_key: bookRec.slug,
+retailer: 'amazon',
+source_type: 'booky',
+source_page: window.location.pathname || '/booky',
 });
 const trackBooksLike = () => posthog.capture('booky_books_like_clicked', {
 word_number: DAY,
 book: bookRec.slug,
 title: bookRec.title,
+book_title: bookRec.title,
+book_key: bookRec.slug,
+source_type: 'booky',
+source_page: window.location.pathname || '/booky',
 });
 if (bookRec.buyUrl) {
 linkEl.href = bookRec.buyUrl;

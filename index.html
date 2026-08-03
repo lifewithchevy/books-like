@@ -7220,7 +7220,7 @@
     // PostHog affiliate-click tracker. Fires from every Amazon/Bookshop CTA
     // across the site (SPA + the middleware's static SEO block). Used to
     // measure the Booky → 90books → buy-click funnel.
-    function trackAffiliateClick(title, retailer) {
+    function trackAffiliateClick(title, retailer, key) {
       try {
         if (typeof posthog === 'undefined' || !posthog.capture) return;
         const path = window.location.pathname || '/';
@@ -7232,6 +7232,10 @@
         else if (path.startsWith('/booky'))   sourceType = 'booky';
         posthog.capture('affiliate_buy_clicked', {
           book_title: title || '',
+          // `title` mirrors booky/app.js so one group-by covers both surfaces.
+          // Without it, site clicks came back as nulls in any Booky-shaped query.
+          title: title || '',
+          book_key: key || '',
           retailer: retailer || 'amazon',
           source_page: path,
           source_type: sourceType,
@@ -7244,7 +7248,7 @@
       if (!title) return '';
       const safeT = title.replace(/'/g, "\\'");
       const cls = 'btn-amazon-cta' + (secondary ? ' btn-amazon-cta--secondary' : '');
-      return `<a href="${amazonAffiliateUrl(title, author, isbn, key)}" target="_blank" rel="nofollow sponsored noopener" class="${cls}" onclick="trackAffiliateClick('${safeT}','amazon')">Buy on Amazon</a>`;
+      return `<a href="${amazonAffiliateUrl(title, author, isbn, key)}" target="_blank" rel="nofollow sponsored noopener" class="${cls}" onclick="trackAffiliateClick('${safeT}','amazon','${String(key || '').replace(/'/g, "\\'")}')">Buy on Amazon</a>`;
     }
 
     // Bookshop.org affiliate links, 10% commission (vs Amazon's 4%) and the
