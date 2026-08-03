@@ -5,6 +5,14 @@ Those days are unwinnable: app.js rejects guesses not in DICT, and the answer
 is never auto-added. Run before shipping queue or dictionary changes:
 
   python3 scripts/validate_winnable.py
+
+SCOPE: this checks the LOCAL booky/words.json only. Production serves the queue
+from /api/booky-words, which proxies booky-deploy.vercel.app, so passing here
+does NOT prove the live game is safe. For that run:
+
+  node scripts/health-live.mjs
+
+which is also on a daily schedule (.github/workflows/booky-health.yml).
 """
 from __future__ import annotations
 

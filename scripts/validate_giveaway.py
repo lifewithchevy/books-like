@@ -8,6 +8,10 @@ by email. `giveaway` is now an ARRAY and future ones must be APPENDED.
 
 Run before shipping any change to booky/words.json:
     python3 scripts/validate_giveaway.py
+
+SCOPE: checks the LOCAL booky/words.json only. Production serves the giveaway
+via /api/booky-words (proxied + overlaid), so passing here does NOT prove the
+live card is correct. Run `node scripts/health-live.mjs` for that.
 """
 import json
 import subprocess
