@@ -28,6 +28,7 @@ import fs from 'node:fs';
 import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
+import EMAILS from '../lib/giveaway-emails.js';
 
 const REPO = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
@@ -122,7 +123,7 @@ async function main() {
   const winner = draw.winner;
   console.log(`\nWINNER   : ${winner.email}  (drawn ${draw.drawn_at}${draw.reused ? ', reused from ' + path.basename(DRAW_FILE) : ', saved'})`);
 
-  const winnerName = displayName(winner.email);
+  const winnerName = EMAILS.displayName(winner.email);
   // Everyone, not just entrants. Non-entrants are the point: release day is the
   // one commercial moment, and seeing what they missed is what gets them to
   // enter the next one. Copy is written to land for both groups.
@@ -143,14 +144,14 @@ async function main() {
   if (!CONFIRM) fail('--send requires --yes. Refusing to email anyone by accident.');
 
   if (SEND === 'winner') {
-    const { subject, html, text } = winnerEmail({ winnerName });
+    const { subject, html, text } = EMAILS.winnerEmail({ ga: GA, winnerName });
     const ok = await sendOne(winner.email, subject, html, text, 'giveaway-winner');
     console.log(ok ? `Sent winner email to ${winner.email}` : `FAILED to send to ${winner.email}`);
     if (ok) markSent('winner');
     return;
   }
 
-  const { subject, html, text } = listEmail({ winnerName, entries: entrants.length });
+  const { subject, html, text } = EMAILS.listEmail({ ga: GA, winnerName, entries: entrants.length, amzTag: AMZ_TAG });
   let sent = 0, failed = 0;
   for (const c of others) {
     const ok = await sendOne(c.email, subject, html, text, 'giveaway-result');
@@ -223,7 +224,7 @@ function markSent(which) {
 
 // Resend stores the streak in first_name and the entry tag in last_name, so
 // there is no real name anywhere. Best available is the email local part.
-function displayName(email) {
+function _unusedDisplayName(email) {
   const local = String(email).split('@')[0].replace(/[._+-]+/g, ' ').trim();
   return local.split(' ')[0].replace(/^./, (c) => c.toUpperCase()) || 'you';
 }
@@ -251,132 +252,11 @@ async function sendOne(to, subject, html, text, tag) {
   }
 }
 
-// ---------------------------------------------------------------- copy
-// No em-dashes anywhere in reader-facing copy (house rule).
-
-function winnerEmail({ winnerName }) {
-  const subject = `YOU WON!! 🎉`;
-  const claimBy = new Date(Date.now() + CLAIM_DAYS * 864e5)
-    .toLocaleDateString('en-US', { month: 'long', day: 'numeric' });
-  const body = [
-    `${winnerName} YOU WON!! 🎉`,
-    `Okay so I put every single entry in and pulled one at random and it was YOURS. You're getting a hardcover of <b>${GA.title}</b>, which (perfect timing honestly) comes out TODAY 😭`,
-    `So the boring bit: just hit reply with your name, address and country and I'll order it from your local Amazon so it actually turns up fast instead of sitting in customs for three weeks. That's it, that's the whole thing.`,
-    `One thing I feel a bit weird saying but I have to: if I don't hear back from you by <b>${claimBy}</b> I'll have to draw someone else 😬 Genuinely NOT rushing you, I just don't want the book sitting in limbo while someone else could have it.`,
-    `Anyway CONGRATS 🎉 and thank you for playing, it honestly means a lot that people entered at all 💜`,
-    `Olga`,
-  ];
-  return {
-    subject,
-    html: shell({
-      eyebrow: 'You won',
-      body,
-      cta: { label: `Play today's Booky →`, url: PLAYURL },
-      cover: GA.cover,
-      coverTitle: 'Yours, out today',
-      // Right after the "you won" beat, so they see the actual book early.
-      coverAfter: 1,
-      // No buy button and no affiliate link: theirs is already paid for.
-      cardButton: false,
-    }),
-    text: plain(body, PLAYURL),
-  };
-}
-
-function listEmail({ winnerName, entries }) {
-  const subject = `We have a WINNER 🎉 (and the book's out today)`;
-  const body = [
-    `Okay, the first Booky giveaway has a WINNER 🎉`,
-    `I pulled one entry at random and it was <b>${winnerName}</b>, so they're getting a hardcover of <b>${GA.title}</b> by ${GA.author}, which (perfect timing honestly) comes out today. Congrats to them, genuinely 💜`,
-    `${entries} of you entered which is honestly WAY more than I expected for a first go at this?? I was fully prepared for like six people to turn up. So thank you 🙏`,
-    `And if you missed it, it's Crowns of Nyaxia book #5 and the first of a brand new duet, following two new MCs, Kyrene and Septimus, that I can't wait to read about (especially the hot scene that Carissa nicely shared in her newsletter, iykyk 😜). Out today in hardcover, and it's on KINDLE UNLIMITED too 👀`,
-    `If you grab it through the link up there, Amazon kicks a few cents back to me at no extra cost to you, and that's genuinely the entire budget behind these giveaways 😅 No pressure either way!!`,
-    `This giveaway was a total success so there'll be MORE, the next one kicks off later in August, keep an eye out 👀 And keep that streak warm.`,
-    `Olga`,
-  ];
-  return {
-    subject,
-    html: shell({
-      eyebrow: 'Giveaway result',
-      body,
-      cta: { label: `Play today's Booky →`, url: PLAYURL },
-      cover: GA.cover,
-      coverTitle: `Out today, ${GA.announce}`,
-      // Directly above the "And if you missed it" paragraph, so the cover and
-      // the buy button sit right next to the pitch for the book.
-      coverAfter: 2,
-      cardButton: true,
-      disclosure: true,
-    }),
-    text: plain(body, `Get it on Amazon: ${BUYURL}\n\nPlay today's Booky: ${PLAYURL}`),
-  };
-}
-
-function plain(body, url) {
-  return body.map((p) => p.replace(/<[^>]+>/g, '')).join('\n\n') +
-    `\n\n${url}\n\n---\nBooky by 90books · you signed up at 90books.com/booky · reply to unsubscribe`;
-}
-
-// Same card look as api/booky-send.js and the entry confirmation, so this
-// reads as the same sender. Tables, not flex, because of Outlook.
-function shell({ eyebrow, body, cta, secondary, cover, coverTitle, coverAfter, cardButton, disclosure }) {
-  const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
-  // Mirrors the win-screen book card in booky/app.js: cover and title both link
-  // to the Amazon buy URL, with "Get it on Amazon →" as the secondary text link.
-  // Vertical card: large cover on top, then title, author, date and (on the
-  // announcement only) the buy button. A big cover is the selling point on a
-  // phone. The winner's copy is already paid for, so their card has no button
-  // and the cover is not a sponsored link.
-  const linkOpen  = cardButton ? `<a href="${esc(BUYURL)}" rel="noopener sponsored" style="text-decoration:none;color:#2a0a26">` : '';
-  const linkClose = cardButton ? '</a>' : '';
-  const coverBlock = cover ? `
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fdf6e9;border:1px solid #e8d4a8;border-radius:10px;margin:0 0 20px;">
-            <tr><td align="center" style="padding:24px 20px;">
-              ${linkOpen}<img src="${esc(cover)}" width="180" alt="${esc(GA.title)}" style="display:block;width:180px;max-width:70%;height:auto;border-radius:6px;border:0;margin:0 auto;" />${linkClose}
-              ${linkOpen}<div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:22px;font-weight:600;color:#2a0a26;line-height:1.2;margin-top:18px;">${esc(GA.title)}</div>${linkClose}
-              <div style="font-size:14px;color:#6a4a6c;margin-top:5px;">${esc(GA.author)}</div>
-              ${coverTitle ? `<div style="font-size:12px;color:#96700c;margin-top:8px;font-weight:600;letter-spacing:0.3px;">${esc(coverTitle)}</div>` : ''}
-              ${cardButton ? `<a href="${esc(BUYURL)}" rel="noopener sponsored" style="display:inline-block;margin-top:16px;background:linear-gradient(135deg,#c8398f,#9a2670);background-color:#c8398f;color:#ffffff;text-decoration:none;font-weight:600;padding:13px 26px;border-radius:10px;font-size:15px;white-space:nowrap;">Get it on Amazon &rarr;</a>` : ''}
-            </td></tr>
-          </table>` : '';
-  const at = Number.isInteger(coverAfter) ? coverAfter : body.length - 1;
-  const paras = body.map((p, i) =>
-    `<p style="margin:0 0 ${i === body.length - 1 ? '24' : '16'}px;font-size:${i === 0 ? '18px;font-weight:600;color:#2a0a26' : '15px;color:#4a2a4c'};line-height:1.6;">${p}</p>` +
-    (cover && i === at ? coverBlock : '')
-  ).join('\n          ');
-
-  return `<!doctype html>
-<html lang="en">
-<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>${esc(eyebrow)}</title></head>
-<body style="margin:0;padding:0;background:#fff8fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,sans-serif;color:#2a0a26;">
-  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fff8fb;padding:40px 16px;">
-    <tr><td align="center">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
-        <tr><td>
-          <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;color:#c8398f;margin:0 0 4px;letter-spacing:0.5px;">Booky</p>
-          <p style="margin:0 0 24px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;">${esc(eyebrow)}</p>
-          ${paras}
-          <a href="${esc(cta.url)}"${cta.sponsored ? ' rel="noopener sponsored"' : ''} style="display:inline-block;background:linear-gradient(135deg,#c8398f,#9a2670);background-color:#c8398f;color:#ffffff;text-decoration:none;font-weight:600;padding:13px 28px;border-radius:10px;font-size:15px;">${esc(cta.label)}</a>
-          ${secondary ? `<p style="margin:18px 0 0;font-size:14px;"><a href="${esc(secondary.url)}" style="color:#c8398f;text-decoration:none;font-weight:600;">${esc(secondary.label)}</a></p>` : ''}
-          <hr style="border:none;border-top:1px solid #ead4e2;margin:28px 0 18px;">
-          <p style="margin:0;font-size:11px;color:#a587a9;line-height:1.6;">
-            ${disclosure ? 'The book link is an Amazon affiliate link, so a purchase may earn me a few cents at no cost to you.<br>' : ''}
-            Booky by 90books &middot; you signed up at 90books.com/booky.<br>
-            <a href="mailto:hello@90books.com?subject=unsubscribe" style="color:#a587a9;text-decoration:underline;">Unsubscribe</a>
-          </p>
-        </td></tr>
-      </table>
-    </td></tr>
-  </table>
-</body>
-</html>`;
-}
-
 function writePreviews({ winnerName, entries }) {
   const dir = path.join(REPO, '.giveaway-preview');
   fs.mkdirSync(dir, { recursive: true });
-  const w = winnerEmail({ winnerName });
-  const l = listEmail({ winnerName, entries });
+  const w = EMAILS.winnerEmail({ ga: GA, winnerName });
+  const l = EMAILS.listEmail({ ga: GA, winnerName, entries, amzTag: AMZ_TAG });
   const files = [
     [path.join(dir, 'winner.html'), w.html, w.subject],
     [path.join(dir, 'list.html'), l.html, l.subject],
