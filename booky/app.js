@@ -1000,11 +1000,19 @@ ul.appendChild(li);
 }
 
 function shareProps() {
+  // book/book_title carry the featured book onto share events too, so
+  // "players shared a puzzle featuring your book N times" is one group-by
+  // rather than a word_number -> book join against a words.json this repo
+  // does not own. Same fields as booky_game_complete, deliberately.
+  const sharedBook = DATA?.wordBooks?.[ANSWER] || null;
   return {
     word_number: DAY,
     won: STATE.status === 'won',
     guesses_used: STATE.guesses.length,
     streak: STATS.currentStreak,
+    book: sharedBook?.slug || null,
+    book_title: sharedBook?.title || null,
+    book_author: sharedBook?.author || null,
   };
 }
 
