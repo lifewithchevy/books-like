@@ -146,6 +146,26 @@ module.exports = async (req, res) => {
     return;
   }
 
+  // ---- test send ----
+  // Sends a real copy of either email to one address, so the reply path can be
+  // tested end to end before a reader ever gets one. Never touches the winner
+  // record, so a test cannot mark the giveaway as sent.
+  if (action === 'send-test') {
+    const to = (url.searchParams.get('to') || '').trim();
+    const which = url.searchParams.get('which') || 'winner';
+    if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(to)) {
+      res.status(400).json({ error: 'bad-to-address' });
+      return;
+    }
+    const name = url.searchParams.get('name') || 'Kristen';
+    const mail = which === 'list'
+      ? listEmail({ ga, winnerName: name, entries: entrants.length, amzTag })
+      : winnerEmail({ ga, winnerName: name });
+    const sent = await sendOne(KEY, FROM, to, mail, 'giveaway-test');
+    res.status(sent ? 200 : 502).json({ ok: sent, which, sent_to: to, subject: mail.subject });
+    return;
+  }
+
   // ---- sends ----
   if (action === 'send-winner' || action === 'send-list') {
     if (!confirm) { res.status(400).json({ error: 'needs-confirm', hint: 'add &confirm=yes' }); return; }
