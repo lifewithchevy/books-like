@@ -72,8 +72,11 @@ module.exports = async (req, res) => {
       cache: 'no-store',
     });
     if (!r.ok) {
-      res.status(502).json({ error: 'upstream words.json failed', status: r.status });
-      return;
+      // Upstream is down. On 2026-08-04 the whole booky-deploy project started
+      // 404ing (even its root) and the game went dead: every player saw
+      // "Couldn't load today's word". A 502 here is a total outage for a daily
+      // game, so serve this repo's copy instead of nothing.
+      return serveLocal(res, `upstream-${r.status}`);
     }
     const upstreamBody = await r.text();
     const { body, parts } = withLocalOverlays(upstreamBody);
@@ -84,6 +87,23 @@ module.exports = async (req, res) => {
     res.setHeader('X-Booky-Words', tag);
     res.status(200).send(body);
   } catch (e) {
-    res.status(502).json({ error: 'upstream words.json error', message: String(e && e.message || e) });
+    return serveLocal(res, 'upstream-error');
   }
 };
+
+// Last-resort source: this repo's booky/words.json. The queue is normally owned
+// upstream, but a stale word beats a broken game, and the local copy is kept in
+// sync well enough that it produced the correct word on the day this was added.
+// X-Booky-Words says `local-fallback:<reason>` so the health check can alert.
+function serveLocal(res, reason) {
+  try {
+    const body = fs.readFileSync(LOCAL_WORDS, 'utf8');
+    JSON.parse(body); // never serve a corrupt file
+    res.setHeader('Content-Type', 'application/json; charset=utf-8');
+    res.setHeader('X-Booky-Words', `local-fallback:${reason}`);
+    res.status(200).send(body);
+  } catch (err) {
+    console.error('[booky-words] local fallback failed:', err && err.message);
+    res.status(502).json({ error: 'upstream and local words.json both failed', reason });
+  }
+}
