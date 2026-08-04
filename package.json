@@ -1,9 +1,0 @@
-{
-  "name": "90books",
-  "version": "1.0.0",
-  "private": true,
-  "description": "90books.com — find books like the ones you already love.",
-  "dependencies": {
-    "@vercel/edge": "^1.1.4"
-  }
-}

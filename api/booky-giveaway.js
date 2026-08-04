@@ -24,7 +24,7 @@
 // contact record IS the receipt. A second draw finds the existing winner and
 // returns it rather than rolling again.
 
-const { winnerEmail, listEmail, displayName } = require('../lib/giveaway-emails');
+const { winnerEmail, winnerEmailPlain, listEmail, displayName } = require('../lib/giveaway-emails');
 
 const WON_SUFFIX  = '#WON';
 const SENT_SUFFIX = '#SENT';
@@ -158,10 +158,13 @@ module.exports = async (req, res) => {
       return;
     }
     const name = url.searchParams.get('name') || 'Kristen';
+    const fancy = url.searchParams.get('style') === 'card';
     const mail = which === 'list'
       ? listEmail({ ga, winnerName: name, entries: entrants.length, amzTag })
-      : winnerEmail({ ga, winnerName: name });
-    const sent = await sendOne(KEY, FROM, to, mail, 'giveaway-test');
+      : (fancy ? winnerEmail({ ga, winnerName: name })
+               : winnerEmailPlain({ ga, winnerName: name }));
+    const personal = which !== 'list' && !fancy;
+    const sent = await sendOne(KEY, FROM, to, mail, 'giveaway-test', personal);
     res.status(sent ? 200 : 502).json({ ok: sent, which, sent_to: to, subject: mail.subject });
     return;
   }
@@ -178,8 +181,8 @@ module.exports = async (req, res) => {
         res.status(200).json({ ok: true, already_sent: true, winner: existing.email });
         return;
       }
-      const mail = winnerEmail({ ga, winnerName });
-      const sent = await sendOne(KEY, FROM, existing.email, mail, 'giveaway-winner');
+      const mail = winnerEmailPlain({ ga, winnerName });
+      const sent = await sendOne(KEY, FROM, existing.email, mail, 'giveaway-winner', true);
       if (sent) await patchContact(KEY, AUDIENCE_ID, existing.email, { last_name: `${tag}${SENT_SUFFIX}` });
       res.status(sent ? 200 : 502).json({ ok: sent, sent_to: existing.email });
       return;
@@ -220,20 +223,30 @@ async function patchContact(key, audienceId, email, fields) {
   }
 }
 
-async function sendOne(key, from, to, mail, typeTag) {
+// `personal` sends a one-to-one email the way a person would: no
+// List-Unsubscribe (a bulk-mail signal, and not required for a single
+// non-marketing message) and no click tracking, so links are not rewritten
+// through links.90books.com. Both are strong Gmail Promotions signals.
+async function sendOne(key, from, to, mail, typeTag, personal = false) {
   try {
+    const body = {
+      from, to, reply_to: 'hello@90books.com',
+      subject: mail.subject, html: mail.html, text: mail.text,
+      tags: [{ name: 'type', value: typeTag }],
+    };
+    if (personal) {
+      body.track_click = false;
+      body.track_opens = false;
+    } else {
+      body.headers = {
+        'List-Unsubscribe': '<mailto:hello@90books.com?subject=unsubscribe>',
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      };
+    }
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
       headers: { Authorization: `Bearer ${key}`, 'Content-Type': 'application/json' },
-      body: JSON.stringify({
-        from, to, reply_to: 'hello@90books.com',
-        subject: mail.subject, html: mail.html, text: mail.text,
-        headers: {
-          'List-Unsubscribe': '<mailto:hello@90books.com?subject=unsubscribe>',
-          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-        },
-        tags: [{ name: 'type', value: typeTag }],
-      }),
+      body: JSON.stringify(body),
     });
     if (!r.ok) console.error('[booky-giveaway] send failed', to, r.status, await r.text());
     return r.ok;
