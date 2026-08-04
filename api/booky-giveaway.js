@@ -146,6 +146,17 @@ module.exports = async (req, res) => {
     return;
   }
 
+  // Record that the winner was contacted WITHOUT sending anything. Giveaway #1
+  // was emailed by hand from Gmail, because Gmail files everything from this
+  // domain under Promotions and a winner should not have to dig for it. Without
+  // this, the contact stays #WON and a later send-winner would email her twice.
+  if (action === 'mark-sent') {
+    if (!existing) { res.status(409).json({ error: 'no-winner-drawn' }); return; }
+    const ok = await patchContact(KEY, AUDIENCE_ID, existing.email, { last_name: `${tag}${SENT_SUFFIX}` });
+    res.status(ok ? 200 : 502).json({ ok, winner: existing.email, state: ok ? 'SENT' : 'unchanged' });
+    return;
+  }
+
   // ---- test send ----
   // Sends a real copy of either email to one address, so the reply path can be
   // tested end to end before a reader ever gets one. Never touches the winner
