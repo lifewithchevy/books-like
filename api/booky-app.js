@@ -24,14 +24,16 @@ function rewriteAppJs(js) {
       "fetch('/api/booky-words', { cache: 'no-store' })"
     );
   }
-  // Dictionary on 90books.com /booky/ may also be stale; load from booky-deploy
-  // (ACAO *). Always emit DICT_CACHE_V so returning players bust force-cache.
-  if (js.includes("fetch('/booky/dictionary.json") || js.includes('fetch("/booky/dictionary.json')) {
-    js = js.replace(
-      /fetch\(\s*['"]\/booky\/dictionary\.json[^'"]*['"]/g,
-      `fetch('https://booky-deploy.vercel.app/booky/dictionary.json?v=${DICT_CACHE_V}'`
-    );
-  }
+  // Dictionary stays SAME-ORIGIN. It used to be rewritten to an absolute
+  // booky-deploy URL to dodge a stale CDN copy, but on 2026-08-04 that whole
+  // project began 404ing and took the game down with it: the dictionary fetch
+  // rejected, the Promise.all in init() rejected, and every player saw
+  // "Couldn't load today's word". A stale dictionary is a bad guess check; an
+  // unreachable one is a dead game. DICT_CACHE_V still busts force-cache.
+  js = js.replace(
+    /fetch\(\s*['"](?:https:\/\/booky-deploy\.vercel\.app)?\/booky\/dictionary\.json[^'"]*['"]/g,
+    `fetch('/booky/dictionary.json?v=${DICT_CACHE_V}'`
+  );
   return js;
 }
 
