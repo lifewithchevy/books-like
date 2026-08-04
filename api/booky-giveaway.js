@@ -94,6 +94,25 @@ module.exports = async (req, res) => {
 
   if (action === 'status') { res.status(200).json({ ok: true, ...summary }); return; }
 
+  // Everything held on one contact. Useful before emailing a winner, and it
+  // makes plain how little is actually stored: no name, no address, no country.
+  if (action === 'contact') {
+    const email = (url.searchParams.get('email') || '').toLowerCase();
+    const c = contacts.find((x) => String(x.email).toLowerCase() === email);
+    if (!c) { res.status(404).json({ error: 'no-such-contact', email }); return; }
+    res.status(200).json({
+      ok: true,
+      email: c.email,
+      created_at: c.created_at,
+      unsubscribed: c.unsubscribed,
+      streak_at_signup: c.first_name || null,   // first_name holds the streak
+      entry_marker: c.last_name || null,        // last_name holds the giveaway tag
+      display_name_used_in_email: displayName(c.email),
+      raw: c,
+    });
+    return;
+  }
+
   // ---- draw / redraw ----
   if (action === 'draw' || action === 'redraw') {
     if (entrants.length === 0) {
