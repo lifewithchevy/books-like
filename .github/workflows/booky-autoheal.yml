@@ -1,0 +1,115 @@
+name: Booky auto-heal (rollback)
+
+# Always-on repair, no laptop required. Runs on GitHub, uses secrets.VERCEL_TOKEN.
+#
+# uptime.yml heals by DEPLOYING A NEW BUILD. On 2026-08-05 that exact move left
+# 90books.com returning 404 on every route, twice, and both times the fix was to
+# point the domain back at the previous deployment. So this workflow heals the
+# other way round: it rolls the production alias BACK to the most recent
+# deployment that actually serves 200. Rolling back to something known-working is
+# strictly safer than building something new while the site is already down.
+#
+# It only ever acts when the site is ALREADY down, so the worst case is no worse
+# than the state it found.
+
+on:
+  schedule:
+    - cron: '47 */3 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  issues: write
+
+env:
+  VERCEL_ORG_ID: team_wSIVDUUd5X2zNAVCEshu4PDl
+  VERCEL_PROJECT_ID: prj_i6QIlyGNgvBL0jBJEB8dpI0vdB10
+  SCOPE: omrvieito-9694s-projects
+
+jobs:
+  heal:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Is the live site up?
+        id: probe
+        run: |
+          down=""
+          for p in / /booky /api/booky-words /api/booky-app; do
+            code=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 "https://90books.com$p")
+            echo "$code  $p"
+            [ "$code" != "200" ] && down="$down $p"
+          done
+          echo "down=$down" >> "$GITHUB_OUTPUT"
+          if [ -z "$down" ]; then echo "All routes healthy."; fi
+
+      - name: Roll the domain back to a deployment that works
+        id: heal
+        if: steps.probe.outputs.down != ''
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set +e
+          npm i -g vercel@latest >/dev/null 2>&1
+
+          vercel ls --prod --token="$VERCEL_TOKEN" --scope "$SCOPE" > /tmp/deps.txt 2>&1
+          [ -s /tmp/deps.txt ] || vercel ls --prod --token="$VERCEL_TOKEN" > /tmp/deps.txt 2>&1
+          cat /tmp/deps.txt
+
+          urls=$(grep -oE 'https://book-recs-[a-z0-9]+-'"$SCOPE"'\.vercel\.app' /tmp/deps.txt | head -8)
+          if [ -z "$urls" ]; then
+            echo "Could not list any production deployments."
+            echo "fixed=no" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+
+          fixed=no
+          for u in $urls; do
+            echo "── trying $u"
+            vercel alias set "$u" 90books.com --token="$VERCEL_TOKEN" --scope "$SCOPE" \
+              || vercel alias set "$u" 90books.com --token="$VERCEL_TOKEN" || continue
+            vercel alias set "$u" www.90books.com --token="$VERCEL_TOKEN" --scope "$SCOPE" \
+              || vercel alias set "$u" www.90books.com --token="$VERCEL_TOKEN" || true
+            sleep 10
+            a=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 "https://90books.com/")
+            b=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 "https://90books.com/booky")
+            c=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 "https://90books.com/api/booky-words")
+            echo "   / =$a  /booky =$b  /api/booky-words =$c"
+            if [ "$a" = "200" ] && [ "$b" = "200" ] && [ "$c" = "200" ]; then
+              echo "HEALED using $u"
+              echo "healed_with=$u" >> "$GITHUB_OUTPUT"
+              fixed=yes
+              break
+            fi
+          done
+          echo "fixed=$fixed" >> "$GITHUB_OUTPUT"
+
+      - name: Say so in an issue
+        if: steps.probe.outputs.down != ''
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if [ "${{ steps.heal.outputs.fixed }}" = "yes" ]; then
+            title="✅ 90books went down and auto-healed (no action needed)"
+            body="These routes were down:${{ steps.probe.outputs.down }}
+
+            The production domain was rolled back to \`${{ steps.heal.outputs.healed_with }}\` and every route is serving 200 again. Nothing for you to do.
+
+            Worth knowing WHY it went down though — a deploy that serves 404 usually means the newest build is broken, so the next deploy needs checking."
+          else
+            title="🔴 90books is DOWN and auto-heal could not fix it"
+            body="These routes were down:${{ steps.probe.outputs.down }}
+
+            Rolling the domain back to earlier deployments did not restore it, so this one needs a person.
+
+            Start here: \`vercel ls --prod\`, then \`vercel alias set <url> 90books.com\` against a deployment known to work, then \`node scripts/health-live.mjs\`."
+          fi
+          gh issue create --repo "${{ github.repository }}" --title "$title" --body "$body" || true
+
+      # Only go RED when the site is still broken. GitHub emails Olga on a failed
+      # run, and that email must mean "a human is needed" — never "it healed".
+      - name: Fail only if still down
+        if: steps.probe.outputs.down != '' && steps.heal.outputs.fixed != 'yes'
+        run: |
+          echo "90books is still down after attempting a rollback."
+          exit 1
