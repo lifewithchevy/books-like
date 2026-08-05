@@ -1,0 +1,86 @@
+name: Booky content health
+
+# uptime.yml answers "does the page load". This answers "does the GAME work".
+# An unwinnable word, a day with no book, an overlapping giveaway or a queue
+# about to run dry all return HTTP 200, so uptime.yml cannot see any of them —
+# and every silent Booky failure so far has been of exactly that kind.
+#
+# Runs after the daily email cron (23:00 UTC) so a bad day is caught before
+# most players wake up. Opens ONE issue and reuses it, so a problem that lasts
+# a week does not create seven issues.
+
+on:
+  schedule:
+    - cron: '30 23 * * *'
+  workflow_dispatch: {}
+
+permissions:
+  issues: write
+
+jobs:
+  health:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Check the live game
+        id: health
+        run: |
+          set +e
+          out=$(node scripts/health-live.mjs 2>&1)
+          code=$?
+          echo "$out"
+          {
+            echo 'report<<HEALTH_EOF'
+            echo "$out"
+            echo 'HEALTH_EOF'
+          } >> "$GITHUB_OUTPUT"
+          echo "code=$code" >> "$GITHUB_OUTPUT"
+          exit 0
+
+      - name: Open or update the issue (only on failure)
+        if: steps.health.outputs.code != '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          title="🔴 Booky content health check failed"
+          body="The live game has a problem that uptime checks cannot see (a broken day still returns HTTP 200).
+
+          \`\`\`
+          ${{ steps.health.outputs.report }}
+          \`\`\`
+
+          Reproduce locally with:
+          \`\`\`
+          node scripts/health-live.mjs
+          \`\`\`
+
+          The live queue comes from /api/booky-words. Check the X-Booky-Words
+          header before editing anything: 'proxy-booky-deploy' means the queue is
+          owned by the separate booky-deploy project and editing booky/words.json
+          here fixes nothing, while 'local-fallback:...' means upstream is down
+          and this repo IS serving the queue."
+
+          existing=$(gh issue list --repo "${{ github.repository }}" --state open \
+            --search "$title in:title" --json number --jq '.[0].number')
+
+          if [ -n "$existing" ]; then
+            gh issue comment "$existing" --repo "${{ github.repository }}" --body "$body"
+          else
+            gh issue create --repo "${{ github.repository }}" --title "$title" --body "$body"
+          fi
+
+      - name: Close the issue when healthy again
+        if: steps.health.outputs.code == '0'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          num=$(gh issue list --repo "${{ github.repository }}" --state open \
+            --search "🔴 Booky content health check failed in:title" --json number --jq '.[0].number')
+          if [ -n "$num" ]; then
+            gh issue comment "$num" --repo "${{ github.repository }}" --body "✅ Healthy again, closing."
+            gh issue close "$num" --repo "${{ github.repository }}"
+          fi
