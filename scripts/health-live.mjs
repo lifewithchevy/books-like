@@ -131,7 +131,8 @@ async function main() {
   // api/booky-app.js rewrites them.
   if (ar.ok) {
     const js = await ar.text();
-    const urls = [...js.matchAll(/fetch\(\s*['"]([^'"]+)['"]/g)]
+    // Matches fetch(...) and the fetchJSON(...) retry wrapper alike.
+    const urls = [...js.matchAll(/fetch(?:JSON)?\(\s*['"]([^'"]+)['"]/g)]
       .map((m) => m[1])
       .filter((u) => /dictionary|booky-words/.test(u));
     if (!urls.length) fail('served app.js fetches neither the queue nor the dictionary');
