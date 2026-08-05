@@ -1,0 +1,23 @@
+name: Vercel status
+
+# Lets Cloud Agents check Vercel + live site using the existing VERCEL_TOKEN
+# GitHub secret (same one uptime auto-heal uses). No Cursor dashboard setup needed.
+on:
+  schedule:
+    - cron: '0 */6 * * *'
+  workflow_dispatch: {}
+
+env:
+  VERCEL_ORG_ID: team_wSIVDUUd5X2zNAVCEshu4PDl
+  VERCEL_PROJECT_ID: prj_i6QIlyGNgvBL0jBJEB8dpI0vdB10
+
+jobs:
+  status:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Live routes + Vercel deployments
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: node scripts/vercel-status.mjs --logs
