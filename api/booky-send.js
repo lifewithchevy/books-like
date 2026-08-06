@@ -14,6 +14,28 @@
 //   RESEND_FROM             — verified sender, e.g. "Booky <booky@90books.com>"
 //   CRON_SECRET             — random string, Vercel auto-attaches as Bearer
 
+// ---- One-off notes, keyed by the UTC date of the send ----
+//
+// Date-driven on purpose, exactly like the `giveaway` array in words.json: a
+// note that a human has to switch off gets left on, or switched off early.
+// A key only ever matches its own send, so the note appears in that one day's
+// email and every other day goes out untouched. Past keys are harmless (they
+// simply never match again), so there is no cleanup step to forget.
+//
+// Keep it to a couple of sentences. The reminder's job is the play button.
+const UPDATE_NOTES = {
+  // Answers suggestion #2 from Beginning_Alps_1817 in the r/B00KY "Game Updates"
+  // thread: they wanted the word list widened because you often burn a guess on
+  // a word you know is wrong just to place a letter. The dictionary was a 1934
+  // Webster's cut to 5 letters, missing most plurals and verb forms, so ordinary
+  // words like GAMES and TALKS bounced while BOOKS and WALKS went through.
+  // Note the subreddit is B00KY with ZEROS, not letter O.
+  '2026-08-07': {
+    title: 'You asked for a bigger word list',
+    body: `You often burn a guess on a word you know is wrong, just to place a letter. Now those land: the word list went from about 10,000 to 18,483. More ideas? Drop them in the <a href="https://www.reddit.com/r/B00KY/comments/1uh88g6/game_updates/" style="color:#c8398f;text-decoration:none;font-weight:600;">r/B00KY game updates thread</a>.`,
+  },
+};
+
 module.exports = async (req, res) => {
   // ---- Auth: only allow Vercel Cron (or manual via x-debug-key=CRON_SECRET) ----
   const CRON_SECRET = process.env.CRON_SECRET;
@@ -42,6 +64,10 @@ module.exports = async (req, res) => {
   const today   = new Date().toLocaleDateString('en-US', {
     weekday: 'long', month: 'long', day: 'numeric',
   });
+
+  // UTC date key for today's send. Vercel Cron runs in UTC, so this is stable.
+  const dateKey    = new Date().toISOString().slice(0, 10);
+  const updateNote = UPDATE_NOTES[dateKey] || null;
 
   // ---- 1. Fetch all active subscribers ----
   let subscribers = [];
@@ -91,7 +117,7 @@ module.exports = async (req, res) => {
       ? `Six guesses. Don't break your ${streak}-day streak.`
       : `Six guesses. Don't break the streak.`;
 
-    const html = buildHtml({ subject, headline, subline, today, playUrl });
+    const html = buildHtml({ subject, headline, subline, today, playUrl, updateNote });
 
     try {
       const r = await fetch('https://api.resend.com/emails', {
@@ -126,7 +152,19 @@ module.exports = async (req, res) => {
   res.status(200).json({ ok: true, sent, failed, total: subscribers.length });
 };
 
-function buildHtml({ subject, headline, subline, today, playUrl }) {
+function buildHtml({ subject, headline, subline, today, playUrl, updateNote }) {
+  // Sits below the play button so the reminder's primary CTA still comes first.
+  const noteBlock = updateNote ? `
+        <tr><td style="padding-top:28px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fdf2f9;border:1px solid #f0d8ea;border-radius:10px;padding:18px 20px;">
+            <tr><td>
+              <p style="margin:0 0 6px;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:#c8398f;font-weight:700;">Game update</p>
+              <p style="margin:0 0 8px;font-size:15px;line-height:1.45;color:#2a0a26;font-weight:600;">${updateNote.title}</p>
+              <p style="margin:0;font-size:13px;line-height:1.6;color:#6a4a6c;">${updateNote.body}</p>
+            </td></tr>
+          </table>
+        </td></tr>` : '';
+
   return `<!doctype html>
 <html lang="en">
 <head><meta charset="utf-8"><title>${subject}</title></head>
@@ -140,7 +178,7 @@ function buildHtml({ subject, headline, subline, today, playUrl }) {
           <p style="margin:0 0 12px;font-size:18px;line-height:1.5;color:#2a0a26;font-weight:600;">${headline}</p>
           <p style="margin:0 0 24px;font-size:14px;line-height:1.5;color:#6a4a6c;">${subline}</p>
           <a href="${playUrl}" style="display:inline-block;background:linear-gradient(135deg,#c8398f,#9a2670);color:#ffffff;text-decoration:none;font-weight:600;padding:13px 28px;border-radius:10px;font-size:15px;">Play today's Booky →</a>
-        </td></tr>
+        </td></tr>${noteBlock}
         <tr><td align="center" style="padding-top:24px;">
           <p style="margin:0;font-size:13px;line-height:1.5;color:#6a4a6c;">
             Know a reader who'd love this? Send them <a href="https://90books.com/booky?utm_source=reminder_email&utm_medium=email&utm_campaign=friend_referral" style="color:#c8398f;text-decoration:none;">90books.com/booky</a>
