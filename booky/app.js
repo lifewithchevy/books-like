@@ -108,7 +108,7 @@ DATA = data;
 // not cost anyone their streak, so on failure we play on and skip that check
 // (the guard at the guess site is already `DICT && !DICT.has(...)`).
 try {
-DICT = new Set(await fetchJSON('/booky/dictionary.json?v=15', { cache: 'force-cache' }));
+DICT = new Set(await fetchJSON('/booky/dictionary.json?v=16', { cache: 'force-cache' }));
 } catch {
 DICT = null;
 }
