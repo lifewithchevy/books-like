@@ -85,6 +85,7 @@ module.exports = async (req, res) => {
       : 'proxy-booky-deploy';
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.setHeader('X-Booky-Words', tag);
+    res.setHeader('X-Booky-Build', 'restored-2026-08-06');
     res.status(200).send(body);
   } catch (e) {
     return serveLocal(res, 'upstream-error');
@@ -101,6 +102,7 @@ function serveLocal(res, reason) {
     JSON.parse(body); // never serve a corrupt file
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
     res.setHeader('X-Booky-Words', `local-fallback:${reason}`);
+    res.setHeader('X-Booky-Build', 'restored-2026-08-06');
     res.status(200).send(body);
   } catch (err) {
     console.error('[booky-words] local fallback failed:', err && err.message);
