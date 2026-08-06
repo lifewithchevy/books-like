@@ -117,8 +117,17 @@ async function main() {
     console.log('\n── Summary ──');
     console.log(`Live site:     ${liveOk ? 'UP' : 'DOWN'}`);
     console.log(`Latest deploy: ${latest ? latest.readyState : 'n/a'}`);
+    if (!deployOk) {
+      console.log('  (note: newest deployment is not READY — normal while one is');
+      console.log('   BUILDING, and a failed PREVIEW build never affects the live site)');
+    }
 
-    if (!liveOk || !deployOk) process.exit(1);
+    // Only the LIVE SITE decides pass/fail. This used to fail whenever the
+    // newest deployment object was not READY, which is true every time a build
+    // is in flight and for any failed preview — while 90books.com served 200
+    // throughout. A red run emails Olga, and a check that cries wolf trains her
+    // to ignore the one alarm that actually matters.
+    if (!liveOk) process.exit(1);
   } catch (err) {
     console.error(`\nVercel API error: ${err.message}`);
     process.exit(liveOk ? 0 : 1);
