@@ -1,0 +1,116 @@
+name: Force production alias
+
+# Vercel Git integration creates a production deployment on every push to main,
+# but the custom domain 90books.com can stay pinned to an older deployment.
+# This workflow always deploys with the CLI and re-aliases 90books.com (and
+# www / book-recs-app.vercel.app) so merges actually reach the live site.
+#
+# Runs on EVERY push to main — no path filters. Path-filtered runs were why
+# landing FAQ / index.html changes looked "merged" but stayed invisible in prod.
+on:
+  workflow_dispatch: {}
+  push:
+    branches: [main]
+
+env:
+  VERCEL_ORG_ID: team_wSIVDUUd5X2zNAVCEshu4PDl
+  VERCEL_PROJECT_ID: prj_i6QIlyGNgvBL0jBJEB8dpI0vdB10
+
+jobs:
+  deploy-and-alias:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Vercel CLI
+        run: npm i -g vercel@latest
+
+      - name: Deploy production and alias 90books.com
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set -euo pipefail
+          vercel pull --yes --environment=production --token="$VERCEL_TOKEN"
+          URL=$(vercel deploy --prod --yes --token="$VERCEL_TOKEN" | tee /tmp/deploy.out | tail -n 1)
+          echo "Deployed: $URL"
+          echo "URL=$URL" >> "$GITHUB_ENV"
+          if [ -z "$URL" ] || [[ "$URL" != https://* ]]; then
+            echo "✗ Unexpected deploy URL: $URL"
+            cat /tmp/deploy.out
+            exit 1
+          fi
+
+          alias_set() {
+            local host="$1"
+            if vercel alias set "$URL" "$host" --token="$VERCEL_TOKEN" --scope omrvieito-9694s-projects; then
+              return 0
+            fi
+            vercel alias set "$URL" "$host" --token="$VERCEL_TOKEN"
+          }
+
+          # Fail the job if any production host cannot be pointed at this deploy.
+          alias_set 90books.com
+          alias_set www.90books.com
+          alias_set book-recs-app.vercel.app
+
+          echo "── aliases (sample) ──"
+          vercel alias ls --token="$VERCEL_TOKEN" --scope omrvieito-9694s-projects 2>/dev/null | head -40 || true
+
+      - name: Inspect domains via API
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          curl -sS "https://api.vercel.com/v9/projects/${VERCEL_PROJECT_ID}/domains?teamId=${VERCEL_ORG_ID}" \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" | head -c 4000
+          echo
+          curl -sS "https://api.vercel.com/v6/domains/90books.com/config?teamId=${VERCEL_ORG_ID}" \
+            -H "Authorization: Bearer ${VERCEL_TOKEN}" | head -c 2000
+          echo
+
+      - name: Verify prod paths, and ROLL BACK if the new deploy is bad
+        env:
+          VERCEL_TOKEN: ${{ secrets.VERCEL_TOKEN }}
+        run: |
+          set +e
+          sleep 15
+
+          probe() {
+            a=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 "https://90books.com/")
+            b=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 "https://90books.com/booky")
+            c=$(curl -s -o /dev/null -w "%{http_code}" --max-time 20 "https://90books.com/api/booky-words")
+            echo "  / =$a  /booky =$b  /api/booky-words =$c"
+            [ "$a" = "200" ] && [ "$b" = "200" ] && [ "$c" = "200" ]
+          }
+
+          echo "── verifying the deploy this run just aliased ──"
+          if probe; then
+            echo "✓ production is healthy"
+            exit 0
+          fi
+
+          # This workflow was disabled because it could alias a broken build and
+          # leave 90books.com 404ing on every route, with no way back until a
+          # human noticed. Now it undoes its own damage: put the domain back on
+          # the most recent deployment that actually serves 200, so a bad deploy
+          # is a non-event instead of an outage.
+          echo "✗ production is BROKEN after this deploy — rolling back"
+          vercel ls --prod --token="$VERCEL_TOKEN" --scope omrvieito-9694s-projects > /tmp/deps.txt 2>&1
+          [ -s /tmp/deps.txt ] || vercel ls --prod --token="$VERCEL_TOKEN" > /tmp/deps.txt 2>&1
+          cat /tmp/deps.txt
+
+          for u in $(grep -oE 'https://book-recs-[a-z0-9]+-omrvieito-9694s-projects\.vercel\.app' /tmp/deps.txt | head -8); do
+            [ "$u" = "$URL" ] && continue
+            echo "── rolling back to $u"
+            vercel alias set "$u" 90books.com --token="$VERCEL_TOKEN" --scope omrvieito-9694s-projects \
+              || vercel alias set "$u" 90books.com --token="$VERCEL_TOKEN" || continue
+            vercel alias set "$u" www.90books.com --token="$VERCEL_TOKEN" --scope omrvieito-9694s-projects \
+              || vercel alias set "$u" www.90books.com --token="$VERCEL_TOKEN" || true
+            sleep 10
+            if probe; then
+              echo "✓ rolled back to $u — site is up, but THIS COMMIT IS NOT LIVE"
+              exit 1
+            fi
+          done
+
+          echo "✗ could not restore the site by rolling back"
+          exit 1
