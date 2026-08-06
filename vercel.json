@@ -1,0 +1,324 @@
+{
+  "cleanUrls": true,
+  "trailingSlash": false,
+  "headers": [
+    {
+      "source": "/(.*)",
+      "headers": [
+        {
+          "key": "X-Content-Type-Options",
+          "value": "nosniff"
+        },
+        {
+          "key": "X-Frame-Options",
+          "value": "DENY"
+        },
+        {
+          "key": "Referrer-Policy",
+          "value": "strict-origin-when-cross-origin"
+        }
+      ]
+    },
+    {
+      "source": "/:path+.(js|css|png|jpg|jpeg|gif|ico|svg|woff|woff2)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=31536000, immutable"
+        }
+      ]
+    },
+    {
+      "source": "/",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, no-cache, must-revalidate, max-age=0"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Vercel-CDN-Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/booky",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, no-cache, must-revalidate, max-age=0"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Vercel-CDN-Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/booky/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, no-cache, must-revalidate, max-age=0"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Vercel-CDN-Cache-Control",
+          "value": "no-store"
+        }
+      ]
+    },
+    {
+      "source": "/booky/words.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, no-cache, must-revalidate, max-age=0"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Vercel-CDN-Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Pragma",
+          "value": "no-cache"
+        },
+        {
+          "key": "Expires",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "source": "/booky/daily-words.json",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "no-store, no-cache, must-revalidate, max-age=0"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Vercel-CDN-Cache-Control",
+          "value": "no-store"
+        },
+        {
+          "key": "Pragma",
+          "value": "no-cache"
+        },
+        {
+          "key": "Expires",
+          "value": "0"
+        }
+      ]
+    },
+    {
+      "source": "/books-like/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "public, s-maxage=60, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/genre/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "public, s-maxage=60, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/mood/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "public, s-maxage=60, stale-while-revalidate=86400"
+        }
+      ]
+    },
+    {
+      "source": "/book/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=0, must-revalidate"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "public, s-maxage=60, stale-while-revalidate=86400"
+        }
+      ]
+    }
+  ],
+  "redirects": [
+    {
+      "source": "/books-like/",
+      "destination": "/",
+      "permanent": true
+    },
+    {
+      "source": "/books-like/crescent-city",
+      "destination": "/books-like/house-of-earth-and-blood",
+      "permanent": true
+    },
+    {
+      "source": "/daily",
+      "destination": "/booky",
+      "permanent": true
+    },
+    {
+      "source": "/daily/:path*",
+      "destination": "/booky/:path*",
+      "permanent": true
+    },
+    {
+      "source": "/books-like/acotar",
+      "destination": "/books-like/a-court-of-thorns-and-roses",
+      "permanent": true
+    },
+    {
+      "source": "/books-like/fbaa",
+      "destination": "/books-like/from-blood-and-ash",
+      "permanent": true
+    },
+    {
+      "source": "/books-like/agggtm",
+      "destination": "/books-like/a-good-girls-guide-to-murder",
+      "permanent": true
+    },
+    {
+      "source": "/books-like/bride",
+      "destination": "/book/bride",
+      "permanent": false
+    },
+    {
+      "source": "/books-like/powerless",
+      "destination": "/",
+      "permanent": false
+    },
+    {
+      "source": "/heba",
+      "destination": "/booky?utm_source=heba&utm_medium=author&utm_campaign=weavingshaw",
+      "permanent": false
+    },
+    {
+      "source": "/starside",
+      "destination": "/booky?utm_source=alexaster&utm_medium=author&utm_campaign=starside",
+      "permanent": false
+    },
+    {
+      "source": "/booky/kaliecassidy",
+      "destination": "/booky?utm_source=kaliecassidy&utm_medium=author&utm_campaign=veinsofthedrowning",
+      "permanent": false
+    },
+    {
+      "source": "/booky/kaylaedwards",
+      "destination": "/booky?utm_source=kaylaedwards&utm_medium=author&utm_campaign=cityofgodsandmonsters",
+      "permanent": false
+    },
+    {
+      "source": "/r/romantasy",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=romantasy",
+      "permanent": false
+    },
+    {
+      "source": "/romantasy",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=romantasy",
+      "permanent": false
+    },
+    {
+      "source": "/r/booktokreddit",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=booktokreddit",
+      "permanent": false
+    },
+    {
+      "source": "/booktokreddit",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=booktokreddit",
+      "permanent": false
+    },
+    {
+      "source": "/booky/booktokreddit",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=booktokreddit",
+      "permanent": false
+    },
+    {
+      "source": "/r/fbaa",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=fbaa",
+      "permanent": false
+    },
+    {
+      "source": "/r/zodiac",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=zodiac",
+      "permanent": false
+    },
+    {
+      "source": "/booky/tiktok",
+      "destination": "/booky?utm_source=tiktok&utm_medium=social&utm_campaign=tiktok",
+      "permanent": false
+    }
+  ],
+  "rewrites": [
+    {
+      "source": "/books-like/:slug*",
+      "destination": "/"
+    },
+    {
+      "source": "/book/:slug*",
+      "destination": "/"
+    },
+    {
+      "source": "/genre/:slug*",
+      "destination": "/"
+    },
+    {
+      "source": "/mood/:slug*",
+      "destination": "/"
+    },
+    {
+      "source": "/booky-library",
+      "destination": "/"
+    },
+    {
+      "source": "/booky-library/",
+      "destination": "/"
+    }
+  ],
+  "crons": [
+    {
+      "path": "/api/booky-send",
+      "schedule": "0 23 * * *"
+    }
+  ]
+}

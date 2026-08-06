@@ -1,0 +1,2427 @@
+{
+  "epoch": "2026-05-25",
+  "_comment": "Curated 5-letter words from the romantasy lexicon. Order = daily sequence. wordBooks maps each word to a related book shown on the end screen. teases maps a word to an optional one-line hint shown on the PREVIOUS day's end screen (never hint at the word itself, only the book's vibe). Kept empty for now \u2014 add an entry ONLY for a selected author-promo day, not for every daily book.",
+  "teases": {},
+  "_giveawayComment": "⚠️ ARRAY — APPEND, NEVER REPLACE. One of these may be LIVE RIGHT NOW. app.js shows whichever start..end window covers today (inclusive, local midnight). Adding a future giveaway by overwriting an entry kills the live card mid-window with no error — this happened 2026-07-29, five days before a publicly promised end date. Past entries can stay forever (out of range = not rendered), so there is no cleanup. `tag` is written to the Resend contact's last_name and is the ONLY record of who entered: never reuse or rename it after a giveaway starts. Never add an on/off flag. Run: python3 scripts/validate_giveaway.py",
+  "giveaway": [
+    {
+      "start": "2026-07-26",
+      "end": "2026-08-03",
+      "announce": "August 4",
+      "tag": "giveaway-nyaxia",
+      "title": "The Lion & the Deathless Dark",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250367840.01.LZZZZZZZ.jpg"
+    },
+    {
+      "start": "2026-08-23",
+      "end": "2026-08-31",
+      "announce": "September 1",
+      "tag": "giveaway-knave",
+      "title": "The Knave and the Moon",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601849.01.LZZZZZZZ.jpg"
+    }
+  ],
+  "queue": [
+    "COURT",
+    "BLADE",
+    "FLAME",
+    "MATES",
+    "DEMON",
+    "CROWN",
+    "SPICE",
+    "RIDER",
+    "BEAST",
+    "NESTA",
+    "BLOOD",
+    "ANGEL",
+    "CURSE",
+    "STARS",
+    "THORN",
+    "NIGHT",
+    "WINGS",
+    "ALTAR",
+    "ROYAL",
+    "MANOR",
+    "CARDS",
+    "DREAM",
+    "WORLD",
+    "STEEL",
+    "CADET",
+    "POPPY",
+    "QUEEN",
+    "AELIN",
+    "HUMAN",
+    "OTTER",
+    "FATES",
+    "HONOR",
+    "MAGIC",
+    "HAWKE",
+    "DEMON",
+    "BRYCE",
+    "ROWAN",
+    "REINS",
+    "HEART",
+    "SCARS",
+    "SWORD",
+    "EARTH",
+    "GHOST",
+    "YIELD",
+    "RAKER",
+    "CRUEL",
+    "CABIN",
+    "FLESH",
+    "MANON",
+    "TRIAL",
+    "REALM",
+    "BOUND",
+    "SIREN",
+    "OATHS",
+    "HONEY",
+    "VENIN",
+    "MERYN",
+    "DEVIL",
+    "BRIDE",
+    "TWINS",
+    "WITCH",
+    "SOLIS",
+    "ORAYA",
+    "BONDS",
+    "CHAOL",
+    "MOONS",
+    "ORION",
+    "APPLE",
+    "HOUSE",
+    "MAGES",
+    "STARK",
+    "FANGS",
+    "PAINT",
+    "DARCY",
+    "ELITE",
+    "WHEEL",
+    "VENOM",
+    "TOPAZ",
+    "RIDOC",
+    "MOTIF",
+    "BAGEL",
+    "SIGIL",
+    "BLAZE",
+    "STORM",
+    "TAROT",
+    "HENRY",
+    "PURGE",
+    "MADRA",
+    "MERCY",
+    "QUILL",
+    "OMENS",
+    "VALOR",
+    "RIVER",
+    "SWORE",
+    "HALOS",
+    "DREAD",
+    "FERRY",
+    "KNAVE",
+    "MATED",
+    "SYBIL",
+    "FLARE",
+    "VEGAS",
+    "VAULT",
+    "EMBER",
+    "ANGER",
+    "PETAL",
+    "SPARK",
+    "PARRY",
+    "HALOS",
+    "SMOKE",
+    "WAKEN",
+    "GUILE",
+    "DUSKY",
+    "CODEX",
+    "TIDES",
+    "HEIRS",
+    "COALS",
+    "CRYPT",
+    "EERIE",
+    "CACHE",
+    "TAMED",
+    "SIGHS",
+    "SCION",
+    "FORGE",
+    "WRATH",
+    "PRISM",
+    "REGAL",
+    "XADEN",
+    "CORAL",
+    "TAIRN",
+    "HEXED",
+    "SHINE",
+    "GLOOM",
+    "SINGE",
+    "MOTHS",
+    "ALLEY",
+    "BRIAR",
+    "VEILS",
+    "ROOTS",
+    "YRENE",
+    "STEED",
+    "GLYPH",
+    "NOBLE",
+    "COBRA",
+    "SHEEN",
+    "COINS",
+    "MOATS",
+    "MURKY",
+    "ROARS",
+    "GRAVE",
+    "THIEF",
+    "GLADE",
+    "RUNES",
+    "CREST",
+    "GUARD",
+    "ELAIN",
+    "FEYRE",
+    "MASKS",
+    "SPELL",
+    "SOOTY",
+    "CLOAK",
+    "REIGN",
+    "KINGS",
+    "HOUND",
+    "FROST",
+    "JEWEL",
+    "COAST",
+    "FAIRY",
+    "ENVOY",
+    "DIRGE",
+    "CHARS",
+    "SOULS",
+    "FLORA",
+    "GAUZE",
+    "GLINT",
+    "SIEGE",
+    "STALK",
+    "SCALE",
+    "SLEEK",
+    "TRICK",
+    "DOVES",
+    "BRASS",
+    "GNOME",
+    "TRUCE",
+    "SOOTH",
+    "SMOKY",
+    "BRIBE",
+    "PROWL",
+    "GROVE",
+    "COVEN",
+    "ANGER",
+    "SPITE",
+    "TALON",
+    "CHIME",
+    "LEDGE",
+    "LURED",
+    "FEARS",
+    "SYLPH",
+    "WAVES",
+    "TOMBS",
+    "ELFIN",
+    "CREPT",
+    "SNEAK",
+    "FAERY",
+    "COMET",
+    "ELIDE",
+    "MOANS",
+    "CLIFF",
+    "FIGHT",
+    "BITES",
+    "CAGED",
+    "ASHEN",
+    "ALTAR",
+    "OATHS",
+    "POPPY",
+    "GLOWS",
+    "BONES",
+    "IRONS",
+    "FAITH",
+    "HAWKE",
+    "HONEY",
+    "SAINT",
+    "SCENT",
+    "FLESH",
+    "DEITY",
+    "FERAL",
+    "FAITH",
+    "DEITY",
+    "CREED",
+    "LOOTS",
+    "CREED",
+    "RELIC",
+    "CHAIN",
+    "LIARS",
+    "IRONS",
+    "POPPY",
+    "WIDOW",
+    "CHAIN",
+    "SHORE",
+    "BONES",
+    "VOWED",
+    "ASHES",
+    "ASHEN",
+    "RITES",
+    "MIRTH"
+  ],
+  "wordBooks": {
+    "COURT": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "BLADE": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "FLAME": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374172-L.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649374172&i=stripbooks&tag=90books-20"
+    },
+    "MATES": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "DEMON": {
+      "slug": "throne-in-the-dark",
+      "title": "Throne in the Dark",
+      "author": "A.K. Caggiano",
+      "buyUrl": "https://amzn.to/3QP5SiZ",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464251207.01.LZZZZZZZ.jpg"
+    },
+    "CROWN": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "SPICE": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "RIDER": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "BEAST": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "NESTA": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575595.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781526623799&i=stripbooks&tag=90books-20"
+    },
+    "ROSES": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "THORN": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "ANGEL": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
+    },
+    "CURSE": {
+      "slug": "a-touch-of-darkness",
+      "title": "A Touch of Darkness",
+      "author": "Scarlett St. Clair",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1949673294.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781949039153&i=stripbooks&tag=90books-20"
+    },
+    "BLOOD": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "HEART": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "QUEEN": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "MAGIC": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "POWER": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "BOUND": {
+      "slug": "dire-bound",
+      "title": "Dire Bound",
+      "author": "Sable Sorensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601489.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780316601481&i=stripbooks&tag=90books-20"
+    },
+    "TRIAL": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "OATHS": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "SWORD": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "SCARS": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "MERCY": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "CARDS": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
+    },
+    "VENOM": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "RUNES": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "ASHES": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "AMBER": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+    },
+    "WINGS": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "FATED": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "BRAVE": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "SMOKE": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780593818962&i=stripbooks&tag=90books-20"
+    },
+    "YIELD": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "CRUEL": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "FAERY": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "WORLD": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "EARTH": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
+    },
+    "ROYAL": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781734506204&i=stripbooks&tag=90books-20"
+    },
+    "FEYRE": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "FLESH": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "CROWS": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781627792127&i=stripbooks&tag=90books-20"
+    },
+    "HAUNT": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780593818962&i=stripbooks&tag=90books-20"
+    },
+    "GLEAM": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+    },
+    "SHADE": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "EMBER": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374172-L.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649374172&i=stripbooks&tag=90books-20"
+    },
+    "BLAZE": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374172-L.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649374172&i=stripbooks&tag=90books-20"
+    },
+    "RAVEN": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "SIREN": {
+      "slug": "in-the-veins-of-the-drowning",
+      "title": "In the Veins of the Drowning",
+      "author": "Kalie Cassidy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316587605.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316587605?tag=90books-20"
+    },
+    "WAKEN": {
+      "slug": "in-the-wake-of-the-ruined",
+      "title": "In the Wake of the Ruined",
+      "author": "Kalie Cassidy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1399632132.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316587587?tag=90books-20"
+    },
+    "NIGHT": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "REALM": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "DREAM": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "STEEL": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "VALOR": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "MANOR": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "DREAD": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "STARS": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "FERAL": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "ALTAR": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "FANGS": {
+      "slug": "the-lion-and-the-deathless-dark",
+      "title": "The Lion & the Deathless Dark",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250367840.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250367840?tag=90books-20"
+    },
+    "CADET": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "BLOOM": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "MASKS": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "CLAWS": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "SPELL": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "CLOAK": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "REIGN": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "KINGS": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "WRATH": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "VINES": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "ASHEN": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "QUILL": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "SIGIL": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
+    },
+    "KNAVE": {
+      "slug": "the-knave-and-the-moon",
+      "title": "The Knave and the Moon",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601849.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316601849?tag=90books-20"
+    },
+    "CRYPT": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "GILDS": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+    },
+    "SILKS": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "BRIDE": {
+      "slug": "bride",
+      "title": "Bride",
+      "author": "Ali Hazelwood",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593550404.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0593550404?tag=90books-20"
+    },
+    "TAROT": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
+    },
+    "FIERY": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374172-L.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649374172&i=stripbooks&tag=90books-20"
+    },
+    "GHOUL": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780593818962&i=stripbooks&tag=90books-20"
+    },
+    "HEIST": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781627792127&i=stripbooks&tag=90books-20"
+    },
+    "PRIDE": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575595.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781526623799&i=stripbooks&tag=90books-20"
+    },
+    "HUMAN": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "VOWED": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "FLINT": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "HALOS": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
+    },
+    "ROGUE": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "GHOST": {
+      "slug": "weavingshaw",
+      "title": "Weavingshaw",
+      "author": "Heba Al-Wasity",
+      "hook": "The price to enter\u2026 is your darkest secret.",
+      "buyUrl": "https://www.amazon.com/dp/0593982576?tag=90books-20",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593982576.01.LZZZZZZZ.jpg"
+    },
+    "TOPAZ": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+    },
+    "ELVES": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "SPIES": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781734506204&i=stripbooks&tag=90books-20"
+    },
+    "MISTS": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
+    },
+    "FLARE": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374172-L.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649374172&i=stripbooks&tag=90books-20"
+    },
+    "SPOOK": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780593818962&i=stripbooks&tag=90books-20"
+    },
+    "VAULT": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781627792127&i=stripbooks&tag=90books-20"
+    },
+    "ANGER": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575595.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781526623799&i=stripbooks&tag=90books-20"
+    },
+    "PETAL": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "RIVER": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "PARRY": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "CHAIN": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "SPARK": {
+      "slug": "spark-of-the-everflame",
+      "title": "Spark of the Everflame",
+      "author": "Penn Cole",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1668085738.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1668085738?tag=90books-20"
+    },
+    "OMENS": {
+      "slug": "the-knight-and-the-moth",
+      "title": "The Knight and the Moth",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316582704.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780316582704&i=stripbooks&tag=90books-20"
+    },
+    "GUILE": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "DUSKY": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "OPALS": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+    },
+    "PIXIE": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "TIDES": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781734506204&i=stripbooks&tag=90books-20"
+    },
+    "HEXES": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
+    },
+    "COALS": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374172-L.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649374172&i=stripbooks&tag=90books-20"
+    },
+    "EERIE": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780593818962&i=stripbooks&tag=90books-20"
+    },
+    "CACHE": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781627792127&i=stripbooks&tag=90books-20"
+    },
+    "TAMED": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "SIGHS": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "SCION": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "IRONS": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "FORGE": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "PRISM": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
+    },
+    "REGAL": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "HEXED": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "CORAL": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+    },
+    "GLAZE": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "GLOOM": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
+    },
+    "SINGE": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374172-L.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649374172&i=stripbooks&tag=90books-20"
+    },
+    "MOTHS": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780593818962&i=stripbooks&tag=90books-20"
+    },
+    "ALLEY": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781627792127&i=stripbooks&tag=90books-20"
+    },
+    "BRIAR": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "VEILS": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "RELIC": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "STEED": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "GLYPH": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
+    },
+    "NOBLE": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "COBRA": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "PEARL": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+    },
+    "SHEEN": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "MOATS": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781734506204&i=stripbooks&tag=90books-20"
+    },
+    "MURKY": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
+    },
+    "ROARS": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374172-L.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649374172&i=stripbooks&tag=90books-20"
+    },
+    "GRAVE": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780593818962&i=stripbooks&tag=90books-20"
+    },
+    "THIEF": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781627792127&i=stripbooks&tag=90books-20"
+    },
+    "GLADE": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "CREST": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "GUARD": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "CREED": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "REINS": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "HOUND": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
+    },
+    "FROST": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "PREYS": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "JEWEL": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+    },
+    "FAIRY": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "ENVOY": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781734506204&i=stripbooks&tag=90books-20"
+    },
+    "DIRGE": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
+    },
+    "CHARS": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374172-L.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649374172&i=stripbooks&tag=90books-20"
+    },
+    "SOULS": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780593818962&i=stripbooks&tag=90books-20"
+    },
+    "GREED": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781627792127&i=stripbooks&tag=90books-20"
+    },
+    "FLORA": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "GLINT": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "SIEGE": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "DEITY": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "SCALE": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "SLEEK": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
+    },
+    "TRICK": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "STALK": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "BRASS": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+    },
+    "GNOME": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "TRUCE": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781734506204&i=stripbooks&tag=90books-20"
+    },
+    "SOOTH": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
+    },
+    "SMOKY": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374172-L.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649374172&i=stripbooks&tag=90books-20"
+    },
+    "CHILL": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780593818962&i=stripbooks&tag=90books-20"
+    },
+    "BRIBE": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781627792127&i=stripbooks&tag=90books-20"
+    },
+    "GROVE": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "COVEN": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "HEIRS": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "SAINT": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "TALON": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "CHIME": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
+    },
+    "SPITE": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "LURED": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "HONEY": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "SYLPH": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "WAVES": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781734506204&i=stripbooks&tag=90books-20"
+    },
+    "TOMBS": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
+    },
+    "SCALD": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374172-L.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649374172&i=stripbooks&tag=90books-20"
+    },
+    "FEARS": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780593818962&i=stripbooks&tag=90books-20"
+    },
+    "SNEAK": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781627792127&i=stripbooks&tag=90books-20"
+    },
+    "HONOR": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "COMET": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "FAITH": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "CLIFF": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "ELFIN": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "BITES": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "CAGED": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+    },
+    "MIRTH": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "SHORE": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781734506204&i=stripbooks&tag=90books-20"
+    },
+    "WIDOW": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
+    },
+    "SEARS": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374172-L.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649374172&i=stripbooks&tag=90books-20"
+    },
+    "MOANS": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780593818962&i=stripbooks&tag=90books-20"
+    },
+    "LOOTS": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781627792127&i=stripbooks&tag=90books-20"
+    },
+    "SCENT": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "GLOWS": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "FIGHT": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "BONES": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "LEDGE": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "LIARS": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316310271.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781955876162&i=stripbooks&tag=90books-20"
+    },
+    "PROWL": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "DOVES": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1464224416.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+    },
+    "GAUZE": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "COAST": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781734506204&i=stripbooks&tag=90books-20"
+    },
+    "SOOTY": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316312347.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
+    },
+    "GLARE": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374172-L.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649374172&i=stripbooks&tag=90books-20"
+    },
+    "CREPT": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780593818962&i=stripbooks&tag=90books-20"
+    },
+    "COINS": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250076963.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781627792127&i=stripbooks&tag=90books-20"
+    },
+    "ROOTS": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "SHINE": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "SWORE": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "POPPY": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "AELIN": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "OTTER": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
+    },
+    "TAIRN": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "XADEN": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "ROWAN": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "MANON": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "CHAOL": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "YRENE": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "ELIDE": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1619630346.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "FATES": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "HAWKE": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "BRYCE": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
+    },
+    "ELAIN": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "PAINT": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575567.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "WITCH": {
+      "slug": "heartless-hunter",
+      "title": "Heartless Hunter",
+      "author": "Kristen Ciccarelli",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250866901.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250866901?tag=90books-20"
+    },
+    "CABIN": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "MATED": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
+    },
+    "SYBIL": {
+      "slug": "the-knave-and-the-moon",
+      "title": "The Knave and the Moon",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601849.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316601849?tag=90books-20"
+    },
+    "MOTIF": {
+      "slug": "the-knight-and-the-moth",
+      "title": "The Knight and the Moth",
+      "author": "Rachel Gillig",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316582704.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780316582704&i=stripbooks&tag=90books-20"
+    },
+    "MERYN": {
+      "slug": "dire-bound",
+      "title": "Dire Bound",
+      "author": "Sable Sorensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601489.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780316601481&i=stripbooks&tag=90books-20"
+    },
+    "SOLIS": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "BONDS": {
+      "slug": "in-the-wake-of-the-ruined",
+      "title": "In the Wake of the Ruined",
+      "author": "Kalie Cassidy",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1399632132.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316587587?tag=90books-20"
+    },
+    "STARK": {
+      "slug": "dire-bound",
+      "title": "Dire Bound",
+      "author": "Sable Sorensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0316601489.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9780316601481&i=stripbooks&tag=90books-20"
+    },
+    "APPLE": {
+      "slug": "hemlock-and-silver",
+      "title": "Hemlock & Silver",
+      "author": "T. Kingfisher",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250342034.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781250342034&i=stripbooks&tag=90books-20"
+    },
+    "RAKER": {
+      "slug": "starside",
+      "title": "Starside",
+      "author": "Alex Aster",
+      "hook": "Claim your sword, claim your fate.",
+      "buyUrl": "https://www.amazon.com/dp/0063479796?tag=90books-20",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/B0FQV51HTY.01.LZZZZZZZ.jpg"
+    },
+    "DEVIL": {
+      "slug": "city-of-gods-and-monsters",
+      "title": "City of Gods and Monsters",
+      "author": "Kayla Edwards",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1998268012.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781998268016&i=stripbooks&tag=90books-20"
+    },
+    "LOREN": {
+      "slug": "city-of-gods-and-monsters",
+      "title": "City of Gods and Monsters",
+      "author": "Kayla Edwards",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1998268012.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781998268016&i=stripbooks&tag=90books-20"
+    },
+    "SEVEN": {
+      "slug": "city-of-gods-and-monsters",
+      "title": "City of Gods and Monsters",
+      "author": "Kayla Edwards",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1998268012.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781998268016&i=stripbooks&tag=90books-20"
+    },
+    "SLAYS": {
+      "slug": "city-of-gods-and-monsters",
+      "title": "City of Gods and Monsters",
+      "author": "Kayla Edwards",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1998268012.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781998268016&i=stripbooks&tag=90books-20"
+    },
+    "CALLA": {
+      "slug": "city-of-gods-and-monsters",
+      "title": "City of Gods and Monsters",
+      "author": "Kayla Edwards",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1998268012.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781998268016&i=stripbooks&tag=90books-20"
+    },
+    "HENRY": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "VIXEN": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "TOXIN": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "ASHER": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "HAVEN": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "AIDIA": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "DRAIN": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "VIGIL": {
+      "slug": "the-poison-daughter",
+      "title": "The Poison Daughter",
+      "author": "Sheila Masterson",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1638935971.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+    },
+    "DARCY": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "ORION": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "CALEB": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "ACRUX": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "BAGEL": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "RIGEL": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "VEGAS": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "TWINS": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "LANCE": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "IGNIS": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "TERRA": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "SOLAR": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "AWAKE": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1914425022.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "VENIN": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "MADRA": {
+      "slug": "quicksilver",
+      "title": "Quicksilver",
+      "author": "Callie Hart",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1538774194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781649376291&i=stripbooks&tag=90books-20"
+    },
+    "ORAYA": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "RAIHN": {
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+    },
+    "FERRY": {
+      "slug": "the-bridge-kingdom",
+      "title": "The Bridge Kingdom",
+      "author": "Danielle L. Jensen",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1733090312.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781734506204&i=stripbooks&tag=90books-20"
+    },
+    "STORM": {
+      "slug": "onyx-storm",
+      "title": "Onyx Storm",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649374186.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1649374186?tag=90books-20"
+    },
+    "RUINS": {
+      "slug": "a-court-of-wings-and-ruin",
+      "title": "A Court of Wings and Ruin",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1635575583?tag=90books-20"
+    },
+    "AMREN": {
+      "slug": "a-court-of-wings-and-ruin",
+      "title": "A Court of Wings and Ruin",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635575583.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1635575583?tag=90books-20"
+    },
+    "HOUSE": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574048.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781635577020&i=stripbooks&tag=90books-20"
+    },
+    "SKIES": {
+      "slug": "house-of-sky-and-breath",
+      "title": "House of Sky and Breath",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635574072.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1635574072?tag=90books-20"
+    },
+    "LIDIA": {
+      "slug": "house-of-flame-and-shadow",
+      "title": "House of Flame and Shadow",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635579945.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1635579945?tag=90books-20"
+    },
+    "THANE": {
+      "slug": "house-of-flame-and-shadow",
+      "title": "House of Flame and Shadow",
+      "author": "Sarah J. Maas",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1635579945.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1635579945?tag=90books-20"
+    },
+    "RIVAL": {
+      "slug": "divine-rivals",
+      "title": "Divine Rivals",
+      "author": "Rebecca Ross",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250857430.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250857430?tag=90books-20"
+    },
+    "ROMAN": {
+      "slug": "divine-rivals",
+      "title": "Divine Rivals",
+      "author": "Rebecca Ross",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250857430.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250857430?tag=90books-20"
+    },
+    "INKED": {
+      "slug": "divine-rivals",
+      "title": "Divine Rivals",
+      "author": "Rebecca Ross",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250857430.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250857430?tag=90books-20"
+    },
+    "POEMS": {
+      "slug": "divine-rivals",
+      "title": "Divine Rivals",
+      "author": "Rebecca Ross",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250857430.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250857430?tag=90books-20"
+    },
+    "JACKS": {
+      "slug": "once-upon-a-broken-heart",
+      "title": "Once Upon a Broken Heart",
+      "author": "Stephanie Garber",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250268397.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250268397?tag=90books-20"
+    },
+    "DEALS": {
+      "slug": "once-upon-a-broken-heart",
+      "title": "Once Upon a Broken Heart",
+      "author": "Stephanie Garber",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250268397.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250268397?tag=90books-20"
+    },
+    "FOXES": {
+      "slug": "once-upon-a-broken-heart",
+      "title": "Once Upon a Broken Heart",
+      "author": "Stephanie Garber",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250268397.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250268397?tag=90books-20"
+    },
+    "TELLA": {
+      "slug": "caraval",
+      "title": "Caraval",
+      "author": "Stephanie Garber",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250095255.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250095255?tag=90books-20"
+    },
+    "STAGE": {
+      "slug": "caraval",
+      "title": "Caraval",
+      "author": "Stephanie Garber",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1250095255.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250095255?tag=90books-20"
+    },
+    "RAEVE": {
+      "slug": "when-the-moon-hatched",
+      "title": "When the Moon Hatched",
+      "author": "Sarah A. Parker",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0063415801.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0063415801?tag=90books-20"
+    },
+    "MOONS": {
+      "slug": "when-the-moon-hatched",
+      "title": "When the Moon Hatched",
+      "author": "Sarah A. Parker",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0063415801.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0063415801?tag=90books-20"
+    },
+    "CROSS": {
+      "slug": "shield-of-sparrows",
+      "title": "Shield of Sparrows",
+      "author": "Devney Perry",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649378513.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1649378513?tag=90books-20"
+    },
+    "WOLFE": {
+      "slug": "shield-of-sparrows",
+      "title": "Shield of Sparrows",
+      "author": "Devney Perry",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649378513.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1649378513?tag=90books-20"
+    },
+    "TURAH": {
+      "slug": "shield-of-sparrows",
+      "title": "Shield of Sparrows",
+      "author": "Devney Perry",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1649378513.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1649378513?tag=90books-20"
+    },
+    "DIANA": {
+      "slug": "the-book-of-azrael",
+      "title": "The Book of Azrael",
+      "author": "Amber V. Nicole",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1737706776.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1737706776?tag=90books-20"
+    },
+    "KADEN": {
+      "slug": "the-book-of-azrael",
+      "title": "The Book of Azrael",
+      "author": "Amber V. Nicole",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1737706776.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1737706776?tag=90books-20"
+    },
+    "TOMES": {
+      "slug": "the-book-of-azrael",
+      "title": "The Book of Azrael",
+      "author": "Amber V. Nicole",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1737706776.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1737706776?tag=90books-20"
+    },
+    "KAINE": {
+      "slug": "alchemised",
+      "title": "Alchemised",
+      "author": "SenLinYu",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593972708.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0593972708?tag=90books-20"
+    },
+    "HELEN": {
+      "slug": "alchemised",
+      "title": "Alchemised",
+      "author": "SenLinYu",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/0593972708.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0593972708?tag=90books-20"
+    },
+    "MAGES": {
+      "slug": "reign-and-ruin",
+      "title": "Reign & Ruin",
+      "author": "J.D. Evans",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1951607015.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1951607015?tag=90books-20"
+    },
+    "WHEEL": {
+      "slug": "reign-and-ruin",
+      "title": "Reign & Ruin",
+      "author": "J.D. Evans",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1951607015.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1951607015?tag=90books-20"
+    },
+    "RITES": {
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1952457009.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
+    },
+    "ELITE": {
+      "slug": "powerless",
+      "title": "Powerless",
+      "author": "Lauren Roberts",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1398540194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1398540194?tag=90books-20"
+    },
+    "PURGE": {
+      "slug": "powerless",
+      "title": "Powerless",
+      "author": "Lauren Roberts",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1398540194.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1398540194?tag=90books-20"
+    },
+    "RIDOC": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "https://covers.openlibrary.org/b/isbn/9781649374042-L.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "CODEX": {
+      "slug": "threshing-day",
+      "title": "Threshing Day",
+      "author": "Rebecca Yarros",
+      "cover": "https://images-na.ssl-images-amazon.com/images/P/1682818084.01.LZZZZZZZ.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1682818084?tag=90books-20"
+    }
+  },
+  "_deploy": "2026-07-17T22:21Z"
+}
