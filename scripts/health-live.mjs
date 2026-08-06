@@ -167,3 +167,6 @@ function done() {
 }
 
 main().catch((e) => { console.log(`FAIL  health check crashed: ${e.message}`); process.exit(1); });
+
+// Deploy pipeline restored 2026-08-06: main is complete again and this file
+// reaching production is the proof that a push now deploys on its own.
