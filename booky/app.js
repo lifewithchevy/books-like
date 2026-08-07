@@ -144,6 +144,13 @@ date: new Date().toISOString().split('T')[0],
 });
 }
 
+// Warm the win screen's book cover while the player is still guessing, so it
+// is already in cache the moment the end screen renders instead of popping in
+// a beat later. Fire-and-forget: nothing reads this Image, the browser cache
+// is the whole point, and a failure here is invisible (showEndScreen still
+// runs its own load + fallback path).
+preloadBookCover();
+
 if (STATE.status !== 'playing') {
 LOCKED = true;
 showEndScreen();
@@ -740,6 +747,14 @@ return { earned, next };
 }
 
 // ---- End screen ----
+function preloadBookCover() {
+const url = DATA?.wordBooks?.[ANSWER]?.cover;
+if (!url) return;
+const img = new Image();
+img.decoding = 'async';
+img.src = url;
+}
+
 function hideBookRecCover(cover, coverLink) {
 cover.hidden = true;
 coverLink.hidden = true;
