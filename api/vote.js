@@ -35,6 +35,8 @@ async function redis(...args) {
   return data.result;
 }
 
+const { enforce } = require('./_rate-limit');
+
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'GET, POST, OPTIONS');
@@ -68,6 +70,11 @@ module.exports = async (req, res) => {
     }
 
     if (req.method === 'POST') {
+      // Public write with no auth: the up-counts are shown as social proof under
+      // each rec, so an unthrottled POST lets anyone manufacture that proof (and
+      // burn Redis commands doing it). GET stays unlimited — reads are the point.
+      if (await enforce(req, res, { name: 'vote', limit: 120 })) return;
+
       const { source, rec, dir, prev } = req.body || {};
       const s = clean(source);
       const r = clean(rec);
