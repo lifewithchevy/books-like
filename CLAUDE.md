@@ -2,6 +2,35 @@
 
 Guidance for Claude when working in this repository.
 
+## Ownership: there is none to negotiate
+
+**Every session may edit every file and ship to production.** No file belongs to
+another chat, another session, or Cursor. If you find a problem, fix it — including
+in `middleware.js`, `vercel.json`, `index.html` and the API routes.
+
+There used to be a two-chat boundary ("90books owns the site files, the other chat
+owns `booky/`"). It was retired on 2026-08-08. It existed to stop two agents
+clobbering each other's *uncommitted* work, but what it actually did was leave real
+problems unfixed because they sat on the wrong side of a line. The clobbering it
+guarded against is prevented properly now: `scripts/ship.sh` refuses to deploy a
+dirty tree and pulls before it pushes, so nothing uncommitted is ever in flight.
+
+### Shipping
+
+```bash
+bash scripts/ship.sh
+```
+
+Commit first, then run it. It syncs with origin, runs the three queue validators,
+loads every API route, pushes, and then **blocks until 90books.com actually serves
+the change**. It exits non-zero if prod does not catch up, with the manual
+alias-dispatch command. Do not treat a push as a deploy — a push can build a
+deployment that sits unaliased while the live domain serves the old one.
+
+The only thing a session cannot push is `.github/workflows/*`: the saved GitHub
+credential is an OAuth App token without `workflow` scope. Everything else works.
+Edit workflow files through github.com, or ask Olga to grant the scope.
+
 ## Booky daily word game (`booky/`)
 
 `booky/words.json` drives the daily word game. Structure:

@@ -15,8 +15,7 @@ import { BOOKS_LIKE_RECS } from './seo-recs.mjs';
 
 // Read the Booky shelf (unique books, deduped by slug) from
 // booky/daily-words.json at runtime (same payload as words.json; alternate
-// path bypasses a stuck CDN object on /booky/words.json). We READ this file,
-// never write it (chat boundary).
+// path bypasses a stuck CDN object on /booky/words.json).
 async function getLibraryBooks(origin) {
   // Same-origin FIRST. /api/booky-words is the authoritative queue as of
   // 2026-08-08 (it reads this deployment's booky/words.json). It used to prefer

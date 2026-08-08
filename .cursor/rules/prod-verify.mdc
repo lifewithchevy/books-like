@@ -1,16 +1,14 @@
 ---
-description: After merges to main, always verify changes are live on 90books.com
+description: Verifying production, shipping, and who may edit what — see CLAUDE.md, the single source of truth
 alwaysApply: true
 ---
 
-# Always verify production after main
+# See `CLAUDE.md`
 
-After any change lands on `main` (merge or push), **do not treat the task as done** until the change is confirmed live on https://90books.com.
+This rule used to duplicate guidance that also lives in `CLAUDE.md`. The copies
+drifted: on 2026-08-08 this file still said the live word queue was owned by a
+separate project and that editing `booky/words.json` here changed nothing, which
+had stopped being true and would have talked the next person out of the correct
+fix.
 
-## Checklist
-
-1. Wait for GitHub Actions **Force production alias** (`.github/workflows/force-booky-prod.yml`) to succeed on the merge commit. If it did not run, trigger `workflow_dispatch`.
-2. Fetch the live URLs the change affects (`https://90books.com/`, `/booky`, `/api/booky-words`, `/authors`, etc.) — not only the Vercel Git/preview deploy URL.
-3. Assert a **change-specific** string or behavior from the merge appears in the live response.
-4. Green Vercel status on the commit alone is **not** proof. If prod is stale, re-run force-alias and re-check until prod matches `main`.
-5. Tell the user the live check result (URL, marker checked, pass/fail).
+One copy now. Read **`CLAUDE.md`**, section *Deployment / Always verify production*.

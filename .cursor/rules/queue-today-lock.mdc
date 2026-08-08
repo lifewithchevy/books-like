@@ -1,21 +1,14 @@
 ---
-description: Never change today's word or any past queue slots when editing booky/words.json
+description: Never change today's word or any past queue slots — see CLAUDE.md, the single source of truth
 alwaysApply: true
 ---
 
-# Never change today or past queue slots
+# See `CLAUDE.md`
 
-When editing `booky/words.json` or `booky/daily-words.json`:
+This rule used to duplicate guidance that also lives in `CLAUDE.md`. The copies
+drifted: on 2026-08-08 this file still said the live word queue was owned by a
+separate project and that editing `booky/words.json` here changed nothing, which
+had stopped being true and would have talked the next person out of the correct
+fix.
 
-1. **Never change today's word** — the queue slot for the **current calendar date** (local midnight, same rollover as `booky/app.js` → `computeDayNumber`) must stay exactly the same word. If a deploy lands mid-day, players are already playing that answer.
-2. **Never change past days** — all queue slots for dates **before today** are locked. Only edit **future** dates (strictly after today).
-
-When reshuffling or swapping words, only touch indices **after** today's index. Displaced words go to the **tail** or other **future** slots — never into today or past slots.
-
-Before shipping queue changes, run:
-
-```bash
-python3 scripts/validate_queue_lock.py
-```
-
-Compares against `origin/main` for all slots through today inclusive.
+One copy now. Read **`CLAUDE.md`**, section *Standing rules for the word queue*.
