@@ -8455,6 +8455,21 @@
       if (COVER_OVERRIDES[k]) return COVER_OVERRIDES[k];
       const spaced = k.replace(/-/g, ' ');
       if (COVER_OVERRIDES[spaced]) return COVER_OVERRIDES[spaced];
+      // Booky answer books carry a self-hosted cover we picked and checked by hand
+      // (booky/covers/<slug>.jpg). Trust it over anything remote. Without this the
+      // book page skipped straight to an OpenLibrary title search, and /book/
+      // reign-and-ruin showed a 17th-century Puritan tract by John Winthrop while
+      // the shelf two taps earlier showed the correct J.D. Evans cover. Same-origin
+      // and instant, so it also spares us the OpenLibrary rate limiting.
+      try {
+        if (typeof BKL_COVER_BY_SLUG !== 'undefined' && BKL_COVER_BY_SLUG) {
+          const slug = typeof slugifyBookKey === 'function'
+            ? slugifyBookKey(k)
+            : k.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
+          if (BKL_COVER_BY_SLUG[slug]) return BKL_COVER_BY_SLUG[slug];
+          if (BKL_COVER_BY_SLUG[k]) return BKL_COVER_BY_SLUG[k];
+        }
+      } catch (e) { /* cover lookup must never break the page */ }
       const isbn = BOOK_ISBN[k] || BOOK_ISBN[spaced];
       if (!isbn) return null;
       if (BAD_ISBN_COVERS.has(isbn)) return null; // force title-search fallback
