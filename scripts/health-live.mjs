@@ -2,14 +2,16 @@
 //
 // Booky LIVE health check.  node scripts/health-live.mjs
 //
-// The scripts/validate_*.py guards read booky/words.json, which is NOT what
-// production serves — /api/booky-words proxies booky-deploy.vercel.app and
-// overlays a few local keys. So a green validator does not mean the live game
-// is safe. This checks what players actually get.
+// The scripts/validate_*.py guards read booky/words.json on disk. Since
+// 2026-08-08 /api/booky-words serves that same file, so the two should agree —
+// but a green validator still does not prove the DEPLOY landed. This checks
+// what players actually get.
 //
 // It also covers the failure class uptime.yml cannot see: an unwinnable word,
 // a day with no book, an expired giveaway and a nearly-empty queue all return
 // HTTP 200. Exit 1 on any FAIL so CI can open an issue.
+
+import fs from 'node:fs';
 
 const WORDS = 'https://90books.com/api/booky-words';
 // Same-origin. This used to point at booky-deploy.vercel.app, which went 404
@@ -148,11 +150,40 @@ async function main() {
     }
   }
 
-  // Serving from the local fallback means the upstream project is gone. The
-  // game works, but silently, so surface it rather than let it become normal.
+  // Since 2026-08-08 `local` is the healthy source: prod serves this repo's
+  // booky/words.json. The two other values both mean queue edits here are not
+  // reaching players, which is silent — nothing 500s, the game just serves
+  // someone else's words. So say so loudly.
   const wsrc = wr.headers.get('x-booky-words');
-  if (wsrc && wsrc.startsWith('local-fallback')) {
-    warn(`words served from local fallback (${wsrc}) — booky-deploy upstream is down`);
+  if (wsrc === 'local') {
+    ok('queue served from this repo (x-booky-words: local)');
+  } else if (wsrc && wsrc.startsWith('proxy-booky-deploy')) {
+    fail(`queue is PROXIED from booky-deploy (${wsrc}) — edits to booky/words.json in this repo are NOT reaching players. Check PROXY_UPSTREAM in api/booky-words.js`);
+  } else if (wsrc && wsrc.startsWith('local-fallback')) {
+    warn(`words served via the upstream-down fallback (${wsrc}) — the proxy is on and booky-deploy is broken`);
+  }
+
+  // Deploy drift. Green Vercel status is not proof the alias moved, and the
+  // symptom is invisible: prod keeps serving an older queue while the repo
+  // looks correct. Compare the live queue against the file on disk.
+  try {
+    const localWords = JSON.parse(
+      fs.readFileSync(new URL('../booky/words.json', import.meta.url), 'utf8'),
+    );
+    const a = JSON.stringify(localWords.queue);
+    const b = JSON.stringify(w.queue);
+    if (a === b) {
+      ok(`live queue matches booky/words.json (${w.queue.length} days)`);
+    } else {
+      const diffs = localWords.queue
+        .map((x, i) => (x === w.queue[i] ? null : `day ${i + 1}: live ${w.queue[i]} vs repo ${x}`))
+        .filter(Boolean);
+      fail(
+        `live queue differs from booky/words.json (live ${w.queue.length} days, repo ${localWords.queue.length}) — the deploy has not landed. ${diffs.slice(0, 5).join('; ') || 'length differs only'}`,
+      );
+    }
+  } catch (e) {
+    warn(`could not compare live queue to booky/words.json: ${e.message}`);
   }
 
   done();

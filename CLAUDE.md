@@ -25,16 +25,19 @@ python3 scripts/validate_winnable.py     # every answer is in dictionary.json
 python3 scripts/validate_giveaway.py     # giveaway array valid, shows what's live
 ```
 
-**Also know where the live data actually comes from.** `/api/booky-words` serves
-the queue by **proxying `booky-deploy.vercel.app`**, a *separate* Vercel project —
-this repo's `booky/words.json` is NOT served directly. `api/booky-words.js` then
-overlays a few locally-owned keys (`giveaway`, `wordBooks[].cover` fixes) onto that
-proxied payload. So:
+**Where the live data comes from (changed 2026-08-08).** `/api/booky-words` now
+serves **this repo's `booky/words.json` directly**. Editing the `queue` here does
+reach production.
 
-- Editing `queue` here does **not** change the live word unless booky-deploy has it.
-- Editing an *overlaid* key (like `giveaway`) **does** reach production.
+It used to proxy `booky-deploy.vercel.app` and overlay only `giveaway` and
+`wordBooks[].cover`, which meant queue edits here silently shipped nothing.
+`PROXY_UPSTREAM` in `api/booky-words.js` restores that if it is ever needed.
+
 - To check what players actually get:
-  `curl -s https://90books.com/api/booky-words | python3 -m json.tool | head`
+  `curl -s -D- -o /dev/null https://90books.com/api/booky-words | grep -i x-booky-words`
+- `x-booky-words: local` is the healthy value now. `proxy-booky-deploy` means the
+  flip got reverted; `local-fallback:<reason>` only appears if the proxy is back
+  on *and* upstream is down.
 
 ### Standing rules for the word queue
 

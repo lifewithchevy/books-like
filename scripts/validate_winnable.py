@@ -6,9 +6,9 @@ is never auto-added. Run before shipping queue or dictionary changes:
 
   python3 scripts/validate_winnable.py
 
-SCOPE: this checks the LOCAL booky/words.json only. Production serves the queue
-from /api/booky-words, which proxies booky-deploy.vercel.app, so passing here
-does NOT prove the live game is safe. For that run:
+SCOPE: this checks the LOCAL booky/words.json. Since 2026-08-08 /api/booky-words
+serves that same file, so passing here means the queue is correct — but it does
+NOT prove the deploy landed. For that run:
 
   node scripts/health-live.mjs
 

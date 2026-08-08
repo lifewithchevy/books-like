@@ -34,16 +34,18 @@ as `computeDayNumber`). Displaced words go to the tail or another future slot â€
 never into today or the past. Changing today's word mid-day breaks the saved games
 of everyone who already played.
 
-## 3. The live queue is NOT served from this repo
+## 3. The live queue IS served from this repo (since 2026-08-08)
 
-`/api/booky-words` **proxies `booky-deploy.vercel.app`**, a separate Vercel
-project. `api/booky-words.js` then overlays locally-owned keys (`giveaway`,
-`wordBooks[].cover` fixes) onto that payload.
+`/api/booky-words` serves `booky/words.json` from this repo. Editing the `queue`
+here does change the live word.
 
-- Editing `queue` here does **not** change the live word unless booky-deploy has it.
-- Editing an overlaid key (like `giveaway`) **does** reach production.
+Before 2026-08-08 it proxied `booky-deploy.vercel.app` and overlaid only
+`giveaway` and `wordBooks[].cover`, so queue edits here shipped nothing at all.
+`PROXY_UPSTREAM` in `api/booky-words.js` turns that back on.
+
 - Check what players actually receive:
   `curl -s https://90books.com/api/booky-words | python3 -m json.tool | head`
+- The `x-booky-words` header should read `local`.
 
 ## Pre-flight â€” run all three before shipping
 

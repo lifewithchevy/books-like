@@ -21,7 +21,8 @@ const PROXY_UPSTREAM = false;
 const NO_STORE = 'no-store, no-cache, must-revalidate, max-age=0';
 const LOCAL_WORDS = path.join(__dirname, '..', 'booky', 'words.json');
 
-// The word QUEUE is owned upstream (booky-deploy). THIS repo owns:
+// Only used when PROXY_UPSTREAM is true. In that mode the QUEUE is owned
+// upstream (booky-deploy) and THIS repo owns:
 //   - `giveaway` (date-driven promo card; upstream may lack it entirely)
 //   - `wordBooks[].cover` overrides (Amazon ASINs go dead; local fixes must
 //     reach /api/booky-words even when booky-deploy's static words.json is a
