@@ -109,16 +109,16 @@
     "BLAZE",
     "STORM",
     "TAROT",
-    "HENRY",
+    "VIXEN",
     "PURGE",
     "MADRA",
-    "MERCY",
-    "QUILL",
+    "HENRY",
+    "WRATH",
     "OMENS",
     "VALOR",
     "RIVER",
     "SWORE",
-    "HALOS",
+    "NYMPH",
     "DREAD",
     "FERRY",
     "KNAVE",
@@ -134,7 +134,7 @@
     "PARRY",
     "HALOS",
     "SMOKE",
-    "WAKEN",
+    "PRIDE",
     "GUILE",
     "DUSKY",
     "CODEX",
@@ -148,7 +148,7 @@
     "SIGHS",
     "SCION",
     "FORGE",
-    "WRATH",
+    "MERCY",
     "PRISM",
     "REGAL",
     "XADEN",
@@ -162,7 +162,7 @@
     "ALLEY",
     "BRIAR",
     "VEILS",
-    "ROOTS",
+    "GREED",
     "YRENE",
     "STEED",
     "GLYPH",
@@ -176,7 +176,7 @@
     "GRAVE",
     "THIEF",
     "GLADE",
-    "RUNES",
+    "SLOTH",
     "CREST",
     "GUARD",
     "ELAIN",
@@ -268,7 +268,12 @@
     "ASHES",
     "ASHEN",
     "RITES",
-    "MIRTH"
+    "MIRTH",
+    "QUILL",
+    "HALOS",
+    "WAKEN",
+    "ROOTS",
+    "RUNES"
   ],
   "wordBooks": {
     "COURT": {
@@ -762,11 +767,11 @@
       "buyUrl": "https://amzn.to/3PKcUoT"
     },
     "WRATH": {
-      "slug": "a-court-of-thorns-and-roses",
-      "title": "A Court of Thorns and Roses",
-      "author": "Sarah J. Maas",
-      "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
-      "buyUrl": "https://amzn.to/3PKcUoT"
+      "slug": "kingdom-of-the-wicked",
+      "title": "Kingdom of the Wicked",
+      "author": "Kerri Maniscalco",
+      "cover": "/booky/covers/kingdom-of-the-wicked.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316428450?tag=90books-20"
     },
     "VINES": {
       "slug": "a-court-of-thorns-and-roses",
@@ -860,11 +865,11 @@
       "buyUrl": "https://www.amazon.com/s?k=9781627792127&i=stripbooks&tag=90books-20"
     },
     "PRIDE": {
-      "slug": "a-court-of-silver-flames",
-      "title": "A Court of Silver Flames",
-      "author": "Sarah J. Maas",
-      "cover": "/booky/covers/a-court-of-silver-flames.jpg",
-      "buyUrl": "https://www.amazon.com/s?k=9781526623799&i=stripbooks&tag=90books-20"
+      "slug": "kingdom-of-the-wicked",
+      "title": "Kingdom of the Wicked",
+      "author": "Kerri Maniscalco",
+      "cover": "/booky/covers/kingdom-of-the-wicked.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316428450?tag=90books-20"
     },
     "HUMAN": {
       "slug": "a-court-of-thorns-and-roses",
@@ -1365,11 +1370,11 @@
       "buyUrl": "https://www.amazon.com/s?k=9780593818962&i=stripbooks&tag=90books-20"
     },
     "GREED": {
-      "slug": "six-of-crows",
-      "title": "Six of Crows",
-      "author": "Leigh Bardugo",
-      "cover": "/booky/covers/six-of-crows.jpg",
-      "buyUrl": "https://www.amazon.com/s?k=9781627792127&i=stripbooks&tag=90books-20"
+      "slug": "kingdom-of-the-wicked",
+      "title": "Kingdom of the Wicked",
+      "author": "Kerri Maniscalco",
+      "cover": "/booky/covers/kingdom-of-the-wicked.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316428450?tag=90books-20"
     },
     "FLORA": {
       "slug": "a-court-of-thorns-and-roses",
@@ -2421,6 +2426,20 @@
       "author": "Rebecca Yarros",
       "cover": "/booky/covers/threshing-day.jpg",
       "buyUrl": "https://www.amazon.com/dp/1682818084?tag=90books-20"
+    },
+    "SLOTH": {
+      "slug": "kingdom-of-the-wicked",
+      "title": "Kingdom of the Wicked",
+      "author": "Kerri Maniscalco",
+      "cover": "/booky/covers/kingdom-of-the-wicked.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316428450?tag=90books-20"
+    },
+    "NYMPH": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "/booky/covers/zodiac-academy.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"

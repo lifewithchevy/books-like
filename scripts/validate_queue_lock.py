@@ -64,8 +64,13 @@ def main() -> int:
     last_locked = queue_day_index(current['epoch'], today)  # inclusive: today
     cur_q = current['queue']
     base_q = baseline['queue']
-    if len(cur_q) != len(base_q):
-        print('FAIL: queue length changed while today/past slots must stay locked')
+    # The queue is ALLOWED to grow: CLAUDE.md's "never drop a displaced word"
+    # rule says to append displaced words to the tail, which changes the length.
+    # Only a shrink can threaten the lock, and only if it cuts into locked slots.
+    if len(cur_q) < len(base_q):
+        print(f'WARN: queue shrank {len(base_q)} -> {len(cur_q)} — displaced words must go to the tail, not be deleted')
+    if len(cur_q) <= last_locked:
+        print(f'FAIL: queue truncated to {len(cur_q)}, shorter than the locked range (through day {last_locked + 1})')
         return 1
 
     epoch = date.fromisoformat(current['epoch'])

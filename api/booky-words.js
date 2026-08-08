@@ -9,6 +9,15 @@ const fs = require('fs');
 const path = require('path');
 
 const UPSTREAM = 'https://booky-deploy.vercel.app/booky/words.json';
+
+// 2026-08-08: THIS REPO IS NOW THE SOURCE OF TRUTH for the word queue.
+//
+// The proxy below meant queue edits in booky/words.json never reached players —
+// only `giveaway` and cover overrides did. Repo and upstream were byte-identical
+// (245 words, 0 differing slots) when this flipped, so nothing was lost, and
+// booky-deploy has no source repo anyone here can edit. Set this back to true
+// only if booky-deploy becomes editable again.
+const PROXY_UPSTREAM = false;
 const NO_STORE = 'no-store, no-cache, must-revalidate, max-age=0';
 const LOCAL_WORDS = path.join(__dirname, '..', 'booky', 'words.json');
 
@@ -66,6 +75,10 @@ module.exports = async (req, res) => {
     return;
   }
 
+  if (!PROXY_UPSTREAM) {
+    return serveLocal(res, null);
+  }
+
   try {
     const r = await fetch(UPSTREAM, {
       headers: { 'user-agent': '90books-booky-words-api' },
@@ -95,14 +108,17 @@ module.exports = async (req, res) => {
 // Last-resort source: this repo's booky/words.json. The queue is normally owned
 // upstream, but a stale word beats a broken game, and the local copy is kept in
 // sync well enough that it produced the correct word on the day this was added.
-// X-Booky-Words says `local-fallback:<reason>` so the health check can alert.
+// With PROXY_UPSTREAM off this is the normal path and `reason` is null, so the
+// header reads `local` — a plain source label, not an alert. When the proxy is
+// on and upstream fails, `reason` is set and the header says
+// `local-fallback:<reason>` so the health check can warn.
 function serveLocal(res, reason) {
   try {
     const body = fs.readFileSync(LOCAL_WORDS, 'utf8');
     JSON.parse(body); // never serve a corrupt file
     res.setHeader('Content-Type', 'application/json; charset=utf-8');
-    res.setHeader('X-Booky-Words', `local-fallback:${reason}`);
-    res.setHeader('X-Booky-Build', 'restored-2026-08-06');
+    res.setHeader('X-Booky-Words', reason ? `local-fallback:${reason}` : 'local');
+    res.setHeader('X-Booky-Build', 'local-source-2026-08-08');
     res.status(200).send(body);
   } catch (err) {
     console.error('[booky-words] local fallback failed:', err && err.message);
