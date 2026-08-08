@@ -36,7 +36,7 @@ jobs:
 
       - name: Checkout repo (only if down)
         if: steps.check.outputs.down != ''
-        uses: actions/checkout@v4
+        uses: actions/checkout@v7
 
       - name: Auto-redeploy the full site (only if down)
         if: steps.check.outputs.down != ''
