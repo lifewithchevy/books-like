@@ -16,25 +16,28 @@
 
 // ---- One-off notes, keyed by the UTC date of the send ----
 //
-// Date-driven on purpose, exactly like the `giveaway` array in words.json: a
-// note that a human has to switch off gets left on, or switched off early.
-// A key only ever matches its own send, so the note appears in that one day's
-// email and every other day goes out untouched. Past keys are harmless (they
-// simply never match again), so there is no cleanup step to forget.
+// ⚠️ THIS MECHANISM SILENTLY FAILED AND IS NOT TRUSTED. Do not use it to
+// announce anything until it is root-caused. On 2026-08-07 a note keyed
+// '2026-08-07' did not appear in that evening's email. Everything checked out
+// and it still did not send: the deployed source on the live-aliased deployment
+// contained the key, that deployment was production at 23:00 UTC, the send went
+// out at 23:16 UTC (so `toISOString().slice(0,10)` was '2026-08-07'), and
+// book-recs-app is definitely the sender — booky-deploy has no Resend key and
+// 500s. The raw message source showed the note block simply absent, meaning
+// `updateNote` was null at runtime. Unexplained.
 //
-// Keep it to a couple of sentences. The reminder's job is the play button.
-const UPDATE_NOTES = {
-  // Answers suggestion #2 from Beginning_Alps_1817 in the r/B00KY "Game Updates"
-  // thread: they wanted the word list widened because you often burn a guess on
-  // a word you know is wrong just to place a letter. The dictionary was a 1934
-  // Webster's cut to 5 letters, missing most plurals and verb forms, so ordinary
-  // words like GAMES and TALKS bounced while BOOKS and WALKS went through.
-  // Note the subreddit is B00KY with ZEROS, not letter O.
-  '2026-08-07': {
-    title: 'You asked for a bigger word list',
-    body: `You often burn a guess on a word you know is wrong, just to place a letter. Now those land: the word list went from about 10,000 to 18,483. More ideas? Drop them in the <a href="https://www.reddit.com/r/B00KY/comments/1uh88g6/game_updates/" style="color:#c8398f;text-decoration:none;font-weight:600;">r/B00KY game updates thread</a>.`,
-  },
-};
+// The gap that let it ship: `buildHtml` was verified locally, which proves
+// nothing about what the deployed cron emits. There is no way to see a rendered
+// email without sending to the whole audience, so a failure here is invisible
+// until subscribers get the wrong thing.
+//
+// Announcements now go out as a Resend Broadcast instead (composed and sent from
+// the dashboard, visible before it sends). See scripts/create-broadcast.mjs.
+//
+// Kept empty rather than deleted so the wiring — and this warning — survive. If
+// you ever repopulate it, first add a preview mode that returns the HTML without
+// sending, and confirm the note is in the bytes the DEPLOYED endpoint returns.
+const UPDATE_NOTES = {};
 
 module.exports = async (req, res) => {
   // ---- Auth: only allow Vercel Cron (or manual via x-debug-key=CRON_SECRET) ----
