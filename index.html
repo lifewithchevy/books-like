@@ -8859,9 +8859,15 @@
         var day = bklComputeDayNumber(j.epoch);
         var recent = [];
         // Spoiler-safe: only days strictly before today (index day-2 and earlier).
+        // Deduped by SLUG, keeping the most recent day, then walking further back to
+        // still fill six. Two words can share a book within any six-day window (VIXEN
+        // and HENRY are both The Poison Daughter, three days apart), and without this
+        // the shelf renders the identical cover twice and looks broken.
+        var recentSeen = {};
         for (var i = day - 2; i >= 0 && recent.length < 6; i--) {
           var word = queue[i], b = wb[word];
-          if (b && b.slug) {
+          if (b && b.slug && !recentSeen[b.slug]) {
+            recentSeen[b.slug] = 1;
             recent.push({
               day: i + 1,
               word: word,
@@ -9166,10 +9172,15 @@
         ? '<a class="bkl-buy" href="' + String(opts.buyUrl).replace(/"/g, '&quot;') + '" target="_blank" rel="noopener sponsored" onclick="event.stopPropagation();bklPh(\'library_book_clicked\',{slug:\'' + safeSlug + '\',section:\'' + section + '\'})">Get the book \u2192</a>'
         : '';
       const heart = (!BKL_TBR_ENABLED || inLibrary) ? '' : `<button class="shelf-heart${bklIsTbr(key) ? ' on' : ''}" data-key="${safeKey}" aria-label="Want to read" aria-pressed="${bklIsTbr(key) ? 'true' : 'false'}" onclick="event.stopPropagation();bklToggleTbr('${safeKey}',this)">${bklIsTbr(key) ? '♥' : '♡'}</button>`;
+      // role="button" promises assistive tech that this behaves like a button, so it
+      // has to be focusable and answer Enter/Space. Without tabindex it was mouse-only:
+      // keyboard and screen-reader users could not open a single book on the shelf,
+      // and this is the most-clicked element in the library.
       const interactAttr = spoilerLock
         ? ' aria-disabled="true"'
         : (typeof bklHasBookPage === 'function' && bklHasBookPage(key, opts.slug)
-          ? ' role="button" onclick="bklOpenBook(\'' + safeKey + '\',\'' + safeSlug + '\',\'' + section + '\')"'
+          ? ' role="button" tabindex="0" onclick="bklOpenBook(\'' + safeKey + '\',\'' + safeSlug + '\',\'' + section + '\')"'
+            + ' onkeydown="if(event.key===\'Enter\'||event.key===\' \'){event.preventDefault();bklOpenBook(\'' + safeKey + '\',\'' + safeSlug + '\',\'' + section + '\');}"'
           : ' aria-disabled="true" title="Book page coming soon" style="cursor:default;opacity:0.85;"');
       // If no ISBN cover URL, use a tiny blank gif so onload fires → triggers fetchCover
       const BLANK = 'data:image/gif;base64,R0lGODlhAQABAIAAAAAAAP///yH5BAEAAAAALAAAAAABAAEAAAIBRAA7';
