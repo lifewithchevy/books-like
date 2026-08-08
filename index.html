@@ -7216,9 +7216,7 @@
       'from blood and ash': 'https://amzn.to/49prybO',
       'fourth wing': 'https://amzn.to/4vaA7Q6',
       'a court of thorns and roses': 'https://amzn.to/3PKcUoT',
-      'one dark window': 'https://amzn.to/4ox0w8K',
       'throne of glass': 'https://amzn.to/4aeI6DP',
-      'throne in the dark': 'https://amzn.to/3QP5SiZ',
     };
     // A /dp/<isbn13> 404s, and a converted ISBN-10 can land on a different edition
     // that 404s too. Searching by ISBN reliably resolves to the exact book AND sets
@@ -7275,7 +7273,6 @@
       'from blood and ash': 'https://bookshop.org/a/124660/9781963135688',
       'fourth wing': 'https://bookshop.org/a/124660/9781649377371',
       'a court of thorns and roses': 'https://bookshop.org/a/124660/9781635575569',
-      'one dark window': 'https://bookshop.org/a/124660/9780316312486',
     };
     const BOOKSHOP_AFFILIATE_ID = '124660';
     function bookshopAffiliateUrl(key) {
@@ -8435,19 +8432,11 @@
     // reliably (OL lacks the edition or returns the wrong book, Google Books gets
     // rate-limited). Same canonical covers the daily Booky game uses (booky/books.json
     // + words.json), so the cover matches across the whole site.
+      // Self-hosted covers (booky/covers/<slug>.jpg) now win for Booky answer books
+      // via BKL_COVER_BY_SLUG. Ten Amazon P/<ASIN> hotlinks were removed from here on
+      // 2026-08-08: they are the URLs that quietly turn into a 1x1 GIF when an ASIN
+      // dies, which is why the covers were pulled local in the first place.
     const COVER_OVERRIDES = {
-      'the serpent and the wings of night': 'https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg',
-      'the serpent & the wings of night':   'https://images-na.ssl-images-amazon.com/images/P/1957779004.01.LZZZZZZZ.jpg',
-      'weavingshaw':                        'https://images-na.ssl-images-amazon.com/images/P/0593982576.01.LZZZZZZZ.jpg',
-      'one dark window':                    'https://images-na.ssl-images-amazon.com/images/P/0316312487.01.LZZZZZZZ.jpg',
-      'throne in the dark':                 'https://images-na.ssl-images-amazon.com/images/P/1464251207.01.LZZZZZZZ.jpg',
-      'starside':                           'https://images-na.ssl-images-amazon.com/images/P/B0FQV51HTY.01.LZZZZZZZ.jpg',
-      'dire bound':                         'https://images-na.ssl-images-amazon.com/images/P/0316601489.01.LZZZZZZZ.jpg',
-      'in the veins of the drowning':       'https://images-na.ssl-images-amazon.com/images/P/0316587605.01.LZZZZZZZ.jpg',
-      'city of gods and monsters':          'https://images-na.ssl-images-amazon.com/images/P/1998268012.01.LZZZZZZZ.jpg',
-      'hemlock & silver':                   'https://images-na.ssl-images-amazon.com/images/P/1250342034.01.LZZZZZZZ.jpg',
-      'phantasma':                          'https://images-na.ssl-images-amazon.com/images/P/0593818962.01.LZZZZZZZ.jpg',
-      'the knight and the moth':            'https://images-na.ssl-images-amazon.com/images/P/0316582704.01.LZZZZZZZ.jpg',
     };
 
     function getBookCoverUrl(key) {
@@ -8463,11 +8452,16 @@
       // and instant, so it also spares us the OpenLibrary rate limiting.
       try {
         if (typeof BKL_COVER_BY_SLUG !== 'undefined' && BKL_COVER_BY_SLUG) {
-          const slug = typeof slugifyBookKey === 'function'
-            ? slugifyBookKey(k)
-            : k.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, '');
-          if (BKL_COVER_BY_SLUG[slug]) return BKL_COVER_BY_SLUG[slug];
-          if (BKL_COVER_BY_SLUG[k]) return BKL_COVER_BY_SLUG[k];
+          const slugify = (t) => (typeof slugifyBookKey === 'function'
+            ? slugifyBookKey(t)
+            : t.replace(/[^a-z0-9]+/g, '-').replace(/^-|-$/g, ''));
+          // "Hemlock & Silver" slugifies to hemlock-silver, but words.json spells it
+          // hemlock-and-silver, so try the spelled-out ampersand too or every book
+          // with an & in the title silently misses its local cover.
+          const candidates = [slugify(k), slugify(k.replace(/&/g, ' and ')), k];
+          for (const c of candidates) {
+            if (c && BKL_COVER_BY_SLUG[c]) return BKL_COVER_BY_SLUG[c];
+          }
         }
       } catch (e) { /* cover lookup must never break the page */ }
       const isbn = BOOK_ISBN[k] || BOOK_ISBN[spaced];
