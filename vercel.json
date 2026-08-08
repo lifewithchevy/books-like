@@ -241,11 +241,6 @@
       "permanent": false
     },
     {
-      "source": "/books-like/powerless",
-      "destination": "/",
-      "permanent": false
-    },
-    {
       "source": "/heba",
       "destination": "/booky?utm_source=heba&utm_medium=author&utm_campaign=weavingshaw",
       "permanent": false

@@ -7333,10 +7333,14 @@
     // Books temporarily hidden site-wide (never recommended, no books-like page,
     // not surfaced in search). Centralised + reversible, clear the set to restore.
     // Omitted from the whole site (recs, search, shelves, direct pages).
-    // - Powerless trilogy (Lauren Roberts): paused for brand safety.
     // - heartless: mis-tagged/confusing, pulled to keep the list tight.
     // - lightlark: divisive + low-rated (3.7), pulled to keep the list tight.
-    const HIDDEN_BOOKS = new Set(['powerless', 'powerful', 'reckless', 'heartless', 'lightlark']);
+    //
+    // The Powerless trilogy (powerless, powerful, reckless) was here and came out on
+    // 2026-08-08 at Olga's call. It is a Booky answer book, so it kept appearing in
+    // Recent Booky Words while the router bounced anyone who tapped it to the landing
+    // page. Anything scheduled as a puzzle answer needs a real page.
+    const HIDDEN_BOOKS = new Set(['heartless', 'lightlark']);
     function isHiddenBook(key) { return HIDDEN_BOOKS.has((key || '').toLowerCase().trim()); }
 
     function getBooksLikeRecs(srcKey, srcMeta, limit) {
@@ -8770,9 +8774,17 @@
       return bookMetadata[key].author ? key : null;
     }
     function bklHasBookPage(key, slug) {
+      // A hidden book has no reachable page: openBookDetail() calls goHome() on it.
+      // This used to check only bookMetadata, so a hidden book still rendered as a
+      // tappable card and silently bounced the reader to the landing page. Powerless
+      // did exactly that from the Recent Booky Words shelf, the most-tapped row in
+      // the library. Ask the same question the router asks.
+      var hidden = typeof isHiddenBook === 'function';
+      if (key && hidden && isHiddenBook(key)) return false;
       if (key && bookMetadata[key] && bookMetadata[key].author) return true;
       if (slug) {
         var k = bklSlugToKey(slug);
+        if (k && hidden && isHiddenBook(k)) return false;
         if (k && bookMetadata[k] && bookMetadata[k].author) return true;
       }
       return false;
@@ -8859,15 +8871,15 @@
         var day = bklComputeDayNumber(j.epoch);
         var recent = [];
         // Spoiler-safe: only days strictly before today (index day-2 and earlier).
-        // Deduped by SLUG, keeping the most recent day, then walking further back to
-        // still fill six. Two words can share a book within any six-day window (VIXEN
-        // and HENRY are both The Poison Daughter, three days apart), and without this
-        // the shelf renders the identical cover twice and looks broken.
-        var recentSeen = {};
+        // ONE CARD PER PUZZLE DAY, and deliberately NOT deduped by book. This row is a
+        // diary of the last six days, so if two words in that window share a book the
+        // cover is meant to appear twice. Deduping was tried on 2026-08-08 and reverted:
+        // skipping the day pulls an older day in and the row stops being "the last six
+        // days". The right fix lives in the queue, by not scheduling one book twice in
+        // a week, not here.
         for (var i = day - 2; i >= 0 && recent.length < 6; i--) {
           var word = queue[i], b = wb[word];
-          if (b && b.slug && !recentSeen[b.slug]) {
-            recentSeen[b.slug] = 1;
+          if (b && b.slug) {
             recent.push({
               day: i + 1,
               word: word,
