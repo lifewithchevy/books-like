@@ -14027,6 +14027,23 @@
       recordTasteInteraction(key);
       trackViewedBook(key); // mark as seen, Made For You won't re-surface it
 
+      // BKL_COVER_BY_SLUG (the self-hosted Booky covers) and the seeded author/pitch
+      // are only populated once the word list has been fetched, which happens on the
+      // library view. Arriving straight at /book/<slug> — a shared link, a refresh,
+      // a search result — none of that has run, so the page fell back to an
+      // OpenLibrary title search and could show the wrong book entirely. Load the
+      // word data, then re-open this same book so it renders with the real cover.
+      if (typeof BKL_WORD_DATA !== 'undefined' && !BKL_WORD_DATA
+          && typeof bklLoadWordData === 'function' && !openBookDetail._reopening) {
+        bklLoadWordData().then(function () {
+          // Only re-render if the reader is still looking at this book.
+          if (_navView === 'bookDetail' && _navParams && _navParams.key === key) {
+            openBookDetail._reopening = true;
+            try { openBookDetail(key); } finally { openBookDetail._reopening = false; }
+          }
+        }).catch(function () { /* keep whatever cover we already resolved */ });
+      }
+
       const meta      = bookMetadata[key] || {};
       const isbn      = BOOK_ISBN[key]    || null;
       const coverUrl  = getBookCoverUrl(key);
