@@ -60,11 +60,11 @@ jobs:
           node scripts/health-live.mjs
           \`\`\`
 
-          The live queue comes from /api/booky-words. Check the X-Booky-Words
-          header before editing anything: 'proxy-booky-deploy' means the queue is
-          owned by the separate booky-deploy project and editing booky/words.json
-          here fixes nothing, while 'local-fallback:...' means upstream is down
-          and this repo IS serving the queue."
+          The live queue comes from /api/booky-words and, since 2026-08-08, is
+          served from this repo's booky/words.json. Check the X-Booky-Words
+          header before editing anything: 'local' is healthy, while
+          'proxy-booky-deploy' means the proxy got turned back on and editing
+          booky/words.json here fixes nothing."
 
           existing=$(gh issue list --repo "${{ github.repository }}" --state open \
             --search "$title in:title" --json number --jq '.[0].number')
