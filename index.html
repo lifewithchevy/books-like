@@ -1068,6 +1068,22 @@
       max-width: 660px;
     }
 
+    /* ── DORMANT FEATURES ──────────────────────────────────────────────────
+       Shipped, measured, and switched off because almost nobody used them.
+       The code below each flag is left intact and costs nothing to carry:
+       delete the one rule to bring a feature back, no rebuild needed.
+       Same pattern as BKL_TBR_ENABLED, which turned the TBR hearts off.
+
+       Rec voting  — 3 people voted in the 120 days to 2026-08-08 (9 votes),
+                     and at that volume most of it is our own testing. The
+                     /api/vote endpoint and stored counts are untouched, so
+                     nothing is lost if it comes back.
+       Goodreads   — 10 people connected in 120 days, none since 2026-07-05.
+         connect     The whole integration stays; only the invitation is gone.
+       ─────────────────────────────────────────────────────────────────────── */
+    .rec-vote,
+    .profile-guest-connect-btn { display: none !important; }
+
     /* Rec voting: 👍/👎 at the bottom of each books-like rec card. Downvotes are
        private; only the 👍 count shows (and only once it's meaningful). */
     .rec-vote {
@@ -10203,11 +10219,11 @@
           </div>`;
         } else if (sessionInteractions >= 3) {
           subtitleHtml = `<div class="discover-results-desc" style="padding:0 16px 16px;">
-            <p style="margin:0 0 6px;line-height:1.7;">Your taste is taking shape, every book you open sharpens it. Connect Goodreads to make these even better.</p>
+            <p style="margin:0 0 6px;line-height:1.7;">Your taste is taking shape, every book you open sharpens it.</p>
           </div>`;
         } else {
           subtitleHtml = `<div class="discover-results-desc" style="padding:0 16px 16px;">
-            <p style="margin:0;line-height:1.7;">Highly rated picks to get you started. Browse a few and these personalise to you, or connect Goodreads for instant recommendations.</p>
+            <p style="margin:0;line-height:1.7;">Highly rated picks to get you started. Browse a few and these personalise to you.</p>
           </div>`;
         }
 
