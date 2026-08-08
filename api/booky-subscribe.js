@@ -65,6 +65,8 @@ function buildGiveawayWelcomeHtml({ title, announce, playUrl, cover }) {
 </html>`;
 }
 
+const { enforce } = require('./_rate-limit');
+
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -75,6 +77,9 @@ module.exports = async (req, res) => {
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
+
+  // Unauthenticated POST that spends a real resource. Fails open.
+  if (await enforce(req, res, { name: 'subscribe', limit: 8 })) return;
 
   const { email, source, streak, giveawayTag, giveawayTitle, giveawayAnnounce } = req.body || {};
 

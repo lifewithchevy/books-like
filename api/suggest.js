@@ -4,6 +4,8 @@
 //   AIRTABLE_BASE_ID   — e.g. appXXXXXXXXXXXXXX
 //   AIRTABLE_TABLE     — table name, default "Suggestions"
 
+const { enforce } = require('./_rate-limit');
+
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Methods', 'POST, OPTIONS');
@@ -14,6 +16,9 @@ module.exports = async (req, res) => {
     res.status(405).json({ error: 'Method not allowed' });
     return;
   }
+
+  // Unauthenticated POST that spends a real resource. Fails open.
+  if (await enforce(req, res, { name: 'suggest', limit: 20 })) return;
 
   const { book, context, note, email } = req.body || {};
 
