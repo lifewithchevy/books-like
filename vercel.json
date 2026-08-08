@@ -80,6 +80,23 @@
       ]
     },
     {
+      "source": "/booky/covers/(.*)",
+      "headers": [
+        {
+          "key": "Cache-Control",
+          "value": "public, max-age=86400, stale-while-revalidate=2592000"
+        },
+        {
+          "key": "CDN-Cache-Control",
+          "value": "public, s-maxage=604800, stale-while-revalidate=2592000"
+        },
+        {
+          "key": "Vercel-CDN-Cache-Control",
+          "value": "public, s-maxage=604800, stale-while-revalidate=2592000"
+        }
+      ]
+    },
+    {
       "source": "/booky/words.json",
       "headers": [
         {

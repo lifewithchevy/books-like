@@ -27,16 +27,28 @@ module.exports = async (req, res) => {
     return;
   }
 
+  // LOCAL FIRST (2026-08-08). This used to fetch booky-deploy on every request
+  // and rewrite styles.css / og-image to absolute booky-deploy URLs — a network
+  // hop and a hard dependency on a second Vercel project that is built from
+  // THIS SAME repo, so it can only ever be equal or staler. On 2026-08-04 that
+  // project 404'd and this route answered 502. The repo's own shell already
+  // points at /api/booky-app and same-origin assets, so it needs no rewriting.
+  try {
+    const html = fs.readFileSync(LOCAL_PAGE, 'utf8');
+    res.setHeader('Content-Type', 'text/html; charset=utf-8');
+    res.setHeader('X-Booky-Page', 'local');
+    res.status(200).send(html);
+    return;
+  } catch (e) {
+    console.error('[booky-page] local shell unreadable, trying upstream:', e && e.message);
+  }
+
   try {
     const r = await fetch(`${BOOKY_DEPLOY}/booky`, {
       headers: { 'user-agent': '90books-booky-page-api' },
       cache: 'no-store',
     });
     if (!r.ok) {
-      // booky-deploy went 404 on every path on 2026-08-04, which left this
-      // route answering 502. /booky itself is served from the repo so the game
-      // was unaffected, but any caller of this endpoint got nothing. Serve the
-      // repo's own shell instead of failing.
       return serveLocal(res, `upstream-${r.status}`);
     }
     let html = await r.text();

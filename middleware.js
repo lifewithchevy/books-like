@@ -18,11 +18,15 @@ import { BOOKS_LIKE_RECS } from './seo-recs.mjs';
 // path bypasses a stuck CDN object on /booky/words.json). We READ this file,
 // never write it (chat boundary).
 async function getLibraryBooks(origin) {
-  // Prefer booky-deploy — /booky/*.json on 90books.com is often a frozen CDN
-  // object (or 404 for newer filenames). Fall back to same-origin API.
+  // Same-origin FIRST. /api/booky-words is the authoritative queue as of
+  // 2026-08-08 (it reads this deployment's booky/words.json). It used to prefer
+  // booky-deploy because /booky/*.json here was a frozen CDN object — but
+  // booky-deploy is a second Vercel project on this SAME repo, so it could only
+  // ever be equal or staler, and when it 404'd on 2026-08-04 it took the game
+  // down. Kept only as a last resort.
   const urls = [
-    'https://booky-deploy.vercel.app/booky/words.json',
     `${origin}/api/booky-words`,
+    'https://booky-deploy.vercel.app/booky/words.json',
   ];
   for (const u of urls) {
     try {
@@ -424,14 +428,18 @@ export default async function middleware(request) {
   // Booky word queue: /booky/* static assets on the 90books.com project
   // (book-recs-app) are stuck on a frozen CDN generation — new deploys update
   // middleware but not those objects (words.json keeps an 08:59 etag; new
-  // files under /booky/ 404). Proxy the live queue from booky-deploy, which
-  // does receive fresh booky/ uploads, and return no-store.
-  // NOTE: the edge often still serves the frozen static object for these
-  // paths (no x-edge-middleware). Prefer /api/booky-words from the client.
+  // files under /booky/ 404). So serve the live queue through the API route
+  // instead of the frozen object, with no-store.
+  //
+  // 2026-08-08: this used to fetch booky-deploy. It now goes same-origin to
+  // /api/booky-words, which is the authority. Anyone still requesting the old
+  // /booky/words.json path (bookmarks, scripts, cached clients) therefore gets
+  // the SAME queue players get, instead of a second project's copy that could
+  // silently drift. NOTE: the edge often still serves the frozen static object
+  // for these paths (no x-edge-middleware). Prefer /api/booky-words directly.
   if (!isLiveBookyHost && (url.pathname === '/booky/words.json' || url.pathname === '/booky/daily-words.json')) {
     try {
-      const upstream = `${BOOKY_DEPLOY}/booky/words.json`;
-      const r = await fetch(upstream, {
+      const r = await fetch(`${url.origin}/api/booky-words`, {
         headers: { 'user-agent': '90books-edge-middleware' },
       });
       if (r.ok) {
