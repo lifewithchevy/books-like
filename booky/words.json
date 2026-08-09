@@ -141,7 +141,7 @@
     "SWORN",
     "HEIRS",
     "COALS",
-    "CRYPT",
+    "GAMES",
     "EERIE",
     "CACHE",
     "NORTH",
@@ -159,7 +159,7 @@
     "GLOOM",
     "SINGE",
     "MOTHS",
-    "ALLEY",
+    "CHAOS",
     "BRIAR",
     "VEILS",
     "GREED",
@@ -171,7 +171,7 @@
     "SHEEN",
     "COINS",
     "MOATS",
-    "MURKY",
+    "DEALS",
     "ROARS",
     "GRAVE",
     "THIEF",
@@ -291,6 +291,9 @@
     "DUSKY",
     "EMBER",
     "TAMED",
+    "CRYPT",
+    "ALLEY",
+    "MURKY",
     "POPPY"
   ],
   "wordBooks": {
@@ -2584,6 +2587,20 @@
       "author": "Stephanie Garber",
       "cover": "/booky/covers/the-mirror-of-infinite-endings.jpg",
       "buyUrl": "https://www.amazon.com/dp/1250462037?tag=90books-20"
+    },
+    "GAMES": {
+      "slug": "caraval",
+      "title": "Caraval",
+      "author": "Stephanie Garber",
+      "cover": "/booky/covers/caraval.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250095255?tag=90books-20"
+    },
+    "CHAOS": {
+      "slug": "once-upon-a-broken-heart",
+      "title": "Once Upon a Broken Heart",
+      "author": "Stephanie Garber",
+      "cover": "/booky/covers/once-upon-a-broken-heart.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250268397?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
