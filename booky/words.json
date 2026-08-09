@@ -110,13 +110,13 @@
     "STORM",
     "TAROT",
     "VIXEN",
-    "PURGE",
+    "WIELD",
     "MADRA",
     "HENRY",
     "WRATH",
     "OMENS",
     "VALOR",
-    "RIVER",
+    "DRAWS",
     "SWORE",
     "NYMPH",
     "DREAD",
@@ -259,7 +259,7 @@
     "CHAIN",
     "LIARS",
     "SMOKY",
-    "POPPY",
+    "PURGE",
     "WIDOW",
     "BITES",
     "SHORE",
@@ -270,13 +270,15 @@
     "RITES",
     "MIRTH",
     "QUILL",
-    "HALOS",
+    "RIVER",
     "WAKEN",
     "DEITY",
     "RUNES",
     "BLAZE",
     "TOPAZ",
-    "PETAL"
+    "PETAL",
+    "HALOS",
+    "POPPY"
   ],
   "wordBooks": {
     "COURT": {
@@ -2457,6 +2459,20 @@
       "author": "Rebecca Yarros",
       "cover": "/booky/covers/fourth-wing.jpg",
       "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "WIELD": {
+      "slug": "swordheart",
+      "title": "Swordheart",
+      "author": "T. Kingfisher",
+      "cover": "/booky/covers/swordheart.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250400228?tag=90books-20"
+    },
+    "DRAWS": {
+      "slug": "daggerbound",
+      "title": "Daggerbound",
+      "author": "T. Kingfisher",
+      "cover": "/booky/covers/daggerbound.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250400082?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
