@@ -143,7 +143,7 @@
     "COALS",
     "CRYPT",
     "EERIE",
-    "CULTS",
+    "CACHE",
     "TAMED",
     "AZURE",
     "SCION",
@@ -157,7 +157,7 @@
     "HEXED",
     "SHINE",
     "GLOOM",
-    "RUSTY",
+    "SINGE",
     "MOTHS",
     "ALLEY",
     "BRIAR",
@@ -285,10 +285,8 @@
     "DREAD",
     "ANGER",
     "TIDES",
-    "CACHE",
-    "SIGHS",
-    "SINGE",
-    "POPPY"
+    "POPPY",
+    "SIGHS"
   ],
   "wordBooks": {
     "COURT": {
