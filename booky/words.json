@@ -124,7 +124,7 @@
     "KNAVE",
     "RINGS",
     "SYBIL",
-    "FLARE",
+    "ARRAY",
     "VEGAS",
     "VAULT",
     "EMBER",
@@ -136,7 +136,7 @@
     "SMOKE",
     "PRIDE",
     "GUILE",
-    "DUSKY",
+    "ALLOY",
     "CODEX",
     "SWORN",
     "HEIRS",
@@ -287,6 +287,8 @@
     "TIDES",
     "SIGIL",
     "SIGHS",
+    "FLARE",
+    "DUSKY",
     "POPPY"
   ],
   "wordBooks": {
@@ -2554,6 +2556,20 @@
       "buyUrl": "https://www.amazon.com/dp/1250400082?tag=90books-20"
     },
     "REEVE": {
+      "slug": "alchemised",
+      "title": "Alchemised",
+      "author": "SenLinYu",
+      "cover": "/booky/covers/alchemised.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0593972708?tag=90books-20"
+    },
+    "ARRAY": {
+      "slug": "alchemised",
+      "title": "Alchemised",
+      "author": "SenLinYu",
+      "cover": "/booky/covers/alchemised.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0593972708?tag=90books-20"
+    },
+    "ALLOY": {
       "slug": "alchemised",
       "title": "Alchemised",
       "author": "SenLinYu",
