@@ -101,8 +101,8 @@
     "ELITE",
     "WHEEL",
     "VENOM",
-    "TOPAZ",
-    "RIDOC",
+    "MIDAS",
+    "DUNNE",
     "MOTIF",
     "BAGEL",
     "SIGIL",
@@ -274,7 +274,9 @@
     "WAKEN",
     "DEITY",
     "RUNES",
-    "BLAZE"
+    "BLAZE",
+    "TOPAZ",
+    "RIDOC"
   ],
   "wordBooks": {
     "COURT": {
@@ -2441,6 +2443,20 @@
       "author": "Caroline Peckham & Susanne Valenti",
       "cover": "/booky/covers/zodiac-academy.jpg",
       "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "MIDAS": {
+      "slug": "gild",
+      "title": "Gild",
+      "author": "Raven Kennedy",
+      "cover": "/booky/covers/gild.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+    },
+    "DUNNE": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "/booky/covers/fourth-wing.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
