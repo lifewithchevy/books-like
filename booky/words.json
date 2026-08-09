@@ -117,7 +117,7 @@
     "OMENS",
     "VALOR",
     "DRAWS",
-    "SWORE",
+    "TYGER",
     "NYMPH",
     "DREAD",
     "TROVE",
@@ -280,6 +280,7 @@
     "HALOS",
     "MADRA",
     "FERRY",
+    "SWORE",
     "POPPY"
   ],
   "wordBooks": {
@@ -2400,11 +2401,11 @@
       "buyUrl": "https://www.amazon.com/dp/1951607015?tag=90books-20"
     },
     "RITES": {
-      "slug": "from-blood-and-ash",
-      "title": "From Blood and Ash",
-      "author": "Jennifer L. Armentrout",
-      "cover": "/booky/covers/from-blood-and-ash.jpg",
-      "buyUrl": "https://amzn.to/49prybO"
+      "slug": "rites-of-the-starling",
+      "title": "Rites of the Starling",
+      "author": "Devney Perry",
+      "cover": "/booky/covers/rites-of-the-starling.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1682816753?tag=90books-20"
     },
     "ELITE": {
       "slug": "powerless",
@@ -2489,6 +2490,27 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
       "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "TYGER": {
+      "slug": "dominion",
+      "title": "Dominion",
+      "author": "Jean Kwok",
+      "cover": "/booky/covers/dominion.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1408751070?tag=90books-20"
+    },
+    "CLANS": {
+      "slug": "the-ballad-of-falling-dragons",
+      "title": "The Ballad of Falling Dragons",
+      "author": "Sarah A. Parker",
+      "cover": "/booky/covers/the-ballad-of-falling-dragons.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0063449722?tag=90books-20"
+    },
+    "ALPHA": {
+      "slug": "fury-bound",
+      "title": "Fury Bound",
+      "author": "Sable Sorensen",
+      "cover": "/booky/covers/fury-bound.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316610941?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"

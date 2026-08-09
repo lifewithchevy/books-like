@@ -53,7 +53,7 @@ async function main() {
   // A broken dictionary must not abort the run: the checks below (unwinnable
   // word, runway, giveaway) are the ones this script exists for.
   let dict = new Set();
-  const dr = await fetch(`${DICT}?v=16`, { cache: 'no-store' });
+  const dr = await fetch(`${DICT}?v=17`, { cache: 'no-store' });
   if (!dr.ok) {
     fail(`dictionary returned ${dr.status} — guesses cannot be validated`);
   } else {
