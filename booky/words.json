@@ -131,21 +131,21 @@
     "ALPHA",
     "RIDOC",
     "SPARK",
-    "PARRY",
+    "RELIC",
     "HALOS",
     "SMOKE",
     "PRIDE",
     "GUILE",
     "DUSKY",
     "CODEX",
-    "TIDES",
+    "SWORN",
     "HEIRS",
     "COALS",
     "CRYPT",
     "EERIE",
-    "CACHE",
+    "CULTS",
     "TAMED",
-    "SIGHS",
+    "AZURE",
     "SCION",
     "FORGE",
     "MERCY",
@@ -157,7 +157,7 @@
     "HEXED",
     "SHINE",
     "GLOOM",
-    "SINGE",
+    "RUSTY",
     "MOTHS",
     "ALLEY",
     "BRIAR",
@@ -255,7 +255,7 @@
     "CREED",
     "LOOTS",
     "LURED",
-    "RELIC",
+    "PARRY",
     "CHAIN",
     "LIARS",
     "SMOKY",
@@ -284,6 +284,10 @@
     "MATED",
     "DREAD",
     "ANGER",
+    "TIDES",
+    "CACHE",
+    "SIGHS",
+    "SINGE",
     "POPPY"
   ],
   "wordBooks": {
@@ -1199,11 +1203,11 @@
       "buyUrl": "https://www.amazon.com/s?k=9781635575576&i=stripbooks&tag=90books-20"
     },
     "RELIC": {
-      "slug": "from-blood-and-ash",
-      "title": "From Blood and Ash",
-      "author": "Jennifer L. Armentrout",
-      "cover": "/booky/covers/from-blood-and-ash.jpg",
-      "buyUrl": "https://amzn.to/49prybO"
+      "slug": "daggerbound",
+      "title": "Daggerbound",
+      "author": "T. Kingfisher",
+      "cover": "/booky/covers/daggerbound.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250400082?tag=90books-20"
     },
     "STEED": {
       "slug": "fourth-wing",
@@ -2521,6 +2525,34 @@
       "author": "H. M. Wolfe",
       "cover": "/booky/covers/daggermouth.jpg",
       "buyUrl": "https://www.amazon.com/dp/B0GN38SNGB?tag=90books-20"
+    },
+    "SWORN": {
+      "slug": "swordheart",
+      "title": "Swordheart",
+      "author": "T. Kingfisher",
+      "cover": "/booky/covers/swordheart.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250400228?tag=90books-20"
+    },
+    "CULTS": {
+      "slug": "daggerbound",
+      "title": "Daggerbound",
+      "author": "T. Kingfisher",
+      "cover": "/booky/covers/daggerbound.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250400082?tag=90books-20"
+    },
+    "AZURE": {
+      "slug": "dominion",
+      "title": "Dominion",
+      "author": "Jean Kwok",
+      "cover": "/booky/covers/dominion.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1408751070?tag=90books-20"
+    },
+    "RUSTY": {
+      "slug": "daggerbound",
+      "title": "Daggerbound",
+      "author": "T. Kingfisher",
+      "cover": "/booky/covers/daggerbound.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250400082?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
