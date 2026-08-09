@@ -105,7 +105,7 @@
     "DUNNE",
     "WIELD",
     "BAGEL",
-    "SIGIL",
+    "REEVE",
     "PEARL",
     "STORM",
     "TAROT",
@@ -285,8 +285,9 @@
     "DREAD",
     "ANGER",
     "TIDES",
-    "POPPY",
-    "SIGHS"
+    "SIGIL",
+    "SIGHS",
+    "POPPY"
   ],
   "wordBooks": {
     "COURT": {
@@ -2551,6 +2552,13 @@
       "author": "T. Kingfisher",
       "cover": "/booky/covers/daggerbound.jpg",
       "buyUrl": "https://www.amazon.com/dp/1250400082?tag=90books-20"
+    },
+    "REEVE": {
+      "slug": "alchemised",
+      "title": "Alchemised",
+      "author": "SenLinYu",
+      "cover": "/booky/covers/alchemised.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0593972708?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
