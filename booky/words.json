@@ -106,7 +106,7 @@
     "MOTIF",
     "BAGEL",
     "SIGIL",
-    "BLAZE",
+    "PEARL",
     "STORM",
     "TAROT",
     "VIXEN",
@@ -273,7 +273,8 @@
     "HALOS",
     "WAKEN",
     "DEITY",
-    "RUNES"
+    "RUNES",
+    "BLAZE"
   ],
   "wordBooks": {
     "COURT": {
@@ -1223,11 +1224,11 @@
       "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
     },
     "PEARL": {
-      "slug": "gild",
-      "title": "Gild",
-      "author": "Raven Kennedy",
-      "cover": "/booky/covers/gild.jpg",
-      "buyUrl": "https://www.amazon.com/s?k=9781737633808&i=stripbooks&tag=90books-20"
+      "slug": "from-blood-and-ash",
+      "title": "From Blood and Ash",
+      "author": "Jennifer L. Armentrout",
+      "cover": "/booky/covers/from-blood-and-ash.jpg",
+      "buyUrl": "https://amzn.to/49prybO"
     },
     "SHEEN": {
       "slug": "quicksilver",
