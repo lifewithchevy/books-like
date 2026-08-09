@@ -111,7 +111,7 @@
     "TAROT",
     "VIXEN",
     "PURGE",
-    "MADRA",
+    "ORDER",
     "HENRY",
     "WRATH",
     "OMENS",
@@ -120,7 +120,7 @@
     "SWORE",
     "NYMPH",
     "DREAD",
-    "FERRY",
+    "TROVE",
     "KNAVE",
     "MATED",
     "SYBIL",
@@ -278,6 +278,8 @@
     "TOPAZ",
     "PETAL",
     "HALOS",
+    "MADRA",
+    "FERRY",
     "POPPY"
   ],
   "wordBooks": {
@@ -2473,6 +2475,20 @@
       "author": "T. Kingfisher",
       "cover": "/booky/covers/daggerbound.jpg",
       "buyUrl": "https://www.amazon.com/dp/1250400082?tag=90books-20"
+    },
+    "ORDER": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "/booky/covers/zodiac-academy.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "TROVE": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
