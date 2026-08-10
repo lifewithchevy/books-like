@@ -79,21 +79,36 @@ const { encodeStats, decodeStats } = require('./_stats-codec');
 //
 // Returns null on any failure: restoring is a bonus, never a reason to fail
 // a signup.
+// Resend exposes the contact under two path shapes and they have not behaved
+// identically: the audience-scoped one is what the rest of this codebase uses,
+// while the documented retrieve endpoint is unscoped. Try both rather than
+// betting the feature on which one this account answers, and report which
+// path produced the record so a failure is diagnosable from the response
+// instead of guessing at it from the outside.
 async function fetchStoredStats(apiKey, audienceId, email) {
-  try {
-    const r = await fetch(
-      `https://api.resend.com/audiences/${audienceId}/contacts/${encodeURIComponent(email)}`,
-      { headers: { Authorization: `Bearer ${apiKey}` } }
-    );
-    if (!r.ok) return null;
-    const body = await r.json();
-    const raw = body?.data?.first_name ?? body?.first_name;
-    if (raw == null || raw === '') return null;
-    return decodeStats(raw);
-  } catch (err) {
-    console.error('[booky-subscribe] stats read failed:', err);
-    return null;
+  const attempts = [
+    ['audience', `https://api.resend.com/audiences/${audienceId}/contacts/${encodeURIComponent(email)}`],
+    ['contacts', `https://api.resend.com/contacts/${encodeURIComponent(email)}`],
+  ];
+
+  for (const [via, url] of attempts) {
+    try {
+      const r = await fetch(url, { headers: { Authorization: `Bearer ${apiKey}` } });
+      if (!r.ok) {
+        console.error('[booky-subscribe] stats read', via, 'HTTP', r.status);
+        continue;
+      }
+      const body = await r.json();
+      const raw = body?.data?.first_name ?? body?.first_name;
+      // An existing contact with an empty field is a real answer, not a
+      // failure — stop here rather than retrying the other path.
+      if (raw == null || raw === '') return { stats: null, source: via + ':empty' };
+      return { stats: decodeStats(raw), source: via };
+    } catch (err) {
+      console.error('[booky-subscribe] stats read', via, 'threw:', err);
+    }
   }
+  return { stats: null, source: 'read-failed' };
 }
 
 module.exports = async (req, res) => {
@@ -161,9 +176,9 @@ module.exports = async (req, res) => {
       // and whatever stats we hold for them are still intact. That is exactly
       // the returning-player case: read the record back so the client can
       // restore it. A brand-new contact (r.ok) has nothing to restore.
-      const restored = r.status === 422
+      const read = r.status === 422
         ? await fetchStoredStats(RESEND_API_KEY, RESEND_AUDIENCE_ID, cleanEmail)
-        : null;
+        : { stats: null, source: 'new-contact' };
 
       // Resend returns 422 when the contact already exists — treat as success.
       // For a giveaway entry we must still record the entry on that existing
@@ -312,7 +327,11 @@ Booky by 90books · you signed up at 90books.com/booky · reply to unsubscribe`,
             console.error('[booky-subscribe] Welcome email failed:', err);
           }
         }
-        res.status(200).json({ ok: true, stored: 'resend', stats: restored });
+        // stats_source names which read path answered (or why none did). It
+        // carries no contact data — it is the difference between "this player
+        // has no record" and "we could not read the record", which are the
+        // same `stats: null` to the client but very different bugs.
+        res.status(200).json({ ok: true, stored: 'resend', stats: read.stats, stats_source: read.source });
         return;
       }
 

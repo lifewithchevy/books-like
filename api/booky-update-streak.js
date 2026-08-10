@@ -94,8 +94,19 @@ module.exports = async (req, res) => {
       );
     }
 
-    if (r.ok || r.status === 422) {
-      res.status(200).json({ ok: true, streak: cleanStreak });
+    // Report what actually happened to the record, not just that we survived.
+    // This used to answer `ok: true` for every outcome including the 422 below,
+    // where the PATCH 404'd and the create then hit an existing contact — so
+    // nothing was written and the response said success anyway. That made it
+    // impossible to tell a stored streak from a silently dropped one, which is
+    // exactly the question restore-on-subscribe depends on.
+    if (r.ok) {
+      res.status(200).json({ ok: true, streak: cleanStreak, stored: 'resend' });
+      return;
+    }
+    if (r.status === 422) {
+      console.error('[booky-update-streak] NOT STORED — contact exists but PATCH 404d', cleanEmail);
+      res.status(200).json({ ok: true, streak: cleanStreak, stored: 'not-stored-422' });
       return;
     }
 
