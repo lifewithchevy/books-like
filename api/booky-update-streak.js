@@ -6,6 +6,7 @@
 //   RESEND_AUDIENCE_ID  — uuid
 
 const { enforce } = require('./_rate-limit');
+const { encodeStats } = require('./_stats-codec');
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -21,7 +22,7 @@ module.exports = async (req, res) => {
   // Unauthenticated POST that spends a real resource. Fails open.
   if (await enforce(req, res, { name: 'streak', limit: 60 })) return;
 
-  const { email, streak } = req.body || {};
+  const { email, streak, stats } = req.body || {};
 
   if (!email || typeof email !== 'string' ||
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
@@ -31,6 +32,19 @@ module.exports = async (req, res) => {
 
   const cleanEmail = email.trim().toLowerCase();
   const cleanStreak = Number.isFinite(Number(streak)) ? Math.max(0, Number(streak)) : 0;
+
+  // Store the whole stats block, not just the streak. A bare streak cannot be
+  // restored onto a wiped device with any confidence: without lastPlayedDay we
+  // cannot tell a live 30-day streak from one that died three weeks ago. The
+  // packed value still starts with the streak, so every existing reader of this
+  // field keeps working — see api/_stats-codec.js.
+  const packed = encodeStats({
+    currentStreak: cleanStreak,
+    maxStreak: stats?.maxStreak,
+    played: stats?.played,
+    wins: stats?.wins,
+    lastPlayedDay: stats?.lastPlayedDay,
+  });
 
   const RESEND_API_KEY     = process.env.RESEND_API_KEY;
   const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID;
@@ -56,7 +70,7 @@ module.exports = async (req, res) => {
           Authorization: `Bearer ${RESEND_API_KEY}`,
           'Content-Type': 'application/json',
         },
-        body: JSON.stringify({ first_name: String(cleanStreak) }),
+        body: JSON.stringify({ first_name: packed }),
       }
     );
 
@@ -74,7 +88,7 @@ module.exports = async (req, res) => {
           body: JSON.stringify({
             email: cleanEmail,
             unsubscribed: false,
-            first_name: String(cleanStreak),
+            first_name: packed,
           }),
         }
       );

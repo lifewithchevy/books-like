@@ -25,6 +25,7 @@
 // returns it rather than rolling again.
 
 const { winnerEmail, winnerEmailPlain, listEmail, displayName } = require('../lib/giveaway-emails');
+const { streakOf } = require('./_stats-codec');
 
 const WON_SUFFIX  = '#WON';
 const SENT_SUFFIX = '#SENT';
@@ -105,7 +106,7 @@ module.exports = async (req, res) => {
       email: c.email,
       created_at: c.created_at,
       unsubscribed: c.unsubscribed,
-      streak_at_signup: c.first_name || null,   // first_name holds the streak
+      streak_at_signup: streakOf(c.first_name),  // first_name packs the stats block
       entry_marker: c.last_name || null,        // last_name holds the giveaway tag
       display_name_used_in_email: displayName(c.email),
       raw: c,

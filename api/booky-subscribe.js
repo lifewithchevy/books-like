@@ -66,6 +66,35 @@ function buildGiveawayWelcomeHtml({ title, announce, playUrl, cover }) {
 }
 
 const { enforce } = require('./_rate-limit');
+const { encodeStats, decodeStats } = require('./_stats-codec');
+
+// Read back whatever stats we already hold for this contact.
+//
+// This is the ONLY moment a wiped device can be reunited with its streak.
+// Stats live in localStorage, and so does the subscriber's email address — so
+// when storage is cleared (or Safari's 7-day eviction fires on a lapsed
+// player) we lose the streak AND every way of knowing whose streak it was.
+// Nothing on page load can recover that. The one signal that ever comes back
+// is the player typing their email in again, which is right here.
+//
+// Returns null on any failure: restoring is a bonus, never a reason to fail
+// a signup.
+async function fetchStoredStats(apiKey, audienceId, email) {
+  try {
+    const r = await fetch(
+      `https://api.resend.com/audiences/${audienceId}/contacts/${encodeURIComponent(email)}`,
+      { headers: { Authorization: `Bearer ${apiKey}` } }
+    );
+    if (!r.ok) return null;
+    const body = await r.json();
+    const raw = body?.data?.first_name ?? body?.first_name;
+    if (raw == null || raw === '') return null;
+    return decodeStats(raw);
+  } catch (err) {
+    console.error('[booky-subscribe] stats read failed:', err);
+    return null;
+  }
+}
 
 module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Origin', '*');
@@ -81,7 +110,7 @@ module.exports = async (req, res) => {
   // Unauthenticated POST that spends a real resource. Fails open.
   if (await enforce(req, res, { name: 'subscribe', limit: 8 })) return;
 
-  const { email, source, streak, giveawayTag, giveawayTitle, giveawayAnnounce } = req.body || {};
+  const { email, source, streak, stats, giveawayTag, giveawayTitle, giveawayAnnounce } = req.body || {};
 
   if (!email || typeof email !== 'string' ||
       !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.trim())) {
@@ -119,13 +148,22 @@ module.exports = async (req, res) => {
           body: JSON.stringify({
             email: cleanEmail,
             unsubscribed: false,
-            // first_name stores the streak count (internal field — never shown in emails)
-            first_name: ctx.streak != null ? String(ctx.streak) : '0',
+            // first_name stores the packed stats block, streak first
+            // (internal field — never shown in emails). See api/_stats-codec.js.
+            first_name: encodeStats({ ...(stats || {}), currentStreak: ctx.streak || 0 }),
             // last_name stores the giveaway entry tag (internal field — never shown)
             ...(entryTag ? { last_name: entryTag } : {}),
           }),
         }
       );
+
+      // 422 means the contact already existed, so the POST above wrote nothing
+      // and whatever stats we hold for them are still intact. That is exactly
+      // the returning-player case: read the record back so the client can
+      // restore it. A brand-new contact (r.ok) has nothing to restore.
+      const restored = r.status === 422
+        ? await fetchStoredStats(RESEND_API_KEY, RESEND_AUDIENCE_ID, cleanEmail)
+        : null;
 
       // Resend returns 422 when the contact already exists — treat as success.
       // For a giveaway entry we must still record the entry on that existing
@@ -274,7 +312,7 @@ Booky by 90books · you signed up at 90books.com/booky · reply to unsubscribe`,
             console.error('[booky-subscribe] Welcome email failed:', err);
           }
         }
-        res.status(200).json({ ok: true, stored: 'resend' });
+        res.status(200).json({ ok: true, stored: 'resend', stats: restored });
         return;
       }
 

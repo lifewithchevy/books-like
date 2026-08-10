@@ -209,6 +209,67 @@ wards: 1
 }
 function saveStats() { localStorage.setItem(STATS_KEY, JSON.stringify(STATS)); }
 
+// The subset of stats we mirror server-side for subscribers. Deliberately not
+// the whole object: the guess distribution is a nice-to-have, and `wards` is a
+// spendable resource that must never be restorable by clearing storage.
+function statsForServer() {
+return {
+maxStreak: STATS.maxStreak,
+played: STATS.played,
+wins: STATS.wins,
+lastPlayedDay: STATS.lastPlayedDay,
+};
+}
+
+// Merge a server-held record back into local stats after the player identifies
+// themselves by email. Runs when someone signs up on a device that has no
+// history — a new phone, a cleared cache, or Safari's 7-day eviction of a
+// lapsed player.
+//
+// Rules, in order of how much damage getting them wrong would do:
+//  - Totals only ever go UP (max of local and remote). A player who has been
+//    playing on two devices must never see their record cut down by signing up.
+//  - The current streak is restored ONLY if the record proves it is still
+//    alive — last played today or yesterday. A 30-day streak last touched
+//    three weeks ago is dead, and handing it back would make the streak, and
+//    the badges built on it, mean nothing.
+//  - Legacy contacts stored a bare streak with no lastPlayedDay. Those cannot
+//    be validated, so the streak is not restored; the totals still are.
+//  - `wards` is never restored (see statsForServer).
+function restoreStats(remote) {
+if (!remote) return false;
+let changed = false;
+const lift = (key) => {
+const v = remote[key];
+if (typeof v === 'number' && v > (STATS[key] || 0)) { STATS[key] = v; changed = true; }
+};
+lift('maxStreak');
+lift('played');
+lift('wins');
+
+const alive = typeof remote.lastPlayedDay === 'number' &&
+(remote.lastPlayedDay === DAY || remote.lastPlayedDay === DAY - 1);
+if (alive && typeof remote.currentStreak === 'number' &&
+remote.currentStreak > (STATS.currentStreak || 0)) {
+STATS.currentStreak = remote.currentStreak;
+if (STATS.currentStreak > STATS.maxStreak) STATS.maxStreak = STATS.currentStreak;
+STATS.lastPlayedDay = Math.max(STATS.lastPlayedDay || 0, remote.lastPlayedDay);
+changed = true;
+}
+
+if (changed) {
+saveStats();
+renderStatsModal();
+posthog.capture('booky_stats_restored', {
+restored_streak: STATS.currentStreak,
+restored_max_streak: STATS.maxStreak,
+restored_played: STATS.played,
+streak_was_alive: alive,
+});
+}
+return changed;
+}
+
 function recordFinish() {
 if (STATE.statsRecorded) return;
 STATE.statsRecorded = true;
@@ -244,7 +305,7 @@ if (subEmail) {
 fetch('/api/booky-update-streak', {
 method: 'POST',
 headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({ email: subEmail, streak: STATS.currentStreak }),
+body: JSON.stringify({ email: subEmail, streak: STATS.currentStreak, stats: statsForServer() }),
 }).catch(() => {});
 }
 
@@ -538,9 +599,13 @@ giveawayTitle: g.title,
 giveawayAnnounce: g.announce,
 giveawayCover: g.cover,
 streak: STATS.currentStreak,
+stats: statsForServer(),
 }),
 });
 if (!res.ok) throw new Error('subscribe-failed');
+
+// Returning player on a wiped device — give them their record back.
+try { restoreStats((await res.json())?.stats); } catch {}
 
 const alreadySubscribed = !!localStorage.getItem('90books_booky_reminder_sub');
 localStorage.setItem('90books_booky_reminder_sub', email);
@@ -611,16 +676,28 @@ body: JSON.stringify({
 email,
 source: 'win-screen',
 streak: STATS.currentStreak,
+stats: statsForServer(),
 }),
 });
 if (!res.ok) throw new Error('subscribe-failed');
+
+// If this email already has a record, this is a returning player on a device
+// with no history. Restoring is the point of the signup for them, so say so
+// instead of the generic "you're in".
+let restored = false;
+try { restored = restoreStats((await res.json())?.stats); } catch {}
+
 localStorage.setItem('90books_booky_reminder_sub', email);
 // PostHog: email signup completed
 posthog.capture('email_signup_completed', {
 source: 'booky_endscreen',
 word_number_at_signup: DAY,
 });
-toast.textContent = "you're in. i'll email you a reminder for tomorrow's word.";
+toast.textContent = restored
+? (STATS.currentStreak > 1
+? `found you. your ${STATS.currentStreak}-day streak is back, and i'll remind you so it stays that way.`
+: "found you. your stats are back, and i'll email you a reminder for tomorrow's word.")
+: "you're in. i'll email you a reminder for tomorrow's word.";
 toast.className = 'reminder-toast reminder-success';
 toast.hidden = false;
 // Collapse the form, leaving only the toast
