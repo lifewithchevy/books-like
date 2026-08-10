@@ -94,6 +94,10 @@ async function fetchStoredStats(apiKey, audienceId, email) {
   for (const [via, url] of attempts) {
     try {
       const r = await fetch(url, { headers: { Authorization: `Bearer ${apiKey}` } });
+      // 404 is a definitive answer, not a failure: no such contact yet. Say so
+      // rather than trying the other path and ending up at 'read-failed',
+      // which would report a first-time signup as a broken read.
+      if (r.status === 404) return { stats: null, source: 'no-contact' };
       if (!r.ok) {
         console.error('[booky-subscribe] stats read', via, 'HTTP', r.status);
         continue;
@@ -152,6 +156,14 @@ module.exports = async (req, res) => {
   const RESEND_AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID;
   if (RESEND_API_KEY && RESEND_AUDIENCE_ID) {
     try {
+      // Read BEFORE the create, on purpose. Reading afterwards cannot tell a
+      // returning player from a first-timer: for a brand-new contact the create
+      // has already written this device's (empty) stats, so the read hands them
+      // straight back and we would greet a first-time player with "found you".
+      // Reading first, a 404 means new and a hit means returning, with no
+      // dependence on which status Resend picks for a duplicate create.
+      const read = await fetchStoredStats(RESEND_API_KEY, RESEND_AUDIENCE_ID, cleanEmail);
+
       const r = await fetch(
         `https://api.resend.com/audiences/${RESEND_AUDIENCE_ID}/contacts`,
         {
@@ -176,10 +188,6 @@ module.exports = async (req, res) => {
       // and whatever stats we hold for them are still intact. That is exactly
       // the returning-player case: read the record back so the client can
       // restore it. A brand-new contact (r.ok) has nothing to restore.
-      const read = r.status === 422
-        ? await fetchStoredStats(RESEND_API_KEY, RESEND_AUDIENCE_ID, cleanEmail)
-        : { stats: null, source: 'new-contact' };
-
       // Resend returns 422 when the contact already exists — treat as success.
       // For a giveaway entry we must still record the entry on that existing
       // contact, otherwise loyal subscribers silently never enter the draw.
