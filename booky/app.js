@@ -726,11 +726,17 @@ toast.textContent = restored
 : "you're in. i'll email you a reminder for tomorrow's word.";
 toast.className = 'reminder-toast reminder-success';
 toast.hidden = false;
-// Collapse the form, leaving only the toast
+// Collapse the form, leaving only the toast.
+// Loop rather than three hard querySelectors: `.reminder-pitch` is not in the
+// markup, so reading `.style` off null threw here and the headline line after
+// it never ran — signing up left "don't lose your streak" sitting above the
+// success toast. Missing furniture must not break the collapse.
 setTimeout(() => {
-$('reminder-form').querySelector('.reminder-row').style.display = 'none';
-$('reminder-form').querySelector('.reminder-pitch').style.display = 'none';
-$('reminder-form').querySelector('.reminder-headline').style.display = 'none';
+const form = $('reminder-form');
+['.reminder-row', '.reminder-pitch', '.reminder-headline'].forEach((sel) => {
+const el = form.querySelector(sel);
+if (el) el.style.display = 'none';
+});
 }, 600);
 } catch {
 toast.textContent = "couldn't save right now. try again in a sec?";
