@@ -121,6 +121,18 @@ module.exports = async (req, res) => {
   res.setHeader('Access-Control-Allow-Headers', 'Content-Type');
 
   if (req.method === 'OPTIONS') { res.status(200).end(); return; }
+
+  // ---- Unsubscribe rides on this route ----
+  // The footer link in every Booky email points here with `?unsub=1`. It is not
+  // its own api/ file because the Hobby plan caps a deployment at 12 Serverless
+  // Functions and api/ is already at 12 — a 13th breaks the entire build. See
+  // lib/unsubscribe-handler.js. Checked before the POST-only guard because the
+  // link is followed with GET.
+  if (req.query && req.query.unsub) {
+    await require('../lib/unsubscribe-handler')(req, res);
+    return;
+  }
+
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
     return;
