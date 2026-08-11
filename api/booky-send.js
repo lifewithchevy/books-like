@@ -14,6 +14,8 @@
 //   RESEND_FROM             — verified sender, e.g. "Booky <booky@90books.com>"
 //   CRON_SECRET             — random string, Vercel auto-attaches as Bearer
 
+const { unsubscribeUrl, unsubscribeHeaders } = require('../lib/unsubscribe');
+
 // ---- One-off notes, keyed by the UTC date of the send ----
 //
 // ⚠️ THIS MECHANISM SILENTLY FAILED AND IS NOT TRUSTED. Do not use it to
@@ -84,6 +86,9 @@ module.exports = async (req, res) => {
       today: at.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC' }),
       playUrl: 'https://90books.com/booky?utm_source=reminder_email&utm_medium=email&utm_campaign=daily_reminder',
       updateNote: UPDATE_NOTES[key] || null,
+      // Signed for a placeholder address, so the preview shows the real link
+      // shape without exposing a working link for anyone on the list.
+      unsubUrl: unsubscribeUrl('preview@90books.com'),
     }));
     return;
   }
@@ -168,7 +173,14 @@ module.exports = async (req, res) => {
       ? `Six guesses. Don't break your ${streak}-day streak.`
       : `Six guesses. Don't break the streak.`;
 
-    const html = buildHtml({ subject, headline, subline, today, playUrl, updateNote });
+    // Per-contact signed link. Resend's {{{RESEND_UNSUBSCRIBE_URL}}} only gets
+    // substituted for Broadcasts — this endpoint sends per-contact through
+    // POST /emails, where it shipped as a literal dead href. See
+    // lib/unsubscribe.js.
+    const html = buildHtml({
+      subject, headline, subline, today, playUrl, updateNote,
+      unsubUrl: unsubscribeUrl(contact.email),
+    });
 
     try {
       const r = await fetch('https://api.resend.com/emails', {
@@ -182,6 +194,7 @@ module.exports = async (req, res) => {
           to: contact.email,
           subject,
           html,
+          headers: unsubscribeHeaders(contact.email),
           tags: [{ name: 'type', value: 'booky-daily' }],
         }),
       });
@@ -203,7 +216,7 @@ module.exports = async (req, res) => {
   res.status(200).json({ ok: true, sent, failed, total: subscribers.length });
 };
 
-function buildHtml({ subject, headline, subline, today, playUrl, updateNote }) {
+function buildHtml({ subject, headline, subline, today, playUrl, updateNote, unsubUrl }) {
   // Sits below the play button so the reminder's primary CTA still comes first.
   const noteBlock = updateNote ? `
         <tr><td style="padding-top:28px;">
@@ -238,7 +251,7 @@ function buildHtml({ subject, headline, subline, today, playUrl, updateNote }) {
         <tr><td align="center" style="padding-top:32px;">
           <p style="margin:0;font-size:11px;color:#a587a9;line-height:1.5;">
             Booky by 90books · you signed up for daily reminders at <a href="${playUrl}" style="color:#c8398f;text-decoration:none;">90books.com/booky</a>.<br>
-            <a href="{{{RESEND_UNSUBSCRIBE_URL}}}" style="color:#a587a9;text-decoration:underline;">Unsubscribe</a>
+            <a href="${unsubUrl}" style="color:#a587a9;text-decoration:underline;">Unsubscribe</a>
           </p>
         </td></tr>
       </table>
