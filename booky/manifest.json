@@ -1,0 +1,33 @@
+{
+  "name": "Booky: The Daily Romantasy Word Game",
+  "short_name": "Booky",
+  "description": "A free daily word game for romantasy readers. Guess the word in 6 tries, build your streak, meet your next read.",
+  "start_url": "/booky?utm_source=homescreen&utm_medium=pwa&utm_campaign=install",
+  "scope": "/booky",
+  "id": "/booky",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#160516",
+  "theme_color": "#160516",
+  "categories": ["games", "books", "entertainment"],
+  "icons": [
+    {
+      "src": "/booky/icon-192.png",
+      "sizes": "192x192",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/booky/icon-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "any"
+    },
+    {
+      "src": "/booky/icon-maskable-512.png",
+      "sizes": "512x512",
+      "type": "image/png",
+      "purpose": "maskable"
+    }
+  ]
+}
