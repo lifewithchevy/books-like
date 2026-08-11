@@ -122,6 +122,10 @@ return showFatal(DAY < 1
 ANSWER = DATA.queue[DAY - 1].toUpperCase();
 
 STATS = loadStats();
+// Restore from the anonymous player record before the board is built, so a
+// player whose storage was evicted sees their real streak rather than a zero
+// that flips a moment later.
+syncPlayer();
 STATE = loadState();
 if (!STATE || STATE.dayNumber !== DAY) {
 STATE = freshState();
@@ -208,6 +212,24 @@ wards: 1
 };
 }
 function saveStats() { localStorage.setItem(STATS_KEY, JSON.stringify(STATS)); }
+
+// Sync stats with the anonymous player record, for EVERY player — no email, no
+// account, no install. The id lives in a server-set cookie, which is not
+// script-writable storage and so is not deleted by the 7-day eviction that
+// wipes localStorage. See api/booky-player.js.
+//
+// Fire-and-forget and never awaited by anything that matters: this runs on page
+// load, and the game must not wait on the network to become playable.
+function syncPlayer() {
+return fetch('/api/booky-player', {
+method: 'POST',
+headers: { 'Content-Type': 'application/json' },
+body: JSON.stringify({ stats: { ...statsForServer(), currentStreak: STATS.currentStreak } }),
+})
+.then((r) => r.json())
+.then((d) => { restoreStats(d && d.stats); })
+.catch(() => {});
+}
 
 // The subset of stats we mirror server-side for subscribers. Deliberately not
 // the whole object: the guess distribution is a nice-to-have, and `wards` is a
@@ -297,6 +319,10 @@ STATS.currentStreak = 0;
 }
 STATS.lastPlayedDay = DAY;
 saveStats();
+
+// Persist the finished game to the anonymous player record. This is the write
+// that makes the streak survivable for players who never give an email.
+syncPlayer();
 
 // Keep subscriber's streak fresh in Resend so daily email is personalized.
 // Fire-and-forget — never block or show errors to the player.
