@@ -4,10 +4,10 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>Get Your Book Featured | Booky, the Daily Romantasy Word Game</title>
-<meta name="description" content="Get your romantasy book featured as the daily word on Booky, the daily romantasy word game. $25 founder price: win screen, shareable graphic, newsletter mention, and an honest play report.">
+<meta name="description" content="Be the word of the day on Booky, the daily romantasy word game. $79 a day: your cover and Amazon link on the win screen, a shareable Instagram and TikTok graphic, a newsletter mention, and a real play and click report.">
 <link rel="canonical" href="https://90books.com/authors">
 <meta property="og:title" content="Get Your Book Featured | Booky, the Daily Romantasy Word Game">
-<meta property="og:description" content="Get your romantasy book featured as the daily word on Booky, the daily romantasy word game. $25 founder price: win screen, shareable graphic, newsletter mention, and an honest play report.">
+<meta property="og:description" content="Be the word of the day on Booky, the daily romantasy word game. $79 a day: your cover and Amazon link on the win screen, a shareable Instagram and TikTok graphic, a newsletter mention, and a real play and click report.">
 <meta property="og:url" content="https://90books.com/authors">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://90books.com/booky/og-image.png">
@@ -18,354 +18,344 @@
 <link rel="icon" href="/favicon.svg" type="image/svg+xml">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;0,700;1,500&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Cormorant+Garamond:wght@600;700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+  :root {
+    --bg: #FFFFFF;
+    --surface: #FFFFFF;
+    --surface2: #F5F3EE;
+    --surface3: #EDE9E0;
+    --accent: #D4A853;
+    --accent-light: #B8922F;
+    --accent-dim: #9E7B24;
+    --text: #1A1A1A;
+    --text-muted: #5C5C5C;
+    --text-dim: #8A8A8A;
+    --border: #E5E0D5;
+  }
   *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
   html { scroll-behavior: smooth; }
   body {
     font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    background: #fff8fb;
-    color: #2a0a26;
+    background: var(--bg);
+    color: var(--text);
     line-height: 1.65;
     min-height: 100%;
   }
-  .bg-glow {
-    position: fixed;
-    inset: 0;
-    pointer-events: none;
-    background:
-      radial-gradient(ellipse 70% 50% at 15% 0%, rgba(217, 70, 168, 0.10), transparent 55%),
-      radial-gradient(ellipse 60% 45% at 85% 10%, rgba(139, 63, 211, 0.08), transparent 50%);
-    z-index: 0;
+
+  /* ---- nav (matches landing page) ---- */
+  .lp-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px;
+    background: var(--bg);
+    border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 10;
   }
-  .wrap {
-    position: relative;
-    z-index: 1;
-    max-width: 680px;
-    margin: 0 auto;
-    padding: 20px 20px 56px;
+  .lp-nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+  .lp-nav-icon {
+    width: 34px; height: 34px; background: #1A1A1A; color: #fff;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; letter-spacing: -0.5px;
   }
-  .topbar {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    gap: 12px;
-    padding: 8px 0 28px;
+  .lp-nav-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+  .lp-nav-right { display: flex; align-items: center; gap: 10px; }
+
+  /* ---- buttons (matches landing page) ---- */
+  .lp-btn-primary {
+    background: #1A1A1A; color: #fff; border: none; border-radius: 12px;
+    padding: 16px 28px; font-size: 16px; font-weight: 600;
+    cursor: pointer; font-family: 'Inter', sans-serif;
+    transition: all 0.2s; white-space: nowrap;
+    display: inline-block; text-decoration: none; text-align: center;
   }
-  .brand {
+  .lp-btn-primary:hover { background: #333; transform: translateY(-2px); box-shadow: 0 8px 24px rgba(0,0,0,0.15); }
+  .lp-btn-secondary {
+    display: inline-block;
+    background: var(--surface); color: var(--text);
+    border: 1.5px solid var(--border); border-radius: 12px;
+    padding: 14px 24px; font-size: 15px; font-weight: 600;
+    font-family: 'Inter', sans-serif; cursor: pointer;
+    text-decoration: none; transition: all 0.2s;
+  }
+  .lp-btn-secondary:hover {
+    border-color: #d946a8; color: #8b3fd3;
+    transform: translateY(-1px); box-shadow: 0 6px 18px rgba(217, 70, 168, 0.12);
+  }
+  .booky-top-cta {
     display: inline-flex;
     align-items: center;
-    gap: 10px;
-    text-decoration: none;
-    color: inherit;
-  }
-  .brand-mark {
-    width: 34px;
-    height: 34px;
-    border-radius: 8px;
-    background: linear-gradient(135deg, #d946a8, #8b3fd3);
-    color: #fff;
-    font-size: 13px;
-    font-weight: 700;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  .brand-name {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 22px;
-    font-weight: 700;
-    letter-spacing: 0.2px;
-  }
-  .top-link {
-    font-size: 14px;
-    font-weight: 600;
-    color: #8b3fd3;
-    text-decoration: none;
-  }
-  .top-link:hover { text-decoration: underline; }
-  .hero-card {
-    background: #fff;
-    border: 1px solid #ead4e2;
+    gap: 6px;
+    padding: 7px 14px;
     border-radius: 20px;
-    padding: 32px 28px;
-    box-shadow: 0 16px 48px rgba(217, 70, 168, 0.08);
-    margin-bottom: 24px;
-  }
-  h1 {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: clamp(34px, 7vw, 46px);
-    font-weight: 700;
-    line-height: 1.12;
-    margin-bottom: 18px;
-    color: #2a0a26;
-  }
-  .lead {
-    font-size: 17px;
-    color: #6a4a6c;
-    margin-bottom: 24px;
-  }
-  .btn {
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    gap: 8px;
-    border: none;
-    border-radius: 999px;
-    padding: 14px 24px;
-    font-family: inherit;
-    font-size: 15px;
-    font-weight: 600;
-    text-decoration: none;
-    cursor: pointer;
-    transition: transform 0.15s ease, box-shadow 0.15s ease;
-  }
-  .btn:hover {
-    transform: translateY(-1px);
-  }
-  .btn-primary {
     background: linear-gradient(135deg, #d946a8, #8b3fd3);
     color: #fff;
-    box-shadow: 0 8px 24px rgba(217, 70, 168, 0.28);
-  }
-  .btn-primary:hover {
-    box-shadow: 0 12px 28px rgba(217, 70, 168, 0.36);
-  }
-  .btn-secondary {
-    background: #fff;
-    color: #2a0a26;
-    border: 1.5px solid #ead4e2;
-  }
-  .btn-secondary:hover {
-    border-color: #d946a8;
-    color: #8b3fd3;
-  }
-  .hero-ctas {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    align-items: center;
-  }
-  section {
-    background: #fff;
-    border: 1px solid #ead4e2;
-    border-radius: 18px;
-    padding: 28px 24px;
-    margin-bottom: 18px;
-  }
-  h2 {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 26px;
-    font-weight: 700;
-    margin-bottom: 16px;
-    color: #2a0a26;
-  }
-  p { margin-bottom: 14px; color: #4a2e4c; }
-  p:last-child { margin-bottom: 0; }
-  ol, ul {
-    padding-left: 1.25rem;
-    color: #4a2e4c;
-  }
-  li { margin-bottom: 12px; }
-  li:last-child { margin-bottom: 0; }
-  section a {
-    color: #8b3fd3;
-    font-weight: 600;
     text-decoration: none;
+    font-family: 'Inter', sans-serif;
+    font-size: 13px;
+    font-weight: 600;
+    letter-spacing: 0.2px;
+    box-shadow: 0 4px 14px rgba(217, 70, 168, 0.28);
+    transition: transform 0.15s, box-shadow 0.15s;
+    -webkit-tap-highlight-color: transparent;
   }
-  section a:hover { text-decoration: underline; }
-  .win-demo {
-    margin-top: 22px;
-    padding-top: 20px;
-    border-top: 1px solid #f6dfe9;
+  .booky-top-cta:hover {
+    transform: translateY(-1px);
+    box-shadow: 0 6px 18px rgba(217, 70, 168, 0.4);
   }
+  /* author CTA colour, borrowed from the landing page author strip */
+  .lp-btn-author {
+    display: inline-block; text-decoration: none; text-align: center;
+    background: linear-gradient(135deg, #2a1024, #4a1140);
+    color: #fff; border: none; border-radius: 12px;
+    font-family: 'Inter', sans-serif; font-weight: 700;
+    font-size: 17px; padding: 18px 32px;
+    box-shadow: 0 8px 24px rgba(74, 17, 64, 0.24);
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .lp-btn-author:hover { transform: translateY(-2px); box-shadow: 0 12px 30px rgba(74, 17, 64, 0.32); }
+
+  /* ---- hero ---- */
+  .lp-hero {
+    display: grid; grid-template-columns: 1fr 1fr;
+    gap: 56px; align-items: center;
+    max-width: 1200px; margin: 0 auto;
+    padding: 48px 48px 56px;
+    width: 100%;
+  }
+  .lp-pretitle {
+    font-size: 13px; font-weight: 600; color: var(--accent-light);
+    text-transform: uppercase; letter-spacing: 0.08em; margin-bottom: 16px;
+  }
+  .lp-headline {
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(38px, 5.5vw, 60px); font-weight: 700; line-height: 1.1;
+    color: var(--text); margin-bottom: 20px;
+  }
+  .lp-sub {
+    font-size: clamp(17px, 2vw, 20px); color: var(--text-muted); line-height: 1.7;
+    margin-bottom: 22px; max-width: 520px;
+  }
+  .price-line { display: flex; flex-wrap: wrap; align-items: baseline; gap: 8px 12px; margin-bottom: 22px; }
+  .price-big {
+    font-family: 'Inter', sans-serif; font-size: 40px; font-weight: 700;
+    line-height: 1; letter-spacing: -0.02em;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  .price-unit { font-size: 15px; font-weight: 600; color: var(--text-muted); }
+  .price-alt { font-size: 15px; color: var(--text-dim); }
+  .lp-ctas { display: flex; flex-wrap: wrap; gap: 12px; align-items: center; }
+  .scarcity {
+    margin-top: 16px; font-size: 13px; font-weight: 600;
+    color: var(--accent-dim); letter-spacing: 0.01em;
+  }
+  .hero-stats {
+    display: flex; flex-wrap: wrap; gap: 12px 32px;
+    margin-top: 26px; padding-top: 22px; border-top: 1px solid var(--border);
+  }
+  .hero-stat b {
+    display: block; font-family: 'Inter', sans-serif;
+    font-size: 26px; font-weight: 700; line-height: 1.2; color: var(--text);
+    letter-spacing: -0.02em;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  .hero-stat span { font-size: 13px; color: var(--text-dim); }
+
+  /* ---- win screen demo ---- */
+  /* win screen demo, matching production */
+  .lp-hero-visual { display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .win-demo-cap {
-    font-size: 14px;
-    color: #6a4a6c;
-    margin-bottom: 14px;
+    font-size: 14px; color: var(--text-muted);
+    margin-top: 16px; text-align: center; max-width: 360px;
   }
   .win-demo-screen {
     background: linear-gradient(180deg, #1d1126 0%, #160c1d 100%);
     border: 1px solid #3a213e;
-    border-radius: 16px;
-    padding: 20px 18px 18px;
+    border-radius: 16px; padding: 20px 18px 18px;
     box-shadow: 0 18px 40px rgba(26, 11, 31, 0.18);
-    max-width: 360px;
-    margin: 0 auto;
+    width: 100%; max-width: 360px;
   }
   .win-demo-puzzle {
-    text-align: center;
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.6px;
-    text-transform: uppercase;
-    color: #9c7f95;
-    margin-bottom: 8px;
+    text-align: center; font-size: 11px; font-weight: 700;
+    letter-spacing: 1.6px; text-transform: uppercase;
+    color: #9c7f95; margin-bottom: 8px;
   }
   .win-demo-title {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 34px;
-    font-weight: 700;
-    text-align: center;
-    color: #f6ecf3;
-    margin-bottom: 14px;
-    line-height: 1;
+    font-family: 'Cormorant Garamond', Georgia, serif; font-size: 34px; font-weight: 700;
+    text-align: center; color: #f6ecf3; margin-bottom: 14px; line-height: 1;
   }
   .win-demo-book {
-    border: 1px solid rgba(217, 70, 168, 0.35);
-    border-radius: 12px;
+    border: 1px solid rgba(217, 70, 168, 0.35); border-radius: 12px;
     background: linear-gradient(135deg, rgba(217, 70, 168, 0.15), rgba(139, 63, 211, 0.18));
     padding: 14px;
   }
   .win-demo-word {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 22px;
-    font-weight: 600;
-    letter-spacing: 4px;
-    text-transform: uppercase;
-    text-align: center;
-    color: #f8b6da;
-    margin-bottom: 8px;
+    font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; font-weight: 600;
+    letter-spacing: 4px; text-transform: uppercase; text-align: center;
+    color: #f8b6da; margin-bottom: 8px;
   }
   .win-demo-from {
-    font-size: 11px;
-    font-weight: 700;
-    letter-spacing: 1.4px;
-    text-transform: uppercase;
-    text-align: center;
-    color: #ec84bd;
-    margin-bottom: 12px;
+    font-size: 11px; font-weight: 700; letter-spacing: 1.4px;
+    text-transform: uppercase; text-align: center;
+    color: #ec84bd; margin-bottom: 12px;
   }
-  .win-demo-row {
-    display: flex;
-    gap: 14px;
-    align-items: center;
-  }
+  .win-demo-row { display: flex; gap: 14px; align-items: center; }
   .win-demo-cover {
-    width: 60px;
-    height: 90px;
-    border-radius: 5px;
-    object-fit: cover;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28);
-    flex: 0 0 auto;
+    width: 60px; height: 90px; border-radius: 5px; object-fit: cover;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28); flex: 0 0 auto;
   }
   .win-demo-meta { min-width: 0; }
   .win-demo-book-title {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: 21px;
-    font-weight: 600;
-    color: #f6ecf3;
-    line-height: 1.1;
-    margin-bottom: 4px;
+    font-family: 'Cormorant Garamond', Georgia, serif; font-size: 21px;
+    font-weight: 600; color: #f6ecf3; line-height: 1.1; margin-bottom: 4px;
   }
-  .win-demo-book-author {
-    font-size: 12px;
-    color: #b09ab8;
-    margin-bottom: 10px;
-  }
+  .win-demo-book-author { font-size: 12px; color: #b09ab8; margin-bottom: 10px; }
   .win-demo-cta {
-    display: inline-block;
-    color: #f8b6da;
-    font-size: 13px;
-    font-weight: 600;
-    text-decoration: underline;
-    text-underline-offset: 3px;
+    display: inline-block; color: #f8b6da; font-size: 13px; font-weight: 600;
+    text-decoration: underline; text-underline-offset: 3px;
+  }
+
+  /* ---- sections ---- */
+  .lp-section { max-width: 1000px; margin: 0 auto; padding: 56px 48px; border-top: 1px solid var(--border); }
+  .lp-section-label {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px;
+  }
+  .lp-section-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 30px; font-weight: 700; margin-bottom: 24px; max-width: 620px;
+  }
+  .lp-section-desc { font-size: 16px; color: var(--text-muted); line-height: 1.65; max-width: 620px; }
+
+  /* pricing cards */
+  .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 720px; }
+  .lp-feature-card {
+    background: var(--surface); border: 1px solid var(--border);
+    border-radius: 16px; padding: 28px 24px;
+    display: flex; flex-direction: column; position: relative;
+  }
+  .lp-feature-card.best { border-color: var(--accent); background: var(--surface2); }
+  .plan-tag {
+    position: absolute; top: -11px; left: 24px;
+    background: var(--accent); color: #1A1A1A;
+    font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; padding: 3px 10px; border-radius: 999px;
+  }
+  .plan-name {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
+    text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px;
+  }
+  .plan-price {
+    font-family: 'Inter', sans-serif; font-size: 36px;
+    font-weight: 700; line-height: 1; margin-bottom: 10px;
+    letter-spacing: -0.02em;
+    font-variant-numeric: lining-nums tabular-nums;
+  }
+  .plan-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; flex: 1 1 auto; }
+  .plan .lp-btn-author, .plan .lp-btn-primary { width: 100%; font-size: 15px; padding: 14px 18px; }
+  .plans-note { font-size: 14px; color: var(--text-dim); margin-top: 16px; max-width: 720px; }
+
+  /* steps */
+  .lp-steps { display: flex; flex-direction: column; gap: 22px; max-width: 620px; }
+  .lp-step { display: flex; gap: 20px; align-items: flex-start; }
+  .lp-step-num {
+    width: 36px; height: 36px; min-width: 36px;
+    background: #1A1A1A; color: #fff; border-radius: 50%;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 14px; font-weight: 700; margin-top: 2px;
+  }
+  .lp-step-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
+  .lp-step-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
+  .lp-step-desc a { color: #8b3fd3; font-weight: 600; text-decoration: none; }
+  .lp-step-desc a:hover { text-decoration: underline; }
+
+  /* what you get */
+  .get-list { list-style: none; max-width: 660px; }
+  .get-list li {
+    padding: 14px 0 14px 30px; position: relative;
+    border-bottom: 1px solid var(--border);
+    font-size: 15px; color: var(--text-muted); line-height: 1.6;
+  }
+  .get-list li:last-child { border-bottom: none; }
+  .get-list li::before {
+    content: ''; position: absolute; left: 4px; top: 22px;
+    width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
+  }
+  .get-list li b { color: var(--text); font-weight: 600; }
+
+  /* proof */
+  .featured-proof {
+    display: grid; grid-template-columns: minmax(0, 1fr) 188px;
+    gap: 24px; align-items: start; margin-top: 24px; max-width: 760px;
   }
   .featured-quote {
-    margin: 20px 0 18px;
-    padding: 22px 24px 20px;
-    border: none;
-    border-left: 4px solid #d946a8;
-    background: linear-gradient(135deg, #fdeef5 0%, #fff 100%);
-    border-radius: 0 16px 16px 0;
+    padding: 24px 26px; border-left: 3px solid var(--accent);
+    background: var(--surface2); border-radius: 0 16px 16px 0;
   }
   .featured-quote p {
-    font-family: 'Cormorant Garamond', Georgia, serif;
-    font-size: clamp(22px, 4.5vw, 28px);
-    font-weight: 600;
-    font-style: italic;
-    line-height: 1.35;
-    color: #2a0a26;
-    margin: 0 0 10px;
+    font-family: 'Playfair Display', serif;
+    font-size: clamp(20px, 3vw, 26px); font-weight: 700;
+    line-height: 1.35; color: var(--text); margin-bottom: 10px;
   }
   .featured-quote cite {
-    display: block;
-    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
-    font-size: 14px;
-    font-style: normal;
-    font-weight: 600;
-    color: #d946a8;
+    display: block; font-family: 'Inter', sans-serif; font-size: 13.5px;
+    font-style: normal; font-weight: 600; color: var(--accent-dim);
   }
-  .featured-proof {
-    display: grid;
-    grid-template-columns: minmax(0, 1fr) 188px;
-    gap: 18px;
-    align-items: start;
-    margin: 20px 0 18px;
-  }
-  .featured-proof .featured-quote { margin: 0; }
-  .featured-story {
-    margin: 0;
-    text-align: center;
-  }
-  .featured-story a {
-    display: block;
-    text-decoration: none;
-  }
+  .featured-story { margin: 0; text-align: center; }
   .featured-story img {
-    width: 100%;
-    max-width: 188px;
-    border-radius: 16px;
-    border: 1px solid #ead4e2;
-    box-shadow: 0 12px 32px rgba(42, 10, 38, 0.14);
-    display: block;
-    margin: 0 auto;
+    width: 100%; max-width: 188px; border-radius: 14px;
+    border: 1px solid var(--border);
+    box-shadow: 0 12px 32px rgba(26, 26, 26, 0.12);
+    display: block; margin: 0 auto;
   }
-  .featured-story figcaption {
-    font-size: 12px;
-    color: #a587a9;
-    margin-top: 8px;
-    line-height: 1.4;
+  .featured-story figcaption { font-size: 12px; color: var(--text-dim); margin-top: 8px; line-height: 1.4; }
+
+  /* bottom CTA */
+  .lp-bottom {
+    background: #1A1A1A; padding: 72px 48px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
   }
-  .cta-block {
-    text-align: center;
-    padding: 32px 24px;
-    background: linear-gradient(180deg, #fff 0%, #fdeef5 100%);
-    border: 1px solid #ead4e2;
-    border-radius: 18px;
-    margin-top: 8px;
+  .lp-bottom-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 2px;
   }
-  .cta-block h2 { margin-bottom: 20px; }
-  .cta-row {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 12px;
-    justify-content: center;
-    align-items: center;
+  .lp-bottom-sub { font-size: 16px; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
+  .lp-bottom .lp-btn-primary { background: #fff; color: #1A1A1A; }
+  .lp-bottom .lp-btn-primary:hover { background: #f0ede6; }
+  .lp-bottom .lp-btn-secondary { background: transparent; color: #fff; border-color: rgba(255,255,255,0.28); }
+  .lp-bottom .lp-btn-secondary:hover { border-color: #fff; color: #fff; box-shadow: none; }
+  .bottom-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .bottom-support { font-size: 14px; color: rgba(255,255,255,0.55); margin-top: 12px; max-width: 480px; }
+  .bottom-support a { color: rgba(255,255,255,0.9); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+
+  .lp-site-footer {
+    text-align: center; padding: 28px 24px 40px;
+    border-top: 1px solid var(--border); font-size: 14px; color: var(--text-dim);
   }
-  .cta-or {
-    font-size: 14px;
-    color: #a587a9;
-  }
-  .foot {
-    margin-top: 28px;
-    text-align: center;
-    font-size: 13px;
-    color: #a587a9;
-  }
-  .foot a {
-    color: #8b3fd3;
-    text-decoration: none;
-    font-weight: 500;
-  }
-  .foot a:hover { text-decoration: underline; }
-  @media (max-width: 520px) {
-    .hero-card, section { padding: 24px 18px; }
+  .lp-site-footer a { color: #8b3fd3; text-decoration: none; font-weight: 500; }
+  .lp-site-footer a:hover { text-decoration: underline; }
+
+  @media (max-width: 900px) {
+    .lp-nav { padding: 14px 24px; }
+    /* text first on small screens so the price and Pay button stay above the fold */
+    .lp-hero { grid-template-columns: 1fr; padding: 32px 24px 40px; gap: 36px; }
+    .win-demo-screen { max-width: 320px; }
+    .lp-section { padding: 44px 24px; }
+    .plans { grid-template-columns: 1fr; }
     .featured-proof { grid-template-columns: 1fr; }
     .featured-story img { max-width: 220px; }
-    .cta-row { flex-direction: column; }
-    .cta-or { display: none; }
-    .btn { width: 100%; }
+    .lp-bottom { padding: 56px 24px; }
+  }
+  @media (max-width: 520px) {
+    .lp-nav { padding: 12px 16px; }
+    .booky-top-cta { padding: 6px 11px; font-size: 12px; }
+    .lp-headline { font-size: clamp(30px, 8.5vw, 38px); }
+    .lp-hero { padding: 24px 16px 32px; }
+    .lp-section { padding: 40px 16px; }
+    .lp-ctas { width: 100%; }
+    .lp-ctas .lp-btn-author { width: 100%; }
+    .bottom-row { width: 100%; flex-direction: column; }
+    .bottom-row .lp-btn-primary, .bottom-row .lp-btn-secondary { width: 100%; }
+    .lp-bottom-title { font-size: 28px; }
   }
 </style>
 <script>
@@ -386,111 +376,176 @@
   function trackAuthorsCta(channel) {
     try { window.posthog && posthog.capture && posthog.capture('authors_cta_clicked', { channel: channel, page: '/authors' }); } catch (e) {}
   }
-  document.getElementById('scroll-to-get-featured')?.addEventListener('click', function () {
-    document.getElementById('get-featured')?.scrollIntoView({ behavior: 'smooth' });
-  });
-  if (location.hash === '#get-featured') {
-    history.replaceState(null, '', '/authors');
-    document.getElementById('get-featured')?.scrollIntoView();
-  }
 </script>
 </head>
 <body>
-<div class="bg-glow" aria-hidden="true"></div>
-<div class="wrap">
-  <header class="topbar">
-    <a href="/" class="brand" aria-label="90books home">
-      <span class="brand-mark" aria-hidden="true">90</span>
-      <span class="brand-name">Booky by 90books</span>
-    </a>
-    <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=play_today" class="top-link">Play today&rsquo;s word</a>
-  </header>
 
-  <div class="hero-card">
-    <h1>Your book, the word of the day</h1>
-    <p class="lead">Booky is the daily romantasy word game by 90books. Every day, readers solve a 5-letter word hidden in a romantasy book. When they win, the book is revealed: cover, author, and a buy link. For one day, that book can be yours.</p>
-    <div class="hero-ctas">
-      <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=play_today" class="btn btn-primary">&#9654; See it live: play today&rsquo;s word</a>
-      <button type="button" class="btn btn-secondary" id="scroll-to-get-featured">Get your book featured &rarr;</button>
+<header class="lp-nav">
+  <a href="/" class="lp-nav-logo" title="Back to Booky home">
+    <div class="lp-nav-icon">90</div>
+    <span class="lp-nav-name">90books</span>
+  </a>
+  <div class="lp-nav-right">
+    <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=nav_play" class="booky-top-cta" title="Play Booky, the daily romantasy word game" aria-label="Play Booky, the daily romantasy word game">&#127918; Play Booky</a>
+  </div>
+</header>
+
+<section class="lp-hero">
+  <div>
+    <p class="lp-pretitle">For romantasy authors</p>
+    <h1 class="lp-headline">Your book, the word of the day</h1>
+    <p class="lp-sub">For one day, your book is the answer to Booky, the daily romantasy word game, and every reader who wins meets your cover, your name, and your buy link.</p>
+
+    <div class="price-line">
+      <span class="price-big">$79</span>
+      <span class="price-unit">one feature day</span>
+      <span class="price-alt">or $199 for a 3-day launch pack</span>
+    </div>
+
+    <div class="lp-ctas">
+      <a href="https://buy.stripe.com/00w9AT8tNaEgclrf4063K02" class="lp-btn-author" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_79_hero')">Pay $79 and get featured</a>
+    </div>
+    <p class="scarcity">Limited open days this month. Dates go in the order they are paid.</p>
+
+    <div class="hero-stats">
+      <div class="hero-stat"><b>~120</b><span>readers play every day</span></div>
+      <div class="hero-stat"><b>163</b><span>newsletter subscribers</span></div>
+      <div class="hero-stat"><b>100%</b><span>of winners see the book</span></div>
     </div>
   </div>
 
-  <section>
-    <h2>Featured authors</h2>
-    <p>Booky&rsquo;s first featured book was Weavingshaw by Sunday Times bestseller Heba Al-Wasity. On feature day, 50+ readers played her word and every one of them met her book.</p>
-    <div class="featured-proof">
-      <blockquote class="featured-quote" cite="https://www.instagram.com/alwasityhh/">
-        <p>&ldquo;I am OBSESSED with the game Booky (Wordle for romantasy readers!)&rdquo;</p>
-        <cite>Heba Al-Wasity, author of Weavingshaw (shared to her Instagram)</cite>
-      </blockquote>
-      <figure class="featured-story">
-        <a href="https://www.instagram.com/alwasityhh/" rel="noopener noreferrer" aria-label="Heba Al-Wasity on Instagram">
-          <img src="/authors/heba-ig-story.png" alt="Screenshot of Heba Al-Wasity sharing Booky on her Instagram story" width="188" height="407" loading="lazy">
-        </a>
-        <figcaption>Heba&rsquo;s Instagram story</figcaption>
-      </figure>
-    </div>
-  </section>
-
-  <section>
-    <h2>How it works</h2>
-    <ol>
-      <li>Say hi. DM me on Instagram (<a href="https://www.instagram.com/lifewith_chevy/" rel="noopener noreferrer">@lifewith_chevy</a>) or email me (<a href="mailto:mylifewithchevy@gmail.com?subject=Booky%20featured%20word">mylifewithchevy@gmail.com</a>). Tell me your book. Bonus points: suggest the 5-letter word that sums it up (a real, guessable word so players can actually win it).</li>
-      <li>Book your day. If your book fits Booky&rsquo;s vibe, I confirm your word and date and send a payment link. $25 founder price for my first five authors.</li>
-      <li>Your feature day. Readers play your word all day and meet your book on the win screen. Afterwards you get an honest report: how many readers played, how many clicked through to your book.</li>
-    </ol>
-    <div class="win-demo">
-      <p class="win-demo-cap">When readers win, they see something like this. Your book, cover, and buy link:</p>
-      <div class="win-demo-screen" aria-label="Example Booky win screen with Weavingshaw featured">
-        <p class="win-demo-puzzle">Booky #42</p>
-        <h3 class="win-demo-title">Congrats!</h3>
-        <div class="win-demo-book">
-          <p class="win-demo-word">GHOST</p>
-          <p class="win-demo-from">&#128218; Today&rsquo;s word is from</p>
-          <div class="win-demo-row">
-            <img class="win-demo-cover" src="https://images-na.ssl-images-amazon.com/images/P/0593982576.01.LZZZZZZZ.jpg" alt="Weavingshaw cover" width="60" height="90" loading="lazy">
-            <div class="win-demo-meta">
-              <p class="win-demo-book-title">Weavingshaw</p>
-              <p class="win-demo-book-author">Heba Al-Wasity</p>
-              <span class="win-demo-cta">Get it on Amazon &rarr;</span>
-            </div>
+  <div class="lp-hero-visual">
+    <div class="win-demo-screen" aria-label="Example Booky win screen with Weavingshaw featured">
+      <p class="win-demo-puzzle">Booky #42</p>
+      <h2 class="win-demo-title">Congrats!</h2>
+      <div class="win-demo-book">
+        <p class="win-demo-word">GHOST</p>
+        <p class="win-demo-from">&#128218; Today&rsquo;s word is from</p>
+        <div class="win-demo-row">
+          <img class="win-demo-cover" src="https://images-na.ssl-images-amazon.com/images/P/0593982576.01.LZZZZZZZ.jpg" alt="Weavingshaw cover" width="60" height="90" loading="lazy">
+          <div class="win-demo-meta">
+            <p class="win-demo-book-title">Weavingshaw</p>
+            <p class="win-demo-book-author">Heba Al-Wasity</p>
+            <span class="win-demo-cta">Get it on Amazon &rarr;</span>
           </div>
         </div>
       </div>
     </div>
-  </section>
+    <p class="win-demo-cap">When readers win, they see something like this. Your book, cover, and buy link:</p>
+  </div>
+</section>
 
-  <section>
-    <h2>What you get</h2>
-    <ul>
-      <li>Your cover and a &ldquo;Get it on Amazon&rdquo; link on the win screen, all day</li>
-      <li>A custom shareable graphic for your Instagram and TikTok</li>
-      <li>A permanent spot on the Booky Library shelf</li>
-      <li>A mention in that week&rsquo;s reader newsletter</li>
-      <li>The honest report, real numbers, screenshots included</li>
-    </ul>
-  </section>
-
-  <section>
-    <h2>The honest part</h2>
-    <p>I can&rsquo;t promise sales. Nobody in book promo honestly can. What I promise is the feature, the assets, and a real report of what happened. And because readers trust Booky only as long as every book genuinely fits, I do say no when a book isn&rsquo;t the right match. Paid features are always labeled in the game.</p>
-  </section>
-
-  <section>
-    <h2>A small but mighty audience</h2>
-    <p>Booky is new and growing. 50 to 90 romantasy readers play every single day, and every one of them sees the day&rsquo;s book. No bots, no vanity numbers, just the exact readers you write for.</p>
-  </section>
-
-  <div class="cta-block" id="get-featured">
-    <h2>Get your book featured</h2>
-    <div class="cta-row">
-      <a href="https://www.instagram.com/lifewith_chevy/?utm_source=authors_page&amp;utm_medium=author&amp;utm_campaign=featured" class="btn btn-primary" rel="noopener noreferrer" onclick="trackAuthorsCta('instagram')">DM me on Instagram @lifewith_chevy</a>
-      <span class="cta-or">or</span>
-      <a href="mailto:mylifewithchevy@gmail.com?subject=Booky%20featured%20word" class="btn btn-secondary" onclick="trackAuthorsCta('email')">Email mylifewithchevy@gmail.com</a>
+<section class="lp-section">
+  <p class="lp-section-label">Pricing</p>
+  <h2 class="lp-section-title">Pick a day, pay, you&rsquo;re booked</h2>
+  <div class="plans">
+    <div class="lp-feature-card plan">
+      <p class="plan-name">Feature day</p>
+      <p class="plan-price">$79</p>
+      <p class="plan-desc">One day as the word of the day, with everything in &ldquo;What you get&rdquo; below.</p>
+      <a href="https://buy.stripe.com/00w9AT8tNaEgclrf4063K02" class="lp-btn-author" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_79_pricing')">Pay $79</a>
+    </div>
+    <div class="lp-feature-card plan best">
+      <span class="plan-tag">Best value</span>
+      <p class="plan-name">Launch pack</p>
+      <p class="plan-price">$199</p>
+      <p class="plan-desc">Three feature days to spread across your release week. Saves $38 against three single days.</p>
+      <a href="https://buy.stripe.com/5kQ28r4dxcMo5X3bSC63K03" class="lp-btn-author" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_199_pricing')">Pay $199</a>
     </div>
   </div>
+  <p class="plans-note">Paid up front through Stripe. If your book turns out not to be a fit for Booky&rsquo;s readers, you get a full refund the same day.</p>
+</section>
 
-  <p class="foot"><a href="/">Back to 90books</a> &middot; <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=footer_play">Play Booky</a></p>
+<section class="lp-section">
+  <p class="lp-section-label">How it works</p>
+  <h2 class="lp-section-title">Four steps, no waiting on me</h2>
+  <div class="lp-steps">
+    <div class="lp-step">
+      <div class="lp-step-num">1</div>
+      <div>
+        <p class="lp-step-title">Pick an open date</p>
+        <p class="lp-step-desc">Choose the day you want. There is a date box at checkout, so you can just say it there.</p>
+      </div>
+    </div>
+    <div class="lp-step">
+      <div class="lp-step-num">2</div>
+      <div>
+        <p class="lp-step-title">Pay</p>
+        <p class="lp-step-desc"><a href="https://buy.stripe.com/00w9AT8tNaEgclrf4063K02" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_79_steps')">$79 for one feature day</a>, or <a href="https://buy.stripe.com/5kQ28r4dxcMo5X3bSC63K03" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_199_steps')">$199 for the 3-day launch pack</a>. No DM first, no waiting on a payment link.</p>
+      </div>
+    </div>
+    <div class="lp-step">
+      <div class="lp-step-num">3</div>
+      <div>
+        <p class="lp-step-title">Send your cover and link</p>
+        <p class="lp-step-desc">Email your cover image and your Amazon link to <a href="mailto:hello@90books.com?subject=Booky%20featured%20word" onclick="trackAuthorsCta('email_steps')">hello@90books.com</a>, plus a suggested 5-letter word from your book if you have one (a real, guessable word so players can actually win it). I confirm your date within 24 hours.</p>
+      </div>
+    </div>
+    <div class="lp-step">
+      <div class="lp-step-num">4</div>
+      <div>
+        <p class="lp-step-title">Your feature day runs</p>
+        <p class="lp-step-desc">Readers play your word all day and meet your book on the win screen. Afterwards you get your report: how many played, how many clicked through to your book.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="lp-section">
+  <p class="lp-section-label">What you get</p>
+  <h2 class="lp-section-title">One day, five things you keep</h2>
+  <ul class="get-list">
+    <li><b>A custom shareable graphic.</b> Your cover on the Booky board, sized for Instagram Stories and TikTok. Yours to post and to hand to your street team, because it gives your readers something to play, not just something to buy.</li>
+    <li><b>The win screen, all day.</b> Your cover and a &ldquo;Get it on Amazon&rdquo; link in front of every reader who solves the word.</li>
+    <li><b>A permanent spot</b> on the Booky Library shelf.</li>
+    <li><b>A mention in that week&rsquo;s reader newsletter</b>, 163 subscribers.</li>
+    <li><b>Your report.</b> Real play and click numbers, screenshots included.</li>
+  </ul>
+</section>
+
+<section class="lp-section">
+  <p class="lp-section-label">Who plays</p>
+  <h2 class="lp-section-title">A small but mighty audience</h2>
+  <p class="lp-section-desc">About 120 romantasy readers play every single day, tracked in PostHog, and every one of them sees the day&rsquo;s book. No bots, no vanity numbers, just the exact readers you write for.</p>
+</section>
+
+<section class="lp-section">
+  <p class="lp-section-label">Featured authors</p>
+  <h2 class="lp-section-title">Booky&rsquo;s first featured author</h2>
+  <p class="lp-section-desc">Booky&rsquo;s first featured book was Weavingshaw by Sunday Times bestseller Heba Al-Wasity. On feature day, 50+ readers played her word and every one of them met her book.</p>
+  <div class="featured-proof">
+    <blockquote class="featured-quote" cite="https://www.instagram.com/alwasityhh/">
+      <p>&ldquo;I am OBSESSED with the game Booky (Wordle for romantasy readers!)&rdquo;</p>
+      <cite>Heba Al-Wasity, author of Weavingshaw (shared to her Instagram)</cite>
+    </blockquote>
+    <figure class="featured-story">
+      <a href="https://www.instagram.com/alwasityhh/" rel="noopener noreferrer" aria-label="Heba Al-Wasity on Instagram">
+        <img src="/authors/heba-ig-story.png" alt="Screenshot of Heba Al-Wasity sharing Booky on her Instagram story" width="188" height="407" loading="lazy">
+      </a>
+      <figcaption>Heba&rsquo;s Instagram story</figcaption>
+    </figure>
+  </div>
+</section>
+
+<section class="lp-section">
+  <p class="lp-section-label">The honest part</p>
+  <h2 class="lp-section-title">What I will and won&rsquo;t promise</h2>
+  <p class="lp-section-desc">I can&rsquo;t promise sales. Nobody in book promo honestly can. What I promise is the feature, the graphic, and a real report of what actually happened. Readers trust Booky only as long as every book genuinely fits, so I do say no when a book isn&rsquo;t the right match, and you get a full refund the same day. Paid features are always labeled in the game.</p>
+</section>
+
+<div class="lp-bottom" id="get-featured">
+  <h2 class="lp-bottom-title">Get your book featured</h2>
+  <p class="lp-bottom-sub">Limited open days this month.</p>
+  <div class="bottom-row">
+    <a href="https://buy.stripe.com/00w9AT8tNaEgclrf4063K02" class="lp-btn-primary" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_79_footer')">Pay $79, one feature day</a>
+    <a href="https://buy.stripe.com/5kQ28r4dxcMo5X3bSC63K03" class="lp-btn-secondary" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_199_footer')">Pay $199, 3-day launch pack</a>
+  </div>
+  <p class="bottom-support">Questions, or a specific date in mind? Email <a href="mailto:hello@90books.com?subject=Booky%20featured%20word" onclick="trackAuthorsCta('email')">hello@90books.com</a>.</p>
 </div>
+
+<footer class="lp-site-footer">
+  <a href="/">Back to 90books</a> &middot; <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=footer_play">Play Booky</a>
+</footer>
+
 </body>
 </html>
