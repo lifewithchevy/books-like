@@ -165,126 +165,18 @@
   .hero-stat span { font-size: 13px; color: var(--text-dim); }
 
   /* ---- win screen demo ---- */
-  /* win screen demo, matching production */
+  /* win screen demo: real gameplay capture */
   .lp-hero-visual { display: flex; flex-direction: column; align-items: center; justify-content: center; }
+  .booky-demo {
+    width: 100%; max-width: 400px; height: auto;
+    border-radius: 16px; border: 1px solid var(--border);
+    box-shadow: 0 18px 44px rgba(26, 11, 31, 0.14);
+    display: block;
+  }
   .win-demo-cap {
     font-size: 14px; color: var(--text-muted);
-    margin-top: 16px; text-align: center; max-width: 360px;
+    margin-top: 14px; text-align: center; max-width: 400px;
   }
-  .win-demo-screen {
-    background: linear-gradient(180deg, #1d1126 0%, #160c1d 100%);
-    border: 1px solid #3a213e;
-    border-radius: 16px; padding: 20px 18px 18px;
-    box-shadow: 0 18px 40px rgba(26, 11, 31, 0.18);
-    width: 100%; max-width: 360px;
-  }
-  .win-demo-puzzle {
-    text-align: center; font-size: 11px; font-weight: 700;
-    letter-spacing: 1.6px; text-transform: uppercase;
-    color: #9c7f95; margin-bottom: 8px;
-  }
-  .win-demo-title {
-    font-family: 'Cormorant Garamond', Georgia, serif; font-size: 34px; font-weight: 700;
-    text-align: center; color: #f6ecf3; margin-bottom: 14px; line-height: 1;
-  }
-  .win-demo-book {
-    border: 1px solid rgba(217, 70, 168, 0.35); border-radius: 12px;
-    background: linear-gradient(135deg, rgba(217, 70, 168, 0.15), rgba(139, 63, 211, 0.18));
-    padding: 14px;
-  }
-  .win-demo-word {
-    font-family: 'Cormorant Garamond', Georgia, serif; font-size: 22px; font-weight: 600;
-    letter-spacing: 4px; text-transform: uppercase; text-align: center;
-    color: #f8b6da; margin-bottom: 8px;
-  }
-  .win-demo-from {
-    font-size: 11px; font-weight: 700; letter-spacing: 1.4px;
-    text-transform: uppercase; text-align: center;
-    color: #ec84bd; margin-bottom: 12px;
-  }
-  .win-demo-row { display: flex; gap: 14px; align-items: center; }
-  .win-demo-cover {
-    width: 60px; height: 90px; border-radius: 5px; object-fit: cover;
-    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.28); flex: 0 0 auto;
-  }
-  .win-demo-meta { min-width: 0; }
-  .win-demo-book-title {
-    font-family: 'Cormorant Garamond', Georgia, serif; font-size: 21px;
-    font-weight: 600; color: #f6ecf3; line-height: 1.1; margin-bottom: 4px;
-  }
-  .win-demo-book-author { font-size: 12px; color: #b09ab8; margin-bottom: 10px; }
-  .win-demo-cta {
-    display: inline-block; color: #f8b6da; font-size: 13px; font-weight: 600;
-    text-decoration: underline; text-underline-offset: 3px;
-  }
-
-  /* ---- sections ---- */
-  .lp-section { max-width: 1000px; margin: 0 auto; padding: 56px 48px; border-top: 1px solid var(--border); }
-  .lp-section-label {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-    color: var(--text-dim); text-transform: uppercase; margin-bottom: 12px;
-  }
-  .lp-section-title {
-    font-family: 'Playfair Display', serif;
-    font-size: 30px; font-weight: 700; margin-bottom: 24px; max-width: 620px;
-  }
-  .lp-section-desc { font-size: 16px; color: var(--text-muted); line-height: 1.65; max-width: 620px; }
-
-  /* pricing cards */
-  .plans { display: grid; grid-template-columns: 1fr 1fr; gap: 18px; max-width: 720px; }
-  .lp-feature-card {
-    background: var(--surface); border: 1px solid var(--border);
-    border-radius: 16px; padding: 28px 24px;
-    display: flex; flex-direction: column; position: relative;
-  }
-  .lp-feature-card.best { border-color: var(--accent); background: var(--surface2); }
-  .plan-tag {
-    position: absolute; top: -11px; left: 24px;
-    background: var(--accent); color: #1A1A1A;
-    font-size: 10.5px; font-weight: 700; letter-spacing: 0.08em;
-    text-transform: uppercase; padding: 3px 10px; border-radius: 999px;
-  }
-  .plan-name {
-    font-size: 11px; font-weight: 700; letter-spacing: 0.1em;
-    text-transform: uppercase; color: var(--text-dim); margin-bottom: 8px;
-  }
-  .plan-price {
-    font-family: 'Inter', sans-serif; font-size: 36px;
-    font-weight: 700; line-height: 1; margin-bottom: 10px;
-    letter-spacing: -0.02em;
-    font-variant-numeric: lining-nums tabular-nums;
-  }
-  .plan-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; margin-bottom: 20px; flex: 1 1 auto; }
-  .plan .lp-btn-author, .plan .lp-btn-primary { width: 100%; font-size: 15px; padding: 14px 18px; }
-  .plans-note { font-size: 14px; color: var(--text-dim); margin-top: 16px; max-width: 720px; }
-
-  /* steps */
-  .lp-steps { display: flex; flex-direction: column; gap: 22px; max-width: 620px; }
-  .lp-step { display: flex; gap: 20px; align-items: flex-start; }
-  .lp-step-num {
-    width: 36px; height: 36px; min-width: 36px;
-    background: #1A1A1A; color: #fff; border-radius: 50%;
-    display: flex; align-items: center; justify-content: center;
-    font-size: 14px; font-weight: 700; margin-top: 2px;
-  }
-  .lp-step-title { font-size: 16px; font-weight: 600; margin-bottom: 4px; }
-  .lp-step-desc { font-size: 14px; color: var(--text-muted); line-height: 1.6; }
-  .lp-step-desc a { color: #8b3fd3; font-weight: 600; text-decoration: none; }
-  .lp-step-desc a:hover { text-decoration: underline; }
-
-  /* what you get */
-  .get-list { list-style: none; max-width: 660px; }
-  .get-list li {
-    padding: 14px 0 14px 30px; position: relative;
-    border-bottom: 1px solid var(--border);
-    font-size: 15px; color: var(--text-muted); line-height: 1.6;
-  }
-  .get-list li:last-child { border-bottom: none; }
-  .get-list li::before {
-    content: ''; position: absolute; left: 4px; top: 22px;
-    width: 8px; height: 8px; border-radius: 50%; background: var(--accent);
-  }
-  .get-list li b { color: var(--text); font-weight: 600; }
 
   /* faq, same component as the landing page */
   .lp-faq-list { max-width: 660px; }
@@ -361,7 +253,7 @@
     .lp-nav { padding: 14px 24px; }
     /* text first on small screens so the price and Pay button stay above the fold */
     .lp-hero { grid-template-columns: 1fr; padding: 32px 24px 40px; gap: 36px; }
-    .win-demo-screen { max-width: 320px; }
+    .booky-demo { max-width: 320px; }
     .lp-section { padding: 44px 24px; }
     .plans { grid-template-columns: 1fr; }
     .featured-proof { grid-template-columns: 1fr; }
@@ -417,7 +309,7 @@
   <div>
     <p class="lp-pretitle">Romantasy book promotion</p>
     <h1 class="lp-headline">Your book, the word of the day</h1>
-    <p class="lp-sub">For one day, your book is the answer to Booky, the daily romantasy word game, and every reader who wins meets your cover, your name, and your buy link.</p>
+    <p class="lp-sub">For one day your book is the answer to Booky, my daily romantasy word game. Readers puzzle out a 5-letter word, and the second they get it, there&rsquo;s your cover, your name and your buy link.</p>
 
     <div class="price-line">
       <span class="price-big">$79</span>
@@ -428,8 +320,8 @@
     <div class="lp-ctas">
       <a href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02" class="lp-btn-author" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_79_hero')">Pay $79 and get featured</a>
     </div>
-    <p class="scarcity">Limited open days this month. Dates go in the order they are approved.</p>
-    <p class="guarantee">I review every book within 7 business days. If yours isn&rsquo;t approved, you get a full refund.</p>
+    <p class="scarcity">There are only so many open days a month, and they go in the order books get approved.</p>
+    <p class="guarantee">I read every book before it runs. If yours isn&rsquo;t a fit, you get your money back.</p>
 
     <div class="hero-stats">
       <div class="hero-stat"><b>~120</b><span>readers play every day</span></div>
@@ -439,77 +331,64 @@
   </div>
 
   <div class="lp-hero-visual">
-    <div class="win-demo-screen" aria-label="Example Booky win screen with Weavingshaw featured">
-      <p class="win-demo-puzzle">Booky #42</p>
-      <h2 class="win-demo-title">Congrats!</h2>
-      <div class="win-demo-book">
-        <p class="win-demo-word">GHOST</p>
-        <p class="win-demo-from">&#128218; Today&rsquo;s word is from</p>
-        <div class="win-demo-row">
-          <img class="win-demo-cover" src="https://images-na.ssl-images-amazon.com/images/P/0593982576.01.LZZZZZZZ.jpg" alt="Weavingshaw cover" width="60" height="90" loading="lazy">
-          <div class="win-demo-meta">
-            <p class="win-demo-book-title">Weavingshaw</p>
-            <p class="win-demo-book-author">Heba Al-Wasity</p>
-            <span class="win-demo-cta">Get it on Amazon &rarr;</span>
-          </div>
-        </div>
-      </div>
-    </div>
-    <p class="win-demo-cap">When readers win, they see something like this. Your book, cover, and buy link:</p>
+    <img class="booky-demo" src="/authors/booky-demo.gif"
+         alt="Someone playing Booky: they guess CROWN, then FATED, then GHOST, and the win screen reveals Weavingshaw by Heba Al-Wasity with a Get it on Amazon link"
+         width="400" height="430" loading="eager" decoding="async">
+    <p class="win-demo-cap">Three guesses, then the reveal. On your day, that&rsquo;s your book.</p>
   </div>
 </section>
 
 <section class="lp-section">
   <p class="lp-section-label">Pricing</p>
-  <h2 class="lp-section-title">Pick a day, pay, you&rsquo;re booked</h2>
+  <h2 class="lp-section-title">What it costs, all in</h2>
   <div class="plans">
     <div class="lp-feature-card plan">
       <p class="plan-name">Feature day</p>
       <p class="plan-price">$79</p>
-      <p class="plan-desc">One day as the word of the day, with everything in &ldquo;What you get&rdquo; below.</p>
+      <p class="plan-desc">One day as the word of the day, with everything below.</p>
       <a href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02" class="lp-btn-author" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_79_pricing')">Pay $79</a>
     </div>
     <div class="lp-feature-card plan best">
       <span class="plan-tag">Best value</span>
       <p class="plan-name">Launch pack</p>
       <p class="plan-price">$199</p>
-      <p class="plan-desc">Three feature days to spread across your release week. Saves $38 against three single days.</p>
+      <p class="plan-desc">Three days you can spread across release week. Works out $38 cheaper than booking them one at a time.</p>
       <a href="https://buy.stripe.com/5kQ28r4dxcMo5X3bSC63K03" class="lp-btn-author" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_199_pricing')">Pay $199</a>
     </div>
   </div>
-  <p class="plans-note">Paid up front through Stripe. I then check whether your book fits Booky&rsquo;s readers, going on its blurb, its reviews and how it is being talked about. Within <strong>7 business days</strong> I either approve it and lock in your date, or reject it and refund you in full. You are never left waiting without an answer.</p>
+  <p class="plans-note">You pay up front through Stripe. Then I actually read up on your book, the blurb, the reviews, how people talk about it, and within <strong>7 business days</strong> I either take it and lock in your date, or I pass and refund you in full. You won&rsquo;t be left wondering either way.</p>
 </section>
 
 <section class="lp-section">
   <p class="lp-section-label">How it works</p>
-  <h2 class="lp-section-title">Four steps, no waiting on me</h2>
+  <h2 class="lp-section-title">How it actually works</h2>
   <div class="lp-steps">
     <div class="lp-step">
       <div class="lp-step-num">1</div>
       <div>
-        <p class="lp-step-title">Pick an open date</p>
-        <p class="lp-step-desc">Choose the day you want. There is a date box at checkout, so you can just say it there.</p>
+        <p class="lp-step-title">Pick your date</p>
+        <p class="lp-step-desc">Choose the day you want. There&rsquo;s a date box at checkout, so just put it there.</p>
       </div>
     </div>
     <div class="lp-step">
       <div class="lp-step-num">2</div>
       <div>
         <p class="lp-step-title">Pay</p>
-        <p class="lp-step-desc"><a href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_79_steps')">$79 for one feature day</a>, or <a href="https://buy.stripe.com/5kQ28r4dxcMo5X3bSC63K03" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_199_steps')">$199 for the 3-day launch pack</a>. No DM first, no waiting on a payment link.</p>
+        <p class="lp-step-desc"><a href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_79_steps')">$79 for a day</a>, or <a href="https://buy.stripe.com/5kQ28r4dxcMo5X3bSC63K03" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_199_steps')">$199 for the 3-day launch pack</a>. No DMing me first, no waiting around for a payment link.</p>
       </div>
     </div>
     <div class="lp-step">
       <div class="lp-step-num">3</div>
       <div>
         <p class="lp-step-title">Send your cover and link</p>
-        <p class="lp-step-desc">Email your cover image and your Amazon link to <a href="mailto:hello@90books.com?subject=Booky%20featured%20word" onclick="trackAuthorsCta('email_steps')">hello@90books.com</a>, plus a suggested 5-letter word from your book if you have one (a real, guessable word so players can actually win it). Within 7 business days I approve your book and confirm your date, or reject it and refund you in full.</p>
+        <p class="lp-step-desc">Email your cover image and your Amazon link to <a href="mailto:hello@90books.com?subject=Booky%20featured%20word" onclick="trackAuthorsCta('email_steps')">hello@90books.com</a>, If you&rsquo;ve got a 5-letter word from your book, send that too, something real and guessable so players can actually win it. Within 7 business days I&rsquo;ll confirm your date or refund you.</p>
       </div>
     </div>
     <div class="lp-step">
       <div class="lp-step-num">4</div>
       <div>
-        <p class="lp-step-title">Your feature day runs</p>
-        <p class="lp-step-desc">Readers play your word all day and meet your book on the win screen. Afterwards you get your report: how many played, how many clicked through to your book.</p>
+        <p class="lp-step-title">Your day runs</p>
+        <p class="lp-step-desc">Readers play your word all day and meet your book when they win. After that you get the numbers: how many played, how many clicked through.</p>
       </div>
     </div>
   </div>
@@ -517,26 +396,26 @@
 
 <section class="lp-section">
   <p class="lp-section-label">What you get</p>
-  <h2 class="lp-section-title">One day, five things you keep</h2>
+  <h2 class="lp-section-title">What you actually get</h2>
   <ul class="get-list">
-    <li><b>A custom shareable graphic.</b> Your cover on the Booky board, sized for Instagram Stories and TikTok. Yours to post and to hand to your street team, because it gives your readers something to play, not just something to buy.</li>
-    <li><b>The win screen, all day.</b> Your cover and a &ldquo;Get it on Amazon&rdquo; link in front of every reader who solves the word.</li>
+    <li><b>A shareable graphic.</b> Your cover on the Booky board, sized for Stories and TikTok. Post it, send it to your street team, whatever you like. It gives your readers something to play instead of just something to buy.</li>
+    <li><b>The win screen, all day.</b> Your cover and a &ldquo;Get it on Amazon&rdquo; link in front of every reader who solves it.</li>
     <li><b>A permanent spot</b> on the Booky Library shelf.</li>
-    <li><b>A mention in that week&rsquo;s reader newsletter</b>, 163 subscribers.</li>
-    <li><b>Your report.</b> Real play and click numbers, screenshots included.</li>
+    <li><b>A mention in that week&rsquo;s reader newsletter</b>, which goes out to 163 people.</li>
+    <li><b>Your numbers.</b> Real plays and clicks, screenshots included.</li>
   </ul>
 </section>
 
 <section class="lp-section">
   <p class="lp-section-label">Who plays</p>
-  <h2 class="lp-section-title">Book promotion that is a game, not a newsletter blast</h2>
-  <p class="lp-section-desc">About 120 romantasy readers play every single day, tracked in PostHog, and every one of them sees the day&rsquo;s book. No bots, no vanity numbers, just the exact readers you write for.</p>
+  <h2 class="lp-section-title">Book promotion that&rsquo;s a game, not another blast</h2>
+  <p class="lp-section-desc">About 120 romantasy readers play every single day, and I can show you that in PostHog. Every one of them sees the day&rsquo;s book. It&rsquo;s a small audience, I know. But there are no bots and nothing padded, and they&rsquo;re exactly the readers you write for.</p>
 </section>
 
 <section class="lp-section">
   <p class="lp-section-label">Featured authors</p>
   <h2 class="lp-section-title">Booky&rsquo;s first featured author</h2>
-  <p class="lp-section-desc">Booky&rsquo;s first featured book was Weavingshaw by Sunday Times bestseller Heba Al-Wasity. On feature day, 50+ readers played her word and every one of them met her book.</p>
+  <p class="lp-section-desc">The first book Booky ever featured was Weavingshaw by Heba Al-Wasity, a Sunday Times bestseller. On her day, 50+ readers played her word, and every one of them met her book.</p>
   <div class="featured-proof">
     <blockquote class="featured-quote" cite="https://www.instagram.com/alwasityhh/">
       <p>&ldquo;I am OBSESSED with the game Booky (Wordle for romantasy readers!)&rdquo;</p>
@@ -553,8 +432,8 @@
 
 <section class="lp-section">
   <p class="lp-section-label">The honest part</p>
-  <h2 class="lp-section-title">What I will and won&rsquo;t promise</h2>
-  <p class="lp-section-desc">I can&rsquo;t promise sales. Nobody in book promo honestly can. What I promise is the feature, the graphic, and a real report of what actually happened. Readers trust Booky only as long as every book genuinely fits, so I do say no when a book isn&rsquo;t the right match. That is why every book goes through a review: within 7 business days of your payment I either approve it, or reject it and refund you in full. Paying is not the same as being approved, and I would rather refund you than run a book my readers won&rsquo;t love. Paid features are always labeled in the game.</p>
+  <h2 class="lp-section-title">The honest part</h2>
+  <p class="lp-section-desc">I can&rsquo;t promise you sales. Nobody in book promo honestly can, and I&rsquo;d be wary of anyone who says otherwise. What I can promise is the feature, the graphic, and a straight report of what actually happened. Booky only works as long as readers trust that every book belongs there, so I do say no sometimes. That&rsquo;s what the review is for. Paying isn&rsquo;t the same as being approved, and I&rsquo;d genuinely rather give your money back than run a book my readers won&rsquo;t love. Paid days are always labeled in the game.</p>
 </section>
 
 <section class="lp-section">
@@ -563,35 +442,35 @@
   <div class="lp-faq-list">
     <details class="lp-faq-item">
       <summary>How much does book promotion on Booky cost?</summary>
-      <p>$79 for one feature day, or $199 for a 3-day launch pack you can spread across release week. That is the whole price. There is no setup fee, no commission on sales, and no upsell afterwards.</p>
+      <p>$79 for one feature day, or $199 for a 3-day launch pack you can spread across release week. That&rsquo;s the whole price. No setup fee, no cut of your sales, and I won&rsquo;t come back at you with an upsell.</p>
     </details>
     <details class="lp-faq-item">
       <summary>What kinds of books do you accept?</summary>
-      <p>Romantasy, and romance with a strong fantasy thread. Booky&rsquo;s readers come for that one genre, so a book outside it does not get featured no matter what it pays. I review every book within 7 business days and refund in full if it isn&rsquo;t a fit.</p>
+      <p>Romantasy, and romance with a good fantasy thread running through it. Booky&rsquo;s readers turn up for that one genre, so a book outside it won&rsquo;t get featured no matter what it pays. I read every book within 7 business days and refund you in full if it isn&rsquo;t a fit.</p>
     </details>
     <details class="lp-faq-item">
       <summary>How many readers will see my book?</summary>
-      <p>About 120 romantasy readers start a game every day, tracked in PostHog, and every reader who solves the word sees your cover, your name and your Amazon link on the win screen. The book is the answer, so it is not something readers can scroll past.</p>
+      <p>About 120 romantasy readers start a game every day, and every reader who solves the word sees your cover, your name and your Amazon link. Your book is the answer to the puzzle, so it isn&rsquo;t something anyone scrolls past.</p>
     </details>
     <details class="lp-faq-item">
       <summary>How is this different from a book promotion newsletter?</summary>
-      <p>A newsletter blast asks readers to skim an email. Booky asks them to play, and your book is the reveal at the end of the puzzle they just solved. You also keep a shareable Instagram and TikTok graphic, a permanent spot on the Booky Library shelf, and a mention in the reader newsletter.</p>
+      <p>A newsletter blast asks readers to skim an email. Booky asks them to play, and your book is the reveal at the end of the puzzle they just solved. You also keep the shareable graphic, a permanent spot on the Booky Library shelf, and a mention in the reader newsletter.</p>
     </details>
     <details class="lp-faq-item">
       <summary>Can you guarantee sales?</summary>
-      <p>No, and be careful with anyone in book promo who does. What you get is the feature, the graphic, and an honest report of how many readers played and how many clicked through to your book.</p>
+      <p>No, and I&rsquo;d be careful with anyone in book promo who says they can. What you get is the feature, the graphic, and an honest report of how many readers played and how many clicked through.</p>
     </details>
   </div>
 </section>
 
 <div class="lp-bottom" id="get-featured">
   <h2 class="lp-bottom-title">Get your book featured</h2>
-  <p class="lp-bottom-sub">Limited open days this month.</p>
+  <p class="lp-bottom-sub">Only so many open days a month.</p>
   <div class="bottom-row">
     <a href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02" class="lp-btn-primary" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_79_footer')">Pay $79, one feature day</a>
     <a href="https://buy.stripe.com/5kQ28r4dxcMo5X3bSC63K03" class="lp-btn-secondary" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_199_footer')">Pay $199, 3-day launch pack</a>
   </div>
-  <p class="bottom-support">Questions, or a specific date in mind? Email <a href="mailto:hello@90books.com?subject=Booky%20featured%20word" onclick="trackAuthorsCta('email')">hello@90books.com</a>.</p>
+  <p class="bottom-support">Questions, or a date in mind? Just email <a href="mailto:hello@90books.com?subject=Booky%20featured%20word" onclick="trackAuthorsCta('email')">hello@90books.com</a>.</p>
 </div>
 
 <footer class="lp-site-footer">
@@ -609,7 +488,10 @@
       "serviceType": "Book promotion",
       "description": "A paid feature day on Booky, the daily romantasy word game by 90books. The featured book is the answer to that day's puzzle, and every reader who wins sees its cover, author and buy link on the win screen.",
       "url": "https://90books.com/authors",
-      "audience": { "@type": "Audience", "audienceType": "Romantasy authors" },
+      "audience": {
+        "@type": "Audience",
+        "audienceType": "Romantasy authors"
+      },
       "areaServed": "Worldwide",
       "provider": {
         "@type": "Organization",
@@ -647,7 +529,7 @@
           "name": "How much does book promotion on Booky cost?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "$79 for one feature day, or $199 for a 3-day launch pack you can spread across release week. That is the whole price. There is no setup fee, no commission on sales, and no upsell afterwards."
+            "text": "$79 for one feature day, or $199 for a 3-day launch pack you can spread across release week. That’s the whole price. No setup fee, no cut of your sales, and I won’t come back at you with an upsell."
           }
         },
         {
@@ -655,7 +537,7 @@
           "name": "What kinds of books do you accept?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "Romantasy, and romance with a strong fantasy thread. Booky's readers come for that one genre, so a book outside it does not get featured no matter what it pays. Every book is reviewed within 7 business days and refunded in full if it isn't a fit."
+            "text": "Romantasy, and romance with a good fantasy thread running through it. Booky’s readers turn up for that one genre, so a book outside it won’t get featured no matter what it pays. I read every book within 7 business days and refund you in full if it isn’t a fit."
           }
         },
         {
@@ -663,7 +545,7 @@
           "name": "How many readers will see my book?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "About 120 romantasy readers start a game every day, tracked in PostHog, and every reader who solves the word sees the cover, author name and Amazon link on the win screen. The book is the answer, so it is not something readers can scroll past."
+            "text": "About 120 romantasy readers start a game every day, and every reader who solves the word sees your cover, your name and your Amazon link. Your book is the answer to the puzzle, so it isn’t something anyone scrolls past."
           }
         },
         {
@@ -671,7 +553,7 @@
           "name": "How is this different from a book promotion newsletter?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "A newsletter blast asks readers to skim an email. Booky asks them to play, and the featured book is the reveal at the end of the puzzle they just solved. Authors also keep a shareable Instagram and TikTok graphic, a permanent spot on the Booky Library shelf, and a mention in the reader newsletter."
+            "text": "A newsletter blast asks readers to skim an email. Booky asks them to play, and your book is the reveal at the end of the puzzle they just solved. You also keep the shareable graphic, a permanent spot on the Booky Library shelf, and a mention in the reader newsletter."
           }
         },
         {
@@ -679,7 +561,7 @@
           "name": "Can you guarantee sales?",
           "acceptedAnswer": {
             "@type": "Answer",
-            "text": "No. What authors get is the feature, the graphic, and an honest report of how many readers played and how many clicked through to the book."
+            "text": "No, and I’d be careful with anyone in book promo who says they can. What you get is the feature, the graphic, and an honest report of how many readers played and how many clicked through."
           }
         }
       ]
