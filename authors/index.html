@@ -246,6 +246,25 @@
   }
   .get-list li b { color: var(--text); font-weight: 600; }
 
+  /* the shareable graphic, the thing authors post */
+  .cards {
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 20px; max-width: 560px; margin: 22px 0 18px;
+  }
+  .cards img {
+    width: 100%; height: auto; display: block;
+    border-radius: 12px; border: 1px solid var(--border);
+    box-shadow: 0 14px 36px rgba(26, 11, 31, 0.16);
+  }
+  .cards figcaption {
+    font-size: 12.5px; color: var(--text-dim); margin-top: 8px; line-height: 1.45;
+  }
+  .cards figure { margin: 0; }
+  .post-line {
+    font-family: 'Playfair Display', serif; font-size: 22px;
+    line-height: 1.35; color: var(--text); max-width: 560px; margin-bottom: 6px;
+  }
+
   /* faq, same component as the landing page */
   .lp-faq-list { max-width: 660px; }
   .lp-faq-item { border-bottom: 1px solid var(--border); padding: 18px 4px; }
@@ -466,12 +485,29 @@
   <p class="lp-section-label">What you get</p>
   <h2 class="lp-section-title">What you actually get</h2>
   <ul class="get-list">
-    <li><b>A shareable graphic.</b> Your cover on the Booky board, sized for Stories and TikTok. Post it, send it to your street team, whatever you like. It gives your readers something to play instead of just something to buy.</li>
+    <li><b>A shareable graphic.</b> Your cover on a card built for Stories and TikTok, yours to post and to hand to your street team. It&rsquo;s the one below, and it gives your readers something to play instead of just something to buy.</li>
     <li><b>The end screen, all day.</b> Your cover and a &ldquo;Get it on Amazon&rdquo; link in front of every reader who finishes, whether they got the word or not.</li>
     <li><b>A permanent spot</b> on the Booky Library shelf.</li>
     <li><b>A mention in that week&rsquo;s reader newsletter</b>, which goes out to 163 people.</li>
     <li><b>Your numbers.</b> Real plays and clicks, screenshots included.</li>
   </ul>
+</section>
+
+<section class="lp-section">
+  <p class="lp-section-label">The graphic</p>
+  <h2 class="lp-section-title">You post this, your people play your book</h2>
+  <p class="lp-section-desc">Every feature day comes with a 1080x1920 card built for Instagram Stories, Reels and TikTok. Your cover, your title, your name, and the link on the graphic itself, so it still works when someone screenshots it or reshares it without the sticker.</p>
+  <div class="cards">
+    <figure>
+      <img src="/authors/booky-card-weavingshaw.jpg" alt="Booky share card for Weavingshaw by Heba Al-Wasity: today's word is hidden in, the cover, and a PLAY NOW button with 90books.com/booky" width="540" height="960" loading="lazy">
+      <figcaption>Feature day, live. &ldquo;Play now.&rdquo;</figcaption>
+    </figure>
+    <figure>
+      <img src="/authors/booky-card-cassidy.jpg" alt="Booky share card for In the Veins of the Drowning by Kalie Cassidy, with a play on Thursday July 16 button and 90books.com/booky" width="540" height="960" loading="lazy">
+      <figcaption>Or a teaser for the day before, so your readers can plan to show up.</figcaption>
+    </figure>
+  </div>
+  <p class="plans-note">The link is printed on the card, not just attached as a story sticker, so it survives a screenshot and a reshare.</p>
 </section>
 
 <section class="lp-section">
@@ -482,18 +518,18 @@
 
 <section class="lp-section">
   <p class="lp-section-label">Featured authors</p>
-  <h2 class="lp-section-title">Booky&rsquo;s first featured author</h2>
-  <p class="lp-section-desc">The first book Booky ever featured was Weavingshaw by Heba Al-Wasity, a Sunday Times bestseller. On her day, 50+ readers played her word, and every one of them met her book.</p>
+  <h2 class="lp-section-title">The first author to do it</h2>
+  <p class="lp-section-desc">The first book Booky ever featured was Weavingshaw by Heba Al-Wasity, a Sunday Times bestseller. On her day, 50+ readers played her word and met her book. Then she posted her card to her Instagram story, which is the half that reaches your readers rather than only mine.</p>
   <div class="featured-proof">
     <blockquote class="featured-quote" cite="https://www.instagram.com/alwasityhh/">
       <p>&ldquo;I am OBSESSED with the game Booky (Wordle for romantasy readers!)&rdquo;</p>
-      <cite>Heba Al-Wasity, author of Weavingshaw (shared to her Instagram)</cite>
+      <cite>Heba Al-Wasity, author of Weavingshaw, in the story she posted</cite>
     </blockquote>
     <figure class="featured-story">
       <a href="https://www.instagram.com/alwasityhh/" rel="noopener noreferrer" aria-label="Heba Al-Wasity on Instagram">
         <img src="/authors/heba-ig-story.png" alt="Screenshot of Heba Al-Wasity sharing Booky on her Instagram story" width="188" height="407" loading="lazy">
       </a>
-      <figcaption>Heba&rsquo;s Instagram story</figcaption>
+      <figcaption>Heba posting her feature day to her own Instagram story</figcaption>
     </figure>
   </div>
 </section>
