@@ -40,6 +40,12 @@
     color: #fff; text-decoration: none; font-size: 13px; font-weight: 600;
     letter-spacing: 0.2px; box-shadow: 0 4px 14px rgba(217, 70, 168, 0.28);
   }
+  .lp-nav-right { display: flex; align-items: center; gap: 12px; }
+  .nav-authors {
+    font-size: 13.5px; font-weight: 600; color: var(--text-muted);
+    text-decoration: none; white-space: nowrap;
+  }
+  .nav-authors:hover { color: var(--text); text-decoration: underline; }
   .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 72px; }
   h1 {
     font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 44px);
@@ -68,7 +74,10 @@
     <div class="lp-nav-icon">90</div>
     <span class="lp-nav-name">90books</span>
   </a>
-  <a href="/booky" class="booky-top-cta">&#127918; Play Booky</a>
+  <span class="lp-nav-right">
+    <a href="/authors" class="nav-authors">For authors</a>
+    <a href="/booky" class="booky-top-cta">&#127918; Play Booky</a>
+  </span>
 </header>
 <div class="wrap">
 <h1>Terms</h1>

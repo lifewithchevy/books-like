@@ -21,6 +21,9 @@
   #dl{margin:14px 0 0;background:#cf3f86;color:#fff6ec;border:none;border-radius:30px;padding:14px 28px;font-family:Georgia,serif;font-size:16px;letter-spacing:1px;cursor:pointer;box-shadow:0 8px 24px rgba(207,63,134,.45);}
   #dl:hover{background:#b83072;}
   .note{color:#8d7388;font-size:12px;letter-spacing:1px;margin:16px 0 0;text-align:center;max-width:430px;line-height:1.6;}
+  .site-footer{margin:34px 0 0;padding:18px 16px 26px;text-align:center;font-family:Arial,sans-serif;font-size:13px;color:#8f7a92;border-top:1px solid rgba(240,217,160,.15);}
+  .site-footer a{color:#b496ac;text-decoration:none;}
+  .site-footer a:hover{color:#ec84bd;text-decoration:underline;}
 </style>
 <meta name="robots" content="noindex, nofollow" />
 <!-- PostHog analytics (same project as the game; honors the notrack opt-out) -->
@@ -101,5 +104,8 @@ function downloadPNG(){
   (function(){ try { window.posthog && posthog.capture && posthog.capture('booky_featured_view', {book:'starside', author:'alexaster'}); } catch(e){} })();
   function trackPlay(){ try { window.posthog && posthog.capture && posthog.capture('booky_featured_play_click', {book:'starside', author:'alexaster'}); } catch(e){} }
 </script>
+<footer class="site-footer">
+  <a href="/">90books</a> &middot; <a href="/authors">For authors</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a>
+</footer>
 </body>
 </html>

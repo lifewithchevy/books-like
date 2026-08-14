@@ -1231,3 +1231,10 @@ body.og-image-page {
   color: var(--ink-dim);
   letter-spacing: 0.5px;
 }
+
+/* Legal + author links in the help sheet. The game itself is 100dvh with
+   overflow hidden, so it has no room for a site footer; this is where those
+   links live instead. */
+.modal-links { margin-top: 10px; }
+.modal-links a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.modal-links a:hover { color: #ec84bd; }
