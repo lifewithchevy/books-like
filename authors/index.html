@@ -509,7 +509,7 @@
 <section class="lp-section">
   <p class="lp-section-label">Open days</p>
   <h2 class="lp-section-title">Days I can still give you</h2>
-  <p class="lp-section-desc">Click a day and it takes you straight to checkout with that date attached, $79. If it&rsquo;s gone by the time you pay, I&rsquo;ll move you to the closest open day and tell you before anything runs.</p>
+  <p class="lp-section-desc">Click a day and it takes you straight to checkout, $79, where you pick that date from the list. Only the days below are in the list, so you can&rsquo;t accidentally book one I can&rsquo;t give you. If it goes while you&rsquo;re deciding, I&rsquo;ll move you to the closest open day and tell you before anything runs.</p>
 
   <!-- TODO (operator): these are the next open feature days. Swap them for real
        availability whenever a day sells, and top the list back up to 10.
@@ -519,7 +519,13 @@
        offering days that can no longer be delivered.
        Two standing rules when you refill this:
          - No Thursdays. That slot is Zodiac Academy (Sep 3 VEGAS, Sep 17 HEIRS).
-         - Keep Sundays in. They are the day you can promo in r/Romantasy. -->
+         - Keep Sundays in. They are the day you can promo in r/Romantasy.
+       ⚠️ THESE DATES ARE MIRRORED IN STRIPE. The $79 link's "Preferred feature
+       date" is a dropdown containing exactly these ten days, so an author can
+       only pick a day you actually have. If you change the list here, edit the
+       dropdown options on the $79 payment link too or the two will disagree:
+       Stripe > Payment links > Booky Feature Day > Advanced options.
+       Stripe caps dropdowns at 10 options, which is why the list is 10. -->
   <ul class="open-days" id="openDays">
     <li><a class="open-day" data-date="2026-09-04" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-04&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-04" rel="noopener noreferrer"
            onclick="trackAuthorsCta('open_day_2026-09-04')"
@@ -565,7 +571,7 @@
       <div class="lp-step-num">1</div>
       <div>
         <p class="lp-step-title">Pick your date</p>
-        <p class="lp-step-desc">Choose the day you&rsquo;d like your book to run, <strong>at least three weeks out</strong>. That&rsquo;s what it takes to check the book, pick your word and get your graphic to you before you need to post it. If the day&rsquo;s already taken I&rsquo;ll come back with the closest open one.</p>
+        <p class="lp-step-desc">Pick one of the open days above, or choose from the same list at checkout, <strong>at least three weeks out</strong>. That&rsquo;s what it takes to check the book, pick your word and get your graphic to you before you need to post it. If the day&rsquo;s already taken I&rsquo;ll come back with the closest open one.</p>
       </div>
     </div>
     <div class="lp-step">
