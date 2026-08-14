@@ -347,7 +347,7 @@
   "crons": [
     {
       "path": "/api/booky-send",
-      "schedule": "0 23 * * *"
+      "schedule": "1 23 * * *"
     }
   ]
 }

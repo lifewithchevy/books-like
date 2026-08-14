@@ -147,6 +147,28 @@ as proof the live domain updated — wait for the force-alias workflow (or check
 https://90books.com/ directly). There is no Vercel CLI/token in the web/agent
 environment by default; the workflow uses `secrets.VERCEL_TOKEN`.
 
+### ⚠️ The daily-email cron does NOT follow production
+
+`vercel.json` → `crons` runs `/api/booky-send` daily, but Vercel pins the cron to
+**one specific deployment** and does not move it when a new production deployment
+is created. On 2026-08-13 the cron was still pinned to a deployment from
+**2026-07-15** — every daily reminder for a month was built by month-old code,
+while `90books.com` served current code the whole time.
+
+That is the real cause of the "note silently did not send" mystery documented at
+the top of `api/booky-send.js`: the Aug 7 note *was* deployed, the cron just never
+ran that deployment.
+
+- **Check which deployment the cron is pinned to** (Vercel dashboard, logged in,
+  from the browser console on vercel.com):
+  `(await (await fetch('/api/v9/projects/book-recs-app',{credentials:'include'})).json()).crons`
+  — look at `deploymentId` and `updatedAt`. If `updatedAt` is old, the cron is stale.
+- **Re-point it** by changing the `crons` block in `vercel.json` (e.g. bump the
+  schedule minute) and shipping. A plain redeploy does NOT re-register it.
+- **Anything that changes the email is not live until the cron re-registers.**
+  `curl 'https://90books.com/api/booky-send?preview=1'` proves what the *domain*
+  serves, which is not what subscribers get.
+
 ### Standing rule: always verify production
 
 **After any change lands on `main` (merge or direct push), always confirm the
