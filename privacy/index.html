@@ -1,0 +1,106 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Privacy | 90books</title>
+<meta name="description" content="How 90books and Booky handle author and reader data: what I collect, what Stripe, Resend and PostHog see, and how to get your data removed.">
+<link rel="canonical" href="https://90books.com/privacy">
+<meta name="robots" content="index, follow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFFFF; --surface: #FFFFFF; --surface2: #F5F3EE;
+    --accent: #D4A853; --accent-light: #B8922F; --accent-dim: #9E7B24;
+    --text: #1A1A1A; --text-muted: #5C5C5C; --text-dim: #8A8A8A; --border: #E5E0D5;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.65;
+  }
+  .lp-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px; background: var(--bg);
+    border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10;
+  }
+  .lp-nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+  .lp-nav-icon {
+    width: 34px; height: 34px; background: #1A1A1A; color: #fff; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; letter-spacing: -0.5px;
+  }
+  .lp-nav-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+  .booky-top-cta {
+    display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px;
+    border-radius: 20px; background: linear-gradient(135deg, #d946a8, #8b3fd3);
+    color: #fff; text-decoration: none; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.2px; box-shadow: 0 4px 14px rgba(217, 70, 168, 0.28);
+  }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 72px; }
+  h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 44px);
+    font-weight: 700; line-height: 1.15; margin-bottom: 10px;
+  }
+  .updated { font-size: 13px; color: var(--text-dim); margin-bottom: 32px; }
+  h2 {
+    font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700;
+    margin: 34px 0 12px;
+  }
+  p { color: var(--text-muted); margin-bottom: 14px; }
+  ul { color: var(--text-muted); padding-left: 1.15rem; margin-bottom: 14px; }
+  li { margin-bottom: 8px; }
+  a { color: #8b3fd3; font-weight: 500; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .lp-site-footer {
+    text-align: center; padding: 28px 24px 40px;
+    border-top: 1px solid var(--border); font-size: 14px; color: var(--text-dim);
+  }
+  @media (max-width: 520px) { .lp-nav { padding: 12px 16px; } .wrap { padding: 32px 18px 56px; } }
+</style>
+</head>
+<body>
+<header class="lp-nav">
+  <a href="/" class="lp-nav-logo" title="Back to Booky home">
+    <div class="lp-nav-icon">90</div>
+    <span class="lp-nav-name">90books</span>
+  </a>
+  <a href="/booky" class="booky-top-cta">&#127918; Play Booky</a>
+</header>
+<div class="wrap">
+<h1>Privacy</h1>
+<p class="updated">Last updated 13 August 2026</p>
+
+<p>I&rsquo;m Olga, and I run 90books and Booky, the daily romantasy word game. This is the short, honest version of what I collect and what I do with it. If anything here isn&rsquo;t clear, email me at <a href="mailto:hello@90books.com">hello@90books.com</a> and I&rsquo;ll answer properly.</p>
+
+<h2>If you&rsquo;re an author who books a feature day</h2>
+<p>When you buy a feature day or a launch pack, checkout collects your name, your email, your book title, the date you&rsquo;d like, and any word ideas you feel like sending. I use those to run your feature and to email you about it. Nothing else.</p>
+<p>Your payment is handled by <a href="https://stripe.com/privacy" rel="noopener noreferrer">Stripe</a>, not by me. I never see or store your card number. I can see that a payment happened, for how much, and the details you typed into the form.</p>
+
+<h2>If you&rsquo;re a reader who plays Booky</h2>
+<p>You can play without giving me anything. Your streak and your game history live in your own browser.</p>
+<p>If you sign up for the reader newsletter, I keep your email address so I can send it. Those emails go out through <a href="https://resend.com/legal/privacy-policy" rel="noopener noreferrer">Resend</a>, which records whether an email was delivered and opened. Every email has an unsubscribe link, and unsubscribing removes you.</p>
+
+<h2>Analytics</h2>
+<p>I use <a href="https://posthog.com/privacy" rel="noopener noreferrer">PostHog</a> to count things like how many people played today and which links got clicked. It&rsquo;s how the numbers on the authors page and in your feature report exist at all. If you&rsquo;d rather not be counted, add <code>?notrack=1</code> to any 90books URL and I&rsquo;ll leave you out.</p>
+
+<h2>What I don&rsquo;t do</h2>
+<ul>
+  <li>I don&rsquo;t sell your data, author or reader, to anyone.</li>
+  <li>I don&rsquo;t run ad networks or third-party ad trackers on the site.</li>
+  <li>I don&rsquo;t share your email with the authors I feature, or with anyone else.</li>
+</ul>
+
+<h2>Your data, your call</h2>
+<p>Email <a href="mailto:hello@90books.com">hello@90books.com</a> and ask me what I hold on you, ask me to correct it, or ask me to delete it. I&rsquo;ll do it. I keep author records for as long as I need them for tax and accounting, which is the one thing I can&rsquo;t delete on request.</p>
+
+<p><a href="/authors">Back to the authors page</a></p>
+</div>
+<footer class="lp-site-footer">
+  <a href="/">90books</a> &middot; <a href="/authors">For authors</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a>
+</footer>
+</body>
+</html>

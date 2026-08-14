@@ -98,6 +98,11 @@
     transition: transform 0.15s, box-shadow 0.15s;
     -webkit-tap-highlight-color: transparent;
   }
+  .nav-play {
+    font-size: 13.5px; font-weight: 600; color: var(--text-muted);
+    text-decoration: none; white-space: nowrap;
+  }
+  .nav-play:hover { color: var(--text); text-decoration: underline; }
   .booky-top-cta:hover {
     transform: translateY(-1px);
     box-shadow: 0 6px 18px rgba(217, 70, 168, 0.4);
@@ -265,6 +270,28 @@
     line-height: 1.35; color: var(--text); max-width: 560px; margin-bottom: 6px;
   }
 
+  /* open feature days */
+  .open-days {
+    list-style: none; display: flex; flex-wrap: wrap; gap: 10px;
+    margin: 22px 0 18px; max-width: 660px; padding: 0;
+  }
+  .open-days li {
+    border: 1.5px solid var(--border); border-radius: 12px;
+    padding: 10px 14px; background: var(--surface);
+    font-size: 15px; font-weight: 600; line-height: 1.25;
+    display: flex; flex-direction: column; gap: 1px;
+  }
+  .open-days li .dow {
+    font-size: 11px; font-weight: 700; letter-spacing: 0.08em;
+    text-transform: uppercase; color: var(--accent-dim);
+  }
+  .open-days-none {
+    margin: 22px 0 18px; padding: 16px 18px;
+    border: 1.5px dashed var(--border); border-radius: 12px;
+    color: var(--text-muted); font-size: 15px; max-width: 660px;
+  }
+  @media (max-width: 520px) { .open-days li { flex: 1 1 calc(50% - 5px); } }
+
   /* faq, same component as the landing page */
   .lp-faq-list { max-width: 660px; }
   .lp-faq-item { border-bottom: 1px solid var(--border); padding: 18px 4px; }
@@ -375,6 +402,27 @@
     opt_out_capturing_by_default: _bkOptOut,
   });
   try { if (_bkOptOut) posthog.opt_out_capturing(); else if (_bkParams && _bkParams.get('notrack') === '0') posthog.opt_in_capturing(); } catch (e) {}
+
+  // Open days: hide anything inside the 3-week lead time so a stale list can
+  // never offer a day that cannot be delivered.
+  (function () {
+    var ul = document.getElementById('openDays');
+    if (!ul) return;
+    var cutoff = new Date();
+    cutoff.setHours(0, 0, 0, 0);
+    cutoff.setDate(cutoff.getDate() + 21);
+    var left = 0;
+    [].forEach.call(ul.querySelectorAll('li'), function (li) {
+      var d = new Date(li.getAttribute('data-date') + 'T00:00:00');
+      if (d < cutoff) { li.hidden = true; } else { left++; }
+    });
+    if (!left) {
+      ul.hidden = true;
+      var none = document.getElementById('openDaysNone');
+      if (none) none.hidden = false;
+    }
+  })();
+
   function trackAuthorsCta(channel) {
     try { window.posthog && posthog.capture && posthog.capture('authors_cta_clicked', { channel: channel, page: '/authors' }); } catch (e) {}
   }
@@ -388,7 +436,8 @@
     <span class="lp-nav-name">90books</span>
   </a>
   <div class="lp-nav-right">
-    <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=nav_play" class="booky-top-cta" title="Play Booky, the daily romantasy word game" aria-label="Play Booky, the daily romantasy word game">&#127918; Play Booky</a>
+    <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=nav_play" class="nav-play">Play Booky</a>
+    <a href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02" class="booky-top-cta" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_79_nav')">Pay $79</a>
   </div>
 </header>
 
@@ -444,6 +493,32 @@
     </div>
   </div>
   <p class="plans-note">Book at least three weeks ahead. You pay up front through Stripe, then I actually look into your book, the blurb, the reviews, how people talk about it, and within <strong>7 business days</strong> I either take it and lock in your date, or I pass and refund you in full. You won&rsquo;t be left wondering either way.</p>
+</section>
+
+<section class="lp-section">
+  <p class="lp-section-label">Open days</p>
+  <h2 class="lp-section-title">Days I can still give you</h2>
+  <p class="lp-section-desc">Pick one of these. If it&rsquo;s gone by the time you pay, I&rsquo;ll move you to the closest open day. Put the one you want in the date box at checkout.</p>
+
+  <!-- TODO (operator): these are the next open feature days. Swap them for real
+       availability whenever a day sells, and top the list back up to 10.
+       There is no booked/sold flag in booky/words.json, so this list is the
+       only record of what is taken. Dates less than 3 weeks out are hidden
+       automatically by the script below, so a stale list shrinks instead of
+       offering days that can no longer be delivered. -->
+  <ul class="open-days" id="openDays">
+    <li data-date="2026-09-03"><span class="dow">Thu</span>3 Sep</li>
+    <li data-date="2026-09-04"><span class="dow">Fri</span>4 Sep</li>
+    <li data-date="2026-09-08"><span class="dow">Tue</span>8 Sep</li>
+    <li data-date="2026-09-09"><span class="dow">Wed</span>9 Sep</li>
+    <li data-date="2026-09-10"><span class="dow">Thu</span>10 Sep</li>
+    <li data-date="2026-09-11"><span class="dow">Fri</span>11 Sep</li>
+    <li data-date="2026-09-15"><span class="dow">Tue</span>15 Sep</li>
+    <li data-date="2026-09-16"><span class="dow">Wed</span>16 Sep</li>
+    <li data-date="2026-09-17"><span class="dow">Thu</span>17 Sep</li>
+    <li data-date="2026-09-18"><span class="dow">Fri</span>18 Sep</li>
+  </ul>
+  <p class="open-days-none" id="openDaysNone" hidden>These dates have passed. Email me at <a href="mailto:hello@90books.com?subject=Booky%20open%20days">hello@90books.com</a> and I&rsquo;ll send you the next open ones.</p>
 </section>
 
 <section class="lp-section">
@@ -598,7 +673,7 @@
 </div>
 
 <footer class="lp-site-footer">
-  <a href="/">Back to 90books</a> &middot; <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=footer_play">Play Booky</a>
+  <a href="/">Back to 90books</a> &middot; <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=footer_play">Play Booky</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a>
 </footer>
 
 <script type="application/ld+json">
