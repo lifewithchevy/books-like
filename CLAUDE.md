@@ -147,27 +147,47 @@ as proof the live domain updated — wait for the force-alias workflow (or check
 https://90books.com/ directly). There is no Vercel CLI/token in the web/agent
 environment by default; the workflow uses `secrets.VERCEL_TOKEN`.
 
-### ⚠️ The daily-email cron does NOT follow production
+### ⚠️ Vercel Cron is DISABLED here — the daily email is sent another way
 
-`vercel.json` → `crons` runs `/api/booky-send` daily, but Vercel pins the cron to
-**one specific deployment** and does not move it when a new production deployment
-is created. On 2026-08-13 the cron was still pinned to a deployment from
-**2026-07-15** — every daily reminder for a month was built by month-old code,
-while `90books.com` served current code the whole time.
+Do not re-enable it. Do not "fix" the daily email by trusting `vercel.json` →
+`crons`.
 
-That is the real cause of the "note silently did not send" mystery documented at
-the top of `api/booky-send.js`: the Aug 7 note *was* deployed, the cron just never
-ran that deployment.
+Vercel pins a cron to **one specific deployment** and, on this project, froze
+that pin on 2026-07-16 at a deployment from **2026-07-15**. Every daily reminder
+for the next month was built by month-old code — dead unsubscribe link, missing
+update notes — while `90books.com` served current code the whole time. That is
+also the real cause of the "note silently did not send" mystery at the top of
+`api/booky-send.js`: the Aug 7 note *was* deployed; the cron never ran that
+deployment.
 
-- **Check which deployment the cron is pinned to** (Vercel dashboard, logged in,
-  from the browser console on vercel.com):
-  `(await (await fetch('/api/v9/projects/book-recs-app',{credentials:'include'})).json()).crons`
-  — look at `deploymentId` and `updatedAt`. If `updatedAt` is old, the cron is stale.
-- **Re-point it** by changing the `crons` block in `vercel.json` (e.g. bump the
-  schedule minute) and shipping. A plain redeploy does NOT re-register it.
-- **Anything that changes the email is not live until the cron re-registers.**
-  `curl 'https://90books.com/api/booky-send?preview=1'` proves what the *domain*
-  serves, which is not what subscribers get.
+All of these were tried on 2026-08-14 and **none moved the pin**: bumping the
+schedule, deleting the `crons` block entirely, disabling the feature, and
+redeploying production while disabled. So Cron Jobs are switched **off** in
+Project Settings → Cron Jobs, which is what stops the month-old ghost send.
+
+**What sends the email now:** `booky-health.yml` runs `scripts/health-live.mjs`
+at 23:17 UTC daily, and that script calls
+`https://90books.com/api/booky-send?trigger=1`. It is the only scheduled thing a
+session can edit — workflow files cannot be pushed, and that job has no
+`CRON_SECRET` in scope, so the trigger is unauthenticated by necessity.
+
+`lib/daily-trigger.js` is what makes that safe, and it is the file to read before
+changing any of this:
+
+- a **23:00–02:00 UTC window** (three hours, because GitHub delays scheduled runs
+  and the 02:17 run is the backup), and
+- a **once-per-day Redis lock** keyed to the send's date, which **fails CLOSED** —
+  an unreachable store means "do not send", because the cost of guessing wrong
+  here is a duplicate email to the whole list.
+
+The `crons` block stays in `vercel.json` on purpose, so that a future unfreeze
+finds a correct definition rather than nothing. **If Vercel is ever re-enabled,
+delete that block first** or subscribers get two emails a night.
+
+- **Verify a change to the email actually reaches inboxes** by reading the raw
+  source of a delivered message, not by curling the domain.
+  `curl 'https://90books.com/api/booky-send?preview=1'` proves only what the
+  *domain* serves. That gap is exactly what hid this bug for a month.
 
 ### Standing rule: always verify production
 

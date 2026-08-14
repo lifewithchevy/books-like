@@ -186,7 +186,55 @@ async function main() {
     warn(`could not compare live queue to booky/words.json: ${e.message}`);
   }
 
+  await triggerDailyEmail();
+
   done();
+}
+
+// ---- The daily reminder is sent from here ----
+//
+// Not because a health check is the natural home for it, but because it is the
+// only thing on a schedule that a session can edit. Vercel Cron is disabled for
+// this project: its registration froze pinned to a 2026-07-15 deployment, so for
+// a month subscribers got month-old email (dead unsubscribe link) while the
+// domain served current code. Nothing moved the pin — see lib/daily-trigger.js.
+//
+// booky-health.yml runs this file at 23:17 UTC daily, which lands inside the
+// 23:00-02:00 UTC send window; the other seven runs a day fall outside it and
+// are told "outside the window". The 02:17 run is the backup if GitHub delays
+// the 23:17 one. The endpoint decides whether to send, not this script.
+//
+// Only runs in CI. A local `bash scripts/ship.sh` polls this file up to 20
+// times, and none of those should be able to mail the list.
+async function triggerDailyEmail() {
+  if (!process.env.GITHUB_ACTIONS) return;
+
+  try {
+    const r = await fetch('https://90books.com/api/booky-send?trigger=1', {
+      signal: AbortSignal.timeout(120000),
+    });
+    const body = await r.json().catch(() => ({}));
+
+    if (!r.ok) {
+      fail(`daily email trigger returned HTTP ${r.status}`);
+      return;
+    }
+    if (body.skipped) {
+      ok(`daily email not due: ${body.skipped}`);
+      return;
+    }
+    if (body.failed > 0) {
+      warn(`daily email sent to ${body.sent}, FAILED for ${body.failed}`);
+      return;
+    }
+    if (!body.sent) {
+      fail(`daily email ran but sent to 0 subscribers`);
+      return;
+    }
+    ok(`daily email sent to ${body.sent} subscriber(s)`);
+  } catch (e) {
+    fail(`daily email trigger failed: ${e.message}`);
+  }
 }
 
 function done() {

@@ -15,6 +15,7 @@
 //   CRON_SECRET             — random string, Vercel auto-attaches as Bearer
 
 const { unsubscribeUrl, unsubscribeHeaders } = require('../lib/unsubscribe');
+const { maySend } = require('../lib/daily-trigger');
 
 // ---- One-off notes, keyed by the UTC date of the send ----
 //
@@ -93,15 +94,40 @@ module.exports = async (req, res) => {
     return;
   }
 
-  // ---- Auth: only allow Vercel Cron (or manual via x-debug-key=CRON_SECRET) ----
-  const CRON_SECRET = process.env.CRON_SECRET;
-  if (CRON_SECRET) {
-    const auth = req.headers.authorization || '';
-    const debugKey = req.headers['x-debug-key'] || '';
-    const ok = auth === `Bearer ${CRON_SECRET}` || debugKey === CRON_SECRET;
-    if (!ok) {
-      res.status(401).json({ error: 'unauthorized' });
+  // ---- Trigger: what actually drives the daily send now ----
+  //
+  // Vercel Cron is DISABLED for this project. Its registration froze pinned to a
+  // 2026-07-15 deployment, so every reminder for a month was built by month-old
+  // code — dead unsubscribe link, missing update notes — while 90books.com
+  // served current code. Changing the schedule, deleting the crons block, and
+  // disabling + redeploying all failed to move the pin.
+  //
+  // `booky-health.yml` already runs scripts/health-live.mjs at 23:17 UTC daily,
+  // and that script is what calls this now. Unauthenticated on purpose: that
+  // Actions job has no CRON_SECRET in scope and adding one needs a workflow
+  // change that cannot be pushed from a session. What makes it safe is
+  // lib/daily-trigger.js — a 23:00-02:00 UTC window plus a once-per-day Redis
+  // lock that fails CLOSED. Read that file before touching any of this.
+  if (req.query && req.query.trigger) {
+    const gate = await maySend();
+    if (!gate.go) {
+      console.log('[booky-send] trigger skipped —', gate.reason);
+      res.status(200).json({ ok: true, sent: 0, skipped: gate.reason, dateKey: gate.dateKey });
       return;
+    }
+    console.log('[booky-send] trigger accepted for', gate.dateKey);
+    // owns today's send — falls through to the send below
+  } else {
+    // ---- Auth: Vercel Cron, or manual via x-debug-key=CRON_SECRET ----
+    const CRON_SECRET = process.env.CRON_SECRET;
+    if (CRON_SECRET) {
+      const auth = req.headers.authorization || '';
+      const debugKey = req.headers['x-debug-key'] || '';
+      const ok = auth === `Bearer ${CRON_SECRET}` || debugKey === CRON_SECRET;
+      if (!ok) {
+        res.status(401).json({ error: 'unauthorized' });
+        return;
+      }
     }
   }
 
