@@ -343,5 +343,11 @@
       "source": "/booky-library/",
       "destination": "/"
     }
+  ],
+  "crons": [
+    {
+      "path": "/api/booky-send",
+      "schedule": "1 23 * * *"
+    }
   ]
 }
