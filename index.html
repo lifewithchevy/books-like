@@ -134,7 +134,7 @@
         "name": "Can romantasy authors get their book featured on Booky?",
         "acceptedAnswer": {
           "@type": "Answer",
-          "text": "Yep. If you're searching how to promote a romantasy book or how to get your book featured without shouting into the void, Booky can help with that. Your book becomes the daily word: readers guess it, then land on your cover, author name, and a buy link. You also get a shareable graphic for BookTok and Bookstagram, plus a mention in the reader newsletter. It works for indie and more established authors alike — whether you're launching a new release or just promoting your book to romantasy readers who already care about this genre, not a random crowd. Details and founder pricing are on the authors page at 90books.com/authors."
+          "text": "Yep. If you're searching how to promote a romantasy book or how to get your book featured without shouting into the void, Booky can help with that. Your book becomes the daily word: readers guess it, then land on your cover, author name, and a buy link. You also get a shareable graphic for BookTok and Bookstagram, plus a mention in the reader newsletter. It works for indie and more established authors alike, whether you're launching a new release or just promoting your book to romantasy readers who already care about this genre, not a random crowd. It's $79 for a feature day, or $199 for a 3-day launch pack, and the details are on the authors page at 90books.com/authors."
         }
       }
     ]
@@ -2817,7 +2817,7 @@
       <div class="lp-faq-list">
         <details class="lp-faq-item">
           <summary>What is Booky?</summary>
-          <p>Booky is the free daily romantasy word game from 90books &mdash; made by a romantasy reader for other romantasy readers like me. If you've been looking for a booky wordle, this is it: a word game where you guess a 5-letter word tied to a fantasy romance book, then meet that book after you solve it. New puzzle every day, no login, totally free.</p>
+          <p>Booky is the free daily romantasy word game from 90books, made by a romantasy reader for other romantasy readers like me. If you've been looking for a booky wordle, this is it: a word game where you guess a 5-letter word tied to a fantasy romance book, then meet that book after you solve it. New puzzle every day, no login, totally free.</p>
         </details>
         <details class="lp-faq-item">
           <summary>How do you play Booky?</summary>
@@ -2841,13 +2841,22 @@
         </details>
         <details class="lp-faq-item">
           <summary>Can romantasy authors get their book featured on Booky?</summary>
-          <p>Yep. If you're searching how to promote a romantasy book or how to get your book featured without shouting into the void, Booky can help with that. Your book becomes the daily word: readers guess it, then land on your cover, author name, and a buy link. You also get a shareable graphic for BookTok and Bookstagram, plus a mention in the reader newsletter. It works for indie and more established authors alike &mdash; whether you're launching a new release or just promoting your book to romantasy readers who already care about this genre, not a random crowd. Details and founder pricing are on the <a href="/authors">authors page</a>.</p>
+          <p>Yep. If you're searching how to promote a romantasy book or how to get your book featured without shouting into the void, Booky can help with that. Your book becomes the daily word: readers guess it, then land on your cover, author name, and a buy link. You also get a shareable graphic for BookTok and Bookstagram, plus a mention in the reader newsletter. It works for indie and more established authors alike, whether you're launching a new release or just promoting your book to romantasy readers who already care about this genre, not a random crowd. It's $79 for a feature day, or $199 for a 3-day launch pack, and the details are on the <a href="/authors">authors page</a>.</p>
         </details>
       </div>
-      <p class="lp-auth-cta-wrap">
-        <a href="/authors" class="lp-auth-cta">&#9997;&#65039; Are you a romantasy author? Get your book featured &rarr;</a>
-      </p>
     </section>
+
+    <!-- Same closing block as /authors, so the offer reads identically wherever
+         an author meets it. -->
+    <div class="lp-bottom" id="get-featured">
+      <h2 class="lp-bottom-title">Get your book featured</h2>
+      <p class="lp-bottom-sub">Only so many open days a month.</p>
+      <div class="bottom-row">
+        <a href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02" class="lp-btn-primary" rel="noopener noreferrer">Pay $79, one feature day</a>
+        <a href="https://buy.stripe.com/5kQ28r4dxcMo5X3bSC63K03" class="lp-btn-secondary" rel="noopener noreferrer">Pay $199, 3-day launch pack</a>
+      </div>
+      <p class="bottom-support">Not sure yet? <a href="/authors">See how it works</a>, or email <a href="mailto:hello@90books.com?subject=Booky%20feature%20day">hello@90books.com</a>.</p>
+    </div>
 
     <footer class="lp-site-footer">
       <a href="/">90books</a> &middot; <a href="/authors">For authors</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a>
@@ -16054,6 +16063,15 @@
       font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 4px;
     }
     .lp-bottom-sub { font-size: 16px; color: rgba(255,255,255,0.6); margin-bottom: 8px; }
+    .bottom-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    .lp-bottom .lp-btn-secondary { background: transparent; color: #fff; border-color: rgba(255,255,255,0.28); }
+    .lp-bottom .lp-btn-secondary:hover { border-color: #fff; color: #fff; box-shadow: none; }
+    .bottom-support { font-size: 14px; color: rgba(255,255,255,0.55); margin-top: 12px; }
+    .bottom-support a { color: rgba(255,255,255,0.9); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+    @media (max-width: 520px) {
+      .bottom-row { width: 100%; flex-direction: column; }
+      .bottom-row .lp-btn-primary, .bottom-row .lp-btn-secondary { width: 100%; }
+    }
     .lp-bottom .lp-btn-primary { background: #fff; color: #1A1A1A; }
     .lp-bottom .lp-btn-primary:hover { background: #f0ede6; transform: translateY(-2px); }
 
