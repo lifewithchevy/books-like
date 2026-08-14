@@ -106,7 +106,7 @@ module.exports = async (req, res) => {
   // and that script is what calls this now. Unauthenticated on purpose: that
   // Actions job has no CRON_SECRET in scope and adding one needs a workflow
   // change that cannot be pushed from a session. What makes it safe is
-  // lib/daily-trigger.js — a 23:00-02:00 UTC window plus a once-per-day Redis
+  // lib/daily-trigger.js — a 22:00-04:00 UTC window plus a once-per-day Redis
   // lock that fails CLOSED. Read that file before touching any of this.
   if (req.query && req.query.trigger) {
     const gate = await maySend();

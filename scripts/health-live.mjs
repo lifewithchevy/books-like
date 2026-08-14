@@ -199,10 +199,11 @@ async function main() {
 // a month subscribers got month-old email (dead unsubscribe link) while the
 // domain served current code. Nothing moved the pin — see lib/daily-trigger.js.
 //
-// booky-health.yml runs this file at 23:17 UTC daily, which lands inside the
-// 23:00-02:00 UTC send window; the other seven runs a day fall outside it and
-// are told "outside the window". The 02:17 run is the backup if GitHub delays
-// the 23:17 one. The endpoint decides whether to send, not this script.
+// booky-health.yml runs this file every 3 hours. Most of those runs fall
+// outside the 22:00-04:00 UTC send window and are simply told "not due" — the
+// endpoint decides, not this script. In practice the 21:17 UTC slot is the one
+// that sends, since GitHub delays these runs by roughly 45-150 minutes; see
+// lib/daily-trigger.js for the measurements behind that window.
 //
 // Only runs in CI. A local `bash scripts/ship.sh` polls this file up to 20
 // times, and none of those should be able to mail the list.

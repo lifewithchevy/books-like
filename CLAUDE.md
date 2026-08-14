@@ -166,7 +166,7 @@ redeploying production while disabled. So Cron Jobs are switched **off** in
 Project Settings → Cron Jobs, which is what stops the month-old ghost send.
 
 **What sends the email now:** `booky-health.yml` runs `scripts/health-live.mjs`
-at 23:17 UTC daily, and that script calls
+every 3 hours, and that script calls
 `https://90books.com/api/booky-send?trigger=1`. It is the only scheduled thing a
 session can edit — workflow files cannot be pushed, and that job has no
 `CRON_SECRET` in scope, so the trigger is unauthenticated by necessity.
@@ -174,8 +174,10 @@ session can edit — workflow files cannot be pushed, and that job has no
 `lib/daily-trigger.js` is what makes that safe, and it is the file to read before
 changing any of this:
 
-- a **23:00–02:00 UTC window** (three hours, because GitHub delays scheduled runs
-  and the 02:17 run is the backup), and
+- a **22:00–04:00 UTC window** — six hours wide because GitHub delays these runs
+  by 45–150 minutes, and because `17 */3 * * *` has slots at 21:17 and 00:17 UTC,
+  not at 23:00 where the old cron ran. 04:00 is a hard edge: that is midnight
+  Eastern, past which "today's word is waiting" is wrong for most of the list. And
 - a **once-per-day Redis lock** keyed to the send's date, which **fails CLOSED** —
   an unreachable store means "do not send", because the cost of guessing wrong
   here is a duplicate email to the whole list.
