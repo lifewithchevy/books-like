@@ -511,21 +511,16 @@
   <h2 class="lp-section-title">Days I can still give you</h2>
   <p class="lp-section-desc">Click a day and it takes you straight to checkout, $79, where you pick that date from the list. Only the days below are in the list, so you can&rsquo;t accidentally book one I can&rsquo;t give you. If it goes while you&rsquo;re deciding, I&rsquo;ll move you to the closest open day and tell you before anything runs.</p>
 
-  <!-- TODO (operator): these are the next open feature days. Swap them for real
-       availability whenever a day sells, and top the list back up to 10.
-       There is no booked/sold flag in booky/words.json, so this list is the
-       only record of what is taken. Dates less than 3 weeks out are hidden
+  <!-- TODO (operator): the next open feature days. Swap them for real availability
+       whenever a day sells, and top the list back up to 10.
+       There is no booked/sold flag in booky/words.json, so this list is the only
+       record of what is taken. Dates inside the 3-week lead time are hidden
        automatically by the script below, so a stale list shrinks instead of
        offering days that can no longer be delivered.
-       Two standing rules when you refill this:
-         - No Thursdays. That slot is Zodiac Academy (Sep 3 VEGAS, Sep 17 HEIRS).
-         - Keep Sundays in. They are the day you can promo in r/Romantasy.
-       ⚠️ THESE DATES ARE MIRRORED IN STRIPE. The $79 link's "Preferred feature
-       date" is a dropdown containing exactly these ten days, so an author can
-       only pick a day you actually have. If you change the list here, edit the
-       dropdown options on the $79 payment link too or the two will disagree:
-       Stripe > Payment links > Booky Feature Day > Advanced options.
-       Stripe caps dropdowns at 10 options, which is why the list is 10. -->
+       Standing rule: SUNDAYS, MONDAYS AND FRIDAYS ONLY.
+         - Sunday is the day r/Romantasy promo can run.
+         - Thursday is Zodiac Academy and is never for sale.
+       Keep the same three weekdays in the Stripe dropdown so the two never disagree. -->
   <ul class="open-days" id="openDays">
     <li><a class="open-day" data-date="2026-09-04" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-04&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-04" rel="noopener noreferrer"
            onclick="trackAuthorsCta('open_day_2026-09-04')"
@@ -533,30 +528,30 @@
     <li><a class="open-day" data-date="2026-09-06" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-06&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-06" rel="noopener noreferrer"
            onclick="trackAuthorsCta('open_day_2026-09-06')"
            aria-label="Book Sunday 6 September 2026, $79"><span class="dow">Sun</span>6 Sep</a></li>
-    <li><a class="open-day" data-date="2026-09-08" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-08&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-08" rel="noopener noreferrer"
-           onclick="trackAuthorsCta('open_day_2026-09-08')"
-           aria-label="Book Tuesday 8 September 2026, $79"><span class="dow">Tue</span>8 Sep</a></li>
-    <li><a class="open-day" data-date="2026-09-09" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-09&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-09" rel="noopener noreferrer"
-           onclick="trackAuthorsCta('open_day_2026-09-09')"
-           aria-label="Book Wednesday 9 September 2026, $79"><span class="dow">Wed</span>9 Sep</a></li>
+    <li><a class="open-day" data-date="2026-09-07" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-07&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-07" rel="noopener noreferrer"
+           onclick="trackAuthorsCta('open_day_2026-09-07')"
+           aria-label="Book Monday 7 September 2026, $79"><span class="dow">Mon</span>7 Sep</a></li>
     <li><a class="open-day" data-date="2026-09-11" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-11&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-11" rel="noopener noreferrer"
            onclick="trackAuthorsCta('open_day_2026-09-11')"
            aria-label="Book Friday 11 September 2026, $79"><span class="dow">Fri</span>11 Sep</a></li>
     <li><a class="open-day" data-date="2026-09-13" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-13&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-13" rel="noopener noreferrer"
            onclick="trackAuthorsCta('open_day_2026-09-13')"
            aria-label="Book Sunday 13 September 2026, $79"><span class="dow">Sun</span>13 Sep</a></li>
-    <li><a class="open-day" data-date="2026-09-15" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-15&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-15" rel="noopener noreferrer"
-           onclick="trackAuthorsCta('open_day_2026-09-15')"
-           aria-label="Book Tuesday 15 September 2026, $79"><span class="dow">Tue</span>15 Sep</a></li>
-    <li><a class="open-day" data-date="2026-09-16" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-16&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-16" rel="noopener noreferrer"
-           onclick="trackAuthorsCta('open_day_2026-09-16')"
-           aria-label="Book Wednesday 16 September 2026, $79"><span class="dow">Wed</span>16 Sep</a></li>
+    <li><a class="open-day" data-date="2026-09-14" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-14&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-14" rel="noopener noreferrer"
+           onclick="trackAuthorsCta('open_day_2026-09-14')"
+           aria-label="Book Monday 14 September 2026, $79"><span class="dow">Mon</span>14 Sep</a></li>
     <li><a class="open-day" data-date="2026-09-18" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-18&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-18" rel="noopener noreferrer"
            onclick="trackAuthorsCta('open_day_2026-09-18')"
            aria-label="Book Friday 18 September 2026, $79"><span class="dow">Fri</span>18 Sep</a></li>
     <li><a class="open-day" data-date="2026-09-20" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-20&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-20" rel="noopener noreferrer"
            onclick="trackAuthorsCta('open_day_2026-09-20')"
            aria-label="Book Sunday 20 September 2026, $79"><span class="dow">Sun</span>20 Sep</a></li>
+    <li><a class="open-day" data-date="2026-09-21" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-21&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-21" rel="noopener noreferrer"
+           onclick="trackAuthorsCta('open_day_2026-09-21')"
+           aria-label="Book Monday 21 September 2026, $79"><span class="dow">Mon</span>21 Sep</a></li>
+    <li><a class="open-day" data-date="2026-09-25" href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02?client_reference_id=day-2026-09-25&amp;utm_source=authors_page&amp;utm_medium=open_days&amp;utm_content=2026-09-25" rel="noopener noreferrer"
+           onclick="trackAuthorsCta('open_day_2026-09-25')"
+           aria-label="Book Friday 25 September 2026, $79"><span class="dow">Fri</span>25 Sep</a></li>
   </ul>
   <p class="open-days-note">Want three days for the <a href="https://buy.stripe.com/5kQ28r4dxcMo5X3bSC63K03" rel="noopener noreferrer" onclick="trackAuthorsCta('pay_199_open_days')">$199 launch pack</a>? Pick your three in the date box there.</p>
   <p class="open-days-none" id="openDaysNone" hidden>These dates have passed. Email me at <a href="mailto:hello@90books.com?subject=Booky%20open%20days">hello@90books.com</a> and I&rsquo;ll send you the next open ones.</p>
