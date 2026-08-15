@@ -397,6 +397,52 @@
     .bottom-row .lp-btn-primary, .bottom-row .lp-btn-secondary { width: 100%; }
     .lp-bottom-title { font-size: 28px; }
   }
+
+  /* ===== Canonical site header =====================================
+     Identical on /, /authors, /privacy, /terms. Appended last so it wins
+     over any earlier page-specific nav rule. If you change the header,
+     change it here in all four files, not in one page's media query.
+     Breakpoints: 900 / 520 / 420. Verified to fit at 320px. */
+  .lp-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; padding: 18px 48px;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .lp-nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+  .lp-nav-icon {
+    width: 34px; height: 34px; background: #1A1A1A; color: #fff;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; letter-spacing: -0.5px; flex: 0 0 auto;
+  }
+  .lp-nav-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+  .lp-nav-right { display: flex; align-items: center; gap: 10px; }
+  .booky-top-cta {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 20px;
+    background: linear-gradient(135deg, #d946a8, #8b3fd3);
+    color: #fff; text-decoration: none;
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.2px; white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(217, 70, 168, 0.28);
+    transition: transform 0.15s, box-shadow 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .booky-top-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(217, 70, 168, 0.4); }
+  .nav-authors {
+    font-size: 13.5px; font-weight: 600; color: var(--text-muted);
+    text-decoration: none; white-space: nowrap;
+  }
+  .nav-authors:hover { color: var(--text); text-decoration: underline; }
+  @media (max-width: 900px) { .lp-nav { padding: 14px 24px; } }
+  @media (max-width: 520px) { .lp-nav { padding: 12px 16px; } }
+  @media (max-width: 420px) {
+    .lp-nav { padding: 12px 12px; gap: 8px; }
+    .lp-nav-right { gap: 8px; }
+    .nav-authors { font-size: 12.5px; }
+    .booky-top-cta { padding: 6px 10px; font-size: 12px; }
+  }
+  /* ===== end canonical site header ================================= */
 </style>
 <script>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
@@ -447,7 +493,7 @@
     <span class="lp-nav-name">90books</span>
   </a>
   <div class="lp-nav-right">
-    <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=nav_play" class="booky-top-cta" title="Play Booky, the daily romantasy word game" aria-label="Play Booky, the daily romantasy word game">&#127918; Play Booky</a>
+    <a href="/booky?utm_source=authors_page&amp;utm_medium=referral&amp;utm_campaign=nav_play" class="booky-top-cta" title="Play Booky, the daily romantasy word game" aria-label="Play Booky, the daily romantasy word game">Play Booky</a>
     <a href="/authors" class="nav-authors">For authors</a>
   </div>
 </header>
