@@ -112,6 +112,44 @@
     .booky-top-cta { padding: 6px 10px; font-size: 12px; }
   }
   /* ===== end canonical site header ================================= */
+
+  /* ===== Canonical closing block =====================================
+     Same markup and styling as /authors and the landing page. Change all
+     four files together. */
+  .lp-bottom {
+    background: #1A1A1A; padding: 72px 48px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    margin-top: 56px;
+  }
+  .lp-bottom-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 2px;
+  }
+  .lp-bottom-sub { font-size: 16px; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
+  .bottom-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .lp-bottom .lp-btn-primary {
+    display: inline-block; background: #fff; color: #1A1A1A; border: none;
+    border-radius: 12px; padding: 16px 28px; font-size: 16px; font-weight: 600;
+    font-family: 'Inter', sans-serif; text-decoration: none; text-align: center;
+    transition: all 0.2s; white-space: nowrap; cursor: pointer;
+  }
+  .lp-bottom .lp-btn-primary:hover { background: #f0ede6; transform: translateY(-2px); }
+  .lp-bottom .lp-btn-secondary {
+    display: inline-block; background: transparent; color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.28); border-radius: 12px;
+    padding: 14px 24px; font-size: 15px; font-weight: 600;
+    font-family: 'Inter', sans-serif; text-decoration: none; transition: all 0.2s;
+  }
+  .lp-bottom .lp-btn-secondary:hover { border-color: #fff; color: #fff; }
+  .bottom-support { font-size: 14px; color: rgba(255,255,255,0.55); margin-top: 12px; max-width: 480px; }
+  .bottom-support a { color: rgba(255,255,255,0.9); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 520px) {
+    .lp-bottom { padding: 56px 24px; }
+    .lp-bottom-title { font-size: 28px; }
+    .bottom-row { width: 100%; flex-direction: column; }
+    .bottom-row .lp-btn-primary, .bottom-row .lp-btn-secondary { width: 100%; }
+  }
+  /* ===== end canonical closing block ================================= */
 </style>
 </head>
 <body>
@@ -157,6 +195,15 @@
 <p>If your feature day doesn&rsquo;t run because of something on my end, you get a full refund or a replacement day, your choice. Beyond that, what I owe you is capped at what you paid me.</p>
 
 <p><a href="/authors">Back to the authors page</a></p>
+</div>
+<div class="lp-bottom site-close">
+  <h2 class="lp-bottom-title">Get your book featured</h2>
+  <p class="lp-bottom-sub">Only so many open days a month.</p>
+  <div class="bottom-row">
+    <a href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02" class="lp-btn-primary" rel="noopener noreferrer">Pay $79, one feature day</a>
+    <a href="https://buy.stripe.com/5kQ28r4dxcMo5X3bSC63K03" class="lp-btn-secondary" rel="noopener noreferrer">Pay $199, 3-day launch pack</a>
+  </div>
+  <p class="bottom-support">Questions, or a date in mind? Just email <a href="mailto:hello@90books.com?subject=Booky%20feature%20day">hello@90books.com</a>.</p>
 </div>
 <footer class="lp-site-footer">
   <a href="/">90books</a> &middot; <a href="/authors">For authors</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a>

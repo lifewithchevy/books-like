@@ -2855,7 +2855,7 @@
         <a href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02" class="lp-btn-primary" rel="noopener noreferrer">Pay $79, one feature day</a>
         <a href="https://buy.stripe.com/5kQ28r4dxcMo5X3bSC63K03" class="lp-btn-secondary" rel="noopener noreferrer">Pay $199, 3-day launch pack</a>
       </div>
-      <p class="bottom-support">Not sure yet? <a href="/authors">See how it works</a>, or email <a href="mailto:hello@90books.com?subject=Booky%20feature%20day">hello@90books.com</a>.</p>
+      <p class="bottom-support">Questions, or a date in mind? Just email <a href="mailto:hello@90books.com?subject=Booky%20feature%20day">hello@90books.com</a>.</p>
     </div>
 
     <footer class="lp-site-footer">
@@ -16072,6 +16072,9 @@
        may sit between them and the end of the scroll container. */
     .lp-bottom, .lp-site-footer { scroll-snap-align: none; scroll-snap-stop: normal; }
     .bottom-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+    /* The landing overlay carries its own closing block, so hide the
+       page-level one while the landing is up to avoid showing it twice. */
+    body.landing-active .site-close { display: none; }
     .lp-bottom .lp-btn-secondary { background: transparent; color: #fff; border-color: rgba(255,255,255,0.28); }
     .lp-bottom .lp-btn-secondary:hover { border-color: #fff; color: #fff; box-shadow: none; }
     .bottom-support { font-size: 14px; color: rgba(255,255,255,0.55); margin-top: 12px; }
@@ -16250,8 +16253,9 @@
       .lp-faq { padding: 48px 24px 40px; }
       .lp-auth-cta-wrap { margin-top: 28px; }
       .lp-auth-cta { font-size: 14px; padding: 15px 18px; }
-      /* Authors CTA lives in FAQ; skip duplicate footer link on small screens */
-      .lp-site-footer { display: none; }
+      /* The footer used to be just a duplicate author link, so it was hidden on
+         phones. It now carries Privacy and Terms, which paying authors need to
+         be able to reach on mobile, so it stays visible at every width. */
       .lp-hero-visual { order: -1; }
       .lp-board-preview { width: min(100%, 300px); }
     }
@@ -17116,5 +17120,21 @@
       document.addEventListener('touchcancel', onEnd, { passive: true, capture: true });
     }
   </script>
+
+<!-- Author door for the library and recs views. The landing overlay has its
+     own copy inside it, so this one hides while the landing is active. -->
+<div class="lp-bottom site-close">
+  <h2 class="lp-bottom-title">Get your book featured</h2>
+  <p class="lp-bottom-sub">Only so many open days a month.</p>
+  <div class="bottom-row">
+    <a href="https://buy.stripe.com/00w9AT8tNaEgclrf4O63K02" class="lp-btn-primary" rel="noopener noreferrer">Pay $79, one feature day</a>
+    <a href="https://buy.stripe.com/5kQ28r4dxcMo5X3bSC63K03" class="lp-btn-secondary" rel="noopener noreferrer">Pay $199, 3-day launch pack</a>
+  </div>
+  <p class="bottom-support">Questions, or a date in mind? Just email <a href="mailto:hello@90books.com?subject=Booky%20feature%20day">hello@90books.com</a>.</p>
+</div>
+<footer class="lp-site-footer site-close">
+  <a href="/">90books</a> &middot; <a href="/authors">For authors</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a>
+</footer>
+
 </body>
 </html>
