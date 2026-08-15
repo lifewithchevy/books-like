@@ -15660,7 +15660,14 @@
       text-decoration: none; white-space: nowrap;
     }
     .nav-authors:hover { color: var(--text); text-decoration: underline; }
-    @media (max-width: 420px) { .nav-authors { display: none; } }
+    /* The author door stays visible at every width: it is the only way an author
+       finds the offer, and /authors shows it on the smallest screens too. */
+    @media (max-width: 420px) {
+      .lp-nav { padding: 12px 12px; gap: 8px; }
+      .lp-nav-right { gap: 8px; }
+      .nav-authors { font-size: 12.5px; }
+      .booky-top-cta { padding: 6px 10px; font-size: 12px; }
+    }
 
     /* Daily game ribbon */
     .lp-daily-ribbon {
