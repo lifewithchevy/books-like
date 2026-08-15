@@ -148,8 +148,8 @@ function buildMeta(pathname) {
   let m;
   if (pathname === '/booky-library' || pathname === '/booky-library/') {
     return {
-      title: 'The Booky Library | Every romantasy book from Booky by 90books',
-      description: "Browse every romantasy book featured in Booky, the daily romantasy word game. Hand-picked fantasy romance, enemies to lovers, fae, dragons, and more. Start your want-to-read list.",
+      title: 'Romantasy Novels & Book Recommendations | The Booky Library',
+      description: "Every romantasy book featured in Booky, in one shelf. Browse romantasy books and fantasy romance novels: enemies to lovers, fae, dragons, and your next read.",
       canonical: 'https://90books.com/booky-library',
       pageKind: 'library',
       label: 'The Booky Library',
