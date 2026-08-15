@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Page not found | 90books</title>
+<meta name="description" content="That page does not exist. Play Booky, the daily romantasy word game, or browse the Booky Library.">
+
+<meta name="robots" content="noindex, follow">
+<link rel="icon" href="/favicon.svg" type="image/svg+xml">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --bg: #FFFFFF; --surface: #FFFFFF; --surface2: #F5F3EE;
+    --accent: #D4A853; --accent-light: #B8922F; --accent-dim: #9E7B24;
+    --text: #1A1A1A; --text-muted: #5C5C5C; --text-dim: #8A8A8A; --border: #E5E0D5;
+  }
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body {
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+    background: var(--bg); color: var(--text); line-height: 1.65;
+  }
+  .lp-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 18px 48px; background: var(--bg);
+    border-bottom: 1px solid var(--border); position: sticky; top: 0; z-index: 10;
+  }
+  .lp-nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+  .lp-nav-icon {
+    width: 34px; height: 34px; background: #1A1A1A; color: #fff; border-radius: 8px;
+    display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; letter-spacing: -0.5px;
+  }
+  .lp-nav-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+  .booky-top-cta {
+    display: inline-flex; align-items: center; gap: 6px; padding: 7px 14px;
+    border-radius: 20px; background: linear-gradient(135deg, #d946a8, #8b3fd3);
+    color: #fff; text-decoration: none; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.2px; box-shadow: 0 4px 14px rgba(217, 70, 168, 0.28);
+  }
+  .lp-nav-right { display: flex; align-items: center; gap: 12px; }
+  .nav-authors {
+    font-size: 13.5px; font-weight: 600; color: var(--text-muted);
+    text-decoration: none; white-space: nowrap;
+  }
+  .nav-authors:hover { color: var(--text); text-decoration: underline; }
+  .wrap { max-width: 720px; margin: 0 auto; padding: 48px 24px 72px; }
+  h1 {
+    font-family: 'Playfair Display', serif; font-size: clamp(32px, 5vw, 44px);
+    font-weight: 700; line-height: 1.15; margin-bottom: 10px;
+  }
+  .updated { font-size: 13px; color: var(--text-dim); margin-bottom: 32px; }
+  h2 {
+    font-family: 'Playfair Display', serif; font-size: 24px; font-weight: 700;
+    margin: 34px 0 12px;
+  }
+  p { color: var(--text-muted); margin-bottom: 14px; }
+  ul { color: var(--text-muted); padding-left: 1.15rem; margin-bottom: 14px; }
+  li { margin-bottom: 8px; }
+  a { color: #8b3fd3; font-weight: 500; text-decoration: none; }
+  a:hover { text-decoration: underline; }
+  .lp-site-footer {
+    text-align: center; padding: 28px 24px 40px;
+    border-top: 1px solid var(--border); font-size: 14px; color: var(--text-dim);
+  }
+  @media (max-width: 520px) { .lp-nav { padding: 12px 16px; } .wrap { padding: 32px 18px 56px; } }
+
+  /* ===== Canonical site header =====================================
+     Identical on /, /authors, /privacy, /terms. Appended last so it wins
+     over any earlier page-specific nav rule. If you change the header,
+     change it here in all four files, not in one page's media query.
+     Breakpoints: 900 / 520 / 420. Verified to fit at 320px. */
+  .lp-nav {
+    display: flex; align-items: center; justify-content: space-between;
+    gap: 10px; padding: 18px 48px;
+    background: var(--bg); border-bottom: 1px solid var(--border);
+    position: sticky; top: 0; z-index: 10;
+  }
+  .lp-nav-logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: inherit; }
+  .lp-nav-icon {
+    width: 34px; height: 34px; background: #1A1A1A; color: #fff;
+    border-radius: 8px; display: flex; align-items: center; justify-content: center;
+    font-size: 13px; font-weight: 700; letter-spacing: -0.5px; flex: 0 0 auto;
+  }
+  .lp-nav-name { font-family: 'Playfair Display', serif; font-size: 20px; font-weight: 700; }
+  .lp-nav-right { display: flex; align-items: center; gap: 10px; }
+  .booky-top-cta {
+    display: inline-flex; align-items: center; gap: 6px;
+    padding: 7px 14px; border-radius: 20px;
+    background: linear-gradient(135deg, #d946a8, #8b3fd3);
+    color: #fff; text-decoration: none;
+    font-family: 'Inter', sans-serif; font-size: 13px; font-weight: 600;
+    letter-spacing: 0.2px; white-space: nowrap;
+    box-shadow: 0 4px 14px rgba(217, 70, 168, 0.28);
+    transition: transform 0.15s, box-shadow 0.15s;
+    -webkit-tap-highlight-color: transparent;
+  }
+  .booky-top-cta:hover { transform: translateY(-1px); box-shadow: 0 6px 18px rgba(217, 70, 168, 0.4); }
+  .nav-authors {
+    font-size: 13.5px; font-weight: 600; color: var(--text-muted);
+    text-decoration: none; white-space: nowrap;
+  }
+  .nav-authors:hover { color: var(--text); text-decoration: underline; }
+  @media (max-width: 900px) { .lp-nav { padding: 14px 24px; } }
+  @media (max-width: 520px) { .lp-nav { padding: 12px 16px; } }
+  @media (max-width: 420px) {
+    .lp-nav { padding: 12px 12px; gap: 8px; }
+    .lp-nav-right { gap: 8px; }
+    .nav-authors { font-size: 12.5px; }
+    .booky-top-cta { padding: 6px 10px; font-size: 12px; }
+  }
+  /* ===== end canonical site header ================================= */
+
+  /* ===== Canonical closing block =====================================
+     Same markup and styling as /authors and the landing page. Change all
+     four files together. */
+  .lp-bottom {
+    background: #1A1A1A; padding: 72px 48px; text-align: center;
+    display: flex; flex-direction: column; align-items: center; gap: 14px;
+    margin-top: 56px;
+  }
+  .lp-bottom-title {
+    font-family: 'Playfair Display', Georgia, serif;
+    font-size: 36px; font-weight: 700; color: #fff; margin-bottom: 2px;
+  }
+  .lp-bottom-sub { font-size: 16px; color: rgba(255,255,255,0.6); margin-bottom: 10px; }
+  .bottom-row { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .lp-bottom .lp-btn-primary {
+    display: inline-block; background: #fff; color: #1A1A1A; border: none;
+    border-radius: 12px; padding: 16px 28px; font-size: 16px; font-weight: 600;
+    font-family: 'Inter', sans-serif; text-decoration: none; text-align: center;
+    transition: all 0.2s; white-space: nowrap; cursor: pointer;
+  }
+  .lp-bottom .lp-btn-primary:hover { background: #f0ede6; transform: translateY(-2px); }
+  .lp-bottom .lp-btn-secondary {
+    display: inline-block; background: transparent; color: #fff;
+    border: 1.5px solid rgba(255,255,255,0.28); border-radius: 12px;
+    padding: 14px 24px; font-size: 15px; font-weight: 600;
+    font-family: 'Inter', sans-serif; text-decoration: none; transition: all 0.2s;
+  }
+  .lp-bottom .lp-btn-secondary:hover { border-color: #fff; color: #fff; }
+  .bottom-support { font-size: 14px; color: rgba(255,255,255,0.55); margin-top: 12px; max-width: 480px; }
+  .bottom-support a { color: rgba(255,255,255,0.9); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+  @media (max-width: 520px) {
+    .lp-bottom { padding: 56px 24px; }
+    .lp-bottom-title { font-size: 28px; }
+    .bottom-row { width: 100%; flex-direction: column; }
+    .bottom-row .lp-btn-primary, .bottom-row .lp-btn-secondary { width: 100%; }
+  }
+  /* ===== end canonical closing block ================================= */
+</style>
+<style>
+  .nf-wrap { max-width: 620px; margin: 0 auto; padding: 84px 24px 96px; text-align: center; }
+  .nf-code { font-size: 13px; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent-light); margin-bottom: 14px; }
+  .nf-title { font-family: 'Playfair Display', serif; font-size: clamp(32px, 7vw, 46px); font-weight: 700; line-height: 1.15; margin-bottom: 16px; }
+  .nf-sub { font-size: 17px; color: var(--text-muted); margin-bottom: 30px; }
+  .nf-ctas { display: flex; flex-wrap: wrap; gap: 12px; justify-content: center; }
+  .nf-btn {
+    display: inline-block; text-decoration: none; text-align: center;
+    background: linear-gradient(135deg, #d946a8, #8b3fd3); color: #fff;
+    border-radius: 12px; padding: 15px 26px; font-size: 15px; font-weight: 600;
+    box-shadow: 0 8px 24px rgba(217, 70, 168, 0.28);
+    transition: transform 0.15s, box-shadow 0.15s;
+  }
+  .nf-btn:hover { transform: translateY(-1px); box-shadow: 0 12px 28px rgba(217, 70, 168, 0.36); }
+  .nf-btn-alt {
+    display: inline-block; text-decoration: none; text-align: center;
+    background: var(--surface); color: var(--text);
+    border: 1.5px solid var(--border); border-radius: 12px;
+    padding: 14px 24px; font-size: 15px; font-weight: 600;
+    transition: all 0.15s;
+  }
+  .nf-btn-alt:hover { border-color: #d946a8; color: #8b3fd3; }
+  @media (max-width: 520px) {
+    .nf-wrap { padding: 56px 16px 72px; }
+    .nf-ctas { flex-direction: column; }
+    .nf-btn, .nf-btn-alt { width: 100%; }
+  }
+</style>
+</head>
+
+<body>
+<header class="lp-nav">
+  <a href="/" class="lp-nav-logo" title="Back to Booky home">
+    <div class="lp-nav-icon">90</div>
+    <span class="lp-nav-name">90books</span>
+  </a>
+  <div class="lp-nav-right">
+    <a href="/booky" class="booky-top-cta">Play Booky</a>
+    <a href="/authors" class="nav-authors">For authors</a>
+  </div>
+</header>
+
+<main class="nf-wrap">
+  <p class="nf-code">Error 404</p>
+  <h1 class="nf-title">That page wandered off</h1>
+  <p class="nf-sub">The link is broken or the page moved. Today&rsquo;s word is still waiting for you though.</p>
+  <div class="nf-ctas">
+    <a href="/booky" class="nf-btn">Play today&rsquo;s Booky</a>
+    <a href="/booky-library" class="nf-btn-alt">Browse the Booky Library</a>
+  </div>
+</main>
+
+<footer class="lp-site-footer">
+  <a href="/">90books</a> &middot; <a href="/authors">For authors</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a>
+</footer>
+</body>
+</html>
