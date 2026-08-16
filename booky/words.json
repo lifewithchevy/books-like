@@ -156,7 +156,7 @@
     "TAIRN",
     "HEXED",
     "SHINE",
-    "GLOOM",
+    "TREES",
     "SINGE",
     "MOTHS",
     "CHAOS",
@@ -295,6 +295,7 @@
     "ALLEY",
     "MURKY",
     "GUARD",
+    "GLOOM",
     "POPPY"
   ],
   "wordBooks": {
