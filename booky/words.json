@@ -112,7 +112,7 @@
     "VIXEN",
     "PURGE",
     "ORDER",
-    "HENRY",
+    "HATCH",
     "WRATH",
     "OMENS",
     "RITES",
@@ -178,7 +178,7 @@
     "GLADE",
     "SLOTH",
     "CREST",
-    "GUARD",
+    "HENRY",
     "ELAIN",
     "FEYRE",
     "MASKS",
@@ -294,6 +294,7 @@
     "CRYPT",
     "ALLEY",
     "MURKY",
+    "GUARD",
     "POPPY"
   ],
   "wordBooks": {
@@ -2601,6 +2602,13 @@
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
       "buyUrl": "https://amzn.to/4ox0w8K"
+    },
+    "HATCH": {
+      "slug": "when-the-moon-hatched",
+      "title": "When the Moon Hatched",
+      "author": "Sarah A. Parker",
+      "cover": "/booky/covers/when-the-moon-hatched.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0063415801?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
