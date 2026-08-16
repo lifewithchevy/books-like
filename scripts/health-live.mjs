@@ -188,6 +188,40 @@ async function main() {
 
   await triggerDailyEmail();
 
+
+  // Buy links on the reveal cards. This is the last click before a possible
+  // sale, and NOTHING else checks it: on 2026-08-16 Powerless pointed at the UK
+  // edition, which 404s on amazon.com, and 15 books linked to an Amazon SEARCH
+  // page instead of the book. A cloud routine cannot cover this because Amazon
+  // and openlibrary are blocked by the agent egress proxy, but GitHub Actions
+  // can reach them, so the check lives here.
+  //
+  // WARN, never FAIL: a red run is the alarm that emails Olga, and that alarm
+  // is for "the game is broken", not "a bookshop link rotted". Amazon also
+  // throttles datacentre IPs, so 403/429/503 means UNVERIFIABLE, not dead —
+  // treating those as failures would cry wolf every few hours.
+  const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
+  const upcoming = new Map();
+  for (let i = n; i < Math.min(n + 7, w.queue.length + 1); i++) {
+    const book = wb[w.queue[i - 1]];
+    if (book?.buyUrl && !upcoming.has(book.slug)) upcoming.set(book.slug, book);
+  }
+  let dead = 0, unverifiable = 0;
+  for (const [slug, book] of upcoming) {
+    if (book.buyUrl.includes('/s?k=')) {
+      warn(`${slug} buy link is an Amazon SEARCH url, not the book — readers land on results`);
+      continue;
+    }
+    try {
+      const r = await fetch(book.buyUrl, { redirect: 'follow', headers: { 'user-agent': UA } });
+      if (r.status === 404 || r.status === 410) { warn(`${slug} buy link is DEAD (${r.status}): ${book.buyUrl}`); dead += 1; }
+      else if (!r.ok) unverifiable += 1;
+    } catch { unverifiable += 1; }
+  }
+  if (!dead) {
+    ok(`buy links ok for the next 7 days (${upcoming.size} books${unverifiable ? `, ${unverifiable} unverifiable` : ''})`);
+  }
+
   done();
 }
 
