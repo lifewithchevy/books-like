@@ -743,7 +743,7 @@ toast.textContent = "couldn't save right now. try again in a sec?";
 toast.className = 'reminder-toast reminder-error';
 toast.hidden = false;
 btn.disabled = false;
-btn.textContent = 'remind me';
+btn.textContent = 'save stats';
 }
 }
 
