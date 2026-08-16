@@ -394,7 +394,7 @@
       "title": "A Touch of Darkness",
       "author": "Scarlett St. Clair",
       "cover": "/booky/covers/a-touch-of-darkness.jpg",
-      "buyUrl": "https://www.amazon.com/s?k=9781949039153&i=stripbooks&tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/1728258456?tag=90books-20"
     },
     "BLOOD": {
       "slug": "from-blood-and-ash",
@@ -1025,7 +1025,7 @@
       "title": "The Knight and the Moth",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/the-knight-and-the-moth.jpg",
-      "buyUrl": "https://www.amazon.com/s?k=9780316582704&i=stripbooks&tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/0316582700?tag=90books-20"
     },
     "GUILE": {
       "slug": "the-cruel-prince",
@@ -1949,7 +1949,7 @@
       "title": "The Knight and the Moth",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/the-knight-and-the-moth.jpg",
-      "buyUrl": "https://www.amazon.com/s?k=9780316582704&i=stripbooks&tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/0316582700?tag=90books-20"
     },
     "MERYN": {
       "slug": "dire-bound",
@@ -2608,7 +2608,7 @@
       "title": "A Touch of Darkness",
       "author": "Scarlett St. Clair",
       "cover": "/booky/covers/a-touch-of-darkness.jpg",
-      "buyUrl": "https://www.amazon.com/s?k=9781949039153&i=stripbooks&tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/1728258456?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
