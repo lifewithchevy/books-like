@@ -108,7 +108,7 @@
     "STORM",
     "PEARL",
     "REEVE",
-    "TAROT",
+    "ALDER",
     "VIXEN",
     "PURGE",
     "ORDER",
@@ -856,13 +856,6 @@
       "author": "Ali Hazelwood",
       "cover": "/booky/covers/bride.jpg",
       "buyUrl": "https://www.amazon.com/dp/0593550404?tag=90books-20"
-    },
-    "TAROT": {
-      "slug": "one-dark-window",
-      "title": "One Dark Window",
-      "author": "Rachel Gillig",
-      "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
     },
     "FIERY": {
       "slug": "iron-flame",
@@ -2601,6 +2594,13 @@
       "author": "Stephanie Garber",
       "cover": "/booky/covers/once-upon-a-broken-heart.jpg",
       "buyUrl": "https://www.amazon.com/dp/1250268397?tag=90books-20"
+    },
+    "ALDER": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "/booky/covers/one-dark-window.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
