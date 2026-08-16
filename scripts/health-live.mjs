@@ -200,7 +200,7 @@ async function main() {
 // domain served current code. Nothing moved the pin — see lib/daily-trigger.js.
 //
 // booky-health.yml runs this file every 3 hours. Most of those runs fall
-// outside the 22:00-04:00 UTC send window and are simply told "not due" — the
+// outside the 21:00-04:00 UTC send window and are simply told "not due" — the
 // endpoint decides, not this script. In practice the 21:17 UTC slot is the one
 // that sends, since GitHub delays these runs by roughly 45-150 minutes; see
 // lib/daily-trigger.js for the measurements behind that window.
@@ -224,8 +224,17 @@ async function triggerDailyEmail() {
       ok(`daily email not due: ${body.skipped}`);
       return;
     }
+    // A dropped reminder is NOT self-healing — nothing re-sends tonight's mail —
+    // so this has to be able to go red. It only ever warned, which is precisely
+    // why ~50 subscribers a night were silently dropped to 429s for two nights
+    // running while every health run reported success. The threshold keeps one
+    // permanently-dead address from painting the run red nightly and training
+    // the alarm to be ignored.
     if (body.failed > 0) {
-      warn(`daily email sent to ${body.sent}, FAILED for ${body.failed}`);
+      const total = (body.sent || 0) + body.failed;
+      const msg = `daily email sent to ${body.sent}, FAILED for ${body.failed} of ${total}`;
+      if (body.failed >= 3 && body.failed / total > 0.02) fail(msg);
+      else warn(msg);
       return;
     }
     if (!body.sent) {

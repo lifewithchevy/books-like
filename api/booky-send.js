@@ -15,7 +15,7 @@
 //   CRON_SECRET             — random string, Vercel auto-attaches as Bearer
 
 const { unsubscribeUrl, unsubscribeHeaders } = require('../lib/unsubscribe');
-const { maySend } = require('../lib/daily-trigger');
+const { maySend, sendDateKey } = require('../lib/daily-trigger');
 
 // ---- One-off notes, keyed by the UTC date of the send ----
 //
@@ -72,7 +72,7 @@ module.exports = async (req, res) => {
     const dateParam = typeof req.query.date === 'string' ? req.query.date : null;
     // Model the real fire time (23:00 UTC) so the date key matches the send.
     const at = dateParam ? new Date(`${dateParam}T23:00:00Z`) : new Date();
-    const key = at.toISOString().slice(0, 10);
+    const key = sendDateKey(at);
     const streak = parseInt(req.query.streak, 10) || 0;
     const hasStreak = streak >= 2;
 
@@ -84,7 +84,7 @@ module.exports = async (req, res) => {
       subject:  hasStreak ? `🔥 Day ${streak} — don't lose it now` : `Today's Booky is ready 📚`,
       headline: hasStreak ? `Your 🔥${streak}-day streak is waiting.` : `Today's word is waiting.`,
       subline:  hasStreak ? `Six guesses. Don't break your ${streak}-day streak.` : `Six guesses. Don't break the streak.`,
-      today: at.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC' }),
+      today: formatSendDate(key),
       playUrl: 'https://90books.com/booky?utm_source=reminder_email&utm_medium=email&utm_campaign=daily_reminder',
       updateNote: UPDATE_NOTES[key] || null,
       // Signed for a placeholder address, so the preview shows the real link
@@ -106,7 +106,7 @@ module.exports = async (req, res) => {
   // and that script is what calls this now. Unauthenticated on purpose: that
   // Actions job has no CRON_SECRET in scope and adding one needs a workflow
   // change that cannot be pushed from a session. What makes it safe is
-  // lib/daily-trigger.js — a 22:00-04:00 UTC window plus a once-per-day Redis
+  // lib/daily-trigger.js — a 21:00-04:00 UTC window plus a once-per-day Redis
   // lock that fails CLOSED. Read that file before touching any of this.
   if (req.query && req.query.trigger) {
     const gate = await maySend();
@@ -143,12 +143,19 @@ module.exports = async (req, res) => {
 
   // UTM-tagged so PostHog attributes return plays to the daily reminder email.
   const playUrl = 'https://90books.com/booky?utm_source=reminder_email&utm_medium=email&utm_campaign=daily_reminder';
-  const today   = new Date().toLocaleDateString('en-US', {
-    weekday: 'long', month: 'long', day: 'numeric',
-  });
-
-  // UTC date key for today's send. Vercel Cron runs in UTC, so this is stable.
-  const dateKey    = new Date().toISOString().slice(0, 10);
+  // The day this send BELONGS to, which is not the same as the wall-clock UTC
+  // day it happens to run on. sendDateKey() rolls back to the previous date
+  // before 04:00 UTC, exactly as the trigger's once-per-day lock does.
+  //
+  // Getting this from `new Date()` was a real bug: on 2026-08-15 the 21:17 UTC
+  // health run landed at 21:35 — BEFORE the window opened — so the backup slot
+  // sent at 01:57 UTC the next morning, and `new Date()` rendered
+  // "Sunday, August 16" in an email that reached Eastern readers at 9:57pm on
+  // SATURDAY, pointing at a word their board would not show until the next day.
+  // The queue rolls at each player's LOCAL midnight (booky/app.js
+  // computeDayNumber), so the send key is the only date that matches the board.
+  const dateKey    = sendDateKey();
+  const today      = formatSendDate(dateKey);
   const updateNote = UPDATE_NOTES[dateKey] || null;
 
   // ---- 1. Fetch all active subscribers ----
@@ -178,11 +185,26 @@ module.exports = async (req, res) => {
     return;
   }
 
-  // ---- 2. Send personalized email to each subscriber ----
-  let sent = 0;
-  let failed = 0;
-
-  for (const contact of subscribers) {
+  // ---- 2. Send personalized email to every subscriber ----
+  //
+  // BATCHED, not one POST per contact. Resend allows 10 requests per second
+  // per team, and the old loop fired one unthrottled POST /emails per
+  // subscriber with no retry. The result, every single night:
+  //
+  //   2026-08-14  sent 129, FAILED 49   429 rate_limit_exceeded
+  //   2026-08-15  sent 138, FAILED 50   429 rate_limit_exceeded
+  //
+  // Roughly a quarter of the list silently got no reminder at all, and it was
+  // invisible because health-live.mjs only warned — the workflow run stayed
+  // green, so no alarm mail ever went out.
+  //
+  // POST /emails/batch carries up to 100 fully-personalized messages in ONE
+  // request, so the list is 2 requests instead of 188, and it keeps the two
+  // things this email cannot lose: per-contact `headers` (the signed
+  // List-Unsubscribe, see lib/unsubscribe.js) and `tags`. Only `attachments`
+  // is unsupported on batch, and this email has none. It also stops the send
+  // being a race against the function timeout as the list grows.
+  const messages = subscribers.map((contact) => {
     // streak stored in first_name as a string (set by booky-subscribe + booky-update-streak)
     const streak = parseInt(contact.first_name, 10) || 0;
     const hasStreak = streak >= 2;
@@ -199,48 +221,99 @@ module.exports = async (req, res) => {
       ? `Six guesses. Don't break your ${streak}-day streak.`
       : `Six guesses. Don't break the streak.`;
 
-    // Per-contact signed link. Resend's {{{RESEND_UNSUBSCRIBE_URL}}} only gets
-    // substituted for Broadcasts — this endpoint sends per-contact through
-    // POST /emails, where it shipped as a literal dead href. See
-    // lib/unsubscribe.js.
-    const html = buildHtml({
-      subject, headline, subline, today, playUrl, updateNote,
-      unsubUrl: unsubscribeUrl(contact.email),
-    });
+    return {
+      from: RESEND_FROM,
+      to: contact.email,
+      subject,
+      // Per-contact signed link. Resend's {{{RESEND_UNSUBSCRIBE_URL}}} only gets
+      // substituted for Broadcasts — this endpoint sends per-contact, where it
+      // shipped as a literal dead href. See lib/unsubscribe.js.
+      html: buildHtml({
+        subject, headline, subline, today, playUrl, updateNote,
+        unsubUrl: unsubscribeUrl(contact.email),
+      }),
+      headers: unsubscribeHeaders(contact.email),
+      tags: [{ name: 'type', value: 'booky-daily' }],
+    };
+  });
 
-    try {
-      const r = await fetch('https://api.resend.com/emails', {
-        method: 'POST',
-        headers: {
-          Authorization: `Bearer ${RESEND_API_KEY}`,
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          from: RESEND_FROM,
-          to: contact.email,
-          subject,
-          html,
-          headers: unsubscribeHeaders(contact.email),
-          tags: [{ name: 'type', value: 'booky-daily' }],
-        }),
-      });
+  let sent = 0;
+  let failed = 0;
 
-      if (r.ok) {
-        sent++;
-      } else {
-        const txt = await r.text();
-        console.error('[booky-send] failed for', contact.email, r.status, txt);
-        failed++;
+  for (const chunk of chunk100(messages)) {
+    if (await resendPost('https://api.resend.com/emails/batch', chunk, RESEND_API_KEY)) {
+      sent += chunk.length;
+    } else {
+      // The batch as a whole did not go. Retry its members one at a time so a
+      // single unsendable address costs one subscriber and not the other 99.
+      console.error('[booky-send] batch of', chunk.length, 'failed — retrying per-contact');
+      for (const msg of chunk) {
+        if (await resendPost('https://api.resend.com/emails', msg, RESEND_API_KEY)) {
+          sent++;
+        } else {
+          failed++;
+          console.error('[booky-send] gave up on', msg.to);
+        }
+        await sleep(120); // 8/s, under the 10/s ceiling
       }
-    } catch (err) {
-      console.error('[booky-send] exception for', contact.email, err);
-      failed++;
     }
+    await sleep(150); // ditto, between batches
   }
 
   console.log(`[booky-send] done — sent: ${sent}, failed: ${failed}`);
   res.status(200).json({ ok: true, sent, failed, total: subscribers.length });
 };
+
+const sleep = (ms) => new Promise((r) => setTimeout(r, ms));
+
+function* chunk100(arr) {
+  for (let i = 0; i < arr.length; i += 100) yield arr.slice(i, i + 100);
+}
+
+// POST to Resend that survives the 10 req/s ceiling.
+//
+// A 429 is not a delivery failure, it means "come back in a moment" — treating
+// it as one is what dropped ~50 subscribers a night. So 429 and 5xx are retried
+// with backoff; any other 4xx is a request this code will never get right by
+// repeating it, so it stops immediately rather than burning the clock.
+async function resendPost(url, payload, apiKey, attempts = 4) {
+  for (let i = 0; i < attempts; i++) {
+    try {
+      const r = await fetch(url, {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        body: JSON.stringify(payload),
+      });
+      if (r.ok) return true;
+
+      const txt = await r.text();
+      console.error('[booky-send]', r.status, url, txt.slice(0, 300));
+      if (!(r.status === 429 || r.status >= 500) || i === attempts - 1) return false;
+
+      // Resend returns `retry-after` in seconds on a 429; back off if it does
+      // not, so a retry storm cannot become the reason for the next 429.
+      const after = parseFloat(r.headers.get('retry-after') || '0');
+      await sleep(after > 0 ? after * 1000 : 500 * 2 ** i);
+    } catch (err) {
+      console.error('[booky-send] exception on', url, err);
+      if (i === attempts - 1) return false;
+      await sleep(500 * 2 ** i);
+    }
+  }
+  return false;
+}
+
+// Renders a YYYY-MM-DD send key as "Saturday, August 15" for the email's date
+// line. Anchored at midday UTC so no timezone can nudge it onto the neighbouring
+// day — the whole point is that this string matches the send key exactly.
+function formatSendDate(key) {
+  return new Date(`${key}T12:00:00Z`).toLocaleDateString('en-US', {
+    weekday: 'long', month: 'long', day: 'numeric', timeZone: 'UTC',
+  });
+}
 
 function buildHtml({ subject, headline, subline, today, playUrl, updateNote, unsubUrl }) {
   // Sits below the play button so the reminder's primary CTA still comes first.
