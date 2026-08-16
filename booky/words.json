@@ -2609,6 +2609,13 @@
       "author": "Scarlett St. Clair",
       "cover": "/booky/covers/a-touch-of-darkness.jpg",
       "buyUrl": "https://www.amazon.com/dp/1728258456?tag=90books-20"
+    },
+    "TREES": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "/booky/covers/one-dark-window.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
