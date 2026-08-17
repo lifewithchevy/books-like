@@ -258,6 +258,11 @@
       "permanent": false
     },
     {
+      "source": "/madeline",
+      "destination": "/authors?utm_source=madeline&utm_medium=outreach&utm_campaign=forgedinfading",
+      "permanent": false
+    },
+    {
       "source": "/heba",
       "destination": "/booky?utm_source=heba&utm_medium=author&utm_campaign=weavingshaw",
       "permanent": false
