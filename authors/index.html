@@ -326,8 +326,8 @@
 
   /* proof */
   .featured-proof {
-    display: grid; grid-template-columns: minmax(0, 1fr) 188px;
-    gap: 24px; align-items: start; margin-top: 24px; max-width: 760px;
+    display: grid; grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 28px; align-items: start; margin-top: 24px; max-width: 760px;
   }
   .featured-quote {
     padding: 24px 26px; border-left: 3px solid var(--accent);
@@ -344,7 +344,7 @@
   }
   .featured-story { margin: 0; text-align: center; }
   .featured-story img {
-    width: 100%; max-width: 188px; border-radius: 14px;
+    width: 100%; max-width: 300px; border-radius: 14px;
     border: 1px solid var(--border);
     box-shadow: 0 12px 32px rgba(26, 26, 26, 0.12);
     display: block; margin: 0 auto;
@@ -383,8 +383,8 @@
     .booky-demo { max-width: 320px; }
     .lp-section { padding: 44px 24px; }
     .plans { grid-template-columns: 1fr; }
-    .featured-proof { grid-template-columns: 1fr; }
-    .featured-story img { max-width: 220px; }
+    .featured-proof { grid-template-columns: 1fr; gap: 32px; }
+    .featured-story img { max-width: 260px; }
     .lp-bottom { padding: 56px 24px; }
   }
   @media (max-width: 520px) {
@@ -529,17 +529,19 @@
 <section class="lp-section">
   <p class="lp-section-label">Featured authors</p>
   <h2 class="lp-section-title">The first author to do it</h2>
-  <p class="lp-section-desc">The first book Booky ever featured was Weavingshaw by Heba Al-Wasity, a Sunday Times bestseller. On her day, 50+ readers played her word and met her book. Then she posted her card to her Instagram story, which is the half that reaches your readers rather than only mine.</p>
+  <p class="lp-section-desc">Authors share their day. Kalie Cassidy put hers on her own Instagram story the week she hit the New York Times list, and Heba Al-Wasity, the first author Booky ever featured, did the same. That is the half that reaches your readers rather than only mine.</p>
   <div class="featured-proof">
-    <blockquote class="featured-quote" cite="https://www.instagram.com/alwasityhh/">
-      <p>&ldquo;I am OBSESSED with the game Booky (Wordle for romantasy readers!)&rdquo;</p>
-      <cite>Heba Al-Wasity, author of Weavingshaw, in the story she posted</cite>
-    </blockquote>
+    <figure class="featured-story">
+      <a href="https://www.instagram.com/kaliecassidybooks/" rel="noopener noreferrer" aria-label="Kalie Cassidy on Instagram">
+        <img src="/authors/kalie-ig-story.jpg" alt="Kalie Cassidy resharing her Booky feature day to her own Instagram story, showing the card for In the Veins of the Drowning" width="420" height="631" loading="eager" decoding="async">
+      </a>
+      <figcaption>Kalie Cassidy, <em>In the Veins of the Drowning</em>, resharing her day to her followers</figcaption>
+    </figure>
     <figure class="featured-story">
       <a href="https://www.instagram.com/alwasityhh/" rel="noopener noreferrer" aria-label="Heba Al-Wasity on Instagram">
-        <img src="/authors/heba-ig-story.png" alt="Screenshot of Heba Al-Wasity sharing Booky on her Instagram story" width="188" height="407" loading="eager" decoding="async">
+        <img src="/authors/heba-ig-story.jpg" alt="Heba Al-Wasity sharing her Booky feature day on her Instagram story" width="420" height="908" loading="eager" decoding="async">
       </a>
-      <figcaption>Heba posting her feature day to her own Instagram story</figcaption>
+      <figcaption>Heba Al-Wasity, <em>Weavingshaw</em>: &ldquo;I am OBSESSED with the game Booky&rdquo;</figcaption>
     </figure>
   </div>
 </section>
