@@ -330,8 +330,9 @@
     gap: 28px; align-items: start; margin-top: 24px; max-width: 760px;
   }
   .featured-quote {
-    padding: 24px 26px; border-left: 3px solid var(--accent);
+    padding: 22px 26px; border-left: 3px solid var(--accent);
     background: var(--surface2); border-radius: 0 16px 16px 0;
+    max-width: 760px; margin-top: 22px;
   }
   .featured-quote p {
     font-family: 'Playfair Display', serif;
@@ -349,7 +350,9 @@
     box-shadow: 0 12px 32px rgba(26, 26, 26, 0.12);
     display: block; margin: 0 auto;
   }
-  .featured-story figcaption { font-size: 12px; color: var(--text-dim); margin-top: 8px; line-height: 1.4; }
+  .featured-story figcaption { font-size: 12.5px; color: var(--text-dim); margin-top: 10px; line-height: 1.4; }
+  .featured-story figcaption a { color: var(--accent-dim); font-weight: 600; text-decoration: none; }
+  .featured-story figcaption a:hover { text-decoration: underline; }
 
   /* bottom CTA */
   .lp-bottom {
@@ -528,20 +531,24 @@
 
 <section class="lp-section">
   <p class="lp-section-label">Featured authors</p>
-  <h2 class="lp-section-title">The first author to do it</h2>
-  <p class="lp-section-desc">Authors share their day. Kalie Cassidy put hers on her own Instagram story the week she hit the New York Times list, and Heba Al-Wasity, the first author Booky ever featured, did the same. That is the half that reaches your readers rather than only mine.</p>
+  <h2 class="lp-section-title">The first authors to share it</h2>
+  <p class="lp-section-desc">Authors share their day with their own readers. Kalie Cassidy posted hers the week she hit the New York Times list, and Heba Al-Wasity, the first author Booky ever featured, did the same. That is the half that reaches your readers rather than only mine.</p>
+  <blockquote class="featured-quote" cite="https://www.instagram.com/alwasityhh/">
+    <p>&ldquo;I am OBSESSED with the game Booky (wordle for romantasy readers!)&rdquo;</p>
+    <cite>Heba Al-Wasity, author of Weavingshaw, in the story she posted</cite>
+  </blockquote>
   <div class="featured-proof">
     <figure class="featured-story">
-      <a href="https://www.instagram.com/kaliecassidybooks/" rel="noopener noreferrer" aria-label="Kalie Cassidy on Instagram">
-        <img src="/authors/kalie-ig-story.jpg" alt="Kalie Cassidy resharing her Booky feature day to her own Instagram story, showing the card for In the Veins of the Drowning" width="420" height="631" loading="eager" decoding="async">
+      <a href="https://www.instagram.com/kaliecassidybooks/" rel="noopener noreferrer" target="_blank" aria-label="Kalie Cassidy on Instagram">
+        <img src="/authors/kalie-ig-story.jpg" alt="Kalie Cassidy resharing her Booky feature day to her Instagram story, showing the card for In the Veins of the Drowning" width="420" height="631" loading="eager" decoding="async">
       </a>
-      <figcaption>Kalie Cassidy, <em>In the Veins of the Drowning</em>, resharing her day to her followers</figcaption>
+      <figcaption><a href="https://www.instagram.com/kaliecassidybooks/" rel="noopener noreferrer" target="_blank">@kaliecassidybooks</a> &middot; <em>In the Veins of the Drowning</em></figcaption>
     </figure>
     <figure class="featured-story">
-      <a href="https://www.instagram.com/alwasityhh/" rel="noopener noreferrer" aria-label="Heba Al-Wasity on Instagram">
-        <img src="/authors/heba-ig-story.jpg" alt="Heba Al-Wasity sharing her Booky feature day on her Instagram story" width="420" height="908" loading="eager" decoding="async">
+      <a href="https://www.instagram.com/alwasityhh/" rel="noopener noreferrer" target="_blank" aria-label="Heba Al-Wasity on Instagram">
+        <img src="/authors/heba-ig-story.jpg" alt="Heba Al-Wasity sharing her Booky feature day on her Instagram story, showing the card for Weavingshaw" width="420" height="631" loading="eager" decoding="async">
       </a>
-      <figcaption>Heba Al-Wasity, <em>Weavingshaw</em>: &ldquo;I am OBSESSED with the game Booky&rdquo;</figcaption>
+      <figcaption><a href="https://www.instagram.com/alwasityhh/" rel="noopener noreferrer" target="_blank">@alwasityhh</a> &middot; <em>Weavingshaw</em></figcaption>
     </figure>
   </div>
 </section>
