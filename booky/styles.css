@@ -571,19 +571,22 @@ body {
   font-family: var(--font-sans);
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 2.5px;
+  letter-spacing: 2px;
   text-transform: uppercase;
   color: var(--ink-faint);
   margin: 0 0 6px;
 }
 
+/* Set exactly like .book-hero-title, which sits a few lines below it: same
+   family, size and weight, no tracking. The two used to be 24/5px-tracked
+   magenta and 21/untracked ink, which read as two unrelated things. */
 .end-word {
   font-family: var(--font-serif);
   font-size: 24px;
   font-weight: 600;
   text-align: center;
-  letter-spacing: 5px;
-  color: var(--accent-2);
+  letter-spacing: normal;
+  color: var(--ink);
   margin: 0 0 10px;
   text-transform: uppercase;
 }
@@ -677,12 +680,14 @@ body {
   color: var(--ink-dim);
   text-align: center;
 }
+/* Same style as .end-streak above it and .reminder-pitch--below it, so the
+   whole email block is one voice instead of a serif heading over sans body. */
 .reminder-headline {
-  font-family: var(--font-serif);
-  font-weight: 600;
-  font-size: 16px;
-  color: var(--accent-2);
-  margin: 0 0 4px;
+  font-family: var(--font-sans);
+  font-weight: 400;
+  font-size: 12px;
+  color: var(--ink-dim);
+  margin: 0 0 7px;
   text-align: left;
   letter-spacing: 0.3px;
 }
@@ -699,8 +704,9 @@ body {
    lands around 3.4:1 on the dark background, under the 4.5:1 floor for text
    this small. */
 .reminder-pitch--below {
-  margin: 8px 0 0;
-  font-size: 11.5px;
+  margin: 9px 0 0;
+  font-size: 12px;
+  letter-spacing: 0.3px;
   color: var(--ink-dim);
   /* Left, matching the headline above it. .reminder-pitch centres itself for
      the old above-the-row placement; under the row it has to line up with
@@ -736,7 +742,7 @@ body {
   border-radius: 8px;
   cursor: pointer;
   font-family: var(--font-sans);
-  font-size: 13px;
+  font-size: 14px;
   font-weight: 600;
   transition: border-color 0.15s, color 0.15s;
 }
@@ -853,41 +859,72 @@ body {
 }
 .giveaway-in-sub { font-size: 10.5px; color: var(--ink-dim); line-height: 1.4; margin: 0; }
 
+/* Mid-height phones: most iPhones in Safari once both bars are showing.
+   The first-time screen (reminder form open, no giveaway) is the tall case,
+   and at full size it runs ~750px, so without this step the countdown
+   scrolls off for exactly the players who have not subscribed yet.
+   Verified no overflow at 701, 710, 760, 800 and 820. */
+@media (max-height: 820px) and (min-height: 701px) {
+  #end-modal .end-inner { padding: 24px 22px 18px; gap: 12px; }
+  #end-modal .celebration-title { font-size: 34px; }
+  #end-modal .book-hero { margin-bottom: 6px; }
+  #end-modal .book-hero-cover { width: min(168px, 18.5dvh); }
+}
+
 /* Short phones (iPhone SE): tighten the end screen so the giveaway card
    doesn't push the countdown off-screen. */
 @media (max-height: 700px) {
   #end-modal .end-inner { padding: 18px 20px 14px; gap: 10px; }
   #end-modal .celebration-title { font-size: 31px; }
-  #end-modal .book-hero { padding: 11px; }
-  #end-modal .book-hero-cover { width: 50px; height: 75px; }
-  #end-modal .book-hero-title { font-size: 17.5px; }
+  #end-modal .book-hero { margin-bottom: 6px; }
+  #end-modal .book-hero-cover { width: min(124px, 18dvh); }
+  #end-modal .book-hero-title { font-size: 21px; margin-top: 10px; }
+  #end-modal .book-hero-cta { font-size: 14px; }
   #end-modal .book-hero-label { margin-bottom: 8px; }
-  #end-modal .end-word { font-size: 21px; margin-bottom: 3px; }
+  #end-modal .end-word { font-size: 21px; margin-bottom: 6px; }
 }
 
 /* ---- Book recommendation (text link) ---- */
 /* Book hero — the word's book (curated rec or sponsored feature) */
+/* No card. The cover is the only thing on this screen with edges, so the
+   pink container was competing with it for the same job. The extra
+   margin-bottom groups the buy link with the book instead of with the
+   streak line below (9px above the link, 25px below the block). */
 .book-hero {
-  border: 1px solid var(--streak-border);
-  border-radius: 12px;
-  background: linear-gradient(135deg, var(--streak-bg-from), var(--streak-bg-to));
-  padding: 14px;
+  border: none;
+  background: none;
+  padding: 0;
+  margin-bottom: 10px;
 }
 /* The word reveal — now the first line of the book card, above the label */
 #book-rec .end-word { margin: 2px 0 4px; }
+/* Eyebrow. Grey, not magenta: it used to sit directly under the word, which
+   is also magenta, so two labels in two different families competed for the
+   same eye. Magenta now means only the word and the thing you can tap.
+   Shared with .book-hero-author, which is the same step. */
 .book-hero-label {
   font-size: 11px;
   font-weight: 700;
-  letter-spacing: 1.6px;
+  letter-spacing: 2px;
   text-transform: uppercase;
-  color: var(--accent-2);
+  /* --ink-dim, not --ink-faint: at 11px this has to stay readable, and
+     --ink-faint lands near 3:1 on both grounds. */
+  color: var(--ink-dim);
   text-align: center;
   margin: 0 0 12px;
 }
 /* Cover + meta block, vertically centered against the cover. Title, author
    and the CTA link sit as one tight group (no bottom-pin — that left a big
    gap under short one-line titles). */
-.book-hero-row { display: flex; gap: 14px; align-items: center; }
+/* Stacked, not side by side. The cover is the product Booky sells attention
+   on, so it gets the centre; putting the title beside it capped the cover at
+   about 110px and squeezed long titles onto three lines. */
+.book-hero-row {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+}
 .book-hero-cover-link {
   flex: 0 0 auto;
   line-height: 0;
@@ -897,28 +934,45 @@ body {
   outline: 2px solid var(--accent-2);
   outline-offset: 2px;
 }
+/* Every cover in booky/covers/ was refetched from its Amazon KINDLE listing
+   (the print ASIN often returns an angled 3D marketing render; the Kindle one
+   is flat art). That endpoint caps at 500px tall, so sources are ~330x500,
+   which supports a 166px cover at 2x. 168 is a ~1% upscale, invisible.
+   To go meaningfully bigger you must first pull the _SL1500_ images from the
+   product pages (938x1500), not the images/P/{ASIN} endpoint. */
 .book-hero-cover {
-  width: 60px;
-  height: 90px;
+  /* Fluid, so the cover is as big as the phone can actually afford instead of
+     a fixed size that overflows on shorter viewports. 20dvh hits the 168 cap
+     at about 840 tall and scales down from there; dvh (not vh) so it reacts
+     to Safari's bars appearing rather than to the idealised viewport. */
+  width: min(168px, 20dvh);
+  height: auto;
+  aspect-ratio: 2 / 3;
   flex: 0 0 auto;
-  border-radius: 5px;
+  border-radius: 6px;
   object-fit: cover;
   background: var(--bg-3);
-  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.20);
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.26);
 }
-.book-hero-meta { flex: 1; min-width: 0; }
+.book-hero-meta { width: 100%; min-width: 0; text-align: center; }
 .book-hero-title {
   font-family: var(--font-serif);
-  font-size: 21px;
+  font-size: 24px;
   font-weight: 600;
   color: var(--ink);
-  margin: 0;
-  line-height: 1.1;
+  margin: 12px 0 0;
+  line-height: 1.05;
 }
+/* Same step as .book-hero-label, so the block reads like a book jacket:
+   one small grey caps line above the cover, one below. */
 .book-hero-author {
-  font-size: 12px;
-  color: var(--ink-faint);
-  margin: 3px 0 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin: 7px 0 0;
 }
 .book-hero-hook {
   font-size: 12.5px;
@@ -931,11 +985,11 @@ body {
    only primary CTA. Amazon buy when available, else books-like page. */
 .book-hero-cta {
   display: block;
-  margin-top: 10px;
-  text-align: left;
+  margin-top: 9px;
+  text-align: center;
   color: var(--accent-2);
   font-weight: 600;
-  font-size: 13.5px;
+  font-size: 16px;
   text-decoration: underline;
   text-underline-offset: 3px;
 }
