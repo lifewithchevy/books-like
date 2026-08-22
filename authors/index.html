@@ -173,7 +173,9 @@
   /* win screen demo: real gameplay capture */
   .lp-hero-visual { display: flex; flex-direction: column; align-items: center; justify-content: center; }
   .booky-demo {
-    width: 100%; max-width: 400px; height: auto;
+    /* height-capped, not width-capped: the reveal is a tall phone screen and at
+       its natural 400x600 it overshoots the text column next to it */
+    width: auto; height: auto; max-width: 100%; max-height: 520px;
     border-radius: 16px; border: 1px solid var(--border);
     box-shadow: 0 18px 44px rgba(26, 11, 31, 0.14);
     display: block;
@@ -383,7 +385,7 @@
     .lp-nav { padding: 14px 24px; }
     /* text first on small screens so the price and Pay button stay above the fold */
     .lp-hero { grid-template-columns: 1fr; padding: 32px 24px 40px; gap: 36px; }
-    .booky-demo { max-width: 320px; }
+    .booky-demo { max-width: 320px; max-height: none; }
     .lp-section { padding: 44px 24px; }
     .plans { grid-template-columns: 1fr; }
     .featured-proof { grid-template-columns: 1fr; gap: 32px; }
@@ -524,7 +526,7 @@
   <div class="lp-hero-visual">
     <img class="booky-demo" src="/authors/booky-demo.gif"
          alt="Someone playing Booky: they guess CROWN, then FATED, then GHOST, and the win screen reveals Weavingshaw by Heba Al-Wasity with a Get it on Amazon link"
-         width="400" height="686" loading="eager" decoding="async">
+         width="400" height="600" loading="eager" decoding="async">
     <p class="win-demo-cap">Your book as a word game reveal for a day</p>
   </div>
 </section>
