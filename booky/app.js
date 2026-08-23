@@ -589,9 +589,12 @@ const subscribed = localStorage.getItem('90books_booky_reminder_sub');
 $('giveaway-form').hidden = !!subscribed;
 $('giveaway-tap').hidden = !subscribed;
 $('giveaway-fine').className = 'giveaway-fine';
+// Never print a raw ISO date at a reader: "Ends 2026-08-31" is not copy.
+const endsOn = localMidnight(g.end)
+.toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
 $('giveaway-fine').textContent = subscribed
-? `Free, worldwide. Ends ${g.end === '2026-08-03' ? 'Aug 3' : g.end}.`
-: `Free, worldwide. Ends ${g.end === '2026-08-03' ? 'Aug 3' : g.end}. Starts your daily email.`;
+? `Free, worldwide. Ends ${endsOn}.`
+: `Free, worldwide. Ends ${endsOn}. Starts your daily email.`;
 
 card.hidden = false;
 return true;
