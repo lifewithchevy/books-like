@@ -55,7 +55,7 @@ function buildGiveawayWelcomeHtml({ title, announce, playUrl, cover }) {
           <p style="margin:18px 0 0;font-size:11px;color:#a587a9;line-height:1.5;">
             Free to enter, no purchase necessary. One entry per reader, open worldwide, void where prohibited.<br>
             Booky by 90books &middot; you signed up at 90books.com/booky.<br>
-            <a href="mailto:hello@90books.com?subject=unsubscribe" style="color:#a587a9;text-decoration:underline;">Unsubscribe</a>
+            <a href="mailto:booky@90books.com?subject=unsubscribe" style="color:#a587a9;text-decoration:underline;">Unsubscribe</a>
           </p>
         </td></tr>
       </table>
@@ -240,7 +240,7 @@ module.exports = async (req, res) => {
           // alike. Deliberately NOT process.env.RESEND_FROM: that one variable is
           // read by every sender, so setting it would silently retarget these too.
           const RESEND_FROM = 'Booky <booky@90books.com>';
-          const UNSUBSCRIBE = '<mailto:hello@90books.com?subject=unsubscribe>';
+          const UNSUBSCRIBE = '<mailto:booky@90books.com?subject=unsubscribe>';
           const title = (giveawayTitle || 'the book').slice(0, 120);
           const announce = (giveawayAnnounce || 'soon').slice(0, 40);
           const playUrl = 'https://90books.com/booky?utm_source=giveaway_welcome&utm_medium=email&utm_campaign=giveaway_welcome';
@@ -286,7 +286,7 @@ Booky by 90books · you signed up at 90books.com/booky`,
           // alike. Deliberately NOT process.env.RESEND_FROM: that one variable is
           // read by every sender, so setting it would silently retarget these too.
           const RESEND_FROM = 'Booky <booky@90books.com>';
-          const UNSUBSCRIBE  = '<mailto:hello@90books.com?subject=unsubscribe>';
+          const UNSUBSCRIBE  = '<mailto:booky@90books.com?subject=unsubscribe>';
           try {
             await fetch('https://api.resend.com/emails', {
               method: 'POST',
@@ -347,7 +347,7 @@ Booky by 90books · you signed up at 90books.com/booky · reply to unsubscribe`,
   <p>olga from booky</p>
   <p class="footer">
     Booky by 90books · you signed up at 90books.com/booky<br>
-    <a href="mailto:hello@90books.com?subject=unsubscribe">unsubscribe</a>
+    <a href="mailto:booky@90books.com?subject=unsubscribe">unsubscribe</a>
   </p>
 </div>
 </body>

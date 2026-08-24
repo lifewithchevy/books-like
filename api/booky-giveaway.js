@@ -253,7 +253,7 @@ async function sendOne(key, from, to, mail, typeTag, personal = false) {
       body.track_opens = false;
     } else {
       body.headers = {
-        'List-Unsubscribe': '<mailto:hello@90books.com?subject=unsubscribe>',
+        'List-Unsubscribe': '<mailto:booky@90books.com?subject=unsubscribe>',
         'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
       };
     }
