@@ -242,7 +242,8 @@ async function patchContact(key, audienceId, email, fields) {
 async function sendOne(key, from, to, mail, typeTag, personal = false) {
   try {
     const body = {
-      from, to, reply_to: 'hello@90books.com',
+      // Player-facing: replies go to booky@ (see api/booky-subscribe.js).
+      from, to, reply_to: 'booky@90books.com',
       subject: mail.subject, html: mail.html, text: mail.text,
       tags: [{ name: 'type', value: typeTag }],
     };

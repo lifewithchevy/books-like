@@ -251,7 +251,10 @@ module.exports = async (req, res) => {
               body: JSON.stringify({
                 from: RESEND_FROM,
                 to: cleanEmail,
-                reply_to: 'hello@90books.com',
+                // Player-facing: replies go to booky@, the address readers already
+                // know from the daily reminder. hello@ is for the contact page,
+                // authors and press. Both reach the same inbox via forwarding.
+                reply_to: 'booky@90books.com',
                 subject: "🎁 You're entered · Booky giveaway",
                 headers: {
                   'List-Unsubscribe': UNSUBSCRIBE,
@@ -288,7 +291,10 @@ Booky by 90books · you signed up at 90books.com/booky`,
               body: JSON.stringify({
                 from: RESEND_FROM,
                 to: cleanEmail,
-                reply_to: 'hello@90books.com',
+                // Player-facing: replies go to booky@, the address readers already
+                // know from the daily reminder. hello@ is for the contact page,
+                // authors and press. Both reach the same inbox via forwarding.
+                reply_to: 'booky@90books.com',
                 subject: "you're in, Booky will remind you 📚",
                 headers: {
                   'List-Unsubscribe': UNSUBSCRIBE,
