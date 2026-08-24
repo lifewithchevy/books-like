@@ -224,6 +224,11 @@ module.exports = async (req, res) => {
     return {
       from: RESEND_FROM,
       to: contact.email,
+      // Replies land in the one inbox Olga actually reads. Without this they
+      // go to the From address (booky@90books.com), where they sat unread for
+      // weeks — see the reader replies in Resend > Emails > Receiving.
+      // Supported on POST /emails/batch; only `attachments` is not.
+      reply_to: 'hello@90books.com',
       subject,
       // Per-contact signed link. Resend's {{{RESEND_UNSUBSCRIBE_URL}}} only gets
       // substituted for Broadcasts — this endpoint sends per-contact, where it
