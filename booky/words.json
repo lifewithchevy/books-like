@@ -297,7 +297,8 @@
     "GUARD",
     "GLOOM",
     "COALS",
-    "POPPY"
+    "POPPY",
+    "TAROT"
   ],
   "wordBooks": {
     "COURT": {
@@ -2625,6 +2626,13 @@
       "author": "Rebecca Yarros",
       "cover": "/booky/covers/iron-flame.jpg",
       "buyUrl": "https://www.amazon.com/dp/1649374178?tag=90books-20"
+    },
+    "TAROT": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "/booky/covers/one-dark-window.jpg",
+      "buyUrl": "https://amzn.to/4ox0w8K"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
