@@ -236,7 +236,10 @@ module.exports = async (req, res) => {
           // Giveaway entrant: confirm the entry (the on-screen "you're in" is
           // otherwise their only record) and name the announce date so the
           // result email is expected.
-          const RESEND_FROM = process.env.RESEND_FROM || 'Olga from Booky <hello@90books.com>';
+          // Player-facing mail is always Booky <booky@90books.com>, from and reply
+          // alike. Deliberately NOT process.env.RESEND_FROM: that one variable is
+          // read by every sender, so setting it would silently retarget these too.
+          const RESEND_FROM = 'Booky <booky@90books.com>';
           const UNSUBSCRIBE = '<mailto:hello@90books.com?subject=unsubscribe>';
           const title = (giveawayTitle || 'the book').slice(0, 120);
           const announce = (giveawayAnnounce || 'soon').slice(0, 40);
@@ -279,7 +282,10 @@ Booky by 90books · you signed up at 90books.com/booky`,
             console.error('[booky-subscribe] Giveaway welcome email failed:', err);
           }
         } else if (r.ok) {
-          const RESEND_FROM = process.env.RESEND_FROM || 'Olga from Booky <hello@90books.com>';
+          // Player-facing mail is always Booky <booky@90books.com>, from and reply
+          // alike. Deliberately NOT process.env.RESEND_FROM: that one variable is
+          // read by every sender, so setting it would silently retarget these too.
+          const RESEND_FROM = 'Booky <booky@90books.com>';
           const UNSUBSCRIBE  = '<mailto:hello@90books.com?subject=unsubscribe>';
           try {
             await fetch('https://api.resend.com/emails', {

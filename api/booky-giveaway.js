@@ -39,7 +39,8 @@ module.exports = async (req, res) => {
 
   const KEY         = process.env.RESEND_API_KEY;
   const AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID;
-  const FROM        = process.env.RESEND_FROM || 'Olga from Booky <hello@90books.com>';
+  // Player-facing mail is always Booky <booky@90books.com>. See api/booky-subscribe.js.
+  const FROM        = 'Booky <booky@90books.com>';
   if (!KEY || !AUDIENCE_ID) {
     res.status(500).json({ error: 'resend-not-configured' });
     return;
