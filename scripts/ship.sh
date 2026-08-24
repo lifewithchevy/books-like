@@ -35,6 +35,7 @@ say "2/5  Validating the word queue"
 python3 scripts/validate_queue_lock.py || die "today's or a past word changed. Never edit a day that has already gone live."
 python3 scripts/validate_winnable.py  || die "a scheduled answer is missing from dictionary.json — that day would be unwinnable."
 python3 scripts/validate_giveaway.py  || die "giveaway array is invalid."
+python3 scripts/validate_daily_words_sync.py || die "booky/daily-words.json drifted from words.json — run: cp booky/words.json booky/daily-words.json"
 
 say "3/5  Loading every API route"
 for f in api/*.js; do

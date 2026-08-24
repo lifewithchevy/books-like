@@ -52,7 +52,21 @@ Run all three. They take a second and each one exists because something broke:
 python3 scripts/validate_queue_lock.py   # today/past slots unchanged
 python3 scripts/validate_winnable.py     # every answer is in dictionary.json
 python3 scripts/validate_giveaway.py     # giveaway array valid, shows what's live
+python3 scripts/validate_daily_words_sync.py  # daily-words.json == words.json
 ```
+
+`booky/daily-words.json` is a **byte-for-byte copy** of `booky/words.json`, not a
+second queue. It is the alternate path the edge middleware and the library shelf
+read, and it exists only to dodge a stuck CDN object on `/booky/words.json`.
+Never hand-edit it — after any words.json change run:
+
+```bash
+cp booky/words.json booky/daily-words.json
+```
+
+It drifted for weeks (245 words vs 274) after a restore commit. Prod was saved
+only by the middleware rewrite to `/api/booky-words`; when that rewrite does not
+run, the stale file is what players get. `ship.sh` now blocks on this.
 
 **Where the live data comes from (changed 2026-08-08).** `/api/booky-words` now
 serves **this repo's `booky/words.json` directly**. Editing the `queue` here does
