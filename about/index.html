@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Contact | 90books</title>
-<meta name="description" content="How to reach 90books and Booky, the daily romantasy word game. Email hello@90books.com for author features, press, bug reports, book suggestions, or data requests.">
-<link rel="canonical" href="https://90books.com/contact">
-<meta property="og:title" content="Contact | 90books">
-<meta property="og:description" content="How to reach 90books and Booky, the daily romantasy word game. Email hello@90books.com for author features, press, bug reports, book suggestions, or data requests.">
-<meta property="og:url" content="https://90books.com/contact">
+<title>About | 90books</title>
+<meta name="description" content="Who makes 90books and Booky, the daily romantasy word game: one person, Olga Roman, building a book discovery site for romantasy readers since March 2026.">
+<link rel="canonical" href="https://90books.com/about">
+<meta property="og:title" content="About | 90books">
+<meta property="og:description" content="Who makes 90books and Booky, the daily romantasy word game: one person, Olga Roman, building a book discovery site for romantasy readers since March 2026.">
+<meta property="og:url" content="https://90books.com/about">
 <meta property="og:type" content="website">
 <meta property="og:image" content="https://90books.com/booky/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -161,57 +161,51 @@
   /* ===== end canonical closing block ================================= */
 </style>
 <style>
-  .email-hero {
-    background: var(--surface2); border: 1px solid var(--border); border-radius: 14px;
-    padding: 26px 24px; text-align: center; margin: 8px 0 30px;
+  .about-hero { display: flex; align-items: center; gap: 20px; margin-bottom: 28px; }
+  .about-hero img {
+    width: 96px; height: 96px; border-radius: 50%; flex: 0 0 auto;
+    background: var(--surface2); border: 1px solid var(--border);
   }
-  .email-hero a.email-big {
-    font-family: 'Playfair Display', Georgia, serif;
-    font-size: clamp(22px, 4.6vw, 30px); font-weight: 700;
-    color: var(--text); text-decoration: none; word-break: break-word;
+  .about-hero-text h1 { margin-bottom: 4px; }
+  .about-hero-role { font-size: 14px; color: var(--text-dim); }
+  .fact-list { list-style: none; padding-left: 0; }
+  .fact-list li {
+    display: flex; gap: 10px; align-items: baseline;
+    padding: 10px 0; border-bottom: 1px solid var(--border); margin-bottom: 0;
   }
-  .email-hero a.email-big:hover { color: #8b3fd3; text-decoration: underline; }
-  .email-hero p { margin: 8px 0 0; font-size: 14px; }
-  .reason { border-bottom: 1px solid var(--border); padding: 16px 0; }
-  .reason:last-of-type { border-bottom: none; }
-  .reason h3 {
-    font-family: 'Inter', sans-serif; font-size: 16px; font-weight: 600;
-    color: var(--text); margin-bottom: 5px;
+  .fact-list li b { font-weight: 600; color: var(--text); flex: 0 0 148px; }
+  @media (max-width: 520px) {
+    .about-hero { gap: 14px; }
+    .about-hero img { width: 68px; height: 68px; }
+    .fact-list li { flex-direction: column; gap: 2px; }
+    .fact-list li b { flex: none; }
   }
-  .reason p { margin-bottom: 0; font-size: 15px; }
 </style>
 <script type="application/ld+json">
 {
   "@context": "https://schema.org",
-  "@type": "ContactPage",
-  "url": "https://90books.com/contact",
+  "@type": "AboutPage",
+  "url": "https://90books.com/about",
   "mainEntity": {
     "@type": "Organization",
     "name": "90books",
     "url": "https://90books.com",
     "logo": "https://90books.com/favicon.svg",
     "email": "hello@90books.com",
-    "founder": { "@type": "Person", "name": "Olga Roman" },
-    "contactPoint": [
-      {
-        "@type": "ContactPoint",
-        "contactType": "customer support",
-        "email": "hello@90books.com",
-        "availableLanguage": "English"
-      },
-      {
-        "@type": "ContactPoint",
-        "contactType": "sales",
-        "email": "hello@90books.com",
-        "availableLanguage": "English"
-      },
-      {
-        "@type": "ContactPoint",
-        "contactType": "public relations",
-        "email": "hello@90books.com",
-        "availableLanguage": "English"
-      }
-    ]
+    "foundingDate": "2026-03",
+    "description": "A book discovery site for romantasy readers, and the home of Booky, the daily romantasy word game.",
+    "founder": {
+      "@type": "Person",
+      "name": "Olga Roman",
+      "email": "hello@90books.com"
+    },
+    "contactPoint": {
+      "@type": "ContactPoint",
+      "contactType": "customer support",
+      "email": "hello@90books.com",
+      "url": "https://90books.com/contact",
+      "availableLanguage": "English"
+    }
   }
 }
 </script>
@@ -228,46 +222,50 @@
   </div>
 </header>
 <div class="wrap">
-<h1>Contact</h1>
-<p class="updated">One inbox, answered by a human</p>
 
-<p>There&rsquo;s no contact form and no ticket system here, because there&rsquo;s only one of me. Email reaches me directly and I answer it myself.</p>
-
-<div class="email-hero">
-  <a class="email-big" href="mailto:hello@90books.com">hello@90books.com</a>
-  <p>Olga Roman &middot; 90books &middot; United States</p>
-</div>
-
-<h2>Write to me about</h2>
-<div class="reason">
-  <h3>A book I should feature</h3>
-  <p>Send it. A good chunk of the queue came from readers doing exactly this.</p>
-</div>
-<div class="reason">
-  <h3>Your book, if you&rsquo;re an author</h3>
-  <p>Tell me the book and the date you have in mind. The <a href="/authors">authors page</a> explains how a feature day works.</p>
-</div>
-<div class="reason">
-  <h3>Something that&rsquo;s broken</h3>
-  <p>A word that won&rsquo;t submit, a lost streak, a page that looks wrong. Tell me your device and browser.</p>
-</div>
-<div class="reason">
-  <h3>Press, or listing Booky on your site</h3>
-  <p>Happy to send screenshots, logos, or whatever format you need.</p>
-</div>
-<div class="reason">
-  <h3>Your email or your data</h3>
-  <p>Want off the list, or want to know what I hold on you? Ask and it&rsquo;s done. See the <a href="/privacy">privacy page</a>.</p>
+<div class="about-hero">
+  <img src="/oroman.png" width="96" height="96" alt="Olga Roman, who makes 90books, with her dog" loading="eager">
+  <div class="about-hero-text">
+    <h1>About 90books</h1>
+    <p class="about-hero-role">Made by one person, Olga Roman, since March 2026.</p>
+  </div>
 </div>
 
-<p>You can also just reply to any Booky email. Those reach me too.</p>
+<p>Hi, I&rsquo;m Olga. I read a lot of romantasy, I kept running out of things to read next, and the answer was always the same: ask a stranger on Reddit. So I built the thing I wanted instead.</p>
+
+<h2>What&rsquo;s here</h2>
+<p><b>Booky, the daily romantasy word game.</b> One five-letter word a day. Guess it and you unlock a book, with the cover, the author, and why it&rsquo;s worth your time. Free, no account.</p>
+<p><b>Book recommendations.</b> Tell the site a book you loved and it gives you the next one, sorted by mood and genre. Every book Booky has featured is on the <a href="/booky-library">Booky library</a> page.</p>
+
+<h2>How a book gets chosen</h2>
+<p>No algorithm picks these. I read the genre myself and I handpick every word and the book it&rsquo;s tied to.</p>
+<ul>
+  <li>The word has to genuinely belong to the book, not just have five letters.</li>
+  <li>I only feature books I&rsquo;d hand to a friend.</li>
+  <li><b>Paying for a feature day never buys a good review.</b> An author can buy the date their book appears. They can&rsquo;t buy what I say about it.</li>
+</ul>
+
+<h2>How it&rsquo;s paid for</h2>
+<p>Authors can book a feature day, and some book links are Amazon affiliate links that may earn me a small cut at no cost to you. No ads, no ad trackers, and I don&rsquo;t sell reader data. The <a href="/privacy">privacy page</a> is the long version.</p>
+
+<h2>The details</h2>
+<ul class="fact-list">
+  <li><b>Site</b><span>90books.com, launched March 2026</span></li>
+  <li><b>Booky</b><span>Daily since 25 May 2026</span></li>
+  <li><b>Books featured</b><span>37 so far, from 27 authors</span></li>
+  <li><b>Run by</b><span>Olga Roman, on her own, United States</span></li>
+  <li><b>Email</b><span><a href="mailto:hello@90books.com">hello@90books.com</a></span></li>
+</ul>
+
+<p>Readers, authors and press are all welcome to write. See the <a href="/contact">contact page</a>.</p>
 
 </div>
 <div class="lp-bottom site-close">
-  <h2 class="lp-bottom-title">Today&rsquo;s word is waiting</h2>
-  <p class="lp-bottom-sub">One five-letter word, one book to discover.</p>
+  <h2 class="lp-bottom-title">Find your next read</h2>
+  <p class="lp-bottom-sub">Today&rsquo;s word is waiting.</p>
   <div class="bottom-row">
     <a href="/booky" class="lp-btn-primary">Play Booky</a>
+    <a href="/booky-library" class="lp-btn-secondary">Browse the library</a>
   </div>
   <p class="bottom-support">Write romantasy? See how a feature day works on the <a href="/authors">authors page</a>.</p>
 </div>

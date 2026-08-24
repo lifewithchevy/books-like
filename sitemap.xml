@@ -106,6 +106,12 @@
   <url><loc>https://90books.com/mood/reflective</loc><lastmod>2026-05-24</lastmod><changefreq>monthly</changefreq><priority>0.5</priority></url>
   <!-- Trust pages -->
   <url>
+    <loc>https://90books.com/about</loc>
+    <lastmod>2026-08-24</lastmod>
+    <changefreq>monthly</changefreq>
+    <priority>0.5</priority>
+  </url>
+  <url>
     <loc>https://90books.com/contact</loc>
     <lastmod>2026-08-24</lastmod>
     <changefreq>monthly</changefreq>
