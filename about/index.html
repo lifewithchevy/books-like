@@ -175,8 +175,11 @@
   }
   .fact-list li b { font-weight: 600; color: var(--text); flex: 0 0 148px; }
   @media (max-width: 520px) {
-    .about-hero { gap: 14px; }
+    /* The subtitle wraps to several lines on a phone, which left the avatar
+       floating in the vertical middle of a tall block. Top-align it. */
+    .about-hero { gap: 14px; align-items: flex-start; }
     .about-hero img { width: 68px; height: 68px; }
+    .about-hero-text h1 { margin-top: -4px; }
     .fact-list li { flex-direction: column; gap: 2px; }
     .fact-list li b { flex: none; }
   }
@@ -227,7 +230,7 @@
   <img src="/oroman.png" width="96" height="96" alt="Olga Roman, who makes 90books, with her dog" loading="eager">
   <div class="about-hero-text">
     <h1>About 90books</h1>
-    <p class="about-hero-role">Olga Roman, since March 2026. No team, no office, one deeply unbothered dog.</p>
+    <p class="about-hero-role">Olga Roman, since March 2026. No office, no team, unless the dog counts. He does emotional support, paid in treats.</p>
   </div>
 </div>
 
