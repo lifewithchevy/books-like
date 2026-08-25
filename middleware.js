@@ -410,6 +410,45 @@ const BOOKY_NO_STORE = {
   'vercel-cdn-cache-control': 'no-store',
 };
 
+// ---------------------------------------------------------------------------
+// INDEX KEEP-LIST (2026-08-24). Search Console showed 38 long-tail pages as
+// "Crawled - currently not indexed": Google fetched them, judged them
+// near-duplicates of the homepage SPA, and declined. Rather than beg for all
+// of them, we concentrate crawl budget on the pages with real, on-theme demand
+// (fantasy romance) and let the rest drop out with `noindex, follow` — they
+// stay live and keep passing link equity, they just stop competing with the
+// keepers. Volumes are US searches/mo from Keyword Planner, checked 2026-08-24.
+//
+// Anything matched by buildMeta() and NOT listed here gets noindexed.
+const INDEX_KEEP = new Set([
+  '/',
+  '/booky',
+  '/booky-library',
+  '/genre/romantasy',                               // 14,800
+  '/books-like/fourth-wing',                        //  4,400
+  '/books-like/a-court-of-thorns-and-roses',        //  4,400
+  '/books-like/twilight',                           //  1,600
+  '/books-like/throne-of-glass',                    //  1,300
+  '/books-like/quicksilver',                        //    720
+  '/books-like/six-of-crows',                       //    590
+  '/books-like/the-cruel-prince',                   //    480
+  '/books-like/one-dark-window',                    //    320
+  '/books-like/house-of-earth-and-blood',           //    170 ("books like crescent city")
+  '/books-like/from-blood-and-ash',                 //    140
+  '/books-like/iron-flame',                         //    110
+  '/books-like/heartless-hunter',                   //     90
+  '/books-like/the-jasad-heir',                     //     50
+  '/books-like/the-serpent-and-the-wings-of-night', //     50
+  '/books-like/weavingshaw',                        //      0 - author pilot page, kept deliberately
+]);
+
+function isIndexable(pathname) {
+  const p = pathname !== '/' && pathname.endsWith('/')
+    ? pathname.slice(0, -1)
+    : pathname;
+  return INDEX_KEEP.has(p);
+}
+
 export default async function middleware(request) {
   const url = new URL(request.url);
   // booky-deploy is the live source of Booky static assets. Never proxy
@@ -448,6 +487,7 @@ export default async function middleware(request) {
           headers: {
             'content-type': 'application/json; charset=utf-8',
             ...BOOKY_NO_STORE,
+            'x-robots-tag': 'noindex',
             'x-edge-middleware': '90books-words-proxy',
           },
         });
@@ -521,6 +561,14 @@ export default async function middleware(request) {
     // duplicate canonicals which Google ignores or flags).
     .replace(/<link rel="canonical"[^>]*>/, `<link rel="canonical" href="${c}">`);
 
+  // Pages off the keep-list are deliberately dropped from the index. Injected
+  // before the JSON-LD so it lands inside <head>; `follow` keeps their internal
+  // links crawlable, so the keepers still benefit from them.
+  const indexable = isIndexable(url.pathname);
+  if (!indexable) {
+    html = html.replace(/<\/head>/i, '  <meta name="robots" content="noindex, follow">\n</head>');
+  }
+
   // Inject JSON-LD just before </head> (canonical was handled above)
   const ld = JSON.stringify(jsonLd(meta, libraryBooks));
   html = html.replace(/<\/head>/i, `  <script type="application/ld+json">${ld}</script>\n</head>`);
@@ -542,6 +590,7 @@ export default async function middleware(request) {
       // SPA shell (which would fall back to the homepage under the right URL).
       'cache-control': 'public, max-age=0, must-revalidate, s-maxage=60, stale-while-revalidate=86400',
       'x-edge-middleware': '90books-seo',
+      ...(indexable ? {} : { 'x-robots-tag': 'noindex, follow' }),
     },
   });
 }
