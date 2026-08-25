@@ -147,7 +147,7 @@
     "NORTH",
     "AZURE",
     "SCION",
-    "FORGE",
+    "ISLES",
     "MERCY",
     "PRISM",
     "REGAL",
@@ -298,7 +298,8 @@
     "GLOOM",
     "COALS",
     "POPPY",
-    "TAROT"
+    "TAROT",
+    "FORGE"
   ],
   "wordBooks": {
     "COURT": {
@@ -2633,6 +2634,13 @@
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
       "buyUrl": "https://amzn.to/4ox0w8K"
+    },
+    "ISLES": {
+      "slug": "onyx-storm",
+      "title": "Onyx Storm",
+      "author": "Rebecca Yarros",
+      "cover": "/booky/covers/onyx-storm.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1649374186?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
