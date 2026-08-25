@@ -125,10 +125,114 @@ const CHECKS = {
   },
 };
 
+// The checker must leave NO trace in the numbers. Olga's own device IDs already
+// top every PostHog leaderboard; a daily robot that plays the game and finishes
+// it would quietly become the most loyal player on the site. So: analytics are
+// blocked outright, and so is every POST that writes something (player records,
+// streaks, subscribes). Reads are left alone.
+const BLOCKED_HOSTS = /(posthog|google-analytics|googletagmanager|doubleclick|sentry)\./i;
+const WRITE_ROUTES = /\/api\/(booky-player|booky-update-streak|booky-subscribe|feedback|suggest|vote)/;
+
+async function shield(ctx) {
+  await ctx.route('**/*', (route) => {
+    const r = route.request();
+    const u = r.url();
+    if (BLOCKED_HOSTS.test(u)) return route.abort();
+    if (r.method() === 'POST' && WRITE_ROUTES.test(u)) return route.abort();
+    return route.continue();
+  });
+}
+
+/** Mirrors computeDayNumber() in booky/app.js — local midnight, 1-indexed. */
+function dayNumber(epochStr, today) {
+  const [y, m, d] = epochStr.split('-').map(Number);
+  return Math.floor((today.getTime() - new Date(y, m - 1, d).getTime()) / 86400000) + 1;
+}
+
+/**
+ * Actually play today's Booky and win it.
+ *
+ * This is the check nothing else does. `renderGiveaway()` throwing takes the
+ * whole win screen down with it, and health-live.mjs reports `healthy` on a
+ * DEAD win screen because every URL it fetches still returns 200 — that is a
+ * standing note in CLAUDE.md and it has bitten before. The only way to know the
+ * win screen works is to win.
+ */
+async function playAndWin(browser, base) {
+  const failures = [];
+  const wr = await fetch(`${base}/api/booky-words`, { cache: 'no-store' });
+  if (!wr.ok) return [`/api/booky-words returned ${wr.status} — cannot test the game`];
+  const w = await wr.json();
+  const now = new Date();
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const n = dayNumber(w.epoch, today);
+  const answer = (w.queue || [])[n - 1];
+  if (!answer) return [`no word scheduled for day ${n} — the game has nothing to serve`];
+
+  const ctx = await browser.newContext({ viewport: { width: 480, height: 900 } });
+  await shield(ctx);
+  const tab = await ctx.newPage();
+  const jsErrors = [];
+  tab.on('pageerror', (e) => jsErrors.push(e.message));
+  try {
+    await tab.goto(`${base}/booky`, { waitUntil: 'networkidle', timeout: 45000 });
+    await tab.waitForSelector('.kb-key', { timeout: 20000 });
+    // Close anything covering the board (how-to-play, cookie notice, etc.)
+    await tab.evaluate(() => document.querySelectorAll('dialog[open]').forEach((d) => d.close()));
+
+    for (const ch of answer.toUpperCase()) {
+      await tab.click(`.kb-key:text-is("${ch}")`, { timeout: 8000 });
+    }
+    await tab.keyboard.press('Enter');
+
+    await tab.waitForFunction(() => {
+      const m = document.getElementById('end-modal');
+      return m && m.open;
+    }, null, { timeout: 20000 }).catch(() => {});
+
+    const end = await tab.evaluate(() => {
+      const m = document.getElementById('end-modal');
+      const g = document.getElementById('giveaway');
+      const seen = (el) => !!el && !el.hidden && el.getBoundingClientRect().height > 0;
+      return {
+        open: !!(m && m.open),
+        headline: (document.getElementById('end-headline') || {}).textContent || '',
+        word: (document.getElementById('end-word') || {}).textContent || '',
+        puzzleNo: (document.getElementById('end-puzzle-no') || {}).textContent || '',
+        bookShown: seen(document.getElementById('book-rec')),
+        bookTitle: (document.querySelector('#book-rec .book-hero-row') || {}).innerText || '',
+        giveawayPresent: !!g,
+        giveawayShown: seen(g),
+      };
+    });
+
+    if (!end.open) failures.push('won the game but the win screen never opened — this is the renderGiveaway failure mode');
+    if (!/congrats/i.test(end.headline)) failures.push(`win screen headline is ${JSON.stringify(end.headline)}, expected "Congrats!"`);
+    if (!end.word.toUpperCase().includes(answer.toUpperCase())) failures.push(`win screen shows word ${JSON.stringify(end.word)}, expected ${answer}`);
+    if (!end.bookShown) failures.push('win screen has no book — the reveal is the whole point of the game');
+    else if (end.bookTitle.trim().length < 3) failures.push('win screen book block is empty');
+
+    // If words.json says a giveaway covers today, the card has to be on the win
+    // screen. A giveaway that silently stops showing is a prize nobody can enter.
+    const pad = (v) => String(v).padStart(2, '0');
+    const todayStr = `${today.getFullYear()}-${pad(today.getMonth() + 1)}-${pad(today.getDate())}`;
+    const live = (w.giveaway || []).find((g) => g.start <= todayStr && todayStr <= g.end);
+    if (live && !end.giveawayShown) {
+      failures.push(`giveaway "${live.title || live.tag}" runs to ${live.end} but its card is missing from the win screen`);
+    }
+    if (jsErrors.length) failures.push(`JS error while playing: ${jsErrors[0].split('\n')[0]}`);
+  } catch (e) {
+    failures.push(`could not play the game: ${e.message.split('\n')[0]}`);
+  }
+  await ctx.close();
+  return failures;
+}
+
 const browser = await chromium.launch();
 const results = [];
 for (const page of PAGES) {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
+  await shield(ctx);
   const tab = await ctx.newPage();
   const jsErrors = [];
   tab.on('pageerror', (e) => jsErrors.push(e.message));
@@ -156,6 +260,10 @@ for (const page of PAGES) {
   results.push({ ...page, failures, data });
   await ctx.close();
 }
+// Finally, the one check that needs more than a page load: win the game.
+const gameFailures = await playAndWin(browser, BASE);
+results.push({ path: '/booky (play a full game)', kind: 'gameplay', failures: gameFailures });
+
 await browser.close();
 
 const bad = results.filter((r) => r.failures.length);
