@@ -14183,8 +14183,17 @@
 
       // Real /book/[slug] URL so pull-to-refresh stays on this book page
       // (and so share/back work like other section routes).
+      //
+      // ⚠️ EXCEPT on a first load of /books-like/<same slug>. A few slugs
+      // (iron-flame, six-of-crows) have no books-like station, so the router
+      // falls back to this book view — and rewriting the URL to /book/<slug>
+      // then meant the reader's landing URL, its canonical and its served title
+      // all said "Books Like Iron Flame" while the address bar and the rendered
+      // page said "Iron Flame". It also hid the server-rendered recs, which key
+      // off the landing path. Keep the URL the reader actually arrived on.
       const _bookSlug = slugifyBookKey(key);
-      const _bookPath = '/book/' + _bookSlug;
+      const _landedOnBooksLike = window.location.pathname.replace(/\/$/, '') === '/books-like/' + _bookSlug;
+      const _bookPath = _landedOnBooksLike ? window.location.pathname : '/book/' + _bookSlug;
       if (window.location.pathname !== _bookPath) {
         // During popstate restore, replace — don't push a new entry on top of history.back()
         if (_navRestoring) history.replaceState({ bookDetail: key }, '', _bookPath);
