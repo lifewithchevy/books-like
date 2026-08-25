@@ -233,6 +233,20 @@ function buildMeta(pathname) {
   return null;
 }
 
+// Curated rec data is keyed by the slug it was written under, which is not
+// always the slug the page lives at. /books-like/crescent-city 308-redirects to
+// /books-like/house-of-earth-and-blood (the real book title), so a lookup by the
+// canonical slug missed the entry entirely — the Crescent City page shipped with
+// 48 words and no ItemList/FAQPage schema while 577 words of written content sat
+// unreachable under the old key.
+const RECS_SLUG_ALIAS = {
+  'house-of-earth-and-blood': 'crescent-city',
+};
+
+function recsFor(slug) {
+  return BOOKS_LIKE_RECS[slug] || BOOKS_LIKE_RECS[RECS_SLUG_ALIAS[slug]] || null;
+}
+
 // SEO body block, visible to Googlebot before JS hydrates, hidden from
 // users once the SPA takes over. The SPA looks for #seo-static-block and
 // removes it on initDiscoverTab (added to the home init flow).
@@ -247,7 +261,7 @@ function buildSeoBlock(meta, books) {
     // SEO-optimised block (1500+ words of unique content per page). Otherwise
     // fall back to the basic block, still better than nothing.
     const slug = meta.canonical.split('/').pop();
-    const data = BOOKS_LIKE_RECS[slug];
+    const data = recsFor(slug);
 
     if (data) {
       const recsHtml = data.recs.map((r, i) => {
@@ -356,7 +370,7 @@ function jsonLd(meta, books) {
     // If we have curated rec data, expose the recs as an ItemList for Google
     // and FAQs as an FAQPage section. Both are rich-snippet eligible.
     const slug = meta.canonical.split('/').pop();
-    const data = BOOKS_LIKE_RECS[slug];
+    const data = recsFor(slug);
     if (data) {
       base.mainEntity = {
         '@type': 'ItemList',
