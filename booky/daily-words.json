@@ -2641,6 +2641,41 @@
       "author": "Rebecca Yarros",
       "cover": "/booky/covers/onyx-storm.jpg",
       "buyUrl": "https://www.amazon.com/dp/1649374186?tag=90books-20"
+    },
+    "SAILS": {
+      "slug": "tempest",
+      "title": "Tempest",
+      "author": "Victoria Aveyard",
+      "cover": "/booky/covers/tempest.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0063451360?tag=90books-20"
+    },
+    "SPORE": {
+      "slug": "the-exorcism-of-faeries",
+      "title": "The Exorcism of Faeries",
+      "author": "J. L. Vampa",
+      "cover": "/booky/covers/the-exorcism-of-faeries.jpg",
+      "buyUrl": "https://www.amazon.com/dp/166825039X?tag=90books-20"
+    },
+    "ARENA": {
+      "slug": "the-ascended",
+      "title": "The Ascended",
+      "author": "Bree Grenwich & Parker Lennox",
+      "cover": "/booky/covers/the-ascended.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B0GM2DN91H?tag=90books-20"
+    },
+    "GUILD": {
+      "slug": "blood-and-steel",
+      "title": "Blood & Steel",
+      "author": "Helen Scheuerer",
+      "cover": "/booky/covers/blood-and-steel.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1922903043?tag=90books-20"
+    },
+    "WINDS": {
+      "slug": "this-shattered-tempest",
+      "title": "This Shattered Tempest",
+      "author": "Thea Guanzon",
+      "cover": "/booky/covers/this-shattered-tempest.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0063277352?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
