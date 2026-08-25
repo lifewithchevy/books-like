@@ -3040,6 +3040,15 @@
           <div class="result-section" id="results" style="display:block;padding:0 0 40px;"></div>
         </div>
 
+        <!-- Server-rendered SEO body (middleware injects #seo-static-block at the
+             top of <body> on /books-like/*, /genre/*, /mood/*, /book/*,
+             /booky-library). It used to be DELETED on load, which meant Google
+             rendered the page, watched the unique content disappear, and indexed
+             the leftover homepage shell — that is why 38 pages sat at "Crawled -
+             currently not indexed". It is relocated here instead, below the SPA's
+             own view, so it stays real visible content for humans too. -->
+        <div id="seoStaticHost" style="display:none;"></div>
+
         <!-- All-shelves view -->
         <style>
           .shelf-cover-wrap { position: relative; }
@@ -7546,6 +7555,11 @@
       const backBgHov  = isLight ? 'rgba(0,0,0,0.2)'    : 'rgba(255,255,255,0.28)';
       const dotOpacity = isLight ? '0.4' : '0.55';
       const fallbackCol = isLight ? 'rgba(15,15,18,0.28)' : 'rgba(255,255,255,0.4)';
+      // On the server-rendered SEO routes this hero IS the page heading, so emit
+      // a real <h1>. Googlebot was rendering "Books Like Fourth Wing" pages whose
+      // only h1 was the hidden homepage headline — title and heading disagreed on
+      // every one of them.
+      const titleTag = /^\/(books-like|book)\//.test(location.pathname) ? 'h1' : 'div';
       const yearStr = year ? ` <span style="opacity:${dotOpacity};">·</span> <span>${year}</span>` : '';
       const ratingHtml = rating ? `<span style="opacity:${dotOpacity};">·</span><span style="font-weight:600;">&#9733; ${rating}</span>` : '';
       return `
@@ -7560,7 +7574,7 @@
             </div>
             <div style="flex:1;min-width:0;padding-bottom:4px;">
               <div style="font-size:11px;font-weight:700;letter-spacing:2px;text-transform:uppercase;color:${eyebrowCol};margin-bottom:10px;">${eyebrow}</div>
-              <div style="font-family:'Playfair Display',serif;font-size:30px;font-weight:800;color:${textMain};line-height:1.05;margin-bottom:12px;letter-spacing:-0.5px;word-break:break-word;">${title}</div>
+              <${titleTag} style="font-family:'Playfair Display',serif;font-size:30px;font-weight:800;color:${textMain};line-height:1.05;margin:0 0 12px;letter-spacing:-0.5px;word-break:break-word;">${title}</${titleTag}>
               <div style="display:flex;flex-wrap:wrap;align-items:center;gap:8px;font-size:13px;color:${textMuted};">
                 <span>${author||''}</span>${yearStr}
                 ${ratingHtml}
@@ -10635,12 +10649,57 @@
         </div>`;
     }
 
+    // The path the server rendered #seo-static-block for. Soft-navigating away
+    // from that URL must hide the block, or it would sit under content it does
+    // not describe.
+    let _seoBlockPath = null;
+
+    function relocateSeoStaticBlock() {
+      const block = document.getElementById('seo-static-block');
+      const host  = document.getElementById('seoStaticHost');
+      if (!block || !host) return;
+      _seoBlockPath = location.pathname.replace(/\/$/, '') || '/';
+
+      // The SPA's own view already supplies the page's <h1>, so demote the
+      // block's heading to <h2>. One h1 per page, and it is the visible one.
+      const h1 = block.querySelector('h1');
+      if (h1) {
+        const h2 = document.createElement('h2');
+        h2.setAttribute('style', h1.getAttribute('style') || '');
+        h2.innerHTML = h1.innerHTML;
+        h1.replaceWith(h2);
+      }
+
+      // The landing hero's h1 is the homepage headline. It is hidden on these
+      // routes, but it is FIRST in source order, so leaving it as an h1 hands
+      // Google "Booky, the daily romantasy word game" as the heading of a page
+      // titled "Books Like Fourth Wing". Only demoted when a server-rendered
+      // block is present, i.e. never on the homepage itself.
+      const _lpH1 = document.querySelector('#landingOverlay h1.lp-headline');
+      if (_lpH1) {
+        const div = document.createElement('div');
+        div.className = _lpH1.className;
+        div.innerHTML = _lpH1.innerHTML;
+        _lpH1.replaceWith(div);
+      }
+
+      block.style.borderTop = '1px solid var(--border, #e5e5e5)';
+      host.appendChild(block);
+      syncSeoStaticBlock();
+    }
+
+    function syncSeoStaticBlock() {
+      const host = document.getElementById('seoStaticHost');
+      if (!host || !host.firstChild) return;
+      const here = location.pathname.replace(/\/$/, '') || '/';
+      host.style.display = (here === _seoBlockPath) ? 'block' : 'none';
+    }
+
     function initDiscoverTab() {
-      // Edge middleware injects a static SEO block (#seo-static-block) into
-      // /books-like/*, /genre/*, /mood/* responses so Googlebot sees the H1
-      // + description on first crawl. Remove it now that the SPA is taking over.
-      const _seoBlock = document.getElementById('seo-static-block');
-      if (_seoBlock) _seoBlock.remove();
+      // Edge middleware injects a static SEO block (#seo-static-block) at the top
+      // of <body> so Googlebot sees the page's real content on first crawl. Move
+      // it into the page flow rather than deleting it — see #seoStaticHost above.
+      relocateSeoStaticBlock();
 
       // Build vibe pill strip
       const pillsEl = document.getElementById('discoverVibePills');
@@ -16639,6 +16698,9 @@
       if (_ogUrl)   _ogUrl.content   = fullUrl;
       if (_twTitle) _twTitle.content = title + ' | 90books';
       if (_twDesc)  _twDesc.content  = description || ('Hand-picked ' + title.toLowerCase() + ' from readers who actually know.');
+      // Soft-nav changed the URL; the server-rendered block only describes the
+      // URL it was rendered for.
+      if (typeof syncSeoStaticBlock === 'function') syncSeoStaticBlock();
     }
 
     // Generic "copy current page URL" used by section share button
