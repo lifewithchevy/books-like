@@ -29,6 +29,19 @@
 <meta name="mobile-web-app-capable" content="yes" />
 <meta name="apple-mobile-web-app-title" content="Booky" />
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<!-- app.js is a `defer` script tag at the BOTTOM of <body> and it is a
+     serverless route, not a static file, so the preload scanner does not reach
+     it until the whole document has been parsed. Preloading it here starts the
+     download immediately, in parallel with the stylesheet and fonts, which
+     removes a full round-trip from time-to-grid.
+
+     /api/booky-words is deliberately NOT preloaded. app.js requests it with
+     `cache: 'no-store'`, and a no-store fetch bypasses the preload cache
+     entirely — the preload would not be reused, so the route would simply be
+     invoked twice per page load. Making that hop parallel means relaxing the
+     no-store fetch first, which is a freshness change to the daily word and
+     does not belong in a performance fix. -->
+<link rel="preload" as="script" href="/api/booky-app" />
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />

@@ -107,11 +107,21 @@ DATA = data;
 // The dictionary only validates that a guess is a real word. Losing it must
 // not cost anyone their streak, so on failure we play on and skip that check
 // (the guard at the guess site is already `DICT && !DICT.has(...)`).
-try {
-DICT = new Set(await fetchJSON('/booky/dictionary.json?v=17', { cache: 'force-cache' }));
-} catch {
-DICT = null;
-}
+//
+// 2026-08-25: NOT awaited any more. This used to block buildBoard() on a
+// 166KB download, so the grid did not paint until a fourth serial round-trip
+// finished — HTML, app.js, words, dictionary, and only then a single tile.
+// Nothing before the first guess reads DICT, so it loads in the background and
+// assigns itself when it lands. Worst case a guess submitted inside that
+// ~200ms window skips the word-list check, which is exactly the already
+// accepted behaviour when the fetch fails outright.
+//
+// Keep the call written as `fetchJSON('/booky/dictionary.json?v=17'` on one
+// line: api/booky-app.js rewrites that literal to inject DICT_CACHE_V, and a
+// reshaped call silently turns the cache-busting into a no-op.
+fetchJSON('/booky/dictionary.json?v=17', { cache: 'force-cache' })
+.then((words) => { DICT = new Set(words); })
+.catch(() => { DICT = null; });
 
 DAY = computeDayNumber(DATA.epoch);
 if (DAY < 1 || DAY > DATA.queue.length) {
