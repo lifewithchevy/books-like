@@ -229,8 +229,8 @@ async function playAndWin(browser, base) {
 }
 
 const browser = await chromium.launch();
-const results = [];
-for (const page of PAGES) {
+
+async function checkPage(page) {
   const ctx = await browser.newContext({ viewport: { width: 1280, height: 900 } });
   await shield(ctx);
   const tab = await ctx.newPage();
@@ -257,11 +257,31 @@ for (const page of PAGES) {
   } catch (e) {
     failures = [`could not load: ${e.message.split('\n')[0]}`];
   }
-  results.push({ ...page, failures, data });
   await ctx.close();
+  return { ...page, failures, data };
+}
+
+// A watchdog that cries wolf gets ignored, so anything that fails gets one
+// second look before it counts. Slow pages occasionally miss `networkidle` on
+// the first pass — /books-like/from-blood-and-ash, the heaviest block on the
+// site, did exactly that once and passed cleanly on retry. A real regression
+// fails both times; a flake does not.
+const results = [];
+for (const page of PAGES) {
+  let r = await checkPage(page);
+  if (r.failures.length) {
+    await new Promise((res) => setTimeout(res, 3000));
+    const again = await checkPage(page);
+    r = again.failures.length ? again : { ...again, retried: true };
+  }
+  results.push(r);
 }
 // Finally, the one check that needs more than a page load: win the game.
-const gameFailures = await playAndWin(browser, BASE);
+let gameFailures = await playAndWin(browser, BASE);
+if (gameFailures.length) {
+  await new Promise((res) => setTimeout(res, 3000));
+  gameFailures = await playAndWin(browser, BASE);
+}
 results.push({ path: '/booky (play a full game)', kind: 'gameplay', failures: gameFailures });
 
 await browser.close();
