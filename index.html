@@ -10656,6 +10656,7 @@
     // from that URL must hide the block, or it would sit under content it does
     // not describe.
     let _seoBlockPath = null;
+    let _seoBlockEl = null;
 
     function relocateSeoStaticBlock() {
       const block = document.getElementById('seo-static-block');
@@ -10663,14 +10664,18 @@
       if (!block || !host) return;
       _seoBlockPath = location.pathname.replace(/\/$/, '') || '/';
 
-      // Demote the block's h1 to h2 ONLY where the SPA renders a heading of its
-      // own: the books-like / book hero, and the Booky Library hero. On
-      // /genre/* and /mood/* it renders shelves with no heading, so demoting
-      // there left the page with ZERO h1 — which is what happened to
-      // /genre/romantasy, the biggest keeper in the set.
-      const _spaSuppliesH1 = /^\/(books-like|book)\//.test(location.pathname)
-        || /^\/booky-library\/?$/.test(location.pathname);
-      const h1 = _spaSuppliesH1 ? block.querySelector('h1') : null;
+      // Two shapes of page, two right answers.
+      //
+      // /books-like/* and /book/*: the SPA renders a full detail view with its
+      // own h1, so the block is EDITORIAL EXTRA — hand-written recs and FAQs the
+      // SPA does not have. It belongs below that view, and its h1 is demoted.
+      //
+      // /genre/* and /mood/*: the SPA renders bare shelves with no heading. The
+      // block is a heading plus a one-line intro — that is the top of the page,
+      // not a footnote. Parked at the bottom it read as stray text dangling
+      // under the shelves, and demoting its h1 left the page with none at all.
+      const _isDetailRoute = /^\/(books-like|book)\//.test(location.pathname);
+      const h1 = _isDetailRoute ? block.querySelector('h1') : null;
       if (h1) {
         const h2 = document.createElement('h2');
         h2.setAttribute('style', h1.getAttribute('style') || '');
@@ -10691,16 +10696,29 @@
         _lpH1.replaceWith(div);
       }
 
-      block.style.borderTop = '1px solid var(--border, #e5e5e5)';
-      host.appendChild(block);
+      const shelves = document.getElementById('discoverShelves');
+      if (_isDetailRoute || !shelves) {
+        block.style.borderTop = '1px solid var(--border, #e5e5e5)';
+        host.appendChild(block);
+      } else {
+        block.style.paddingBottom = '8px';
+        shelves.parentNode.insertBefore(block, shelves);
+      }
+      _seoBlockEl = block;
       syncSeoStaticBlock();
+      // Marker for scripts/visual-check.mjs: the block has been placed. Without
+      // it the checker probes mid-render and reports the block "missing" on
+      // whichever pages happened to still be settling.
+      window.__seoBlockPlaced = true;
     }
 
     function syncSeoStaticBlock() {
-      const host = document.getElementById('seoStaticHost');
-      if (!host || !host.firstChild) return;
+      if (!_seoBlockEl) return;
       const here = location.pathname.replace(/\/$/, '') || '/';
-      host.style.display = (here === _seoBlockPath) ? 'block' : 'none';
+      const show = here === _seoBlockPath;
+      _seoBlockEl.style.display = show ? 'block' : 'none';
+      const host = document.getElementById('seoStaticHost');
+      if (host && host.contains(_seoBlockEl)) host.style.display = show ? 'block' : 'none';
     }
 
     function initDiscoverTab() {
@@ -10740,11 +10758,10 @@
       // html += renderGenreShortcuts();
       html += renderBooksLikeShelf();
       html += DISCOVER_SHELVES.map(cfg => renderDiscoverShelf(cfg)).join('');
-      html += '<div id="bklLibraryFooter" style="display:none;">'
-        + '<a class="bkl-authcta" href="/authors">\u270d\ufe0f Are you a romantasy author? Get your book featured \u2192</a>'
-        + '<div class="bkl-brand">Booky by 90books</div>'
-        + '<div class="bkl-links"><a href="/">Home</a> &middot; <a href="/authors">Authors</a> &middot; <a href="/booky">Play Booky</a></div>'
-        + '</div>';
+      // #bklLibraryFooter removed 2026-08-25: it duplicated the site-wide
+      // "Get your book featured" section and footer that now render at the
+      // bottom of every page, so /booky-library showed the author CTA and a
+      // mini nav twice. bklSetLibraryChrome() still null-checks for it.
       shelvesEl.innerHTML = html;
       resetShelfScroll(shelvesEl);
       // After initial render, sort each shelf so books still loading move to the end.

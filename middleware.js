@@ -331,18 +331,17 @@ function buildSeoBlock(meta, books) {
     h1Text = safeLabel;
     bodyHtml = `<p><strong>${safeLabel}</strong> on 90books — tropes, vibes, and where to read next. <a href="/booky-library">Browse the Booky Library</a> or find <a href="/books-like/${escapeHtml(meta.canonical.split('/').pop())}">books like ${safeLabel}</a>.</p>`;
   } else if (meta.pageKind === 'library') {
-    const count = (books && books.length) || 0;
-    h1Text = 'The Booky Library';
-    const items = (books || []).map((b) => {
-      const t = escapeHtml(b.title);
-      const a = escapeHtml(b.author);
-      return `<li style="margin:0 0 10px;line-height:1.5;"><strong>${t}</strong> by ${a}</li>`;
-    }).join('');
-    bodyHtml = `
-      <p style="line-height:1.6;font-size:1.05rem;margin-bottom:20px;">Every romantasy book we have featured in Booky, the daily romantasy word game. ${count} hand-picked reader favorites from r/Romantasy and BookTok, a new one every day since May 2026. Find your next obsession, then go guess today's word.</p>
-      <p style="margin:0 0 28px;"><a href="/booky" style="display:inline-flex;align-items:center;gap:6px;font-family:'Inter',sans-serif;font-size:15px;font-weight:700;padding:12px 24px;border-radius:12px;background:linear-gradient(135deg,#3D0070 0%,#8400E7 100%);color:#fff;text-decoration:none;">Play today's romantasy word →</a></p>
-      <h2 style="font-family:'Playfair Display',serif;font-size:1.5rem;margin:0 0 12px;">${count} romantasy books featured in Booky</h2>
-      <ul style="list-style:none;padding:0;margin:0;">${items}</ul>`;
+    // 2026-08-25: the Booky Library no longer gets a static block. The SPA
+    // builds the whole library — every book, with covers — client-side, so this
+    // was a plain-text restatement of the shelves directly above it. Once the
+    // block became visible (it used to be deleted on load) /booky-library showed
+    // the same 61 books twice, the second time as a bare list.
+    //
+    // Suppressed at the source rather than hidden on load: hiding content a
+    // crawler was served is the cloaking pattern this whole change set exists to
+    // remove. The page keeps its unique title, description, canonical, and the
+    // CollectionPage + ItemList JSON-LD, which still names every book.
+    return '';
   } else {
     return '';
   }
