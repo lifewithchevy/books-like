@@ -3040,15 +3040,6 @@
           <div class="result-section" id="results" style="display:block;padding:0 0 40px;"></div>
         </div>
 
-        <!-- Server-rendered SEO body (middleware injects #seo-static-block at the
-             top of <body> on /books-like/*, /genre/*, /mood/*, /book/*,
-             /booky-library). It used to be DELETED on load, which meant Google
-             rendered the page, watched the unique content disappear, and indexed
-             the leftover homepage shell — that is why 38 pages sat at "Crawled -
-             currently not indexed". It is relocated here instead, below the SPA's
-             own view, so it stays real visible content for humans too. -->
-        <div id="seoStaticHost" style="display:none;"></div>
-
         <!-- All-shelves view -->
         <style>
           .shelf-cover-wrap { position: relative; }
@@ -3697,6 +3688,18 @@
           <div class="discover-results-desc" id="discoverResultsDesc"></div>
           <div id="discover-books-grid"></div>
         </div>
+
+        <!-- Server-rendered SEO body (middleware injects #seo-static-block at
+             the top of <body> on /books-like/*, /genre/*, /mood/*, /book/* and
+             /booky-library). It used to be DELETED on load, which meant Google
+             rendered the page, watched the unique content disappear, and
+             indexed the leftover homepage shell — that is why 38 pages sat at
+             "Crawled - currently not indexed".
+             ⚠️ It must be the LAST child of #tab-mood. Parked after
+             #resultsWrap it landed ABOVE the library on /booky-library, which
+             hides #resultsWrap and renders into #discoverShelves further down —
+             readers got 2,435 px of plain text before the actual shelves. -->
+        <div id="seoStaticHost" style="display:none;"></div>
 
       </div>
 
@@ -10660,9 +10663,14 @@
       if (!block || !host) return;
       _seoBlockPath = location.pathname.replace(/\/$/, '') || '/';
 
-      // The SPA's own view already supplies the page's <h1>, so demote the
-      // block's heading to <h2>. One h1 per page, and it is the visible one.
-      const h1 = block.querySelector('h1');
+      // Demote the block's h1 to h2 ONLY where the SPA renders a heading of its
+      // own: the books-like / book hero, and the Booky Library hero. On
+      // /genre/* and /mood/* it renders shelves with no heading, so demoting
+      // there left the page with ZERO h1 — which is what happened to
+      // /genre/romantasy, the biggest keeper in the set.
+      const _spaSuppliesH1 = /^\/(books-like|book)\//.test(location.pathname)
+        || /^\/booky-library\/?$/.test(location.pathname);
+      const h1 = _spaSuppliesH1 ? block.querySelector('h1') : null;
       if (h1) {
         const h2 = document.createElement('h2');
         h2.setAttribute('style', h1.getAttribute('style') || '');
@@ -16685,9 +16693,21 @@
     }
 
     // Update meta tags for /genre/ and /mood/ section pages
+    // The title the edge middleware served for this URL. The SPA recomputes a
+    // generic one from the section label, so /genre/romantasy was served as
+    // "Romantasy Books, The Best Reads for 2026 | 90books" and then rewritten in
+    // the DOM to "Romantasy Books | 90books". Google indexes the RENDERED title,
+    // so the hand-written one was being thrown away on exactly the pages it was
+    // written for.
+    const _serverTitle = document.title;
+    const _serverPath  = location.pathname.replace(/\/$/, '') || '/';
+
     function updateSectionMeta(title, description, path) {
       const fullUrl = 'https://90books.com' + (path || '/');
-      document.title = title + ' | 90books';
+      const _here = (path || '/').replace(/\/$/, '') || '/';
+      document.title = (_here === _serverPath && _serverTitle)
+        ? _serverTitle
+        : title + ' | 90books';
       const _ogTitle = document.querySelector('meta[property="og:title"]');
       const _ogDesc  = document.querySelector('meta[property="og:description"]');
       const _ogUrl   = document.querySelector('meta[property="og:url"]');
