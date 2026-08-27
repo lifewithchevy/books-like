@@ -498,22 +498,16 @@ $('stats-btn').addEventListener('click', () => {
 renderStatsModal();
 $('stats-modal').showModal();
 });
-$('share-btn').addEventListener('click', openShareSheet);
+// Wordle-exact: the win-screen button IS the share. On mobile it opens the OS
+// sheet on the first tap; on desktop it copies. The old two-option dialog is
+// gone — it cost a tap and duplicated what the OS sheet already offers.
+$('share-btn').addEventListener('click', onSharePrimary);
+$('share-reddit-link')?.addEventListener('click', onShareReddit);
 const shareSheet = $('share-sheet');
 if (shareSheet) {
   $('share-sheet-close')?.addEventListener('click', () => shareSheet.close());
   $('share-reddit-btn')?.addEventListener('click', onShareReddit);
-  // ONE primary button, like Wordle: it opens the OS share sheet on mobile and
-  // copies straight to the clipboard on desktop, where navigator.share does not
-  // exist. Two near-identical "Share" and "Copy" rows on a phone is the thing
-  // this deliberately avoids — the label just changes to match what will happen.
-  $('share-copy-link-btn')?.addEventListener('click', onSharePrimary);
-  if (typeof navigator.share === 'function') {
-    const lbl = $('share-primary-label');
-    const desc = $('share-primary-desc');
-    if (lbl) lbl.textContent = 'Share';
-    if (desc) desc.textContent = 'Messages, WhatsApp, anywhere';
-  }
+
 }
 $('end-modal').querySelector('[data-close-end]').addEventListener('click', (e) => {
 e.preventDefault();
@@ -1241,6 +1235,9 @@ async function copyText(text) {
   }
 }
 
+// Dormant since 2026-08-27: the win-screen button now shares directly, so
+// nothing opens this dialog. Markup and handler are kept rather than deleted
+// in case the two-option sheet is wanted back.
 function openShareSheet() {
   const sheet = $('share-sheet');
   if (!sheet) return;
