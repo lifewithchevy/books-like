@@ -1182,6 +1182,16 @@ body {
   display: block;
 }
 .share-option-icon-copy { font-size: 17px; background: rgba(217, 70, 168, 0.18); }
+/* Native is the primary path where the OS sheet exists, so it reads brighter
+   than the other two rather than sitting flush with them. */
+.share-option-native {
+  border-color: rgba(157, 78, 221, 0.45);
+  background: rgba(157, 78, 221, 0.10);
+}
+.share-option-native:hover {
+  background: rgba(157, 78, 221, 0.16);
+  border-color: rgba(157, 78, 221, 0.6);
+}
 .share-option-text {
   display: flex;
   flex-direction: column;

@@ -503,7 +503,17 @@ const shareSheet = $('share-sheet');
 if (shareSheet) {
   $('share-sheet-close')?.addEventListener('click', () => shareSheet.close());
   $('share-reddit-btn')?.addEventListener('click', onShareReddit);
-  $('share-copy-link-btn')?.addEventListener('click', onShareCopyLink);
+  // ONE primary button, like Wordle: it opens the OS share sheet on mobile and
+  // copies straight to the clipboard on desktop, where navigator.share does not
+  // exist. Two near-identical "Share" and "Copy" rows on a phone is the thing
+  // this deliberately avoids — the label just changes to match what will happen.
+  $('share-copy-link-btn')?.addEventListener('click', onSharePrimary);
+  if (typeof navigator.share === 'function') {
+    const lbl = $('share-primary-label');
+    const desc = $('share-primary-desc');
+    if (lbl) lbl.textContent = 'Share';
+    if (desc) desc.textContent = 'Messages, WhatsApp, anywhere';
+  }
 }
 $('end-modal').querySelector('[data-close-end]').addEventListener('click', (e) => {
 e.preventDefault();
@@ -1246,8 +1256,26 @@ async function onShareReddit() {
   showShareToast('Copied! Paste as a comment in r/B00KY 💜');
 }
 
-async function onShareCopyLink() {
-  const ok = await copyText(buildShareString({ clickable: true }));
+async function onSharePrimary() {
+  // The tagged, tappable string either way, so it unfurls into the OG card
+  // wherever it lands.
+  const text = buildShareString({ clickable: true });
+
+  if (typeof navigator.share === 'function') {
+    try {
+      await navigator.share({ text });
+      captureShare('native');
+      $('share-sheet')?.close();
+      return;
+    } catch (err) {
+      // Backing out of the OS sheet throws AbortError. That is a cancel, not a
+      // failure: no toast, and it must NOT be counted as a share.
+      if (err && err.name === 'AbortError') return;
+      // Anything else falls through to the clipboard so the tap still works.
+    }
+  }
+
+  const ok = await copyText(text);
   if (!ok) return;
   captureShare('clipboard');
   $('share-sheet')?.close();
