@@ -1102,7 +1102,7 @@ window.__countdownTicker = setInterval(tickCountdown, 1000);
 }
 }
 
-function buildShareString({ clickable = false } = {}) {
+function buildShareString({ clickable = false, omitUrl = false } = {}) {
 // The link is DELIBERATELY dead on Reddit and DELIBERATELY live everywhere else.
 //
 // Reddit (and similar) downrank posts perceived as link self-promotion, so the
@@ -1159,7 +1159,11 @@ return r.map(s => s === 'correct' ? '🟪' : s === 'present' ? '🟨' : '⬛').j
 // people who never opened the game.
 // Two trailing spaces before every \n = Reddit hard break; invisible on all other platforms
 const HB = '  \n';
-const lines = [header, scoreLine, ...rows, shareUrl];
+// omitUrl is for navigator.share, where the link goes in its own `url` field
+// instead of being buried in the text (see onSharePrimary).
+const lines = omitUrl
+? [header, scoreLine, ...rows]
+: [header, scoreLine, ...rows, shareUrl];
 return lines.join(HB);
 }
 
@@ -1283,7 +1287,17 @@ async function onSharePrimary() {
 
   if (prefersNativeShare()) {
     try {
-      await navigator.share({ text });
+      // ⚠️ text and url go in SEPARATE fields on purpose. With the link buried
+      // inside `text`, iOS Messages has nothing to build a rich link from and
+      // renders the whole thing as plain text — which is exactly what Booky's
+      // shares looked like, while a bare Reddit/X link in the same thread got a
+      // full card. Passing `url` gives iOS the link to preview while keeping the
+      // grid as the message body. The text therefore omits the trailing URL, so
+      // apps that append `url` themselves do not print it twice.
+      await navigator.share({
+        text: buildShareString({ clickable: true, omitUrl: true }),
+        url: `https://${SHARE_URL}`,
+      });
       captureShare('native');
       $('share-sheet')?.close();
       return;
