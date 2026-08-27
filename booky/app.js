@@ -502,7 +502,6 @@ $('stats-modal').showModal();
 // sheet on the first tap; on desktop it copies. The old two-option dialog is
 // gone — it cost a tap and duplicated what the OS sheet already offers.
 $('share-btn').addEventListener('click', onSharePrimary);
-$('share-reddit-link')?.addEventListener('click', onShareReddit);
 const shareSheet = $('share-sheet');
 if (shareSheet) {
   $('share-sheet-close')?.addEventListener('click', () => shareSheet.close());

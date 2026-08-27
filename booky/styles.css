@@ -1317,22 +1317,3 @@ body.og-image-page {
 .modal-links a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .modal-links a:hover { color: #ec84bd; }
 
-/* Secondary route to the r/B00KY daily thread. The primary button goes straight
-   to the OS share sheet now (no intermediate dialog), so this keeps the Reddit
-   thread reachable without putting a second big button next to it. */
-.share-secondary-link {
-  display: block;
-  margin: 10px auto 0;
-  padding: 4px 8px;
-  background: none;
-  border: 0;
-  color: var(--ink-2, #b9a8c9);
-  font-family: inherit;
-  font-size: 13px;
-  text-decoration: underline;
-  text-underline-offset: 3px;
-  cursor: pointer;
-  opacity: 0.85;
-}
-.share-secondary-link:hover { opacity: 1; }
-.share-secondary-link:focus-visible { outline: 2px solid var(--accent, #9d4edd); outline-offset: 2px; border-radius: 6px; }
