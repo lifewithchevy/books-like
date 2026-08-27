@@ -10,6 +10,11 @@
   --accent-2: #f8b6da;
   --accent-dark: #b13386;   /* darker magenta for gradients */
 
+  /* Share toast pill. Deliberately LIGHTER than --bg-3 so it reads as lifted
+     off the win screen rather than blending into it. */
+  --toast-bg: #43254d;
+  --toast-border: rgba(248, 182, 218, 0.38);
+
   /* Tile / letter states */
   --absent: #3a2842;
   --present: #c79320;
@@ -66,6 +71,9 @@
     --accent: #c8398f;
     --accent-2: #8e2c75;    /* darker than --accent so it reads on light bg */
     --accent-dark: #9a2670;
+
+    --toast-bg: #ffffff;
+    --toast-border: rgba(200, 57, 143, 0.28);
 
     --absent: #c8b8cc;      /* light gray-purple */
     --present: #d4a017;     /* gold stays bold enough for white text */
@@ -1120,9 +1128,9 @@ body {
   max-width: calc(100vw - 32px);
   padding: 9px 16px;
   border-radius: 999px;
-  background: var(--bg-3);
-  border: 1px solid rgba(248, 182, 218, 0.22);
-  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
+  background: var(--toast-bg);
+  border: 1px solid var(--toast-border);
+  box-shadow: 0 10px 28px rgba(0, 0, 0, 0.38);
   color: var(--accent-2);
   text-align: center;
   font-size: 13px;
