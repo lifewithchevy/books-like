@@ -1094,23 +1094,30 @@ window.__countdownTicker = setInterval(tickCountdown, 1000);
 }
 }
 
-function buildShareString() {
-// INTENTIONALLY a bare, schemeless, NON-clickable "90books.com/booky" — do
-// not add https:// or a tracking query to "fix" the dead link. Reddit (and
-// similar) downrank posts perceived as link self-promotion, so we keep the
-// URL as plain text: it plants the name for people to search (the Wordle
-// move) without tripping anti-link penalties.
+function buildShareString({ clickable = false } = {}) {
+// The link is DELIBERATELY dead on Reddit and DELIBERATELY live everywhere else.
 //
-// The Reddit MOBILE app already leaves a bare domain as plain text, but the
-// Reddit DESKTOP web composer auto-links "90books.com/booky" on paste. We
-// can't change their editor, so we insert a zero-width space (U+200B) inside
-// the ".com" — the string still READS as "90books.com/booky" but no longer
-// matches a domain.tld pattern, so nothing auto-links it on any surface.
+// Reddit (and similar) downrank posts perceived as link self-promotion, so the
+// Reddit path keeps the URL as bare plain text: it plants the name for people
+// to search (the Wordle move) without tripping anti-link penalties. The Reddit
+// MOBILE app already leaves a bare domain as plain text, but the Reddit DESKTOP
+// web composer auto-links "90books.com/booky" on paste, so we insert a
+// zero-width space (U+200B) inside the ".com" — it still READS as
+// "90books.com/booky" but no longer matches a domain.tld pattern.
+//
+// ⚠️ That protection used to be applied to EVERY share. Measured 2026-08-26:
+// 381 of 508 shares were clipboard (pasted into iMessage/WhatsApp/Discord,
+// where no self-promotion penalty exists) against 116 Reddit — so 3 out of 4
+// shares carried a link the recipient had to retype by hand, for no benefit,
+// and social returned ZERO visits in August. Clipboard now gets a real,
+// tappable https:// URL; only the Reddit button keeps the dead one.
 //
 // Web-browser visits still attribute via PostHog's automatic $referrer /
-// $referring_domain; the native/clipboard split lives on the
-// booky_share_clicked event's `method`.
-const shareUrl = SITE_URL.replace('.com', '.\u200Bcom');
+// $referring_domain; the per-path split lives on the booky_share_clicked
+// event's `method`.
+const shareUrl = clickable
+? `https://${SITE_URL}`
+: SITE_URL.replace('.com', '.\u200Bcom');
 // The rank rides in the header — identity is the shareable bit (Spelling
 // Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
 let header = `📚 Booky #${DAY}`;
@@ -1127,11 +1134,13 @@ const rows = STATE.guesses.map(g => {
 const r = evaluate(g, ANSWER);
 return r.map(s => s === 'correct' ? '🟪' : s === 'present' ? '🟨' : '⬛').join('');
 });
-const bookRec = DATA.wordBooks?.[ANSWER];
-const bookLine = bookRec ? `📖 From: ${bookRec.title}` : null;
+// The book title is deliberately NOT in the share: naming it gave away the
+// reveal, so anyone who saw a share had less reason to play. The link is the
+// reveal now — which is also worth more to an author than a mention seen by
+// people who never opened the game.
 // Two trailing spaces before every \n = Reddit hard break; invisible on all other platforms
 const HB = '  \n';
-const lines = [header, scoreLine, ...rows, ...(bookLine ? [bookLine] : []), shareUrl];
+const lines = [header, scoreLine, ...rows, shareUrl];
 return lines.join(HB);
 }
 
@@ -1223,7 +1232,7 @@ function openShareSheet() {
 }
 
 async function onShareReddit() {
-  const text = buildShareString();
+  const text = buildShareString({ clickable: false });
   await copyText(text);
   window.open(REDDIT_DAILY_THREAD, '_blank', 'noopener,noreferrer');
   captureShare('reddit');
@@ -1232,7 +1241,7 @@ async function onShareReddit() {
 }
 
 async function onShareCopyLink() {
-  const ok = await copyText(buildShareString());
+  const ok = await copyText(buildShareString({ clickable: true }));
   if (!ok) return;
   captureShare('clipboard');
   $('share-sheet')?.close();
