@@ -1105,19 +1105,39 @@ body {
 }
 /* Share confirmation toast — subtle fade + rise (no display rule so the
    hidden attribute still removes it from layout when not showing). */
+/* Floating pill at the top of the viewport. It used to sit in flow under the
+   share button, so showing it nudged the win screen's layout. Fixed instead, so
+   nothing below it moves.
+   ⚠️ It must stay INSIDE #end-modal in the DOM: that dialog is opened with
+   showModal(), which puts it in the browser's top layer, and a fixed element
+   outside the dialog would render behind the win screen no matter its z-index. */
 .share-toast {
-  text-align: center;
-  margin-top: 10px;
+  position: fixed;
+  top: calc(14px + env(safe-area-inset-top, 0px));
+  left: 50%;
+  z-index: 100001;          /* above .ptr-indicator (100000) */
+  margin: 0;
+  max-width: calc(100vw - 32px);
+  padding: 9px 16px;
+  border-radius: 999px;
+  background: var(--bg-3);
+  border: 1px solid rgba(248, 182, 218, 0.22);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.32);
   color: var(--accent-2);
+  text-align: center;
   font-size: 13px;
   font-weight: 600;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  pointer-events: none;     /* never blocks a tap on what is underneath */
   opacity: 0;
-  transform: translateY(6px);
+  transform: translate(-50%, -10px);
   transition: opacity 0.25s ease, transform 0.25s ease;
 }
 .share-toast.show {
   opacity: 1;
-  transform: translateY(0);
+  transform: translate(-50%, 0);
 }
 @media (prefers-reduced-motion: reduce) {
   .share-toast { transition: none; }
