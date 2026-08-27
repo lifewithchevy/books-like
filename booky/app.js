@@ -1134,8 +1134,13 @@ function buildShareString({ clickable = false, omitUrl = false } = {}) {
 // tidy. This matters because the OS share sheet can send a player to Reddit and
 // we get no say in it: a raw "?utm_source=share" tail looked like spam in a
 // r/zodiacacademy comment. Keep the redirect in vercel.json in step with this.
+// ⚠️ The scheme is REQUIRED, not decoration. A bare "90books.com/play" was
+// tried (the squaredle.app look) and Reddit pasted it as dead text — it only
+// auto-links a URL with a scheme or a www. prefix, so the copy path lost the
+// click while the native path, which carries https:// in its url field, kept it.
+// Looks lose to working here.
 const shareUrl = clickable
-? SHARE_URL
+? `https://${SHARE_URL}`
 : SITE_URL.replace('.com', '.\u200Bcom');
 // The rank rides in the header — identity is the shareable bit (Spelling
 // Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
