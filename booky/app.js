@@ -1115,8 +1115,14 @@ function buildShareString({ clickable = false } = {}) {
 // Web-browser visits still attribute via PostHog's automatic $referrer /
 // $referring_domain; the per-path split lives on the booky_share_clicked
 // event's `method`.
+// ?utm_source=share is what makes a tapped share countable. Without it a link
+// opened from iMessage/WhatsApp/Discord arrives with NO referrer and is
+// indistinguishable from someone typing the URL, so it lands in $direct and the
+// share loop stays unmeasurable (which is exactly why Aug showed 0 social visits).
+// The Reddit path stays bare and untagged on purpose — a tracking query is the
+// other half of what gets a post read as link self-promotion.
 const shareUrl = clickable
-? `https://${SITE_URL}`
+? `https://${SITE_URL}?utm_source=share`
 : SITE_URL.replace('.com', '.\u200Bcom');
 // The rank rides in the header — identity is the shareable bit (Spelling
 // Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
