@@ -239,6 +239,11 @@
   ],
   "redirects": [
     {
+      "source": "/play",
+      "destination": "/booky?utm_source=share",
+      "permanent": false
+    },
+    {
       "source": "/s",
       "destination": "/booky?utm_source=share",
       "permanent": false

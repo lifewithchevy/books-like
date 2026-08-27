@@ -7,7 +7,10 @@ const STATE_KEY = '90books_booky_word_v1';
 const STATS_KEY = '90books_booky_word_stats_v1';
 const SITE_URL = '90books.com/booky';
 // Short, clean link used in shares. Redirects to /booky?utm_source=share.
-const SHARE_URL = '90books.com/s';
+// Emitted BARE (no https://), the way squaredle.app does it — apps linkify a
+// plain domain, and a scheme makes the line look like a tracking URL.
+// /s is kept alive in vercel.json for shares already out in the wild.
+const SHARE_URL = '90books.com/play';
 const REDDIT_DAILY_THREAD = 'https://www.reddit.com/r/B00KY/comments/1upibhw/daily_results_thread_booky/';
 
 // Slugs that have fully curated recommendation pages on 90books.com.
@@ -1132,7 +1135,7 @@ function buildShareString({ clickable = false } = {}) {
 // we get no say in it: a raw "?utm_source=share" tail looked like spam in a
 // r/zodiacacademy comment. Keep the redirect in vercel.json in step with this.
 const shareUrl = clickable
-? `https://${SHARE_URL}`
+? SHARE_URL
 : SITE_URL.replace('.com', '.\u200Bcom');
 // The rank rides in the header — identity is the shareable bit (Spelling
 // Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
