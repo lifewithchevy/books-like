@@ -6,6 +6,8 @@ const MAX_GUESSES = 6;
 const STATE_KEY = '90books_booky_word_v1';
 const STATS_KEY = '90books_booky_word_stats_v1';
 const SITE_URL = '90books.com/booky';
+// Short, clean link used in shares. Redirects to /booky?utm_source=share.
+const SHARE_URL = '90books.com/s';
 const REDDIT_DAILY_THREAD = 'https://www.reddit.com/r/B00KY/comments/1upibhw/daily_results_thread_booky/';
 
 // Slugs that have fully curated recommendation pages on 90books.com.
@@ -1124,8 +1126,13 @@ function buildShareString({ clickable = false } = {}) {
 // share loop stays unmeasurable (which is exactly why Aug showed 0 social visits).
 // The Reddit path stays bare and untagged on purpose — a tracking query is the
 // other half of what gets a post read as link self-promotion.
+// A CLEAN short link, not a visible tracking query. /s is a 302 to
+// /booky?utm_source=share, so attribution survives while the shared text stays
+// tidy. This matters because the OS share sheet can send a player to Reddit and
+// we get no say in it: a raw "?utm_source=share" tail looked like spam in a
+// r/zodiacacademy comment. Keep the redirect in vercel.json in step with this.
 const shareUrl = clickable
-? `https://${SITE_URL}?utm_source=share`
+? `https://${SHARE_URL}`
 : SITE_URL.replace('.com', '.\u200Bcom');
 // The rank rides in the header — identity is the shareable bit (Spelling
 // Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
