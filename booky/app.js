@@ -1252,12 +1252,26 @@ async function onShareReddit() {
   showShareToast('Copied! Paste as a comment in r/B00KY 💜');
 }
 
+// Wordle's split is by DEVICE, not by capability: phones get the OS share sheet,
+// desktop just copies. Chrome and Safari on macOS DO expose navigator.share, so
+// feature-detection alone wrongly popped the Mac share sheet on a laptop.
+// iPadOS reports itself as "Macintosh", so touch points are what separate an
+// iPad (wants the sheet) from a MacBook (wants the clipboard).
+function prefersNativeShare() {
+  if (typeof navigator.share !== 'function') return false;
+  const ua = navigator.userAgent || '';
+  if (/Android|iPhone|iPod/i.test(ua)) return true;
+  if (/iPad/.test(ua)) return true;
+  if (/Macintosh/.test(ua) && navigator.maxTouchPoints > 1) return true;
+  return false;
+}
+
 async function onSharePrimary() {
   // The tagged, tappable string either way, so it unfurls into the OG card
   // wherever it lands.
   const text = buildShareString({ clickable: true });
 
-  if (typeof navigator.share === 'function') {
+  if (prefersNativeShare()) {
     try {
       await navigator.share({ text });
       captureShare('native');
