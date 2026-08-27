@@ -1164,6 +1164,11 @@ const HB = '  \n';
 const lines = omitUrl
 ? [header, scoreLine, ...rows]
 : [header, scoreLine, ...rows, shareUrl];
+// ⚠️ When the URL is omitted, the platform appends it after this text — and it
+// joins with a PLAIN newline, which Reddit renders as a soft break, so the link
+// ended up on the same line as the last grid row. Ending on the hard-break
+// marker makes the appended link start its own line wherever it is pasted.
+if (omitUrl) return lines.join(HB) + HB;
 return lines.join(HB);
 }
 
