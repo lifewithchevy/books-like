@@ -1496,3 +1496,17 @@ body.og-image-page {
 .modal-links a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .modal-links a:hover { color: #ec84bd; }
 
+
+/* Leaving animation for the hint callout. It dismisses on any tap, any key,
+   or a 6s timeout, so it fades rather than blinking out. */
+.coach.coach-out {
+  animation: none;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition: opacity 0.24s ease, transform 0.24s ease;
+  pointer-events: none;
+}
+@media (prefers-reduced-motion: reduce) {
+  .coach { animation: none; }
+  .coach.coach-out { transition: none; }
+}

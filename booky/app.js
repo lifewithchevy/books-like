@@ -1068,13 +1068,34 @@ if (!coach || !hintBook()) return;
 try {
 if (localStorage.getItem(COACH_KEY)) return;
 } catch { return; }
+let timer = 0;
 const dismiss = () => {
-coach.hidden = true;
+if (coach.hidden) return;
+clearTimeout(timer);
+coach.classList.add('coach-out');
+// Wait out the fade before hiding, so it doesn't vanish mid-transition.
+setTimeout(() => { coach.hidden = true; coach.classList.remove('coach-out'); }, 260);
+document.removeEventListener('pointerdown', dismiss);
+document.removeEventListener('keydown', dismiss);
 try { localStorage.setItem(COACH_KEY, '1'); } catch {}
 };
+
 $('hint-coach-close')?.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); });
 // Opening the hint is the point of the callout, so it counts as seen.
 $('hint-btn')?.addEventListener('click', dismiss);
+
+// It shows once ever, so it must never feel like something to fight. Any tap
+// anywhere clears it, so does any key, and it leaves on its own after 6s —
+// the × is a fallback, not the way out. The listeners go on after the current
+// event finishes, so the tap that opened the page can't dismiss it instantly —
+// via setTimeout, not requestAnimationFrame, which never fires while the tab
+// is in the background and would leave the callout stuck for those players.
+setTimeout(() => {
+document.addEventListener('pointerdown', dismiss);
+document.addEventListener('keydown', dismiss);
+}, 0);
+timer = setTimeout(dismiss, 6000);
+
 coach.hidden = false;
 posthog.capture('booky_hint_coach_shown', { word_number: DAY, played: STATS.played });
 }
