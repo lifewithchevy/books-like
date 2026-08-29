@@ -771,7 +771,12 @@ e.preventDefault();
 // the help copy drive the win screen's fields.
 const form = e.currentTarget;
 const input = form.querySelector('input[type="email"]');
-const btn = form.querySelector('button[type="submit"]');
+// Any button in the card: the win screen's is type=submit, the help copy's is
+// type=button (it sits inside the sheet's own <form method="dialog">, where a
+// submit button would close the sheet). Matching only [type=submit] made this
+// null in help, and since this function is async the resulting TypeError was
+// swallowed into a rejected promise — the button did nothing, silently.
+const btn = form.querySelector('button');
 const toast = form.querySelector('.reminder-toast');
 const email = (input.value || '').trim();
 
@@ -782,6 +787,7 @@ toast.hidden = false;
 return;
 }
 
+const label = btn.textContent;
 btn.disabled = true;
 btn.textContent = 'saving…';
 
@@ -833,7 +839,7 @@ toast.textContent = "couldn't save right now. try again in a sec?";
 toast.className = 'reminder-toast reminder-error';
 toast.hidden = false;
 btn.disabled = false;
-btn.textContent = 'save stats';
+btn.textContent = label;
 }
 }
 
