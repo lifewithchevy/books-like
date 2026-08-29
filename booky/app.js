@@ -181,7 +181,7 @@ showEndScreen();
 // First-time visitor: show help
 if (!localStorage.getItem('90books_booky_seen_help_v1')) {
 localStorage.setItem('90books_booky_seen_help_v1', '1');
-setTimeout(() => $('help-modal').showModal(), 400);
+setTimeout(() => { syncHelpReminder(); $('help-modal').showModal(); }, 400);
 }
 })();
 
@@ -523,7 +523,10 @@ else if (k === 'Backspace') { handleKey('BACK'); e.preventDefault(); }
 else if (/^[a-zA-Z]$/.test(k)) { handleKey(k.toUpperCase()); }
 });
 
-$('help-btn').addEventListener('click', () => $('help-modal').showModal());
+$('help-btn').addEventListener('click', () => {
+syncHelpReminder();
+$('help-modal').showModal();
+});
 
 $('hint-btn')?.addEventListener('click', () => {
 renderHints();
@@ -561,7 +564,7 @@ e.preventDefault();
 $('end-modal').close();
 });
 wireReminder($('reminder-form'));
-wireReminder($('reminder-form-help'));
+buildHelpReminder();
 $('giveaway-form').addEventListener('submit', onGiveawaySubmit);
 $('giveaway-tap').addEventListener('click', onGiveawayTap);
 }
@@ -746,6 +749,48 @@ function onGiveawayTap() {
 const email = localStorage.getItem('90books_booky_reminder_sub');
 if (!email) return;
 enterGiveaway(email, $('giveaway-tap'), '🎟️ count me in');
+}
+
+// Help's signup is a clone of the win screen's, not a second copy of the
+// markup. Hand-written duplicates drifted twice already: once the button
+// label, once a [type=submit] the handler looked for and the help copy
+// didn't have, which failed silently. Cloning means one source of truth, so
+// the headline, pitch, button and every toast match by construction.
+function buildHelpReminder() {
+const host = $('reminder-form-help');
+const source = $('reminder-form');
+if (!host || !source || host.childElementCount) return;
+
+[...source.children].forEach((node) => {
+const copy = node.cloneNode(true);
+// Ids must not survive: duplicates would make $() and the win screen's own
+// lookups resolve to whichever came first in the document.
+copy.querySelectorAll('[id]').forEach((el) => el.removeAttribute('id'));
+copy.removeAttribute('id');
+host.appendChild(copy);
+});
+
+const btn = host.querySelector('button');
+// Inside the sheet's <form method="dialog"> a submit button closes the whole
+// sheet, and a `required` input blocks the × until an email is typed. Both
+// were live bugs; strip them from the copy.
+if (btn) btn.type = 'button';
+host.querySelectorAll('[required]').forEach((el) => el.removeAttribute('required'));
+
+wireReminder(host);
+syncHelpReminder();
+}
+
+// Mirror the win screen's subscribed state: someone who already signed up
+// there should see "daily reminders on" here, not a second ask.
+function syncHelpReminder() {
+const host = $('reminder-form-help');
+const active = $('reminder-active-help');
+if (!host || !active) return;
+const subscribed = !!localStorage.getItem('90books_booky_reminder_sub');
+host.style.display = subscribed ? 'none' : 'block';
+active.textContent = $('reminder-active')?.textContent || '📩 Daily reminders on';
+active.hidden = !subscribed;
 }
 
 // The help sheet's own wrapper is a <form method="dialog">, and HTML forbids

@@ -229,24 +229,12 @@
 <li>A new word unlocks at midnight.</li>
 </ul>
 
-<!-- Same signup as the win screen, reachable before a player ever finishes.
-     Distinct ids so the two forms never drive each other; both submit through
-     onReminderSubmit, which resolves its fields from the submitted form. -->
-<div id="reminder-form-help" class="reminder-card" data-source="help">
-<div class="reminder-row">
-<input
-type="email"
-id="reminder-email-help"
-placeholder="your@email.com"
-aria-label="Email for daily reminders"
-autocomplete="email"
-inputmode="email"
-/>
-<button type="button">Remind me</button>
-</div>
-<p class="reminder-pitch reminder-pitch--below">a daily reminder, and your stats saved</p>
-<p class="reminder-toast" hidden></p>
-</div>
+<!-- The signup is CLONED from the win screen's #reminder-form at boot
+     (buildHelpReminder), so the two can never drift apart again: same
+     headline, same button, same pitch, same toasts, same subscribed state.
+     Left empty here on purpose — do not hand-write fields into it. -->
+<div id="reminder-form-help" class="reminder-card" data-source="help"></div>
+<p id="reminder-active-help" class="reminder-active" hidden></p>
 
 <p class="footnote modal-links"><a href="/authors">Are you an author?</a> &middot; <a href="/about">About</a> &middot; <a href="/contact">Contact</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
 </form>
