@@ -1152,7 +1152,7 @@ wardEl.hidden = false;
 wardEl.hidden = true;
 }
 
-// Mirror to legacy stats modal (still accessible via the ▤ icon)
+// Mirror to legacy stats modal (still accessible via the stats icon)
 renderStatsModal();
 
 // Hero 2: the word's book. CTA adapts — sponsored buy link, curated page, or none.
