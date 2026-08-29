@@ -149,6 +149,27 @@ module.exports = async (req, res) => {
   const incoming = cleanStats(req.body && req.body.stats);
   const key = `booky:player:${pid}`;
 
+  // MANUAL RECOVERY. A player on a brand-new device has a new cookie and no
+  // way to prove who they were — nothing anonymous survives a new phone. For
+  // the loyal handful who care enough to write in, we look their old record up
+  // by its shape (scripts/booky-find-player.mjs) and send them a one-time link
+  // carrying its id. Opening it merges that record into this device's.
+  //
+  // Deliberately invisible: no UI, no discoverable entry point. The id is a
+  // random UUID, so the link cannot be guessed, and it only exists if we sent
+  // it. Merging is additive — totals only climb and nothing is deleted — so
+  // the worst a misused link can do is inflate the holder's own counters.
+  const claim = req.body && req.body.restore;
+  let claimed = null;
+  if (claim && UUID_RE.test(claim) && claim !== pid) {
+    try {
+      const raw = await redis('get', `booky:player:${claim}`);
+      if (raw) claimed = cleanStats(JSON.parse(raw));
+    } catch (err) {
+      console.error('[booky-player] restore read failed:', err);
+    }
+  }
+
   try {
     let stored = null;
     if (!isNew) {
@@ -158,7 +179,9 @@ module.exports = async (req, res) => {
       }
     }
 
-    const merged = mergeRecords(stored, incoming);
+    // The claimed record folds in exactly like another device would: through
+    // the same merge, so it can only raise totals, never cut them down.
+    const merged = mergeRecords(mergeRecords(stored, incoming), claimed || incoming);
 
     // Only write when the record actually changed. A returning player's first
     // load of the day is otherwise a pointless write on every page view.
@@ -172,8 +195,8 @@ module.exports = async (req, res) => {
       ok: true,
       // Nothing to restore for a player we have never seen — saying so lets
       // the client tell "new here" apart from "we could not read it".
-      stats: stored ? merged : null,
-      source: stored ? 'stored' : (isNew ? 'new-player' : 'no-record'),
+      stats: (stored || claimed) ? merged : null,
+      source: claimed ? 'restored' : (stored ? 'stored' : (isNew ? 'new-player' : 'no-record')),
     });
   } catch (err) {
     console.error('[booky-player] store failed:', err);

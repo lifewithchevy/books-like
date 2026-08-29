@@ -254,11 +254,26 @@ function saveStats() { localStorage.setItem(STATS_KEY, JSON.stringify(STATS)); }
 //
 // Fire-and-forget and never awaited by anything that matters: this runs on page
 // load, and the game must not wait on the network to become playable.
+// A one-time recovery link we sent by hand: 90books.com/booky?restore=<id>.
+// Read once, then stripped from the URL so it is not bookmarked or shared
+// onward. See api/booky-player.js for why this has no UI.
+const RESTORE_ID = (() => {
+try {
+const v = new URLSearchParams(location.search).get('restore');
+if (!v) return null;
+history.replaceState(null, '', location.pathname);
+return /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(v) ? v : null;
+} catch { return null; }
+})();
+
 function syncPlayer() {
 return fetch('/api/booky-player', {
 method: 'POST',
 headers: { 'Content-Type': 'application/json' },
-body: JSON.stringify({ stats: { ...statsForServer(), currentStreak: STATS.currentStreak } }),
+body: JSON.stringify({
+stats: { ...statsForServer(), currentStreak: STATS.currentStreak },
+...(RESTORE_ID ? { restore: RESTORE_ID } : {}),
+}),
 })
 .then((r) => r.json())
 .then((d) => { restoreStats(d && d.stats); })
