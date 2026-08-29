@@ -176,6 +176,38 @@ module.exports = async (req, res) => {
       // dependence on which status Resend picks for a duplicate create.
       const read = await fetchStoredStats(RESEND_API_KEY, RESEND_AUDIENCE_ID, cleanEmail);
 
+      // Merge what we already hold with what this device brought, and write the
+      // BEST of the two.
+      //
+      // The comment below used to say a duplicate create returns 422 and writes
+      // nothing, so an existing record was safe. That is no longer true —
+      // Resend upserts, and the create overwrites. Verified against production:
+      // a contact holding streak 33 / played 55 was reduced to zeros the moment
+      // that player signed up again from a device with no history, which is the
+      // exact situation this feature exists to rescue. The read above still
+      // handed them their stats, so the restore looked fine, but the stored
+      // copy was gone — and if they never finished another game to refresh it,
+      // gone for good.
+      //
+      // Totals only ever climb, same rule the anonymous record uses. The
+      // current streak is only carried over if the stored record is at least as
+      // recent as this device's, so a live streak is never resurrected from a
+      // stale one.
+      const held = read.stats || null;
+      const mine = { ...(stats || {}), currentStreak: ctx.streak || 0 };
+      const best = held
+        ? {
+            maxStreak: Math.max(held.maxStreak || 0, mine.maxStreak || 0),
+            played: Math.max(held.played || 0, mine.played || 0),
+            wins: Math.max(held.wins || 0, mine.wins || 0),
+            lastPlayedDay: Math.max(held.lastPlayedDay || 0, mine.lastPlayedDay || 0),
+            currentStreak:
+              (held.lastPlayedDay || 0) >= (mine.lastPlayedDay || 0)
+                ? Math.max(held.currentStreak || 0, mine.currentStreak || 0)
+                : (mine.currentStreak || 0),
+          }
+        : mine;
+
       const r = await fetch(
         `https://api.resend.com/audiences/${RESEND_AUDIENCE_ID}/contacts`,
         {
@@ -189,7 +221,7 @@ module.exports = async (req, res) => {
             unsubscribed: false,
             // first_name stores the packed stats block, streak first
             // (internal field — never shown in emails). See api/_stats-codec.js.
-            first_name: encodeStats({ ...(stats || {}), currentStreak: ctx.streak || 0 }),
+            first_name: encodeStats(best),
             // last_name stores the giveaway entry tag (internal field — never shown)
             ...(entryTag ? { last_name: entryTag } : {}),
           }),
