@@ -228,7 +228,9 @@ body {
   width: 100%;
   max-width: 500px;
   display: grid;
-  grid-template-columns: 36px 1fr 36px;
+  /* Hint sits beside Stats on the right, so both side cells are sized as a
+     pair and the wordmark stays optically centred. */
+  grid-template-columns: 74px 1fr 74px;
   align-items: center;
   padding: 10px 14px 6px;
   position: relative;
@@ -268,6 +270,79 @@ body {
   transition: border-color 0.15s, color 0.15s;
 }
 .icon-btn:hover { border-color: var(--accent); color: var(--ink); }
+
+/* Hint: everything about it reuses existing components (.sheet, .share-option,
+   .ex-tile, .book-hero). These are the only additions — a side cell for the
+   pair of top-bar buttons, an SVG-sized icon button, and the spoiler flair,
+   which is the one thing the game did not already have. */
+.topbar-side { display: flex; align-items: center; gap: 6px; }
+.topbar-side-end { justify-content: flex-end; }
+.icon-btn-svg svg { width: 17px; height: 17px; display: block; }
+/* The two hint actions wear the win screen's CTA style, so they read as the
+   same kind of link as "Find it". Only the button reset is new. */
+
+/* The book sits behind the same dark spoiler bar a book subreddit uses. The
+   veil is opaque AND the card is blurred underneath, so nothing shows through
+   before the tap. Tapping again puts it back. */
+.hint-spoiler {
+  position: relative;
+  border-radius: 12px;
+  overflow: hidden;
+  cursor: pointer;
+  margin-top: 8px;
+}
+.hint-spoiler .book-hero { filter: blur(20px) saturate(0.85); transition: filter 0.25s ease; }
+.hint-spoiler.open .book-hero { filter: none; }
+/* Once lifted the card is live again: it holds the Amazon link, so clicks must
+   reach it rather than toggling the veil back on. */
+.hint-spoiler.open { cursor: auto; }
+.hint-spoiler-veil {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  color: #f2eef0;
+  text-shadow: 0 1px 6px rgba(0, 0, 0, 0.6);
+  /* Translucent rather than solid: the blurred cover reads through it, so the
+     bar looks like something hidden instead of a black hole in the sheet. */
+  background: rgba(18, 9, 20, 0.62);
+}
+.hint-spoiler.open .hint-spoiler-veil { display: none; }
+.hint-spoiler:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+.spoiler-flair {
+  display: inline-block;
+  background: #1a1a1b;
+  color: #fff;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  padding: 3px 9px;
+  border-radius: 4px;
+}
+/* The flair sits under the title, the way a subreddit tags a post, with the
+   warning on the same line so it reads as one tag rather than two lines of
+   furniture before the hints. */
+.spoiler-flair-row {
+  margin: 8px 0 6px;
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  flex-wrap: wrap;
+}
+.spoiler-flair-note {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  color: var(--ink-dim);
+}
+#hint-letters { justify-content: center; margin: 14px 0 4px; }
+#hint-book-hero { margin-top: 16px; }
+
 
 /* Board — 6 rows × 5 tiles. Wrapped so it can center vertically in the
    remaining flex space without forcing tile rows to stretch. */

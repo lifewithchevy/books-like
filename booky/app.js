@@ -170,6 +170,9 @@ date: new Date().toISOString().split('T')[0],
 // runs its own load + fallback path).
 preloadBookCover();
 
+HINTS = loadHints();
+initHint();
+
 if (STATE.status !== 'playing') {
 LOCKED = true;
 showEndScreen();
@@ -209,6 +212,22 @@ function loadState() {
 try { return JSON.parse(localStorage.getItem(STATE_KEY)); } catch { return null; }
 }
 function saveState() { localStorage.setItem(STATE_KEY, JSON.stringify(STATE)); }
+
+// Which hints today's player has taken. Deliberately NOT part of STATE: taking
+// a hint changes nothing about the game, the streak or the share grid. This
+// exists so a reload does not double-count, and so booky_game_complete can
+// carry the flag and tell us whether hints rescue the players who used to quit.
+const HINT_KEY = '90books_booky_hints_v1';
+let HINTS = { day: 0, book: false };
+function loadHints() {
+try {
+const h = JSON.parse(localStorage.getItem(HINT_KEY));
+if (h && h.day === DAY) return { day: DAY, book: !!h.book };
+} catch {}
+return { day: DAY, book: false };
+}
+function saveHints() { try { localStorage.setItem(HINT_KEY, JSON.stringify(HINTS)); } catch {} }
+function usedHint() { return !!HINTS.book; }
 
 function loadStats() {
 try {
@@ -366,6 +385,7 @@ answer: ANSWER,
 book: completedBook?.slug || null,
 book_title: completedBook?.title || null,
 book_author: completedBook?.author || null,
+used_hint: usedHint(),
 });
 }
 
@@ -492,6 +512,11 @@ handleKey(btn.dataset.key);
 // Hardware keyboard
 document.addEventListener('keydown', (e) => {
 if (e.metaKey || e.ctrlKey || e.altKey) return;
+// A sheet is open (hint, help, stats, share): the keyboard belongs to it, not
+// to the board. Without this, Enter on the hint's spoiler both lifted the veil
+// AND submitted whatever was half-typed underneath, and letters kept landing
+// on the grid behind the dialog.
+if (document.querySelector('dialog[open]')) return;
 const k = e.key;
 if (k === 'Enter') { handleKey('ENTER'); e.preventDefault(); }
 else if (k === 'Backspace') { handleKey('BACK'); e.preventDefault(); }
@@ -499,6 +524,24 @@ else if (/^[a-zA-Z]$/.test(k)) { handleKey(k.toUpperCase()); }
 });
 
 $('help-btn').addEventListener('click', () => $('help-modal').showModal());
+
+$('hint-btn')?.addEventListener('click', () => {
+renderHints();
+posthog.capture('booky_hint_opened', {
+word_number: DAY,
+guesses_used: STATE.guesses.length,
+status: STATE.status,
+book_taken: HINTS.book,
+});
+$('hint-modal').showModal();
+});
+document.querySelectorAll('[data-close-hint]').forEach((el) => {
+el.addEventListener('click', () => $('hint-modal')?.close());
+});
+$('hint-spoiler')?.addEventListener('click', takeBook);
+$('hint-spoiler')?.addEventListener('keydown', (e) => {
+if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); takeBook(); }
+});
 $('stats-btn').addEventListener('click', () => {
 renderStatsModal();
 $('stats-modal').showModal();
@@ -882,6 +925,123 @@ else { next = b; break; }
 return { earned, next };
 }
 
+// ---- Book links ----
+// ONE definition of where a book points and what the link says, so the win
+// screen and the hint sheet can never send the same book to different places.
+// Amazon when there is an affiliate URL, otherwise the curated books-like page.
+function bookLinkTarget(bookRec) {
+if (!bookRec) return null;
+if (bookRec.buyUrl) {
+return { href: bookRec.buyUrl, text: 'Get it on Amazon \u2192', rel: 'noopener sponsored', retailer: 'amazon' };
+}
+if (CURATED_SLUGS.has(bookRec.slug)) {
+return { href: `https://90books.com/books-like/${bookRec.slug}`, text: 'More books like this \u2192', rel: 'noopener', retailer: null };
+}
+return null;
+}
+
+// Same events the win screen has always fired, so existing dashboards keep
+// working and hint-sheet clicks land in the same place as win-screen clicks.
+function trackBookLink(bookRec, target) {
+const base = {
+word_number: DAY,
+book: bookRec.slug,
+title: bookRec.title,
+book_title: bookRec.title,
+book_key: bookRec.slug,
+source_type: 'booky',
+source_page: window.location.pathname || '/booky',
+};
+if (target.retailer) posthog.capture('affiliate_buy_clicked', { ...base, retailer: target.retailer });
+else posthog.capture('booky_books_like_clicked', base);
+}
+
+// Wires a text link and the cover link for one book. Used by both screens.
+function applyBookLinks(bookRec, linkEl, coverLink) {
+const target = bookLinkTarget(bookRec);
+if (!target) {
+if (linkEl) { linkEl.hidden = true; linkEl.onclick = null; }
+if (coverLink) coverLink.onclick = null;
+return null;
+}
+const onClick = () => trackBookLink(bookRec, target);
+if (linkEl) {
+linkEl.href = target.href;
+linkEl.textContent = target.text;
+linkEl.rel = target.rel;
+linkEl.hidden = false;
+linkEl.onclick = onClick;
+}
+if (coverLink) {
+coverLink.href = target.href;
+coverLink.rel = target.rel;
+coverLink.onclick = onClick;
+}
+return target;
+}
+
+// ---- Hint ----
+// The sheet is assembled from components the game already ships: .sheet for the
+// container, .share-option for the three rows, .ex-tile for the letters and
+// .book-hero for the reveal. Nothing here is a bespoke widget, so the hint
+// cannot drift out of step with the rest of the game.
+function hintBook() { return DATA?.wordBooks?.[ANSWER] || null; }
+
+function initHint() {
+const btn = $('hint-btn');
+if (!btn) return;
+// The sheet has exactly one thing in it. No book mapped means nothing to show,
+// so the button goes rather than opening an empty sheet. ship.sh blocks a
+// scheduled word without a book, but the game must degrade on its own too.
+btn.hidden = !hintBook();
+renderHints();
+}
+
+function renderHints() {
+const book = hintBook();
+const spoiler = $('hint-spoiler');
+if (spoiler) spoiler.hidden = !book;
+const hero = $('hint-book-hero');
+if (!hero || !book) return;
+// The card is always rendered; the veil is what hides it, so lifting and
+// replacing the bar never re-lays-out the sheet.
+if (spoiler) spoiler.classList.toggle('open', !!HINTS.book);
+const cover = $('hint-cover');
+const link = $('hint-cover-link');
+if (cover && book.cover) {
+// Handler first: a cached failure fires before src assignment returns, and a
+// handler attached afterwards would never run, leaving a broken-image icon.
+cover.onerror = () => { if (link) link.hidden = true; };
+cover.alt = book.title ? `Cover of ${book.title}` : '';
+cover.src = book.cover;
+if (link) link.hidden = false;
+}
+$('hint-title').textContent = book.title || '';
+$('hint-author').textContent = book.author || '';
+applyBookLinks(book, $('hint-cta'), link);
+}
+
+function takeBook() {
+const book = hintBook();
+if (!book) return;
+// One way. The card underneath carries the Amazon link, so once the veil is
+// lifted a tap belongs to the link, not to putting the cover back.
+if (HINTS.book) return;
+HINTS.book = true;
+saveHints();
+renderHints();
+// Reveal first, measure second. If analytics is blocked and this throws, the
+// player still gets her book.
+posthog.capture('booky_hint_book', {
+word_number: DAY,
+guesses_used: STATE.guesses.length,
+answer: ANSWER,
+book: book.slug || null,
+book_title: book.title || null,
+book_author: book.author || null,
+});
+}
+
 // ---- End screen ----
 function preloadBookCover() {
 const url = DATA?.wordBooks?.[ANSWER]?.cover;
@@ -1009,55 +1169,10 @@ coverLink.hidden = cover.hidden;
 };
 
 // One secondary text link under the book (Share is the only primary CTA).
-// Prefer Amazon buy; fall back to curated books-like page. Cover uses the same URL.
-const linkEl = $('book-rec-link');
-// `book_title`/`retailer`/`source_type`/`source_page` mirror the site-side
-// tracker in index.html so ONE query answers "how many buy-clicks did this
-// book get, and from where". They used to disagree: Booky sent `title`, the
-// site sent `book_title`, so any group-by silently returned nulls for half
-// the data. `title`/`book` stay for the events already in PostHog.
-const trackAffiliateBuy = () => posthog.capture('affiliate_buy_clicked', {
-word_number: DAY,
-book: bookRec.slug,
-title: bookRec.title,
-book_title: bookRec.title,
-book_key: bookRec.slug,
-retailer: 'amazon',
-source_type: 'booky',
-source_page: window.location.pathname || '/booky',
-});
-const trackBooksLike = () => posthog.capture('booky_books_like_clicked', {
-word_number: DAY,
-book: bookRec.slug,
-title: bookRec.title,
-book_title: bookRec.title,
-book_key: bookRec.slug,
-source_type: 'booky',
-source_page: window.location.pathname || '/booky',
-});
-if (bookRec.buyUrl) {
-linkEl.href = bookRec.buyUrl;
-linkEl.textContent = 'Get it on Amazon →';
-linkEl.rel = 'noopener sponsored';
-linkEl.hidden = false;
-linkEl.onclick = trackAffiliateBuy;
-coverLink.href = bookRec.buyUrl;
-coverLink.rel = 'noopener sponsored';
-coverLink.onclick = trackAffiliateBuy;
-} else if (CURATED_SLUGS.has(bookRec.slug)) {
-linkEl.href = `https://90books.com/books-like/${bookRec.slug}`;
-linkEl.textContent = 'More books like this →';
-linkEl.rel = 'noopener';
-linkEl.hidden = false;
-linkEl.onclick = trackBooksLike;
-coverLink.href = linkEl.href;
-coverLink.rel = 'noopener';
-coverLink.onclick = trackBooksLike;
-} else {
-linkEl.hidden = true;
-linkEl.onclick = null;
-coverLink.onclick = null;
-}
+// Wording, destination and tracking all live in applyBookLinks so the hint
+// sheet sends this book to exactly the same place.
+applyBookLinks(bookRec, $('book-rec-link'), coverLink);
+
 loadBookRecCover(cover, coverLink, bookRec, syncCoverLink);
 
 // Hook line hidden for now (per Olga) — keep the element + data so it can

@@ -109,9 +109,14 @@
 </nav>
 
 <header class="topbar">
+<span class="topbar-side">
 <button id="help-btn" class="icon-btn" aria-label="How to play">?</button>
+</span>
 <h1 class="wordmark"><a href="/">Booky</a><span id="puzzle-no" class="puzzle-no" aria-label="Today's puzzle number"></span></h1>
+<span class="topbar-side topbar-side-end">
+<button id="hint-btn" class="icon-btn icon-btn-svg" aria-label="Get a hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.5.4.8.9.9 1.5l.1.7h5.2l.1-.7c.1-.6.4-1.1.9-1.5A6 6 0 0 0 12 3Z"/></svg></button>
 <button id="stats-btn" class="icon-btn" aria-label="Stats">▤</button>
+</span>
 </header>
 
 <!-- 6 rows × 5 tiles -->
@@ -158,6 +163,36 @@
 </section>
 
 <!-- Help -->
+<!-- Optional hint. Nothing is revealed until the player asks for it.
+     Built from live components only: .sheet (Help/Stats), .dist-title (Stats),
+     .ex-row + .ex-tile (Help), .book-hero-cta (win screen) and .book-hero
+     (win screen). -->
+<dialog id="hint-modal" class="sheet">
+<div class="sheet-inner">
+<button class="sheet-close" aria-label="Close" data-close-hint>&times;</button>
+<h2 class="sheet-title">Need a hint?</h2>
+<p class="spoiler-flair-row"><span class="spoiler-flair">Spoiler</span><span class="spoiler-flair-note">See today's book to solve today's word.</span></p>
+
+<div class="hint-spoiler" id="hint-spoiler" role="button" tabindex="0" aria-label="Show today's book">
+<div id="hint-book-hero" class="book-hero">
+<div class="book-hero-row">
+<a id="hint-cover-link" class="book-hero-cover-link" target="_blank" rel="noopener" hidden>
+<img id="hint-cover" class="book-hero-cover" alt="" />
+</a>
+<div class="book-hero-meta">
+<p id="hint-title" class="book-hero-title"></p>
+<p id="hint-author" class="book-hero-author"></p>
+<a id="hint-cta" class="book-hero-cta" target="_blank" rel="noopener" hidden></a>
+</div>
+</div>
+</div>
+<span class="hint-spoiler-veil">Show spoiler</span>
+</div>
+
+<p class="footnote">Your streak and stats are not affected.</p>
+</div>
+</dialog>
+
 <dialog id="help-modal" class="sheet">
 <form method="dialog" class="sheet-inner">
 <button class="sheet-close" aria-label="Close">×</button>
