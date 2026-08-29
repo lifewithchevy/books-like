@@ -181,7 +181,7 @@ showEndScreen();
 // First-time visitor: show help
 if (!localStorage.getItem('90books_booky_seen_help_v1')) {
 localStorage.setItem('90books_booky_seen_help_v1', '1');
-setTimeout(() => { syncHelpReminder(); $('help-modal').showModal(); }, 400);
+setTimeout(() => $('help-modal').showModal(), 400);
 }
 })();
 
@@ -523,10 +523,7 @@ else if (k === 'Backspace') { handleKey('BACK'); e.preventDefault(); }
 else if (/^[a-zA-Z]$/.test(k)) { handleKey(k.toUpperCase()); }
 });
 
-$('help-btn').addEventListener('click', () => {
-syncHelpReminder();
-$('help-modal').showModal();
-});
+$('help-btn').addEventListener('click', () => $('help-modal').showModal());
 
 $('hint-btn')?.addEventListener('click', () => {
 renderHints();
@@ -547,6 +544,7 @@ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); takeBook(); }
 });
 $('stats-btn').addEventListener('click', () => {
 renderStatsModal();
+syncStatsReminder();
 $('stats-modal').showModal();
 });
 // Wordle-exact: the win-screen button IS the share. On mobile it opens the OS
@@ -564,7 +562,7 @@ e.preventDefault();
 $('end-modal').close();
 });
 wireReminder($('reminder-form'));
-buildHelpReminder();
+buildStatsReminder();
 $('giveaway-form').addEventListener('submit', onGiveawaySubmit);
 $('giveaway-tap').addEventListener('click', onGiveawayTap);
 }
@@ -751,13 +749,14 @@ if (!email) return;
 enterGiveaway(email, $('giveaway-tap'), '🎟️ count me in');
 }
 
-// Help's signup is a clone of the win screen's, not a second copy of the
-// markup. Hand-written duplicates drifted twice already: once the button
-// label, once a [type=submit] the handler looked for and the help copy
-// didn't have, which failed silently. Cloning means one source of truth, so
-// the headline, pitch, button and every toast match by construction.
-function buildHelpReminder() {
-const host = $('reminder-form-help');
+// The stats sheet's signup is a clone of the win screen's, not a second copy
+// of the markup. A hand-written duplicate drifted twice in a day: once the
+// button label and pitch, once a [type=submit] the shared handler looked for
+// and that copy didn't have, which failed silently on a valid email. Cloning
+// means one source of truth, so the headline, pitch, button and every toast
+// match by construction.
+function buildStatsReminder() {
+const host = $('reminder-form-stats');
 const source = $('reminder-form');
 if (!host || !source || host.childElementCount) return;
 
@@ -771,21 +770,21 @@ host.appendChild(copy);
 });
 
 const btn = host.querySelector('button');
-// Inside the sheet's <form method="dialog"> a submit button closes the whole
+// Inside a sheet's <form method="dialog"> a submit button closes the whole
 // sheet, and a `required` input blocks the × until an email is typed. Both
-// were live bugs; strip them from the copy.
+// were live bugs when this sat in Help; strip them from the copy.
 if (btn) btn.type = 'button';
 host.querySelectorAll('[required]').forEach((el) => el.removeAttribute('required'));
 
 wireReminder(host);
-syncHelpReminder();
+syncStatsReminder();
 }
 
 // Mirror the win screen's subscribed state: someone who already signed up
 // there should see "daily reminders on" here, not a second ask.
-function syncHelpReminder() {
-const host = $('reminder-form-help');
-const active = $('reminder-active-help');
+function syncStatsReminder() {
+const host = $('reminder-form-stats');
+const active = $('reminder-active-stats');
 if (!host || !active) return;
 const subscribed = !!localStorage.getItem('90books_booky_reminder_sub');
 host.style.display = subscribed ? 'none' : 'block';
@@ -858,7 +857,9 @@ try { restored = restoreStats((await res.json())?.stats); } catch {}
 localStorage.setItem('90books_booky_reminder_sub', email);
 // PostHog: email signup completed
 posthog.capture('email_signup_completed', {
-source: form.dataset.source === 'help' ? 'booky_help' : 'booky_endscreen',
+// The win screen's form carries no data-source, so it stays 'booky_endscreen'
+// and its history is unbroken. Anything else names itself.
+source: form.dataset.source ? `booky_${form.dataset.source}` : 'booky_endscreen',
 word_number_at_signup: DAY,
 });
 toast.textContent = restored

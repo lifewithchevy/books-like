@@ -229,13 +229,6 @@
 <li>A new word unlocks at midnight.</li>
 </ul>
 
-<!-- The signup is CLONED from the win screen's #reminder-form at boot
-     (buildHelpReminder), so the two can never drift apart again: same
-     headline, same button, same pitch, same toasts, same subscribed state.
-     Left empty here on purpose — do not hand-write fields into it. -->
-<div id="reminder-form-help" class="reminder-card" data-source="help"></div>
-<p id="reminder-active-help" class="reminder-active" hidden></p>
-
 <p class="footnote modal-links"><a href="/authors">Are you an author?</a> &middot; <a href="/about">About</a> &middot; <a href="/contact">Contact</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
 </form>
 </dialog>
@@ -255,6 +248,14 @@
 <p id="stat-milestone" class="stat-milestone" hidden></p>
 <h3 class="dist-title">Guess distribution</h3>
 <ul id="stat-dist" class="dist"></ul>
+
+<!-- The signup lives here, not in How to play: it saves the streak and the
+     stats sitting right above it, so this is where the ask makes sense.
+     CLONED from the win screen's #reminder-form at boot (buildStatsReminder),
+     so the two can never drift apart — same headline, button, pitch, toasts
+     and subscribed state. Left empty on purpose; don't hand-write fields. -->
+<div id="reminder-form-stats" class="reminder-card" data-source="stats"></div>
+<p id="reminder-active-stats" class="reminder-active" hidden></p>
 </form>
 </dialog>
 
