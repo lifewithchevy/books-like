@@ -1063,9 +1063,16 @@ function hintBook() { return DATA?.wordBooks?.[ANSWER] || null; }
 // arrives next year is meeting it for the first time too, and the callout is
 // there to say the control exists, not to date it.
 const COACH_KEY = '90books_booky_hint_coach_v1';
+// Switched OFF 29 Aug: it was still on screen after it should have cleared.
+// Off rather than deleted — the markup, styles and dismissal logic all stay
+// put, so turning it back on is this one flag once the cause is found.
+const HINT_COACH_ON = false;
+
 function maybeShowHintCoach() {
 const coach = $('hint-coach');
-if (!coach || !hintBook()) return;
+if (!coach) return;
+if (!HINT_COACH_ON) { coach.hidden = true; return; }
+if (!hintBook()) return;
 try {
 if (localStorage.getItem(COACH_KEY)) return;
 } catch { return; }
