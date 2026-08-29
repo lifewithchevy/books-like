@@ -234,7 +234,11 @@ body {
   align-items: center;
   padding: 10px 14px 6px;
   position: relative;
-  z-index: 1;
+  /* Above .board-wrap and .keyboard, which are later siblings also at z-index
+     1. The topbar makes its own stacking context, so the hint callout inside
+     it could never rise over the board however high its own z-index went —
+     the tiles showed straight through the pill on a real phone. */
+  z-index: 3;
   flex-shrink: 0;
 }
 .wordmark {
