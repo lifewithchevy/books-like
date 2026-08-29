@@ -560,7 +560,8 @@ $('end-modal').querySelector('[data-close-end]').addEventListener('click', (e) =
 e.preventDefault();
 $('end-modal').close();
 });
-$('reminder-form').addEventListener('submit', onReminderSubmit);
+wireReminder($('reminder-form'));
+wireReminder($('reminder-form-help'));
 $('giveaway-form').addEventListener('submit', onGiveawaySubmit);
 $('giveaway-tap').addEventListener('click', onGiveawayTap);
 }
@@ -747,11 +748,31 @@ if (!email) return;
 enterGiveaway(email, $('giveaway-tap'), '🎟️ count me in');
 }
 
+// The help sheet's own wrapper is a <form method="dialog">, and HTML forbids
+// nesting forms — the parser silently drops an inner <form>, so the help copy
+// is a <div> and submits through the same code by hand.
+function wireReminder(el) {
+if (!el) return;
+if (el.tagName === 'FORM') {
+el.addEventListener('submit', onReminderSubmit);
+return;
+}
+const go = () => onReminderSubmit({ preventDefault() {}, currentTarget: el });
+el.querySelector('button')?.addEventListener('click', go);
+el.querySelector('input[type="email"]')?.addEventListener('keydown', (ev) => {
+if (ev.key === 'Enter') { ev.preventDefault(); go(); }
+});
+}
+
 async function onReminderSubmit(e) {
 e.preventDefault();
-const input = $('reminder-email');
-const btn = $('reminder-submit');
-const toast = $('reminder-toast');
+// Resolve inside the submitted form, not by id: the same signup now appears
+// in two places (win screen and "How to play"), and hardcoded ids would make
+// the help copy drive the win screen's fields.
+const form = e.currentTarget;
+const input = form.querySelector('input[type="email"]');
+const btn = form.querySelector('button[type="submit"]');
+const toast = form.querySelector('.reminder-toast');
 const email = (input.value || '').trim();
 
 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
@@ -770,7 +791,7 @@ method: 'POST',
 headers: { 'Content-Type': 'application/json' },
 body: JSON.stringify({
 email,
-source: 'win-screen',
+source: form.dataset.source || 'win-screen',
 streak: STATS.currentStreak,
 stats: statsForServer(),
 }),
@@ -786,7 +807,7 @@ try { restored = restoreStats((await res.json())?.stats); } catch {}
 localStorage.setItem('90books_booky_reminder_sub', email);
 // PostHog: email signup completed
 posthog.capture('email_signup_completed', {
-source: 'booky_endscreen',
+source: form.dataset.source === 'help' ? 'booky_help' : 'booky_endscreen',
 word_number_at_signup: DAY,
 });
 toast.textContent = restored
@@ -802,7 +823,6 @@ toast.hidden = false;
 // it never ran — signing up left "don't lose your streak" sitting above the
 // success toast. Missing furniture must not break the collapse.
 setTimeout(() => {
-const form = $('reminder-form');
 ['.reminder-row', '.reminder-pitch', '.reminder-headline'].forEach((sel) => {
 const el = form.querySelector(sel);
 if (el) el.style.display = 'none';
@@ -987,22 +1007,58 @@ return target;
 // cannot drift out of step with the rest of the game.
 function hintBook() { return DATA?.wordBooks?.[ANSWER] || null; }
 
+// Point at the hint once, for everyone. Not badged as "new": a player who
+// arrives next year is meeting it for the first time too, and the callout is
+// there to say the control exists, not to date it.
+const COACH_KEY = '90books_booky_hint_coach_v1';
+function maybeShowHintCoach() {
+const coach = $('hint-coach');
+if (!coach || !hintBook()) return;
+try {
+if (localStorage.getItem(COACH_KEY)) return;
+} catch { return; }
+const dismiss = () => {
+coach.hidden = true;
+try { localStorage.setItem(COACH_KEY, '1'); } catch {}
+};
+$('hint-coach-close')?.addEventListener('click', (e) => { e.stopPropagation(); dismiss(); });
+// Opening the hint is the point of the callout, so it counts as seen.
+$('hint-btn')?.addEventListener('click', dismiss);
+coach.hidden = false;
+posthog.capture('booky_hint_coach_shown', { word_number: DAY, played: STATS.played });
+}
+
 function initHint() {
 const btn = $('hint-btn');
 if (!btn) return;
-// The sheet has exactly one thing in it. No book mapped means nothing to show,
-// so the button goes rather than opening an empty sheet. ship.sh blocks a
-// scheduled word without a book, but the game must degrade on its own too.
-btn.hidden = !hintBook();
+// The lightbulb is always there. A control that disappears on some days is
+// more confusing than a thinner hint, so on a word with no book mapped the
+// sheet still opens and says so, rather than the icon vanishing. ship.sh
+// blocks that case from ever reaching a player anyway.
 renderHints();
+maybeShowHintCoach();
 }
 
 function renderHints() {
 const book = hintBook();
 const spoiler = $('hint-spoiler');
-if (spoiler) spoiler.hidden = !book;
+const empty = $('hint-empty');
+const flair = $('hint-flair-row');
+if (!book) {
+// Nothing mapped: say so plainly instead of showing an empty veil, and drop
+// the spoiler warning with it — there is nothing left to spoil.
+if (spoiler) spoiler.hidden = true;
+if (flair) flair.hidden = true;
+if (empty) {
+empty.textContent = 'No book for today\u2019s word.';
+empty.hidden = false;
+}
+return;
+}
+if (spoiler) spoiler.hidden = false;
+if (flair) flair.hidden = false;
 const hero = $('hint-book-hero');
-if (!hero || !book) return;
+if (!hero) return;
 // The card is always rendered; the veil is what hides it, so lifting and
 // replacing the bar never re-lays-out the sheet.
 if (spoiler) spoiler.classList.toggle('open', !!HINTS.book);
@@ -1011,7 +1067,11 @@ const link = $('hint-cover-link');
 if (cover && book.cover) {
 // Handler first: a cached failure fires before src assignment returns, and a
 // handler attached afterwards would never run, leaving a broken-image icon.
-cover.onerror = () => { if (link) link.hidden = true; };
+cover.onerror = () => {
+if (link) link.hidden = true;
+const note = $('hint-empty');
+if (note) { note.textContent = 'No cover for today\u2019s book, but the title is below.'; note.hidden = false; }
+};
 cover.alt = book.title ? `Cover of ${book.title}` : '';
 cover.src = book.cover;
 if (link) link.hidden = false;
@@ -1293,6 +1353,17 @@ return lines.join(HB);
 }
 
 function renderStatsModal() {
+// The Ward explains the streak, so it lives in Stats rather than in "How to
+// play". Worded from the player's actual state: whether she is holding one.
+const wardEl = $('stat-ward');
+if (wardEl) {
+// The full mechanic, moved here from "How to play": what it does AND when it
+// comes back. Only the first clause changes with state.
+wardEl.innerHTML = STATS.wards > 0
+? '\uD83D\uDEE1\uFE0F Ward ready. Miss a day and it saves your streak once. It recharges at your next 7-day mark.'
+: '\uD83D\uDEE1\uFE0F Ward used. It saves your streak once, and recharges at your next 7-day mark.';
+}
+
 $('stat-played').textContent = STATS.played;
 $('stat-winpct').textContent = STATS.played
 ? Math.round(100 * STATS.wins / STATS.played) : 0;

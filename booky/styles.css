@@ -271,6 +271,78 @@ body {
 }
 .icon-btn:hover { border-color: var(--accent); color: var(--ink); }
 
+
+/* The lightbulb appears inline in the help copy, so the sentence points at the
+   same mark the top bar shows rather than an emoji that renders differently on
+   every platform. */
+.inline-icon {
+  width: 15px;
+  height: 15px;
+  vertical-align: -2px;
+  display: inline-block;
+}
+
+/* One-time coach mark pointing at the hint. Shares the .float-toast palette
+   (ink on ground) so it reads as the game talking, not a banner bolted on.
+   Anchored to the topbar rather than fixed, so it travels with the icon. */
+.topbar { position: relative; }
+.coach {
+  position: absolute;
+  top: 100%;
+  right: 8px;
+  z-index: 20;
+  max-width: 260px;
+  background: var(--ink);
+  color: var(--bg);
+  border-radius: 10px;
+  padding: 11px 34px 12px 14px;
+  text-align: left;
+  box-shadow: 0 10px 30px rgba(0, 0, 0, 0.35);
+  animation: coachIn 0.22s ease;
+}
+.coach::before {
+  content: '';
+  position: absolute;
+  top: -5px;
+  right: 46px;
+  width: 10px;
+  height: 10px;
+  background: var(--ink);
+  transform: rotate(45deg);
+}
+.coach-title {
+  margin: 0 0 3px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: 0.2px;
+}
+.coach-body {
+  margin: 0;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.45;
+  opacity: 0.85;
+}
+.coach-close {
+  position: absolute;
+  top: 6px;
+  right: 8px;
+  background: none;
+  border: none;
+  color: var(--bg);
+  opacity: 0.6;
+  font-size: 17px;
+  line-height: 1;
+  padding: 4px;
+  cursor: pointer;
+}
+.coach-close:hover { opacity: 1; }
+@keyframes coachIn {
+  from { opacity: 0; transform: translateY(-4px); }
+  to   { opacity: 1; transform: none; }
+}
+
 /* Hint: everything about it reuses existing components (.sheet, .share-option,
    .ex-tile, .book-hero). These are the only additions — a side cell for the
    pair of top-bar buttons, an SVG-sized icon button, and the spoiler flair,
@@ -555,7 +627,7 @@ body {
   margin: 18px 0 8px;
   font-weight: 700;
 }
-.ex-row { display: flex; gap: 4px; margin: 8px 0 4px; }
+.ex-row { display: flex; gap: 4px; margin: 14px 0 4px; }
 .ex-tile {
   width: 30px; height: 30px;
   display: flex; align-items: center; justify-content: center;
@@ -801,7 +873,7 @@ body {
   grid-template-columns: 1fr auto;
   gap: 8px;
 }
-#reminder-email {
+.reminder-row input[type="email"] {
   background: var(--bg);
   border: 1px solid var(--border);
   border-radius: 8px;
@@ -813,11 +885,11 @@ body {
   min-width: 0;
   transition: border-color 0.15s;
 }
-#reminder-email:focus { border-color: var(--accent); }
-#reminder-email::placeholder { color: var(--ink-faint); }
+.reminder-row input[type="email"]:focus { border-color: var(--accent); }
+.reminder-row input[type="email"]::placeholder { color: var(--ink-faint); }
 /* Pink outline button. Default is a LIGHTER pink; hover keeps the outline
    but deepens to the primary (Share) CTA's pink — no fill. */
-#reminder-submit {
+.reminder-row button {
   background: transparent;
   border: 1.5px solid var(--accent-2);
   color: var(--accent-2);
@@ -829,7 +901,7 @@ body {
   font-weight: 600;
   transition: border-color 0.15s, color 0.15s;
 }
-#reminder-submit:hover:not(:disabled) {
+.reminder-row button:hover:not(:disabled) {
   border-color: var(--accent);
   color: var(--accent);
 }
@@ -837,9 +909,9 @@ body {
    rule would read darker than hover. Use an explicitly lighter pink here so
    default stays lighter than the hover accent. */
 @media (prefers-color-scheme: light) {
-  #reminder-submit { border-color: #d968ac; color: #d968ac; }
+  .reminder-row button { border-color: #d968ac; color: #d968ac; }
 }
-#reminder-submit:disabled { opacity: 0.6; cursor: not-allowed; }
+.reminder-row button:disabled { opacity: 0.6; cursor: not-allowed; }
 .reminder-toast {
   margin: 10px 0 0;
   text-align: center;

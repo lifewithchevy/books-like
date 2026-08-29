@@ -117,6 +117,13 @@
 <button id="hint-btn" class="icon-btn icon-btn-svg" aria-label="Get a hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.5.4.8.9.9 1.5l.1.7h5.2l.1-.7c.1-.6.4-1.1.9-1.5A6 6 0 0 0 12 3Z"/></svg></button>
 <button id="stats-btn" class="icon-btn icon-btn-svg" aria-label="Stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 20V11M12 20V4M19 20v-8"/></svg></button>
 </span>
+
+<!-- One-time coach mark for the hint, shown to every player once. -->
+<div id="hint-coach" class="coach" hidden>
+<p class="coach-title">Hints</p>
+<p class="coach-body">Tap here to see today&rsquo;s book.</p>
+<button type="button" id="hint-coach-close" class="coach-close" aria-label="Dismiss">&times;</button>
+</div>
 </header>
 
 <!-- 6 rows × 5 tiles -->
@@ -171,7 +178,7 @@
 <div class="sheet-inner">
 <button class="sheet-close" aria-label="Close" data-close-hint>&times;</button>
 <h2 class="sheet-title">Need a hint?</h2>
-<p class="spoiler-flair-row"><span class="spoiler-flair">Spoiler</span><span class="spoiler-flair-note">See today's book to solve today's word.</span></p>
+<p class="spoiler-flair-row" id="hint-flair-row"><span class="spoiler-flair">Spoiler</span><span class="spoiler-flair-note">See today's book to solve today's word.</span></p>
 
 <div class="hint-spoiler" id="hint-spoiler" role="button" tabindex="0" aria-label="Show today's book">
 <div id="hint-book-hero" class="book-hero">
@@ -188,6 +195,7 @@
 </div>
 <span class="hint-spoiler-veil">Show spoiler</span>
 </div>
+<p id="hint-empty" class="rules-clues" hidden>No cover for today&rsquo;s book, but the title is above.</p>
 
 <p class="footnote">Your streak and stats are not affected.</p>
 </div>
@@ -195,33 +203,52 @@
 
 <dialog id="help-modal" class="sheet">
 <form method="dialog" class="sheet-inner">
-<button class="sheet-close" aria-label="Close">×</button>
+<button class="sheet-close" aria-label="Close">&times;</button>
 <h2 class="sheet-title">How to play</h2>
-<p>Guess the <strong>Booky</strong> in 6 tries.</p>
-<ul class="rules">
-<li>Each guess must be a 5-letter word.</li>
-<li>The tile colors will change to show how close your guess was.</li>
-</ul>
-<p class="rules-clues"><em>Today's word is romantasy-coded.</em> Think fae, dragons, fated mates, sharp blades, the usual.</p>
-<p class="rules-clues">Booky is a Wordle-style daily word game for romantasy readers, a new word every day.</p>
+<p>Guess the word in 6 tries.</p>
+<p class="rules-clues">The squares change colour to show how close your guess was.</p>
 
-<h3 class="examples-title">Examples</h3>
 <div class="ex-row">
 <span class="ex-tile correct">F</span><span class="ex-tile">A</span><span class="ex-tile">T</span><span class="ex-tile">E</span><span class="ex-tile">D</span>
 </div>
-<p class="ex-desc"><strong>F</strong> is in the word and in the right spot.</p>
+<p class="ex-desc"><strong>Purple</strong> &mdash; F is in the word and in the right spot.</p>
 
 <div class="ex-row">
 <span class="ex-tile">C</span><span class="ex-tile present">O</span><span class="ex-tile">U</span><span class="ex-tile">R</span><span class="ex-tile">T</span>
 </div>
-<p class="ex-desc"><strong>O</strong> is in the word but in the wrong spot.</p>
+<p class="ex-desc"><strong>Yellow</strong> &mdash; O is in the word, but not in that spot.</p>
 
 <div class="ex-row">
 <span class="ex-tile">B</span><span class="ex-tile">L</span><span class="ex-tile">A</span><span class="ex-tile absent">D</span><span class="ex-tile">E</span>
 </div>
-<p class="ex-desc"><strong>D</strong> is not in the word.</p>
+<p class="ex-desc"><strong>Grey</strong> &mdash; D is not in the word at all.</p>
 
-<p class="footnote">A new word unlocks at midnight. Miss a day? Your 🛡️ Ward saves the streak once (it recharges at your next 7-day mark).</p>
+<ul class="rules">
+<li>Any 5-letter word works.</li>
+<li>Stuck? Tap <svg class="inline-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.5.4.8.9.9 1.5l.1.7h5.2l.1-.7c.1-.6.4-1.1.9-1.5A6 6 0 0 0 12 3Z"/></svg> for today&rsquo;s book.</li>
+<li>A new word unlocks at midnight.</li>
+</ul>
+
+<!-- Same signup as the win screen, reachable before a player ever finishes.
+     Distinct ids so the two forms never drive each other; both submit through
+     onReminderSubmit, which resolves its fields from the submitted form. -->
+<div id="reminder-form-help" class="reminder-card" data-source="help">
+<div class="reminder-row">
+<input
+type="email"
+id="reminder-email-help"
+placeholder="your@email.com"
+aria-label="Email for daily reminders"
+autocomplete="email"
+inputmode="email"
+required
+/>
+<button type="submit">Remind me</button>
+</div>
+<p class="reminder-pitch reminder-pitch--below">a daily reminder, and your stats saved</p>
+<p class="reminder-toast" hidden></p>
+</div>
+
 <p class="footnote modal-links"><a href="/authors">Are you an author?</a> &middot; <a href="/about">About</a> &middot; <a href="/contact">Contact</a> &middot; <a href="/privacy">Privacy</a> &middot; <a href="/terms">Terms</a></p>
 </form>
 </dialog>
@@ -237,6 +264,7 @@
 <div><span id="stat-streak">0</span><small>🔥 streak</small></div>
 <div><span id="stat-max">0</span><small>max</small></div>
 </div>
+<p id="stat-ward" class="footnote"></p>
 <p id="stat-milestone" class="stat-milestone" hidden></p>
 <h3 class="dist-title">Guess distribution</h3>
 <ul id="stat-dist" class="dist"></ul>
