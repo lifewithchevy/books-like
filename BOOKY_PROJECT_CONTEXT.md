@@ -1,0 +1,51 @@
+# Booky / 90books — Project Context (for Cursor)
+*Distilled from the Claude planning chat's memory, July 8, 2026. HOW TO USE: copy this file into the repo root (or `.cursor/rules/`) via Cursor and commit it, so every tool sees the same context. Update the "Current state" section as things ship.*
+
+## What this project is
+- **Booky** = free daily romantasy word game at 90books.com/booky (Wordle-style, 5 letters, 6 tries; the win screen reveals the romantasy BOOK the word came from, with cover + link). The audience/growth engine.
+- **90books** = the domain + rec site around it. The homepage is now a Booky landing page; curated `/books-like/` pages carry affiliate links (Amazon tag `90books-20`, Bookshop 124660).
+- **The business**: authors pay $25 (founder price) for a featured word day + shareable asset + newsletter mention + honest click report. Readers NEVER pay and reader-facing editorial is NEVER sold. Email list = north-star metric.
+
+## WORKFLOW RULES (prevent the clobbering that burned us before)
+1. **Always `git pull` before starting any work session.**
+2. **Always commit AND push to `main` when done** (Vercel auto-deploys from main; uncommitted work gets clobbered by the next tool that commits).
+3. Never run `vercel deploy` from a stale tree. Deploy = push to main, nothing else.
+4. Multiple tools edit this repo (Cursor, two Claude chats). Small, focused commits with clear messages.
+5. Cross-dependency: every curated `/books-like/` page slug must exist in `CURATED_SLUGS` in `booky/app.js`. New page → add the slug.
+
+## GAME INVARIANTS (breaking these breaks the live game)
+- Every answer in `booky/words.json` MUST exist (uppercase) in `booky/dictionary.json`, or that day is unwinnable. After editing either, bump the `?v=` cache-busting params + app version.
+- **NEVER edit the current or past day's word** (it flips the live word and corrupts players' saved state). Only edit day ≥ tomorrow.
+- Day index epoch = **2026-05-25 with LOCAL-midnight rollover** (see booky/app.js). Anything that computes "today's word" (homepage ribbon, library pages) must use the exact same logic or it leaks/shows the wrong day.
+- Words must be FAIR, common, guessable English words first, themed second.
+- `teases` map in words.json is deliberately empty except for selected promo days.
+
+## BRAND + VOICE RULES
+- Never bare "Booky" in public copy/metadata: use **"Booky, the daily romantasy word game"** (public) or "Booky by 90books" (formal).
+- **NO em-dashes (—) anywhere in site copy** (reads as AI). Commas, periods, parentheses. En-dashes in ranges (2021–2024) are fine. `scripts/dedash.js` exists for sweeps.
+- Casual r/Romantasy reader voice: short sentences, parentheses, no marketing-speak.
+- Public creative assets must be honest: game screenshots are fine, never pass off AI illustration as hand-made art (romantasy community is strongly anti-AI).
+- Paid features MUST show the "Sponsored" disclosure badge in-game (FTC). Unpaid features get NO badge.
+
+## ANALYTICS RULES (PostHog project 443166, us.posthog.com)
+- Events: booky_game_start (noisy, re-fires on refresh, ignore), booky_game_complete (= clean plays), booky_share_clicked, email_signup_completed (NORTH STAR), affiliate_buy_clicked (carries book/title props), rec_voted, goodreads_connected. Archive plays must use SEPARATE events (booky_archive_*), never booky_game_complete.
+- **Tag every external link with UTMs** (utm_source=specific place, utm_medium=type, utm_campaign=specifics). Untagged = invisible (Reddit app strips referrers).
+- `?notrack=1` = analytics opt-out for test devices. Don't pollute the data.
+- Author features get a pretty redirect: `/name` → `/booky?utm_source=<name>&utm_medium=author&utm_campaign=<book>` (pattern: /heba, /starside in vercel.json).
+
+## CURRENT STATE (July 8, 2026 — update as things change)
+- Metrics: ~55-60 players/day (floor doubled in a week), 4-5 email signups/day, ~50 signups all-time, share loop ≈ retention only (1 inbound click ever), Reddit posts in 3 mod-permitted subs = #1 channel (r/Romantasy Sundays, r/frombloodandash, r/Booktokreddit).
+- Homepage = Booky-first landing (ENEMY/LOVER tile preview, one Play CTA, Library section on scroll). Shipped via Cursor Jul 8.
+- Author features so far: Heba Al-Wasity / Weavingshaw (Jul 6, free pilot, ~2 buy clicks, case study #1); Alex Aster / Starside (Jul 8, word RAKER, #45, lottery-tag play).
+- First PAID author push in progress: $25 founder price, Stripe payment link exists, pitches out (Briella Brezzo + batch). Payment BEFORE scheduling, always.
+
+## IN-FLIGHT BUILDS (owners + deadlines)
+1. **Real Booky Library shelf** at /booky-library (currently just rebranded discover shelves = a broken promise): top section listing every PAST featured word + book, cover + affiliate link + curated-page link, newest first, strictly indices < today (use the epoch logic!). It's a paid-author deliverable ("permanent shelf listing").
+2. **Homepage title/meta/og:image**: root <title> still sells recs; make it Booky-first ("Booky, the Daily Romantasy Word Game by 90books"), keep recs in the description, and ADD an og:image for the root (none exists! reuse/adapt /booky/og-image.png) so shared links show a preview.
+3. **Archive email-gate** in booky/ (deadline Jul 13): play past Bookys after email signup; separate localStorage namespace + events; never today/future.
+4. **"Sponsored" disclosure badge** rebuild in booky/ (deadline Jul 18, BEFORE first paid feature): keyed off `featured: true` only; old code near v30 (commit cf39385).
+5. **/authors landing page** (copy finalized in the planning chat's `booky-authors-page-2026-07-07.md`): the author-facing door. After it ships, add a slim author strip to the homepage.
+6. **Em-dash sweep**: 3 literal + ~25 — rendered em-dashes crept back into rec pitch copy in index.html.
+
+## JULY PLAN (one goal)
+First paid author by ~Jul 24; first paid feature day Aug 1-15. Keep the 3-sub Reddit rotation weekly. Newsletter #1 via Substack ~Jul 15. DON'T: build new features beyond the list above, add ads, charge readers, or promise authors sales (promise deliverables + an honest report).
