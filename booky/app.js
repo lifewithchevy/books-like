@@ -755,6 +755,10 @@ fine.className = 'giveaway-fine is-error';
 fine.textContent = 'hmm, that email looks off. mind checking it?';
 return;
 }
+// Shaped like an email but the domain looks like a near-miss. Offer the fix
+// and stop; accepting it re-enters here with the corrected address.
+if (offerEmailFix(input, fine, 'giveaway-fine is-error',
+() => onGiveawaySubmit({ preventDefault() {} }))) return;
 enterGiveaway(email, $('giveaway-submit'), 'enter');
 }
 
@@ -823,6 +827,87 @@ if (ev.key === 'Enter') { ev.preventDefault(); go(); }
 });
 }
 
+// ---- Email typo catcher ----
+// The signup regex only asks for x@y.z, so "icloud.con" and "hoymail.com" were
+// both accepted, stored, and mailed to forever with no chance of arriving. Two
+// of them turned up in one giveaway. Suggest, never block: the guess can be
+// wrong, and an address on a domain we have never heard of is far more likely
+// to be real than to be a typo.
+const KNOWN_DOMAINS = [
+'gmail.com', 'googlemail.com',
+'yahoo.com', 'yahoo.co.uk', 'yahoo.ca', 'yahoo.de',
+'hotmail.com', 'hotmail.co.uk', 'hotmail.fr', 'hotmail.de',
+'outlook.com', 'outlook.co.uk', 'live.com', 'live.co.uk', 'live.de', 'msn.com',
+'icloud.com', 'me.com', 'mac.com',
+'aol.com', 'proton.me', 'protonmail.com',
+'gmx.de', 'gmx.net', 'gmx.at', 'gmx.ch', 'web.de', 't-online.de',
+'comcast.net', 'sbcglobal.net', 'verizon.net', 'btinternet.com',
+];
+
+// Damerau-Levenshtein, not plain Levenshtein: a transposition has to score as
+// ONE edit. "gmial.com" is the single most common Gmail typo and plain
+// Levenshtein calls it two, which would miss it.
+function editDistance(a, b) {
+if (Math.abs(a.length - b.length) > 1) return 99;
+const d = Array.from({ length: a.length + 1 }, (_, i) =>
+Array.from({ length: b.length + 1 }, (_, j) => (i === 0 ? j : j === 0 ? i : 0))
+);
+for (let i = 1; i <= a.length; i++) {
+for (let j = 1; j <= b.length; j++) {
+const cost = a[i - 1] === b[j - 1] ? 0 : 1;
+d[i][j] = Math.min(d[i - 1][j] + 1, d[i][j - 1] + 1, d[i - 1][j - 1] + cost);
+if (i > 1 && j > 1 && a[i - 1] === b[j - 2] && a[i - 2] === b[j - 1]) {
+d[i][j] = Math.min(d[i][j], d[i - 2][j - 2] + 1);
+}
+}
+}
+return d[a.length][b.length];
+}
+
+function suggestEmailFix(email) {
+const at = email.lastIndexOf('@');
+if (at < 1) return null;
+const domain = email.slice(at + 1).toLowerCase();
+// A domain that is already correct is never a typo of another one. Without
+// this guard "gmx.de" would be offered "gmx.net" — one edit apart, both real.
+if (!domain || KNOWN_DOMAINS.includes(domain)) return null;
+for (const known of KNOWN_DOMAINS) {
+if (editDistance(domain, known) === 1) return email.slice(0, at + 1) + known;
+}
+return null;
+}
+
+// Returns true if a suggestion was shown, in which case the caller must STOP.
+// This BLOCKS: there is deliberately no "press again to save it anyway". A
+// stored typo is not a one-off failure, it is a permanent bounce on every
+// send from then on, and a rising bounce rate is charged to the whole list's
+// deliverability — one bad address makes the other 243 harder to reach.
+//
+// The cost of blocking is a real hard lockout for anyone whose genuine domain
+// is one edit from a big provider. That is why suggestEmailFix only ever
+// matches the handful of providers where a one-letter neighbour is essentially
+// never a real domain, and never fires on an address that is already correct.
+// The way out is to accept the fix or type a different address.
+function offerEmailFix(input, target, className, onAccept) {
+const email = (input.value || '').trim();
+const fixed = suggestEmailFix(email);
+if (!fixed) return false;
+
+target.className = className;
+target.hidden = false;
+target.textContent = 'did you mean ';
+const btn = document.createElement('button');
+btn.type = 'button';
+btn.className = 'typo-fix';
+btn.textContent = fixed;
+btn.addEventListener('click', () => {
+input.value = fixed;
+onAccept();
+});
+target.append(btn, '?');
+return true;
+}
+
 async function onReminderSubmit(e) {
 e.preventDefault();
 // Resolve inside the submitted form, not by id: the same signup now appears
@@ -845,6 +930,13 @@ toast.className = 'reminder-toast reminder-error';
 toast.hidden = false;
 return;
 }
+
+// Shaped like an email but the domain looks like a near-miss. Offer the fix
+// and stop; accepting it re-enters here with the corrected address.
+// Re-enter with a synthetic event, not `e`: currentTarget is nulled once the
+// original dispatch ends, and this runs from a later click.
+if (offerEmailFix(input, toast, 'reminder-toast reminder-error',
+() => onReminderSubmit({ preventDefault() {}, currentTarget: form }))) return;
 
 const label = btn.textContent;
 btn.disabled = true;

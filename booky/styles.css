@@ -925,6 +925,23 @@ body {
 .reminder-success { color: var(--accent-2); }
 .reminder-error   { color: #ff8aa3; }
 
+/* The corrected address inside a "did you mean …?" line. A real <button> so it
+   is reachable by keyboard and announced as an action, painted to read as
+   inline text — it sits mid-sentence, and a boxed button there would look like
+   the address itself is the control. Wraps, because a long address on a narrow
+   phone otherwise pushes the "?" off the card. */
+.typo-fix {
+  background: none;
+  border: 0;
+  padding: 0;
+  font: inherit;
+  color: var(--accent-2);
+  text-decoration: underline;
+  cursor: pointer;
+  overflow-wrap: anywhere;
+}
+.typo-fix:hover { color: var(--accent); }
+
 /* ---- Giveaway card (win screen, date-driven) ----
    Gold so it never competes with the pink book-hero card directly above it.
    Cover left + everything stacked right keeps it ~112px tall; going much
