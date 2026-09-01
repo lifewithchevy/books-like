@@ -10,8 +10,12 @@
 //
 // Actions (?action=):
 //   status       read-only. entrant count, whether a winner exists. Default.
-//   draw         pick the winner at random and record it. Idempotent.
+//   draw         pick the winner and record it. Idempotent.
 //   redraw       previous winner never claimed. Excludes everyone already drawn.
+//
+// The draw is WEIGHTED by games played: one ticket per game, floor of one, so
+// everyone can win but the regulars are likelier to. Add `&weighted=no` for a
+// flat draw. See the comment at the selection itself for why.
 //   send-winner  email the winner.
 //   send-list    email every other active subscriber.
 //
@@ -25,7 +29,7 @@
 // returns it rather than rolling again.
 
 const { winnerEmail, winnerEmailPlain, listEmail, displayName } = require('../lib/giveaway-emails');
-const { streakOf } = require('./_stats-codec');
+const { streakOf, decodeStats } = require('./_stats-codec');
 
 const WON_SUFFIX  = '#WON';
 const SENT_SUFFIX = '#SENT';
@@ -137,13 +141,62 @@ module.exports = async (req, res) => {
     }
     // crypto.randomInt, not Math.random: unbiased and not seedable, so the draw
     // is defensible if a reader ever asks how the winner was picked.
-    const pick = pool[require('crypto').randomInt(pool.length)];
+    const crypto = require('crypto');
+
+    // WEIGHTED BY GAMES PLAYED. One ticket per game, minimum one ticket, so a
+    // player who entered on their first day can still win and a player on their
+    // 92nd game is 92x likelier. Flat was defensible but it wasted the thing
+    // that makes this list worth having: on the Knave draw 44% of entrants had
+    // played twice or fewer, and they carried the same odds as the regulars.
+    //
+    // `&weighted=no` restores the flat draw. It stays reachable because
+    // weighting is an editorial choice about what a giveaway is FOR, and a
+    // future giveaway aimed at new players wants the opposite.
+    const weighted = url.searchParams.get('weighted') !== 'no';
+    const ticketsFor = (c) => {
+      const played = decodeStats(c.first_name).played;
+      // played is null on a legacy contact that only ever stored a bare streak.
+      // Those get the floor rather than zero — a missing record is not evidence
+      // that someone never played, and nobody should be silently unwinnable.
+      return played != null && played > 0 ? played : 1;
+    };
+
+    let pick;
+    let tickets = null;
+    let totalTickets = null;
+    if (weighted) {
+      totalTickets = pool.reduce((sum, c) => sum + ticketsFor(c), 0);
+      // Walk the cumulative weights. randomInt(total) is always < total and
+      // every entrant holds at least one ticket, so a winner is always found;
+      // the fallback exists so a future change to ticketsFor can never return
+      // undefined and record a winner of "undefined".
+      let roll = crypto.randomInt(totalTickets);
+      for (const c of pool) {
+        roll -= ticketsFor(c);
+        if (roll < 0) { pick = c; break; }
+      }
+      if (!pick) pick = pool[pool.length - 1];
+      tickets = ticketsFor(pick);
+    } else {
+      pick = pool[crypto.randomInt(pool.length)];
+    }
     const ok = await patchContact(KEY, AUDIENCE_ID, pick.email, { last_name: `${tag}${WON_SUFFIX}` });
     if (!ok) { res.status(502).json({ error: 'could-not-record-winner', email: pick.email }); return; }
     res.status(200).json({
       ok: true, drawn: true, redrawn: action === 'redraw',
-      winner: { email: pick.email, name: displayName(pick.email) },
+      method: weighted ? 'weighted-by-games-played' : 'flat',
+      winner: {
+        email: pick.email,
+        name: displayName(pick.email),
+        // Shown so the draw can be explained afterwards rather than asserted.
+        ...(weighted ? {
+          gamesPlayed: decodeStats(pick.first_name).played,
+          tickets,
+          oddsPercent: Math.round((tickets / totalTickets) * 1000) / 10,
+        } : {}),
+      },
       entrants: entrants.length,
+      ...(weighted ? { totalTickets } : {}),
     });
     return;
   }
