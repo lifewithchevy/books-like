@@ -179,14 +179,14 @@
     "SLOTH",
     "CREST",
     "ARRAY",
-    "ELAIN",
+    "REBEL",
     "FEYRE",
     "MASKS",
     "SPELL",
     "SOOTY",
     "CLOAK",
     "REIGN",
-    "KINGS",
+    "TUSKS",
     "HOUND",
     "FROST",
     "JEWEL",
@@ -305,6 +305,8 @@
     "TAIRN",
     "BRIAR",
     "COBRA",
+    "ELAIN",
+    "KINGS",
     "HALOS"
   ],
   "wordBooks": {
@@ -2696,6 +2698,48 @@
       "author": "Penn Cole",
       "cover": "/booky/covers/burn-of-the-everflame.jpg",
       "buyUrl": "https://www.amazon.com/dp/1668200228?tag=90books-20"
+    },
+    "DRYAD": {
+      "slug": "emily-wildes-encyclopaedia",
+      "title": "Emily Wilde's Encyclopaedia of Faeries",
+      "author": "Heather Fawcett",
+      "cover": "/booky/covers/emily-wildes-encyclopaedia.jpg",
+      "buyUrl": "https://www.amazon.com/dp/059350013X?tag=90books-20"
+    },
+    "SMELL": {
+      "slug": "paladins-grace",
+      "title": "Paladin's Grace",
+      "author": "T. Kingfisher",
+      "cover": "/booky/covers/paladins-grace.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1614505217?tag=90books-20"
+    },
+    "TUSKS": {
+      "slug": "tusk-love",
+      "title": "Tusk Love",
+      "author": "Thea Guanzon",
+      "cover": "/booky/covers/tusk-love.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0593874269?tag=90books-20"
+    },
+    "BOLTS": {
+      "slug": "red-queen",
+      "title": "Red Queen",
+      "author": "Victoria Aveyard",
+      "cover": "/booky/covers/red-queen.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0062310631?tag=90books-20"
+    },
+    "GALES": {
+      "slug": "the-hurricane-wars",
+      "title": "The Hurricane Wars",
+      "author": "Thea Guanzon",
+      "cover": "/booky/covers/the-hurricane-wars.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0063277255?tag=90books-20"
+    },
+    "REBEL": {
+      "slug": "conform",
+      "title": "Conform",
+      "author": "Ariel Sullivan",
+      "cover": "/booky/covers/conform.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1035072262?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
