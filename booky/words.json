@@ -126,11 +126,11 @@
     "SYBIL",
     "TROVE",
     "VEGAS",
-    "VAULT",
+    "SPARK",
     "JACKS",
     "ALPHA",
     "RIDOC",
-    "SPARK",
+    "BURNS",
     "DRAWS",
     "ACRUX",
     "SMOKE",
@@ -300,11 +300,12 @@
     "POPPY",
     "TAROT",
     "FORGE",
-    "HALOS",
+    "VAULT",
     "SCION",
     "TAIRN",
     "BRIAR",
-    "COBRA"
+    "COBRA",
+    "HALOS"
   ],
   "wordBooks": {
     "COURT": {
@@ -2688,6 +2689,13 @@
       "author": "Caroline Peckham & Susanne Valenti",
       "cover": "/booky/covers/zodiac-academy.jpg",
       "buyUrl": "https://www.amazon.com/dp/1916926258?tag=90books-20"
+    },
+    "BURNS": {
+      "slug": "burn-of-the-everflame",
+      "title": "Burn of the Everflame",
+      "author": "Penn Cole",
+      "cover": "/booky/covers/burn-of-the-everflame.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1668200228?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
