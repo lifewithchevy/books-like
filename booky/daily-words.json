@@ -127,8 +127,8 @@
     "TROVE",
     "VEGAS",
     "SPARK",
-    "JACKS",
     "ALPHA",
+    "JACKS",
     "RIDOC",
     "BURNS",
     "DRAWS",
@@ -2754,6 +2754,13 @@
       "author": "Demi Winters",
       "cover": "/booky/covers/the-road-of-bones.jpg",
       "buyUrl": "https://www.amazon.com/dp/0593975618?tag=90books-20"
+    },
+    "UNDID": {
+      "slug": "this-kingdom-will-not-kill-me",
+      "title": "This Kingdom Will Not Kill Me",
+      "author": "Ilona Andrews",
+      "cover": "/booky/covers/this-kingdom-will-not-kill-me.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250377269?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
