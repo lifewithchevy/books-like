@@ -469,7 +469,11 @@
 
   // Open days: hide anything inside the 3-week lead time so a stale list can
   // never offer a day that cannot be delivered.
-  (function () {
+  // ⚠️ This lives in <head>, so the <ul> does not exist yet. Without the
+  // DOMContentLoaded wrapper getElementById returns null, the function returns
+  // early, and NOTHING is ever hidden — the page silently offered days inside
+  // the lead time (and days already past) for as long as that was true.
+  function initOpenDays() {
     var ul = document.getElementById('openDays');
     if (!ul) return;
     var cutoff = new Date();
@@ -485,7 +489,12 @@
       var none = document.getElementById('openDaysNone');
       if (none) none.hidden = false;
     }
-  })();
+  }
+  if (document.readyState === 'loading') {
+    document.addEventListener('DOMContentLoaded', initOpenDays);
+  } else {
+    initOpenDays();
+  }
 
   function trackAuthorsCta(channel) {
     try { window.posthog && posthog.capture && posthog.capture('authors_cta_clicked', { channel: channel, page: '/authors' }); } catch (e) {}
