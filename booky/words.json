@@ -2740,6 +2740,20 @@
       "author": "Ariel Sullivan",
       "cover": "/booky/covers/conform.jpg",
       "buyUrl": "https://www.amazon.com/dp/1035072262?tag=90books-20"
+    },
+    "SLAVE": {
+      "slug": "daughter-of-no-worlds",
+      "title": "Daughter of No Worlds",
+      "author": "Carissa Broadbent",
+      "cover": "/booky/covers/daughter-of-no-worlds.jpg",
+      "buyUrl": "https://www.amazon.com/dp/125040536X?tag=90books-20"
+    },
+    "ROADS": {
+      "slug": "the-road-of-bones",
+      "title": "The Road of Bones",
+      "author": "Demi Winters",
+      "cover": "/booky/covers/the-road-of-bones.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0593975618?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
