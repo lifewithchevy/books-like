@@ -250,6 +250,16 @@ body {
   margin: 0;
 }
 .wordmark a { color: var(--ink); text-decoration: none; }
+/* Wordmark is the Libre Baskerville logo (2026-09-03). Two files rather than
+   one tinted SVG: an <img> cannot inherit currentColor, and inlining 4KB of
+   path data into the shell on every load costs more than a second request. */
+.wordmark a img { height: 26px; width: auto; display: block; margin: 0 auto; }
+.wordmark a .wm-light { display: none; }
+.wordmark a .wm-dark  { display: block; }
+@media (prefers-color-scheme: light) {
+  .wordmark a .wm-light { display: block; }
+  .wordmark a .wm-dark  { display: none; }
+}
 .puzzle-no {
   display: block;
   font-family: var(--font-sans);

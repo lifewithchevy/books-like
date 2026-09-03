@@ -1731,7 +1731,7 @@ if (el) el.textContent = `${pad(h)}:${pad(m)}:${pad(s)}`;
 
 function showFatal(msg) {
 document.body.innerHTML = `<main style="padding:40px 20px;max-width:480px;margin:0 auto;text-align:center;color:#f6ecf3;font-family:system-ui">
-<h1 style="font-size:26px;font-family:'Cormorant Garamond',serif">Booky</h1>
+<img src="/logo/booky-light.svg" alt="Booky" style="height:28px;width:auto;display:block;margin:0 auto">
 <p style="color:#b09ab8;margin-top:14px">${msg}</p>
 <p style="margin-top:20px"><a href="/" style="color:#f8b6da">← Back to 90books</a></p>
 </main>`;
