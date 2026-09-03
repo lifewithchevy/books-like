@@ -341,7 +341,7 @@ function buildHtml({ subject, headline, subline, today, playUrl, updateNote, uns
     <tr><td align="center">
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
         <tr><td align="center">
-          <img src="https://90books.com/logo/booky-email.png" width="132" height="51" alt="Booky" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;">
+          <img src="https://90books.com/logo/booky-email.png" width="104" height="40" alt="Booky" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;">
           <p style="margin:0 0 24px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;">${today}</p>
           <p style="margin:0 0 12px;font-size:18px;line-height:1.5;color:#2a0a26;font-weight:600;">${headline}</p>
           <p style="margin:0 0 24px;font-size:14px;line-height:1.5;color:#6a4a6c;">${subline}</p>
