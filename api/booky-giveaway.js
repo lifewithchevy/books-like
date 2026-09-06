@@ -240,7 +240,14 @@ module.exports = async (req, res) => {
     if (!confirm) { res.status(400).json({ error: 'needs-confirm', hint: 'add &confirm=yes' }); return; }
     if (!existing) { res.status(409).json({ error: 'no-winner-drawn', hint: 'run ?action=draw first' }); return; }
 
-    const winnerName = displayName(existing.email);
+    // displayName() only splits the local part on . _ + -, so an address with
+    // no separator comes back whole: emilyrsilva14@gmail.com renders as
+    // "Emilyrsilva14". That is ugly in a mail to one person and a small privacy
+    // leak in a mail to 78, since a gmail handle reconstructs the address.
+    // `?winnerName=` lets the real name be passed once it is known, usually
+    // from the winner's own reply.
+    const winnerName = (url.searchParams.get('winnerName') || '').trim().slice(0, 40)
+      || displayName(existing.email);
 
     if (action === 'send-winner') {
       if (marker(existing).endsWith(SENT_SUFFIX)) {
@@ -254,17 +261,43 @@ module.exports = async (req, res) => {
       return;
     }
 
-    // Everyone except the winner. Non-entrants included on purpose: release day
-    // is the commercial moment, and it is what makes them enter the next one.
+    // Who gets the result mail. `all` (the default, and what giveaway 1 did)
+    // is everyone active: release day is the commercial moment and it is what
+    // makes non-entrants enter the next one. `entrants` is the narrower send,
+    // for when the whole list is not the right audience — during the Microsoft
+    // deliverability block, for instance, where every extra recipient is
+    // another chance to bounce.
+    const entrantsOnly = url.searchParams.get('audience') === 'entrants';
     const mail = listEmail({ ga, winnerName, entries: entrants.length, amzTag });
-    const audience = active.filter((c) => c.email !== existing.email);
+    const audience = (entrantsOnly ? entrants : active)
+      .filter((c) => c.email !== existing.email);
+
+    // Count first, send second. `dry=1` reports exactly who would be mailed
+    // without sending, because "how many people is this about to hit" is the
+    // one thing you want to be sure of before a send you cannot recall.
+    if (url.searchParams.get('dry') === '1') {
+      res.status(200).json({
+        ok: true, dryRun: true,
+        audience: entrantsOnly ? 'entrants' : 'all',
+        wouldSend: audience.length,
+        winnerName,
+        subject: mail.subject,
+        recipients: audience.map((c) => c.email),
+      });
+      return;
+    }
+
     let sent = 0, failed = 0;
     for (const c of audience) {
       const ok = await sendOne(KEY, FROM, c.email, mail, 'giveaway-result');
       ok ? sent++ : failed++;
       await new Promise((r) => setTimeout(r, 600)); // Resend allows 2/s, stay under
     }
-    res.status(200).json({ ok: true, sent, failed, audience: audience.length });
+    res.status(200).json({
+      ok: true, sent, failed,
+      audience: audience.length,
+      audienceKind: entrantsOnly ? 'entrants' : 'all',
+    });
     return;
   }
 
