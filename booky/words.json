@@ -132,7 +132,7 @@
     "JACKS",
     "ROSES",
     "CURSE",
-    "SAILS",
+    "SHIPS",
     "ACRUX",
     "SMOKE",
     "PRIDE",
@@ -2764,6 +2764,13 @@
       "author": "Ilona Andrews",
       "cover": "/booky/covers/this-kingdom-will-not-kill-me.jpg",
       "buyUrl": "https://www.amazon.com/dp/1250377269?tag=90books-20"
+    },
+    "SHIPS": {
+      "slug": "tempest",
+      "title": "Tempest",
+      "author": "Victoria Aveyard",
+      "cover": "/booky/covers/tempest.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B0GF8TSTJ8?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
