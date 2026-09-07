@@ -131,7 +131,7 @@
     "ALPHA",
     "JACKS",
     "ROSES",
-    "BURNS",
+    "CURSE",
     "SAILS",
     "ACRUX",
     "SMOKE",
@@ -309,7 +309,8 @@
     "ELAIN",
     "KINGS",
     "HALOS",
-    "DRAWS"
+    "DRAWS",
+    "BURNS"
   ],
   "wordBooks": {
     "COURT": {
@@ -404,11 +405,11 @@
       "buyUrl": "https://www.amazon.com/dp/1635577020?tag=90books-20"
     },
     "CURSE": {
-      "slug": "a-touch-of-darkness",
-      "title": "A Touch of Darkness",
-      "author": "Scarlett St. Clair",
-      "cover": "/booky/covers/a-touch-of-darkness.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1728258456?tag=90books-20"
+      "slug": "burn-of-the-everflame",
+      "title": "Burn of the Everflame",
+      "author": "Penn Cole",
+      "cover": "/booky/covers/burn-of-the-everflame.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B0GXGQZ7Y1?tag=90books-20"
     },
     "BLOOD": {
       "slug": "from-blood-and-ash",
@@ -2699,7 +2700,7 @@
       "title": "Burn of the Everflame",
       "author": "Penn Cole",
       "cover": "/booky/covers/burn-of-the-everflame.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1668200228?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B0GXGQZ7Y1?tag=90books-20"
     },
     "DRYAD": {
       "slug": "emily-wildes-encyclopaedia",
