@@ -137,13 +137,13 @@
     "SMOKE",
     "PRIDE",
     "GUILE",
-    "ALLOY",
+    "BOWEL",
     "CODEX",
     "SWORN",
     "NYMPH",
     "WARDS",
     "GAMES",
-    "EERIE",
+    "ALLOY",
     "CACHE",
     "NORTH",
     "AZURE",
@@ -310,7 +310,8 @@
     "KINGS",
     "HALOS",
     "DRAWS",
-    "BURNS"
+    "BURNS",
+    "EERIE"
   ],
   "wordBooks": {
     "COURT": {
