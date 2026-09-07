@@ -2771,6 +2771,13 @@
       "author": "Victoria Aveyard",
       "cover": "/booky/covers/tempest.jpg",
       "buyUrl": "https://www.amazon.com/dp/B0GF8TSTJ8?tag=90books-20"
+    },
+    "BOWEL": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B00OZP5VRS?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
