@@ -137,6 +137,22 @@ html, body {
      installs a custom PTR gesture in app.js instead. */
 }
 
+/* ...but a page that is a LIST, not a board, has to scroll. /booky/archive
+   shares this stylesheet and inherited the rule above, which left its 111
+   cards unreachable: the page was taller than the viewport and pinned.
+   Opt in with class="page-scrolls" on <html>.
+
+   Worth knowing if you are ever testing this: element.scrollIntoView() and
+   window.scrollTo() still move an overflow:hidden document, so a scripted
+   check passes while a real finger or wheel does nothing. Scroll it by hand,
+   or assert window.scrollY after a wheel event. */
+html.page-scrolls,
+html.page-scrolls body {
+  height: auto;
+  min-height: 100dvh;
+  overflow: visible;
+}
+
 /* Custom pull-to-refresh (body is non-scrolling) */
 .ptr-indicator {
   position: fixed;
