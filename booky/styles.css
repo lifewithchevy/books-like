@@ -618,7 +618,12 @@ body {
   cursor: pointer;
   padding: 4px 8px;
 }
-#end-modal .sheet-close { top: calc(20px + env(safe-area-inset-top, 0px)); right: 16px; }
+/* Close button on the end screen sits on the BOOKY #NNN line. Anchored to
+   .end-top, not the dialog, so it stays aligned whether the content is
+   centred (tall screens) or top aligned (short ones). -9px centres the 32px
+   tap target on the 13px line box while keeping the target full size. */
+#end-modal .end-top { position: relative; }
+#end-modal .sheet-close { top: -9px; right: 0; }
 .sheet-close:hover { color: var(--ink); }
 .sheet-title {
   font-family: var(--font-serif);
@@ -1082,6 +1087,7 @@ body {
      thing to fall under the toolbar. Collapse it to one line and tighten the
      neighbours just enough that it lands above the fold on a 664px viewport. */
   #end-modal .end-support { margin-top: 6px; font-size: 11px; line-height: 1.45; }
+  #end-modal .next { line-height: 1.5; }
   #end-modal .end-support br { display: none; }
   #end-modal .book-hero-title { margin-top: 6px; }
   #end-modal .reminder-pitch--below { margin-top: 4px; }
@@ -1562,3 +1568,10 @@ body.og-image-page {
 .end-support { margin-top: 14px; }
 .support-line a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
 .support-line a:hover { color: var(--ink); }
+
+/* Very narrow phones (320px, iPhone SE 1st gen): headroom for the support
+   line, which is the first thing to fall under the toolbar. */
+@media (max-width: 360px) {
+  #end-modal .end-inner { gap: 8px; padding-bottom: 10px; }
+  #end-modal .end-support { margin-top: 4px; }
+}
