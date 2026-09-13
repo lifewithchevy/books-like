@@ -651,6 +651,18 @@ if (shareSheet) {
 }
 $('end-modal').querySelector('[data-close-end]').addEventListener('click', (e) => {
 e.preventDefault();
+// Closing today's win screen leaves you on today's board, which is where you
+// want to be. Closing an ARCHIVE one would leave you staring at a solved
+// board from July with nowhere to go, so it takes you back where you came
+// from instead: the previous page if that was on 90books, the archive
+// otherwise (a direct link, a bookmark, a shared /booky?day=N).
+if (ARCHIVE) {
+  let cameFromSite = false;
+  try { cameFromSite = !!document.referrer && new URL(document.referrer).origin === location.origin; } catch {}
+  if (cameFromSite && history.length > 1) history.back();
+  else location.href = '/booky/archive';
+  return;
+}
 $('end-modal').close();
 });
 wireReminder($('reminder-form'));
