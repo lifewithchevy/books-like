@@ -621,8 +621,10 @@ body {
    divider (.reminder-card: 1px var(--border) with matching padding), so the
    win screen has one divider treatment rather than two. */
 #end-modal .next {
-  margin: 14px 0 0;
-  padding-top: 14px;
+  /* Tightened 2026-09-13 with the removal of the reminder pitch line: the
+     archive line and everything under it sit closer to the email card. */
+  margin: 10px 0 0;
+  padding-top: 11px;
   border-top: 1px solid var(--border);
 }
 .end-top { text-align: center; }
@@ -1111,7 +1113,7 @@ body {
      the support line fall under the toolbar again, which is the bug this whole
      block exists to stop. */
   #end-modal .end-inner { gap: 6px; }
-  #end-modal .next { margin-top: 9px; padding-top: 9px; }
+  #end-modal .next { margin-top: 7px; padding-top: 8px; }
   #end-modal .next { line-height: 1.5; }
   #end-modal .end-support br { display: none; }
   #end-modal .book-hero-title { margin-top: 6px; }
@@ -1590,7 +1592,7 @@ body.og-image-page {
 .support-line { margin-top: 18px; text-align: center; line-height: 1.6; }
 /* keep the Contact line centred under it, not left-aligned */
 .support-line + .modal-links { margin-top: 6px; text-align: center; }
-.end-support { margin-top: 14px; }
+.end-support { margin-top: 10px; }
 .support-line a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
 .support-line a:hover { color: var(--accent-2); }
 
