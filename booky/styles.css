@@ -24,6 +24,14 @@
   --key-bg: #3a213e;
   --key-bg-active: #2d1834;
 
+  /* ONE link colour for the whole game. Every text link resolves to this:
+     the support line, the help sheet's Contact, the Amazon CTA, the back
+     links, the archive links. It was four different colours before, and the
+     rule now is that a link is this pink and nothing else picks it.
+     Contrast on both grounds, measured: 5.05:1 dark, 4.52:1 light. Both
+     clear WCAG AA, so there is no accessibility reason to fork it again. */
+  --link: var(--accent);
+
   --border: #3a213e;
   --backdrop: rgba(8, 2, 10, 0.78);
 
@@ -211,7 +219,7 @@ body {
   display: inline-flex;
   align-items: center;
   gap: 5px;
-  color: var(--ink-faint);
+  color: var(--link);
   text-decoration: none;
   font-family: var(--font-sans);
   font-size: 12px;
@@ -220,8 +228,8 @@ body {
   padding: 2px 6px 2px 0;
   transition: color 0.15s;
 }
-.home-link:hover { color: var(--accent-2); }
-.home-link:active { color: var(--accent); }
+.home-link:hover { color: var(--link); }
+.home-link:active { color: var(--link); }
 
 /* Topbar */
 .topbar {
@@ -1213,7 +1221,7 @@ body {
   display: block;
   margin-top: 9px;
   text-align: center;
-  color: var(--accent-2);
+  color: var(--link);
   font-weight: 600;
   font-size: 16px;
   text-decoration: underline;
@@ -1560,8 +1568,8 @@ body.og-image-page {
    overflow hidden, so it has no room for a site footer; this is where those
    links live instead. */
 .modal-links { margin-top: 10px; }
-.modal-links a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
-.modal-links a:hover { color: #ec84bd; }
+.modal-links a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+.modal-links a:hover { color: var(--accent-2); }
 
 
 /* Leaving animation for the hint callout. It dismisses on any tap, any key,
@@ -1583,8 +1591,8 @@ body.og-image-page {
 /* keep the Contact line centred under it, not left-aligned */
 .support-line + .modal-links { margin-top: 6px; text-align: center; }
 .end-support { margin-top: 14px; }
-.support-line a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
-.support-line a:hover { color: var(--ink); }
+.support-line a { color: var(--link); text-decoration: underline; text-underline-offset: 2px; }
+.support-line a:hover { color: var(--accent-2); }
 
 /* Very narrow phones (320px, iPhone SE 1st gen): headroom for the support
    line, which is the first thing to fall under the toolbar. */
@@ -1613,7 +1621,7 @@ body.og-image-page {
   letter-spacing: 0.02em;
   color: var(--ink-dim);
 }
-.archive-banner a { color: var(--accent); text-decoration: none; }
+.archive-banner a { color: var(--link); text-decoration: none; }
 .archive-banner a:hover { text-decoration: underline; }
 
 /* ---- The archive page itself ---- */
@@ -1759,7 +1767,7 @@ body.og-image-page {
   font-size: 12px;
   color: var(--ink-dim);
 }
-.archive-foot a { color: var(--accent); text-decoration: none; }
+.archive-foot a { color: var(--link); text-decoration: none; }
 .archive-foot a:hover { text-decoration: underline; }
 
 @media (prefers-reduced-motion: reduce) {
@@ -1770,7 +1778,7 @@ body.og-image-page {
 /* The archive link lives inside the countdown line, so only the link itself is
    emphasised: the sentence stays as quiet as the countdown always was. */
 #end-modal .next a {
-  color: var(--accent);
+  color: var(--link);
   text-decoration: underline;
   text-underline-offset: 2px;
   font-weight: 600;
