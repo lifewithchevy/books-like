@@ -46,7 +46,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=47" />
+<link rel="stylesheet" href="/booky/styles.css?v=49" />
 <!-- PostHog analytics -->
 <script>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
@@ -94,8 +94,8 @@
 </header>
 
 <main class="archive-page">
-<p class="archive-intro">Play every word since day one.<br>
-<strong>Your streak and stats are not affected.</strong></p>
+<p class="footnote archive-intro">Play every word since day one.<br>
+Your streak and stats are not affected.</p>
 
 <ol id="archive-grid" class="archive-grid" reversed>
 <li class="archive-item"><p class="archive-caption">Loading past games&hellip;</p></li>
@@ -193,6 +193,22 @@
       if (window.posthog && posthog.capture) {
         posthog.capture('booky_archive_view', { days_available: last, days_played: seen.length });
       }
+
+      // Which day someone picks is the interesting half. `days_ago` is what
+      // answers the real question: do people replay yesterday, or do they dig?
+      // Delegated on the grid, so it survives the innerHTML render above and
+      // costs one listener instead of 111.
+      grid.addEventListener('click', function (e) {
+        var link = e.target.closest && e.target.closest('.archive-link');
+        if (!link || !window.posthog || !posthog.capture) return;
+        var d = Number((link.getAttribute('href').split('day=')[1] || 0));
+        if (!d) return;
+        posthog.capture('booky_archive_day_opened', {
+          word_number: d,
+          days_ago: last + 1 - d,
+          days_available: last,
+        });
+      });
     })
     .catch(function () {
       grid.innerHTML = '<li class="archive-item"><p class="archive-caption">' +
