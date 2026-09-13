@@ -1587,8 +1587,10 @@ const archiveNext = $('end-archive-next');
 if (ARCHIVE) {
   if (nextLine) nextLine.hidden = true;
   if (archiveNext) archiveNext.hidden = false;
-  reminderForm.style.display = 'none';
-  $('reminder-active').hidden = true;
+  // The email section stays exactly as it is on today's win screen
+  // (2026-09-13, Olga). It is an offer to save your stats and get the daily
+  // mail, which is just as true after an archive game as after today's, and
+  // hiding it made this screen quietly different for no reason.
 } else {
   if (nextLine) nextLine.hidden = false;
   if (archiveNext) archiveNext.hidden = true;
