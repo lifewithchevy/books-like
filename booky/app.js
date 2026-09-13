@@ -1480,6 +1480,10 @@ wardEl.hidden = true;
 renderStatsModal();
 
 // Hero 2: the word's book. CTA adapts — sponsored buy link, curated page, or none.
+// "Today's word" is a lie on a replay of July 5th.
+const heroLabel = $('book-hero-label');
+if (heroLabel) heroLabel.textContent = ARCHIVE ? 'This word is from' : "Today's word is from";
+
 const bookRec = DATA.wordBooks?.[ANSWER];
 const recEl = $('book-rec');
 if (bookRec) {
