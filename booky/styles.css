@@ -1537,3 +1537,10 @@ body.og-image-page {
   .coach { animation: none; }
   .coach.coach-out { transition: none; }
 }
+
+/* Support line in the Help modal (added 2026-09-13). */
+.support-line { margin-top: 18px; text-align: center; line-height: 1.6; }
+/* keep the Contact line centred under it, not left-aligned */
+.support-line + .modal-links { margin-top: 6px; text-align: center; }
+.support-line a { color: inherit; text-decoration: underline; text-underline-offset: 2px; }
+.support-line a:hover { color: var(--ink); }
