@@ -605,7 +605,18 @@ body {
 /* Loss headline is longer copy — shrink so it stays on one line (fits down to ~320px phones) */
 #end-modal .celebration.lost .celebration-title { font-size: 24px; white-space: nowrap; }
 #end-modal .reminder-card { margin-top: 0; }
-#end-modal .next { margin: 0; }
+/* Cover images are wrapped in a link that has no text, so it was inheriting
+   the browser's default blue. Never visible, still wrong. */
+.book-hero-cover-link { color: inherit; }
+
+/* The archive line gets the SAME rule the email card above it uses for its
+   divider (.reminder-card: 1px var(--border) with matching padding), so the
+   win screen has one divider treatment rather than two. */
+#end-modal .next {
+  margin: 14px 0 0;
+  padding-top: 14px;
+  border-top: 1px solid var(--border);
+}
 .end-top { text-align: center; }
 .end-top .end-puzzle-no { margin-bottom: 8px; }
 .sheet-close {
@@ -1087,6 +1098,12 @@ body {
      thing to fall under the toolbar. Collapse it to one line and tighten the
      neighbours just enough that it lands above the fold on a 664px viewport. */
   #end-modal .end-support { margin-top: 6px; font-size: 11px; line-height: 1.45; }
+  /* The archive link wraps the countdown line to two lines on a narrow phone,
+     and its divider costs another 29px. Pay for both here rather than letting
+     the support line fall under the toolbar again, which is the bug this whole
+     block exists to stop. */
+  #end-modal .end-inner { gap: 6px; }
+  #end-modal .next { margin-top: 9px; padding-top: 9px; }
   #end-modal .next { line-height: 1.5; }
   #end-modal .end-support br { display: none; }
   #end-modal .book-hero-title { margin-top: 6px; }
@@ -1605,15 +1622,14 @@ body.og-image-page {
   margin: 0 auto;
   padding: 0 16px calc(48px + env(safe-area-inset-bottom, 0px));
 }
+/* Type comes from .footnote, which the game already uses for exactly this
+   kind of line. Only layout is set here. */
 .archive-intro {
   margin: 4px 0 22px;
   text-align: center;
   font-family: var(--font-sans);
-  font-size: 13px;
   line-height: 1.6;
-  color: var(--ink-dim);
 }
-.archive-intro strong { color: var(--ink); font-weight: 700; }
 
 .archive-grid {
   display: grid;
@@ -1749,4 +1765,13 @@ body.og-image-page {
 @media (prefers-reduced-motion: reduce) {
   .archive-cover { transition: none; }
   .archive-link:hover .archive-cover { transform: none; }
+}
+
+/* The archive link lives inside the countdown line, so only the link itself is
+   emphasised: the sentence stays as quiet as the countdown always was. */
+#end-modal .next a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  font-weight: 600;
 }
