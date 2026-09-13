@@ -1657,18 +1657,25 @@ body.og-image-page {
   object-fit: cover;
   display: block;
 }
-/* Unplayed days use the SAME blur as the hint sheet's spoiler cover, value for
-   value: `.hint-spoiler .book-hero` above. If that one is ever retuned, retune
-   this one with it. The blur is presentational only, so the title still ships
-   in the markup for Google and for screen readers.
+/* Concealment has to be measured against the COVER SIZE, not copied as a
+   number. The hint sheet blurs a 167px-wide cover by 20px, which is 12% of its
+   width. Reusing that same 20px here hid half as much, because an archive
+   cover is 335px wide on a phone: twice the cover, same blur, twice the detail
+   left legible. That is how a blurred cover ends up readable.
 
-   The scale(1.08) is not part of the hint's recipe and is not a look change:
-   a 20px blur samples transparent pixels past the edge of the image and
-   feathers the card's corners, so the cover is pushed out far enough that the
-   blur has real pixels to chew on right up to the edge. */
+   So the radius is set per breakpoint to track the rendered width, and it is
+   pitched at 15% rather than the hint's 12% because the hint carries an opaque
+   "Show spoiler" veil on top of its blur and this page has only the blur.
+   A book cover here must be unrecognisable, full stop.
+
+   --cover-blur is the radius; --cover-bleed scales the image out far enough
+   that the blur has real pixels to sample at the edges instead of feathering
+   the card's corners into transparency. It has to grow with the radius. */
 .archive-cover--hidden img {
-  filter: blur(20px) saturate(0.85);
-  transform: scale(1.08);
+  --cover-blur: 50px;
+  --cover-bleed: 1.34;
+  filter: blur(var(--cover-blur)) saturate(0.85);
+  transform: scale(var(--cover-bleed));
 }
 /* The date/number line under each cover. Deliberately the same recipe as
    `.bkl-day-tag` on /booky-library (font: 600 10px Inter, .05em, uppercase,
@@ -1720,9 +1727,13 @@ body.og-image-page {
 
 @media (min-width: 560px) {
   .archive-grid { grid-template-columns: repeat(2, 1fr); }
+  /* 2 across: cover is roughly 250px, so 15% is 38px. */
+  .archive-cover--hidden img { --cover-blur: 38px; --cover-bleed: 1.32; }
 }
 @media (min-width: 820px) {
   .archive-grid { grid-template-columns: repeat(4, 1fr); gap: 30px 22px; }
+  /* 4 across: cover is roughly 190px, so 15% is 28px. */
+  .archive-cover--hidden img { --cover-blur: 28px; --cover-bleed: 1.32; }
 }
 
 .archive-foot {
