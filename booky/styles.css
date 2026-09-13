@@ -1783,3 +1783,21 @@ body.og-image-page {
   text-underline-offset: 2px;
   font-weight: 600;
 }
+
+/* "Show older" on the archive. A quiet outline button, not a primary: Share
+   is the only filled button in the product and this must not compete with it. */
+.archive-more-wrap { margin: 26px 0 0; text-align: center; }
+.archive-more {
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--link);
+  background: transparent;
+  border: 1.5px solid var(--link);
+  border-radius: 999px;
+  padding: 9px 20px;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.archive-more:hover { background: var(--link); color: var(--bg); }
+@media (prefers-reduced-motion: reduce) { .archive-more { transition: none; } }
