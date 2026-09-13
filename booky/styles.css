@@ -1657,18 +1657,18 @@ body.og-image-page {
   object-fit: cover;
   display: block;
 }
-/* Unplayed days are blurred exactly like the hint sheet's cover: you can see
-   there is a book, not which one. The blur is presentational only, so the
-   title still ships in the markup for Google and for screen readers. */
+/* Unplayed days use the SAME blur as the hint sheet's spoiler cover, value for
+   value: `.hint-spoiler .book-hero` above. If that one is ever retuned, retune
+   this one with it. The blur is presentational only, so the title still ships
+   in the markup for Google and for screen readers.
+
+   The scale(1.08) is not part of the hint's recipe and is not a look change:
+   a 20px blur samples transparent pixels past the edge of the image and
+   feathers the card's corners, so the cover is pushed out far enough that the
+   blur has real pixels to chew on right up to the edge. */
 .archive-cover--hidden img {
-  filter: blur(13px) saturate(1.1);
-  transform: scale(1.14);
-}
-.archive-cover--hidden::after {
-  content: "";
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(22, 5, 22, 0.12), rgba(22, 5, 22, 0.42));
+  filter: blur(20px) saturate(0.85);
+  transform: scale(1.08);
 }
 .archive-no {
   position: absolute;
