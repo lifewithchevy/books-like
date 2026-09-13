@@ -46,7 +46,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=45" />
+<link rel="stylesheet" href="/booky/styles.css?v=46" />
 <!-- PostHog analytics -->
 <script>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
@@ -122,7 +122,7 @@
   function dateFor(epochStr, day) {
     var p = epochStr.split('-').map(Number);
     var d = new Date(p[0], p[1] - 1, p[2] + (day - 1));
-    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
 
   // Which past days this player has already revealed. Written by app.js on
@@ -168,6 +168,11 @@
         // The cover ships for every day; only unplayed ones get the blur, and
         // the blur is CSS. The alt text follows the same rule as the visual,
         // so a screen reader is not handed the answer the page is hiding.
+        // Same order as a /booky-library shelf card: cover, then title and
+        // author, then the day tag. An unplayed day has no title to show and
+        // its word IS the answer, so its tag stops at the puzzle number.
+        var dayTag = esc(when) + ' \u00b7 Booky #' + day + (played ? ' \u00b7 ' + esc(word) : '');
+
         html +=
           '<li class="archive-item">' +
             '<a class="archive-link" href="/booky?day=' + day + '" ' +
@@ -175,13 +180,13 @@
                    ? 'Replay Booky number ' + day + ', ' + esc(title)
                    : 'Play Booky number ' + day + ', ' + esc(when) + ', book hidden') + '">' +
               '<span class="archive-cover' + (played ? '' : ' archive-cover--hidden') + '">' +
-                '<span class="archive-no">Booky #' + day + '</span>' +
                 (played ? '<span class="archive-solved" aria-hidden="true">&#10003;</span>' : '') +
                 '<img src="' + esc(cover) + '" alt="" loading="lazy" decoding="async" width="200" height="300">' +
               '</span>' +
               (played
                 ? '<span class="archive-caption">' + esc(title) + (author ? '<br>' + esc(author) : '') + '</span>'
-                : '<span class="archive-caption archive-caption--hidden">' + esc(when) + '</span>') +
+                : '') +
+              '<span class="archive-no">' + dayTag + '</span>' +
             '</a>' +
           '</li>';
       }
