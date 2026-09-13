@@ -1,0 +1,201 @@
+<!DOCTYPE html>
+<!-- build: booky-archive-v1 -->
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover, user-scalable=no" />
+<title>Booky Archive: Play Every Past Daily Puzzle</title>
+<meta name="description" content="Every Booky puzzle since day one. Pick any past day, guess the word, and meet the romantasy book it hides. Archive games never affect your streak or stats." />
+<link rel="canonical" href="https://90books.com/booky/archive" />
+<meta property="og:title" content="Booky Archive: Play Every Past Daily Puzzle" />
+<meta property="og:description" content="Every Booky puzzle since day one. Pick any past day and play it. Archive games never affect your streak or stats." />
+<meta property="og:url" content="https://90books.com/booky/archive" />
+<meta property="og:type" content="website" />
+<meta property="og:image" content="https://90books.com/booky/og-image.png" />
+<meta property="og:image:width" content="1200" />
+<meta property="og:image:height" content="630" />
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:image" content="https://90books.com/booky/og-image.png" />
+
+<meta name="theme-color" content="#160516" media="(prefers-color-scheme: dark)" />
+<meta name="theme-color" content="#fff8fb" media="(prefers-color-scheme: light)" />
+<link rel="icon" href="/favicon.svg" type="image/svg+xml" />
+<link rel="icon" href="/favicon.ico" sizes="32x32" />
+<!-- Home-screen install. The point is not "app feel", it is storage: Safari
+     evicts localStorage on a non-installed site after 7 days without a visit,
+     and every player's streak and stats live there. An installed web app is
+     exempt from that rule. See booky/manifest.json. -->
+<link rel="manifest" href="/booky/manifest.json" />
+<link rel="apple-touch-icon" href="/booky/apple-touch-icon.png" />
+<meta name="apple-mobile-web-app-capable" content="yes" />
+<meta name="mobile-web-app-capable" content="yes" />
+<meta name="apple-mobile-web-app-title" content="Booky" />
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+<!-- app.js is a `defer` script tag at the BOTTOM of <body> and it is a
+     serverless route, not a static file, so the preload scanner does not reach
+     it until the whole document has been parsed. Preloading it here starts the
+     download immediately, in parallel with the stylesheet and fonts, which
+     removes a full round-trip from time-to-grid.
+
+     /api/booky-words is deliberately NOT preloaded. app.js requests it with
+     `cache: 'no-store'`, and a no-store fetch bypasses the preload cache
+     entirely — the preload would not be reused, so the route would simply be
+     invoked twice per page load. Making that hop parallel means relaxing the
+     no-store fetch first, which is a freshness change to the daily word and
+     does not belong in a performance fix. -->
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
+<link rel="stylesheet" href="/booky/styles.css?v=43" />
+<!-- PostHog analytics -->
+<script>
+  !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
+  // Internal analytics opt-out for Olga's test devices (no login/console needed):
+  // visit /booky?notrack=1 once to permanently exclude this device, ?notrack=0 to re-enable.
+  // The booky_notrack localStorage flag is the source of truth; we honor it on every load.
+  var _bkParams;
+  try { _bkParams = new URLSearchParams(location.search); } catch (e) { _bkParams = null; }
+  try {
+    if (_bkParams && _bkParams.get('notrack') === '1') localStorage.setItem('booky_notrack', '1');
+    if (_bkParams && _bkParams.get('notrack') === '0') localStorage.removeItem('booky_notrack');
+  } catch (e) {}
+  var _bkOptOut = false;
+  try { _bkOptOut = localStorage.getItem('booky_notrack') === '1'; } catch (e) {}
+  posthog.init('phc_kGtxS8YTvuNDKihCv5h8bP4wJyW3cnpdeRaTeqo5wedr', {
+    api_host: 'https://us.i.posthog.com',
+    person_profiles: 'identified_only',
+    opt_out_capturing_by_default: _bkOptOut, // test devices never fire even the initial pageview
+  });
+  try {
+    if (_bkOptOut) {
+      posthog.opt_out_capturing();
+      console.log('[booky] analytics opt-out active (notrack) — this device sends no events');
+    } else if (_bkParams && _bkParams.get('notrack') === '0') {
+      posthog.opt_in_capturing(); // clears any prior persisted opt-out
+      console.log('[booky] analytics re-enabled (notrack cleared)');
+    }
+  } catch (e) {}
+</script>
+</head>
+<body>
+<div class="bg-glow" aria-hidden="true"></div>
+
+<!-- Back link — same slim row as the game, so the chrome does not shift -->
+<nav class="home-bar" aria-label="Back">
+<a href="/booky" class="home-link">
+<span aria-hidden="true">&larr;</span> Back to today
+</a>
+</nav>
+
+<header class="topbar">
+<span class="topbar-side"></span>
+<h1 class="wordmark"><a href="/"><img class="wm-light" src="/logo/booky.svg" alt="Booky" width="160" height="26"><img class="wm-dark" src="/logo/booky-light.svg" alt="" aria-hidden="true" width="160" height="26"></a><span class="puzzle-no">Archive</span></h1>
+<span class="topbar-side topbar-side-end"></span>
+</header>
+
+<main class="archive-page">
+<p class="archive-intro">Every Booky since day one. Pick a day, guess the word, meet the book.<br>
+<strong>Archive games never touch your streak or your stats.</strong></p>
+
+<ol id="archive-grid" class="archive-grid" reversed>
+<li class="archive-item"><p class="archive-caption">Loading past games&hellip;</p></li>
+</ol>
+
+<p class="archive-foot"><a href="/booky">Play today&rsquo;s word</a> &middot; <a href="/booky-library">Browse the Booky library</a></p>
+</main>
+
+<script>
+(function () {
+  var grid = document.getElementById('archive-grid');
+
+  // Same local-midnight day number the game uses (booky/app.js
+  // computeDayNumber). Kept in sync by hand rather than imported: app.js is a
+  // serverless route that boots the whole game, and this page must not.
+  function dayNumber(epochStr) {
+    var p = epochStr.split('-').map(Number);
+    var epoch = new Date(p[0], p[1] - 1, p[2], 0, 0, 0).getTime();
+    var n = new Date();
+    var today = new Date(n.getFullYear(), n.getMonth(), n.getDate(), 0, 0, 0).getTime();
+    return Math.floor((today - epoch) / 86400000) + 1;
+  }
+
+  function dateFor(epochStr, day) {
+    var p = epochStr.split('-').map(Number);
+    var d = new Date(p[0], p[1] - 1, p[2] + (day - 1));
+    return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  // Which past days this player has already revealed. Written by app.js on
+  // every finished game (live or archive). Anything not in here stays blurred.
+  function seenDays() {
+    try {
+      var a = JSON.parse(localStorage.getItem('90books_booky_seen_days_v1'));
+      return Array.isArray(a) ? a : [];
+    } catch (e) { return []; }
+  }
+
+  function esc(s) {
+    return String(s).replace(/[&<>"]/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;' }[c];
+    });
+  }
+
+  fetch('/api/booky-words', { cache: 'no-store' })
+    .then(function (r) { return r.json(); })
+    .then(function (data) {
+      if (!data || !data.epoch || !Array.isArray(data.queue)) throw new Error('bad queue');
+
+      var today = dayNumber(data.epoch);
+      var last = Math.min(today - 1, data.queue.length);
+      if (last < 1) {
+        grid.innerHTML = '<li class="archive-item"><p class="archive-caption">' +
+          'No past games yet. Come back tomorrow.</p></li>';
+        return;
+      }
+
+      var seen = seenDays();
+      var html = '';
+      // Newest first: the day you most likely missed is the one you want.
+      for (var day = last; day >= 1; day--) {
+        var word = String(data.queue[day - 1] || '').toUpperCase();
+        var book = (data.wordBooks && data.wordBooks[word]) || null;
+        var played = seen.indexOf(day) !== -1;
+        var cover = (book && book.cover) || '/booky/og-image.png';
+        var title = (book && book.title) || 'Booky #' + day;
+        var author = (book && book.author) || '';
+        var when = dateFor(data.epoch, day);
+
+        // The cover ships for every day; only unplayed ones get the blur, and
+        // the blur is CSS. The alt text follows the same rule as the visual,
+        // so a screen reader is not handed the answer the page is hiding.
+        html +=
+          '<li class="archive-item">' +
+            '<a class="archive-link" href="/booky?day=' + day + '" ' +
+               'aria-label="' + (played
+                   ? 'Replay Booky number ' + day + ', ' + esc(title)
+                   : 'Play Booky number ' + day + ', ' + esc(when) + ', book hidden') + '">' +
+              '<span class="archive-cover' + (played ? '' : ' archive-cover--hidden') + '">' +
+                '<span class="archive-no">#' + day + '</span>' +
+                (played ? '<span class="archive-solved" aria-hidden="true">&#10003;</span>' : '') +
+                '<img src="' + esc(cover) + '" alt="" loading="lazy" decoding="async" width="200" height="300">' +
+              '</span>' +
+              (played
+                ? '<span class="archive-caption">' + esc(title) + (author ? '<br>' + esc(author) : '') + '</span>'
+                : '<span class="archive-caption archive-caption--hidden">' + esc(when) + '</span>') +
+            '</a>' +
+          '</li>';
+      }
+      grid.innerHTML = html;
+
+      if (window.posthog && posthog.capture) {
+        posthog.capture('booky_archive_view', { days_available: last, days_played: seen.length });
+      }
+    })
+    .catch(function () {
+      grid.innerHTML = '<li class="archive-item"><p class="archive-caption">' +
+        'Could not load past games. <a href="/booky/archive">Try again</a>.</p></li>';
+    });
+})();
+</script>
+</body>
+</html>

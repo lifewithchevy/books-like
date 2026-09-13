@@ -1575,3 +1575,157 @@ body.og-image-page {
   #end-modal .end-inner { gap: 8px; padding-bottom: 10px; }
   #end-modal .end-support { margin-top: 4px; }
 }
+
+/* ---------------------------------------------------------------------------
+   Archive (2026-09-13)
+   /booky/archive lists every past puzzle; /booky?day=N replays one.
+   Both share this file so there is one cache version to bump, not two.
+--------------------------------------------------------------------------- */
+
+/* Banner under the topbar while replaying a past day. It says the quiet part
+   out loud, because the board is otherwise identical to today's and a player
+   who lands here from a shared link would reasonably assume their streak is
+   on the line. */
+.archive-banner {
+  margin: 0 auto;
+  padding: 7px 16px;
+  max-width: 500px;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 11.5px;
+  letter-spacing: 0.02em;
+  color: var(--ink-dim);
+}
+.archive-banner a { color: var(--accent); text-decoration: none; }
+.archive-banner a:hover { text-decoration: underline; }
+
+/* ---- The archive page itself ---- */
+.archive-page {
+  max-width: 860px;
+  margin: 0 auto;
+  padding: 0 16px calc(48px + env(safe-area-inset-bottom, 0px));
+}
+.archive-intro {
+  margin: 4px 0 22px;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.6;
+  color: var(--ink-dim);
+}
+.archive-intro strong { color: var(--ink); font-weight: 700; }
+
+.archive-grid {
+  display: grid;
+  /* 3 across on the narrowest phone, filling out on wider screens. auto-fill
+     (not auto-fit) so a short final row stays card-sized instead of stretching
+     one cover across the width. */
+  grid-template-columns: repeat(auto-fill, minmax(96px, 1fr));
+  gap: 18px 14px;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.archive-item { margin: 0; }
+.archive-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+.archive-cover {
+  /* block, not the span default: aspect-ratio, overflow clipping and the
+     border radius all no-op on an inline box, which lets the blur bleed
+     straight past the card edge. */
+  display: block;
+  position: relative;
+  isolation: isolate;
+  aspect-ratio: 2 / 3;
+  border-radius: 8px;
+  overflow: hidden;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  transition: transform 140ms ease, box-shadow 140ms ease;
+}
+.archive-link:hover .archive-cover,
+.archive-link:focus-visible .archive-cover {
+  transform: translateY(-3px);
+  box-shadow: 0 8px 20px var(--shadow-accent);
+}
+.archive-cover img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+/* Unplayed days are blurred exactly like the hint sheet's cover: you can see
+   there is a book, not which one. The blur is presentational only, so the
+   title still ships in the markup for Google and for screen readers. */
+.archive-cover--hidden img {
+  filter: blur(13px) saturate(1.1);
+  transform: scale(1.14);
+}
+.archive-cover--hidden::after {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(22, 5, 22, 0.12), rgba(22, 5, 22, 0.42));
+}
+.archive-no {
+  position: absolute;
+  left: 6px;
+  bottom: 6px;
+  z-index: 1;
+  padding: 2px 7px;
+  border-radius: 999px;
+  background: rgba(8, 2, 10, 0.72);
+  color: #f6ecf3;
+  font-family: var(--font-sans);
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+}
+.archive-solved {
+  position: absolute;
+  right: 6px;
+  top: 6px;
+  z-index: 1;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: var(--correct);
+  color: #fff;
+  font-size: 11px;
+  line-height: 18px;
+  text-align: center;
+}
+.archive-caption {
+  display: block;
+  margin: 7px 2px 0;
+  font-family: var(--font-sans);
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--ink-dim);
+  /* Three lines max: enough for a two-line title plus its author, and still
+     short enough that no card grows taller than its row. Overrides the
+     display:block above on purpose. */
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.archive-caption--hidden { font-style: italic; color: var(--ink-faint); }
+
+.archive-foot {
+  margin: 34px 0 0;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 12px;
+  color: var(--ink-dim);
+}
+.archive-foot a { color: var(--accent); text-decoration: none; }
+.archive-foot a:hover { text-decoration: underline; }
+
+@media (prefers-reduced-motion: reduce) {
+  .archive-cover { transition: none; }
+  .archive-link:hover .archive-cover { transform: none; }
+}

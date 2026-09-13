@@ -5,6 +5,51 @@ const WORD_LEN = 5;
 const MAX_GUESSES = 6;
 const STATE_KEY = '90books_booky_word_v1';
 const STATS_KEY = '90books_booky_word_stats_v1';
+
+// ---- Archive mode -----------------------------------------------------
+// /booky?day=N replays a PAST puzzle. It is the same game, pointed at a
+// different slot in the queue, with three things deliberately severed:
+//
+//   1. progress is stored under its own per-day key, so replaying #40 never
+//      overwrites the game you have in flight today;
+//   2. recordFinish() returns early, so nothing touches played/wins/streak/
+//      wards, the server player record, or the Resend streak field;
+//   3. the end screen drops the countdown, the streak line and the tomorrow
+//      tease, which are all statements about today.
+//
+// Only strictly past days are accepted. `day` equal to or greater than today
+// falls through to the normal game, so there is no way to read ahead in the
+// queue by guessing a number, and no way to farm a streak off the archive.
+// Days played here are remembered in SEEN_KEY purely so /booky/archive knows
+// which covers to stop blurring.
+const SEEN_KEY = '90books_booky_seen_days_v1';
+const ARCHIVE_DAY = (() => {
+  try {
+    const v = new URLSearchParams(location.search).get('day');
+    if (!v || !/^[0-9]{1,5}$/.test(v)) return null;
+    const n = Number(v);
+    return n >= 1 ? n : null;
+  } catch { return null; }
+})();
+let ARCHIVE = false; // set in boot, once today's real day number is known
+
+function stateKey() { return ARCHIVE ? '90books_booky_archive_v1_' + DAY : STATE_KEY; }
+function hintKey() { return ARCHIVE ? '90books_booky_archive_hints_v1_' + DAY : HINT_KEY; }
+
+// The set of past days whose book this player has already revealed. Used only
+// by the archive grid to decide blur. Never read by the game itself.
+function loadSeenDays() {
+  try {
+    const a = JSON.parse(localStorage.getItem(SEEN_KEY));
+    return Array.isArray(a) ? a : [];
+  } catch { return []; }
+}
+function markDaySeen(day) {
+  try {
+    const a = loadSeenDays();
+    if (!a.includes(day)) { a.push(day); localStorage.setItem(SEEN_KEY, JSON.stringify(a)); }
+  } catch {}
+}
 const SITE_URL = '90books.com/booky';
 // Short, clean link used in shares. Redirects to /booky?utm_source=share.
 // Emitted BARE (no https://), the way squaredle.app does it — apps linkify a
@@ -134,13 +179,22 @@ return showFatal(DAY < 1
 ? "Booky hasn't launched yet — come back soon!"
 : "Out of words — new ones loading soon!");
 }
+// Archive replay: only a STRICTLY past day is honoured, so ?day= can never
+// be used to read tomorrow's word.
+if (ARCHIVE_DAY !== null && ARCHIVE_DAY < DAY) {
+  ARCHIVE = true;
+  DAY = ARCHIVE_DAY;
+  document.body.classList.add('archive-mode');
+}
 ANSWER = DATA.queue[DAY - 1].toUpperCase();
 
 STATS = loadStats();
 // Restore from the anonymous player record before the board is built, so a
 // player whose storage was evicted sees their real streak rather than a zero
 // that flips a moment later.
-syncPlayer();
+// Not in archive mode: syncPlayer() both reads and writes the player record,
+// and an archive replay must leave it untouched.
+if (!ARCHIVE) syncPlayer();
 STATE = loadState();
 if (!STATE || STATE.dayNumber !== DAY) {
 STATE = freshState();
@@ -154,12 +208,17 @@ bindUI();
 
 // Show today's puzzle number in the header (e.g. "#23")
 $('puzzle-no').textContent = '#' + DAY;
+if (ARCHIVE) {
+  const back = $('archive-back');
+  if (back) back.hidden = false;
+}
 
 // PostHog: fire game_start only on a fresh game (no guesses yet today)
 if (STATE.guesses.length === 0 && STATE.status === 'playing') {
 posthog.capture('booky_game_start', {
 word_number: DAY,
 date: new Date().toISOString().split('T')[0],
+archive: ARCHIVE,
 });
 }
 
@@ -209,9 +268,9 @@ status: 'playing' // | 'won' | 'lost'
 };
 }
 function loadState() {
-try { return JSON.parse(localStorage.getItem(STATE_KEY)); } catch { return null; }
+try { return JSON.parse(localStorage.getItem(stateKey())); } catch { return null; }
 }
-function saveState() { localStorage.setItem(STATE_KEY, JSON.stringify(STATE)); }
+function saveState() { localStorage.setItem(stateKey(), JSON.stringify(STATE)); }
 
 // Which hints today's player has taken. Deliberately NOT part of STATE: taking
 // a hint changes nothing about the game, the streak or the share grid. This
@@ -221,12 +280,12 @@ const HINT_KEY = '90books_booky_hints_v1';
 let HINTS = { day: 0, book: false };
 function loadHints() {
 try {
-const h = JSON.parse(localStorage.getItem(HINT_KEY));
+const h = JSON.parse(localStorage.getItem(hintKey()));
 if (h && h.day === DAY) return { day: DAY, book: !!h.book };
 } catch {}
 return { day: DAY, book: false };
 }
-function saveHints() { try { localStorage.setItem(HINT_KEY, JSON.stringify(HINTS)); } catch {} }
+function saveHints() { try { localStorage.setItem(hintKey(), JSON.stringify(HINTS)); } catch {} }
 function usedHint() { return !!HINTS.book; }
 
 function loadStats() {
@@ -345,6 +404,24 @@ function recordFinish() {
 if (STATE.statsRecorded) return;
 STATE.statsRecorded = true;
 saveState();
+
+// Archive replays are scored nowhere. This early return is the single point
+// that guarantees it: everything below it (played/wins/distribution, the
+// streak, the Ward, lastPlayedDay, syncPlayer, the Resend streak update) is
+// skipped, so a past day can neither build nor break anything. The only thing
+// we do remember is that the book has been revealed, for the archive grid.
+if (ARCHIVE) {
+  markDaySeen(DAY);
+  posthog.capture('booky_archive_complete', {
+    word_number: DAY,
+    won: STATE.status === 'won',
+    guesses_used: STATE.guesses.length,
+    answer: ANSWER,
+    book: DATA?.wordBooks?.[ANSWER]?.slug || null,
+  });
+  return;
+}
+markDaySeen(DAY);
 STATS.played += 1;
 if (STATE.status === 'won') {
 STATS.wins += 1;
@@ -1373,7 +1450,7 @@ title.textContent = 'Congrats!';
 $('celebration').classList.remove('lost');
 $('celebration').classList.add('won');
 } else {
-title.textContent = "Tomorrow's another word.";
+title.textContent = ARCHIVE ? 'That one got away.' : "Tomorrow's another word.";
 $('celebration').classList.remove('won');
 $('celebration').classList.add('lost');
 }
@@ -1382,7 +1459,7 @@ $('end-puzzle-no').textContent = 'Booky #' + DAY;
 
 // Streak — kept but low priority: one compact line on win
 const streakEl = $('end-streak');
-if (won && STATS.currentStreak >= 1) {
+if (won && !ARCHIVE && STATS.currentStreak >= 1) {
 const { earned } = badgeForStreak(STATS.currentStreak);
 streakEl.textContent = `🔥 ${STATS.currentStreak}-day streak · ${earned.icon} ${earned.name}`;
 streakEl.hidden = false;
@@ -1392,7 +1469,7 @@ streakEl.hidden = true;
 
 // Ward receipt — only shows on the day a Ward actually saved the streak
 const wardEl = $('end-ward');
-if (won && STATE.wardUsed) {
+if (won && !ARCHIVE && STATE.wardUsed) {
 wardEl.textContent = '🛡️ your Ward covered the day you missed. streak intact.';
 wardEl.hidden = false;
 } else {
@@ -1447,7 +1524,7 @@ $('reminder-active').hidden = !subscribed || giveawayLive;
 // TOMORROW's word (queue is 0-indexed, so index DAY = day DAY+1). Open loop
 // for the return visit; stays hidden on days without written copy.
 const teaseEl = $('tomorrow-tease');
-const tomorrowWord = DATA.queue[DAY];
+const tomorrowWord = ARCHIVE ? null : DATA.queue[DAY];
 const tease = tomorrowWord ? DATA.teases?.[tomorrowWord.toUpperCase()] : null;
 if (tease) {
 teaseEl.textContent = tease;
@@ -1456,11 +1533,28 @@ teaseEl.hidden = false;
 teaseEl.hidden = true;
 }
 
+// The countdown is a statement about today, so the archive swaps the whole
+// line for a way back. Reminder ask goes too: an archive finish is not the
+// moment to ask someone to come back tomorrow.
+const nextLine = document.querySelector('#end-modal .next');
+const archiveNext = $('end-archive-next');
+if (ARCHIVE) {
+  if (nextLine) nextLine.hidden = true;
+  if (archiveNext) archiveNext.hidden = false;
+  reminderForm.style.display = 'none';
+  $('reminder-active').hidden = true;
+} else {
+  if (nextLine) nextLine.hidden = false;
+  if (archiveNext) archiveNext.hidden = true;
+}
+
 $('end-modal').showModal();
+if (!ARCHIVE) {
 tickCountdown();
 
 if (!window.__countdownTicker) {
 window.__countdownTicker = setInterval(tickCountdown, 1000);
+}
 }
 }
 
