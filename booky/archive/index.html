@@ -125,8 +125,10 @@
     return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
 
-  // Which past days this player has already revealed. Written by app.js on
-  // every finished game (live or archive). Anything not in here stays blurred.
+  // Which past days this player has already revealed. app.js STILL writes this
+  // on every finished game, so the history keeps accumulating; the grid just
+  // does not read it yet. Turning the reveal back on is a matter of using this
+  // again (2026-09-13, Olga: "we can add that later").
   function seenDays() {
     try {
       var a = JSON.parse(localStorage.getItem('90books_booky_seen_days_v1'));
@@ -159,34 +161,30 @@
       for (var day = last; day >= 1; day--) {
         var word = String(data.queue[day - 1] || '').toUpperCase();
         var book = (data.wordBooks && data.wordBooks[word]) || null;
-        var played = seen.indexOf(day) !== -1;
         var cover = (book && book.cover) || '/booky/og-image.png';
-        var title = (book && book.title) || 'Booky #' + day;
-        var author = (book && book.author) || '';
         var when = dateFor(data.epoch, day);
 
-        // The cover ships for every day; only unplayed ones get the blur, and
-        // the blur is CSS. The alt text follows the same rule as the visual,
-        // so a screen reader is not handed the answer the page is hiding.
-        // Same order as a /booky-library shelf card: cover, then title and
-        // author, then the day tag. An unplayed day has no title to show and
-        // its word IS the answer, so its tag stops at the puzzle number.
-        var dayTag = esc(when) + ' \u00b7 Booky #' + day + (played ? ' \u00b7 ' + esc(word) : '');
-
+        // EVERY cover is blurred and EVERY card shows only the date and the
+        // puzzle number. No title, no author, no word, and no marker for days
+        // you have already played.
+        //
+        // That is deliberate and it is the whole privacy model of this page:
+        // because nothing here is ever revealed, the markup never has to carry
+        // a book title or an answer at all, so there is nothing to leak to a
+        // reader, a screen reader, "view source", or Google. The blur is CSS,
+        // and CSS alone is not a secret. Reinstating the reveal means putting
+        // the answers back into the HTML, so weigh that when we do.
+        //
+        // The `seen` list above is still being written and is intentionally
+        // unused here.
         html +=
           '<li class="archive-item">' +
             '<a class="archive-link" href="/booky?day=' + day + '" ' +
-               'aria-label="' + (played
-                   ? 'Replay Booky number ' + day + ', ' + esc(title)
-                   : 'Play Booky number ' + day + ', ' + esc(when) + ', book hidden') + '">' +
-              '<span class="archive-cover' + (played ? '' : ' archive-cover--hidden') + '">' +
-                (played ? '<span class="archive-solved" aria-hidden="true">&#10003;</span>' : '') +
+               'aria-label="Play Booky number ' + day + ', ' + esc(when) + '">' +
+              '<span class="archive-cover archive-cover--hidden">' +
                 '<img src="' + esc(cover) + '" alt="" loading="lazy" decoding="async" width="200" height="300">' +
               '</span>' +
-              (played
-                ? '<span class="archive-caption">' + esc(title) + (author ? '<br>' + esc(author) : '') + '</span>'
-                : '') +
-              '<span class="archive-no">' + dayTag + '</span>' +
+              '<span class="archive-no">' + esc(when) + ' \u00b7 Booky #' + day + '</span>' +
             '</a>' +
           '</li>';
       }
