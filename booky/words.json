@@ -148,16 +148,16 @@
     "NORTH",
     "SMOKE",
     "LANCE",
-    "ISLES",
+    "GATES",
     "MERCY",
-    "PRISM",
+    "AZURE",
     "REGAL",
     "XADEN",
     "CORAL",
     "CALEB",
     "HEXED",
     "SHINE",
-    "AZURE",
+    "PRISM",
     "SINGE",
     "MOTHS",
     "CHAOS",
@@ -312,7 +312,8 @@
     "DRAWS",
     "BURNS",
     "EERIE",
-    "WARDS"
+    "WARDS",
+    "ISLES"
   ],
   "wordBooks": {
     "COURT": {
@@ -2787,6 +2788,13 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/throne-of-glass.jpg",
       "buyUrl": "https://www.amazon.com/dp/B007N6JEII?tag=90books-20"
+    },
+    "GATES": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/house-of-earth-and-blood.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1635577020?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
