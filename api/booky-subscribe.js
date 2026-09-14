@@ -85,6 +85,35 @@ const { encodeStats, decodeStats } = require('./_stats-codec');
 // betting the feature on which one this account answers, and report which
 // path produced the record so a failure is diagnosable from the response
 // instead of guessing at it from the outside.
+// The confirmation email body. Deliberately plain and short: one sentence, one
+// button, no cover art and no marketing. It is the first thing a brand-new
+// signup sees, it has to survive spam filters on a domain that is currently
+// blocklisted, and the only job is getting one tap.
+function confirmHtml(link) {
+  return `<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Confirm your Booky reminder</title></head>
+<body style="margin:0;padding:0;background:#fff8fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,sans-serif;color:#2a0a26;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fff8fb;padding:40px 16px;">
+    <tr><td align="center" style="text-align:center;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
+        <tr><td>
+          <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;color:#c8398f;margin:0 0 24px;letter-spacing:0.5px;">Booky</p>
+          <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#2a0a26;">Almost there</p>
+          <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#4a2a4c;">Tap the button and your daily Booky reminder is on. That's the whole thing.</p>
+          <p style="margin:0 0 24px;">
+            <a href="${link}" style="display:inline-block;background:linear-gradient(135deg,#c8398f,#9a2670);color:#ffffff;text-decoration:none;font-weight:600;padding:14px 30px;border-radius:10px;font-size:15px;">Yes, remind me daily</a>
+          </p>
+          <p style="margin:0;font-size:13px;line-height:1.6;color:#8a6a8c;">If you didn't sign up for Booky, just ignore this. Nothing happens and you won't hear from me again.</p>
+        </td></tr>
+      </table>
+      <p style="margin:20px 0 0;font-size:12px;color:#a587a9;">Booky by 90books</p>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
 async function fetchStoredStats(apiKey, audienceId, email) {
   const attempts = [
     ['audience', `https://api.resend.com/audiences/${audienceId}/contacts/${encodeURIComponent(email)}`],
@@ -97,22 +126,31 @@ async function fetchStoredStats(apiKey, audienceId, email) {
       // 404 is a definitive answer, not a failure: no such contact yet. Say so
       // rather than trying the other path and ending up at 'read-failed',
       // which would report a first-time signup as a broken read.
-      if (r.status === 404) return { stats: null, source: 'no-contact' };
+      if (r.status === 404) return { stats: null, source: 'no-contact', exists: false, unsubscribed: null };
       if (!r.ok) {
         console.error('[booky-subscribe] stats read', via, 'HTTP', r.status);
         continue;
       }
       const body = await r.json();
       const raw = body?.data?.first_name ?? body?.first_name;
+      // `unsubscribed` is read alongside the stats because double opt-in has to
+      // tell three states apart: brand new (create as pending), already
+      // confirmed (do NOT touch, they are a live subscriber), and pending from
+      // an earlier signup (resend the confirmation). Without it the create below
+      // would upsert `unsubscribed: true` over a confirmed subscriber and
+      // silently unsubscribe someone who was happily receiving mail.
+      const unsub = body?.data?.unsubscribed ?? body?.unsubscribed ?? null;
       // An existing contact with an empty field is a real answer, not a
       // failure — stop here rather than retrying the other path.
-      if (raw == null || raw === '') return { stats: null, source: via + ':empty' };
-      return { stats: decodeStats(raw), source: via };
+      if (raw == null || raw === '') return { stats: null, source: via + ':empty', exists: true, unsubscribed: unsub };
+      return { stats: decodeStats(raw), source: via, exists: true, unsubscribed: unsub };
     } catch (err) {
       console.error('[booky-subscribe] stats read', via, 'threw:', err);
     }
   }
-  return { stats: null, source: 'read-failed' };
+  // Read failed outright. `exists: null` means unknown, and the caller treats
+  // unknown as "do not risk it" — it will not downgrade a contact it cannot see.
+  return { stats: null, source: 'read-failed', exists: null, unsubscribed: null };
 }
 
 module.exports = async (req, res) => {
@@ -130,6 +168,15 @@ module.exports = async (req, res) => {
   // link is followed with GET.
   if (req.query && req.query.unsub) {
     await require('../lib/unsubscribe-handler')(req, res);
+    return;
+  }
+
+  // ---- Double opt-in confirmation rides on this route too ----
+  // Same reason as unsubscribe above: api/ is at the 12-function cap. The link
+  // in the confirmation email points here with `?confirm=1`. Also before the
+  // POST-only guard, because it is followed with GET from a mail client.
+  if (req.query && req.query.confirm) {
+    await require('../lib/confirm-handler')(req, res);
     return;
   }
 
@@ -208,6 +255,24 @@ module.exports = async (req, res) => {
           }
         : mine;
 
+      // ---- DOUBLE OPT-IN: is this contact already a confirmed subscriber? ----
+      // Only someone we can SEE is confirmed keeps `unsubscribed: false`. A new
+      // address, or one still pending, is written as `unsubscribed: true` and
+      // stays out of the daily send until they click the link in their email.
+      //
+      // `read.exists === null` means the read itself failed, so we do not know.
+      // Unknown is treated as "already confirmed" ON PURPOSE: the create below
+      // upserts, and wrongly writing `true` over a live subscriber would
+      // silently stop their daily email, which is far worse than letting one
+      // unverified address through on a day Resend's API was flaky.
+      // `!== true` rather than `=== false` on purpose. If the contact exists but
+      // the field is missing or null (an unexpected response shape), that is
+      // ambiguity, and ambiguity must never cost a live subscriber their daily
+      // email. Only an explicit `unsubscribed: true` counts as not-yet-confirmed.
+      const alreadyConfirmed = read.exists === true && read.unsubscribed !== true;
+      const readUnknown      = read.exists === null;
+      const pending          = !(alreadyConfirmed || readUnknown);
+
       const r = await fetch(
         `https://api.resend.com/audiences/${RESEND_AUDIENCE_ID}/contacts`,
         {
@@ -218,7 +283,7 @@ module.exports = async (req, res) => {
           },
           body: JSON.stringify({
             email: cleanEmail,
-            unsubscribed: false,
+            unsubscribed: pending,
             // first_name stores the packed stats block, streak first
             // (internal field — never shown in emails). See api/_stats-codec.js.
             first_name: encodeStats(best),
@@ -245,7 +310,12 @@ module.exports = async (req, res) => {
                 Authorization: `Bearer ${RESEND_API_KEY}`,
                 'Content-Type': 'application/json',
               },
-              body: JSON.stringify({ last_name: entryTag, unsubscribed: false }),
+              // Writes the entry tag ONLY. This used to also send
+              // `unsubscribed: false`, which would confirm a giveaway entrant
+              // who never clicked the link and punch a hole straight through
+              // double opt-in. Entering a giveaway records the entry; it does
+              // not prove the address belongs to them.
+              body: JSON.stringify({ last_name: entryTag }),
             }
           );
           if (!patch.ok) {
@@ -263,8 +333,47 @@ module.exports = async (req, res) => {
       }
 
       if (r.ok || r.status === 422) {
-        // Send welcome email only for brand-new signups (r.ok), not re-subscribes (422)
-        if (r.ok && entryTag) {
+        // ---- DOUBLE OPT-IN: pending contacts get a confirmation, not a welcome ----
+        // A pending contact is not on the daily send yet, so a "you're in" mail
+        // would be a lie. Send the one email that can change that instead, and
+        // send it whether the contact was just created (r.ok) or already existed
+        // unconfirmed (422) — the second case is someone who signed up before and
+        // never clicked, and they need the link again.
+        if (pending) {
+          const RESEND_FROM = 'Booky <booky@90books.com>';
+          const { confirmUrl } = require('../lib/confirm');
+          const link = confirmUrl(cleanEmail);
+          try {
+            await fetch('https://api.resend.com/emails', {
+              method: 'POST',
+              headers: {
+                Authorization: `Bearer ${RESEND_API_KEY}`,
+                'Content-Type': 'application/json',
+              },
+              body: JSON.stringify({
+                from: RESEND_FROM,
+                to: cleanEmail,
+                reply_to: 'booky@90books.com',
+                subject: 'one tap and your Booky reminder is on 📚',
+                // No List-Unsubscribe here on purpose. This is a transactional
+                // confirmation to an address that is NOT on the list yet, and
+                // offering to unsubscribe from something you have not joined is
+                // just confusing. The daily mail carries the header.
+                text: `Almost there.
+
+Tap this to turn on your daily Booky reminder:
+${link}
+
+If you didn't sign up for Booky, ignore this and nothing happens. You won't hear from me again.
+
+Booky by 90books`,
+                html: confirmHtml(link),
+              }),
+            });
+          } catch (err) {
+            console.error('[booky-subscribe] confirmation email failed:', err);
+          }
+        } else if (r.ok && entryTag) {
           // Giveaway entrant: confirm the entry (the on-screen "you're in" is
           // otherwise their only record) and name the announce date so the
           // result email is expected.
@@ -395,7 +504,11 @@ Booky by 90books · you signed up at 90books.com/booky · reply to unsubscribe`,
         // carries no contact data — it is the difference between "this player
         // has no record" and "we could not read the record", which are the
         // same `stats: null` to the client but very different bugs.
-        res.status(200).json({ ok: true, stored: 'resend', stats: read.stats, stats_source: read.source });
+        // `pending` tells the win screen which sentence to show: "check your
+        // inbox" for a contact that still has to confirm, or the usual "you're
+        // in" for someone who was already a confirmed subscriber. Without it the
+        // UI would promise a daily email we are not going to send yet.
+        res.status(200).json({ ok: true, stored: 'resend', pending, stats: read.stats, stats_source: read.source });
         return;
       }
 

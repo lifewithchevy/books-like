@@ -1078,7 +1078,15 @@ if (!res.ok) throw new Error('subscribe-failed');
 // with no history. Restoring is the point of the signup for them, so say so
 // instead of the generic "you're in".
 let restored = false;
-try { restored = restoreStats((await res.json())?.stats); } catch {}
+// `pending` is true when double opt-in still needs a click: the address is
+// stored but deliberately NOT on the daily send until they confirm. Promising
+// "i'll email you a reminder" here would be a lie, so the copy has to change.
+let pending = false;
+try {
+const data = await res.json();
+restored = restoreStats(data?.stats);
+pending = data?.pending === true;
+} catch {}
 
 localStorage.setItem('90books_booky_reminder_sub', email);
 // PostHog: email signup completed
@@ -1088,11 +1096,17 @@ posthog.capture('email_signup_completed', {
 source: form.dataset.source ? `booky_${form.dataset.source}` : 'booky_endscreen',
 word_number_at_signup: DAY,
 });
-toast.textContent = restored
+// Stats are saved either way, so a returning player still hears that first.
+// The reminder half of the sentence is the only part that waits on a click.
+toast.textContent = pending
+? (restored
+? "found you, your stats are back. one more thing: tap the link in your inbox to turn the daily reminder on."
+: "almost there. tap the link in your inbox to turn on your daily reminder.")
+: (restored
 ? (STATS.currentStreak > 1
 ? `found you. your ${STATS.currentStreak}-day streak is back, and i'll remind you so it stays that way.`
 : "found you. your stats are back, and i'll email you a reminder for tomorrow's word.")
-: "you're in. i'll email you a reminder for tomorrow's word.";
+: "you're in. i'll email you a reminder for tomorrow's word.");
 toast.className = 'reminder-toast reminder-success';
 toast.hidden = false;
 // Collapse the form, leaving only the toast.
