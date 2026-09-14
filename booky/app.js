@@ -1100,8 +1100,8 @@ word_number_at_signup: DAY,
 // The reminder half of the sentence is the only part that waits on a click.
 toast.textContent = pending
 ? (restored
-? "found you, your stats are back. one more thing: tap the link in your inbox to turn the daily reminder on."
-: "almost there. tap the link in your inbox to turn on your daily reminder.")
+? "Found you, your stats are back. Tap the link in your inbox to turn the reminder on"
+: "Almost there. Tap the link in your inbox")
 : (restored
 ? (STATS.currentStreak > 1
 ? `found you. your ${STATS.currentStreak}-day streak is back, and i'll remind you so it stays that way.`
