@@ -141,7 +141,7 @@
     "CODEX",
     "SWORN",
     "NYMPH",
-    "WARDS",
+    "GLASS",
     "GAMES",
     "ALLOY",
     "CACHE",
@@ -311,7 +311,8 @@
     "HALOS",
     "DRAWS",
     "BURNS",
-    "EERIE"
+    "EERIE",
+    "WARDS"
   ],
   "wordBooks": {
     "COURT": {
@@ -2779,6 +2780,13 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
       "buyUrl": "https://www.amazon.com/dp/B00OZP5VRS?tag=90books-20"
+    },
+    "GLASS": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/throne-of-glass.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B007N6JEII?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
