@@ -142,9 +142,9 @@
     "GAMES",
     "NYMPH",
     "GLASS",
-    "SWORN",
-    "ALLOY",
+    "HALLA",
     "CACHE",
+    "KAINE",
     "NORTH",
     "SMOKE",
     "LANCE",
@@ -313,7 +313,9 @@
     "BURNS",
     "EERIE",
     "WARDS",
-    "ISLES"
+    "ISLES",
+    "SWORN",
+    "ALLOY"
   ],
   "wordBooks": {
     "COURT": {
@@ -2795,6 +2797,13 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/house-of-earth-and-blood.jpg",
       "buyUrl": "https://www.amazon.com/dp/1635577020?tag=90books-20"
+    },
+    "HALLA": {
+      "slug": "swordheart",
+      "title": "Swordheart",
+      "author": "T. Kingfisher",
+      "cover": "/booky/covers/swordheart.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250400228?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"

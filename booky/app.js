@@ -166,10 +166,10 @@ DATA = data;
 // ~200ms window skips the word-list check, which is exactly the already
 // accepted behaviour when the fetch fails outright.
 //
-// Keep the call written as `fetchJSON('/booky/dictionary.json?v=17'` on one
+// Keep the call written as `fetchJSON('/booky/dictionary.json?v=18'` on one
 // line: api/booky-app.js rewrites that literal to inject DICT_CACHE_V, and a
 // reshaped call silently turns the cache-busting into a no-op.
-fetchJSON('/booky/dictionary.json?v=17', { cache: 'force-cache' })
+fetchJSON('/booky/dictionary.json?v=18', { cache: 'force-cache' })
 .then((words) => { DICT = new Set(words); })
 .catch(() => { DICT = null; });
 
