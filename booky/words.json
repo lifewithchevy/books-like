@@ -143,7 +143,7 @@
     "NYMPH",
     "GLASS",
     "HALLA",
-    "RAIHN",
+    "GRACE",
     "KAINE",
     "NORTH",
     "CROWS",
@@ -317,7 +317,8 @@
     "SWORN",
     "ALLOY",
     "CACHE",
-    "MERCY"
+    "MERCY",
+    "RAIHN"
   ],
   "wordBooks": {
     "COURT": {
@@ -2721,7 +2722,7 @@
       "title": "Paladin's Grace",
       "author": "T. Kingfisher",
       "cover": "/booky/covers/paladins-grace.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1614505217?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B0848Q8JVW?tag=90books-20"
     },
     "TUSKS": {
       "slug": "tusk-love",
@@ -2806,6 +2807,13 @@
       "author": "T. Kingfisher",
       "cover": "/booky/covers/swordheart.jpg",
       "buyUrl": "https://www.amazon.com/dp/1250400228?tag=90books-20"
+    },
+    "GRACE": {
+      "slug": "paladins-grace",
+      "title": "Paladin's Grace",
+      "author": "T. Kingfisher",
+      "cover": "/booky/covers/paladins-grace.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B0848Q8JVW?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
