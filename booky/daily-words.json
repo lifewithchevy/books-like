@@ -143,13 +143,13 @@
     "NYMPH",
     "GLASS",
     "HALLA",
-    "CROWS",
+    "RAIHN",
     "KAINE",
     "NORTH",
-    "SMOKE",
+    "CROWS",
     "LANCE",
     "GATES",
-    "MERCY",
+    "SMOKE",
     "AZURE",
     "REGAL",
     "XADEN",
@@ -316,7 +316,8 @@
     "ISLES",
     "SWORN",
     "ALLOY",
-    "CACHE"
+    "CACHE",
+    "MERCY"
   ],
   "wordBooks": {
     "COURT": {
