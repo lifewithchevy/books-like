@@ -143,7 +143,7 @@
     "NYMPH",
     "GLASS",
     "HALLA",
-    "CACHE",
+    "CROWS",
     "KAINE",
     "NORTH",
     "SMOKE",
@@ -315,7 +315,8 @@
     "WARDS",
     "ISLES",
     "SWORN",
-    "ALLOY"
+    "ALLOY",
+    "CACHE"
   ],
   "wordBooks": {
     "COURT": {
