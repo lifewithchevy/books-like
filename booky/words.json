@@ -144,12 +144,12 @@
     "GLASS",
     "HALLA",
     "GRACE",
-    "KAINE",
+    "FEYRE",
     "NORTH",
     "CROWS",
     "LANCE",
     "GATES",
-    "SMOKE",
+    "KAINE",
     "AZURE",
     "REGAL",
     "XADEN",
@@ -181,7 +181,7 @@
     "CREST",
     "ARRAY",
     "REBEL",
-    "FEYRE",
+    "SMOKE",
     "MASKS",
     "SPELL",
     "SOOTY",
@@ -606,7 +606,7 @@
       "title": "A Court of Thorns and Roses",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
-      "buyUrl": "https://amzn.to/3PKcUoT"
+      "buyUrl": "https://www.amazon.com/dp/B00OZP5VRS?tag=90books-20"
     },
     "FLESH": {
       "slug": "from-blood-and-ash",
