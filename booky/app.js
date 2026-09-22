@@ -50,6 +50,34 @@ function markDaySeen(day) {
     if (!a.includes(day)) { a.push(day); localStorage.setItem(SEEN_KEY, JSON.stringify(a)); }
   } catch {}
 }
+// ---- Subscriber flag (PostHog person property) -------------------------
+// "Do people who give us an email keep playing?" has been unanswerable: events
+// are anonymous per device, and there is deliberately no posthog.identify()
+// here, because attaching a real address to session recordings of an anonymous
+// game is a trade we did not want to make. A boolean answers the question and
+// stores nothing identifying.
+//
+// Set on EVERY boot, not only at signup, so everyone who subscribed before this
+// shipped is flagged too. Without that backfill the comparison would cover only
+// future signups and stay unreadable for months.
+//
+// "Subscriber" here means "has an address stored on this device", so someone
+// still in double opt-in limbo counts. That is correct for this question: they
+// handed over the email, and that is the behaviour being tested.
+let subFlagSent = null;
+function syncSubscriberFlag(value) {
+  if (value === subFlagSent) return;
+  subFlagSent = value;
+  try {
+    if (window.posthog && posthog.setPersonProperties) {
+      posthog.setPersonProperties({ is_subscriber: value });
+    }
+  } catch {}
+}
+function hasStoredEmail() {
+  try { return !!localStorage.getItem('90books_booky_reminder_sub'); } catch { return false; }
+}
+
 const SITE_URL = '90books.com/booky';
 // Short, clean link used in shares. Redirects to /booky?utm_source=share.
 // Emitted BARE (no https://), the way squaredle.app does it — apps linkify a
@@ -212,6 +240,10 @@ if (ARCHIVE) {
   const back = $('archive-back');
   if (back) back.hidden = false;
 }
+
+// Flag the person BEFORE any event this load, and on every load, not just on
+// a fresh game — an archive replay or a mid-game reload is still a signal.
+syncSubscriberFlag(hasStoredEmail());
 
 // PostHog: fire game_start only on a fresh game (no guesses yet today)
 if (STATE.guesses.length === 0 && STATE.status === 'playing') {
@@ -689,7 +721,9 @@ document.addEventListener('click', (e) => {
 const a = e.target.closest && e.target.closest('a[href^="/booky/archive"]');
 if (!a) return;
 posthog.capture('booky_archive_link_clicked', {
-source: a.closest('#end-modal') ? (ARCHIVE ? 'archive_win_screen' : 'win_screen') : 'game_banner',
+source: a.closest('#end-modal') ? (ARCHIVE ? 'archive_win_screen' : 'win_screen')
+      : a.closest('#stats-modal') ? 'stats_modal'
+      : 'game_banner',
 word_number: DAY,
 archive: ARCHIVE,
 });
@@ -844,6 +878,7 @@ localStorage.setItem('90books_booky_reminder_sub', email);
 
 // Keep the historical north-star event comparable, and add a dedicated
 // one so entries can be separated from ordinary signups.
+syncSubscriberFlag(true);
 posthog.capture('email_signup_completed', {
 source: 'booky_endscreen',
 giveaway: true,
@@ -1089,6 +1124,7 @@ pending = data?.pending === true;
 } catch {}
 
 localStorage.setItem('90books_booky_reminder_sub', email);
+syncSubscriberFlag(true);
 // PostHog: email signup completed
 posthog.capture('email_signup_completed', {
 // The win screen's form carries no data-source, so it stays 'booky_endscreen'

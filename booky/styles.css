@@ -1479,6 +1479,14 @@ body {
   font-size: 12px;
   color: var(--ink-dim);
 }
+/* Mirrors the #end-modal .next treatment so the archive line reads the same
+   in both places instead of floating loose under the email card. */
+#stats-modal .stats-archive {
+  margin: 12px 0 0;
+  padding-top: 11px;
+  border-top: 1px solid var(--border);
+}
+
 .next {
   text-align: center;
   color: var(--ink-faint);
@@ -1795,7 +1803,8 @@ body.og-image-page {
 
 /* The archive link lives inside the countdown line, so only the link itself is
    emphasised: the sentence stays as quiet as the countdown always was. */
-#end-modal .next a {
+#end-modal .next a,
+#stats-modal .stats-archive a {
   color: var(--link);
   text-decoration: underline;
   text-underline-offset: 2px;
