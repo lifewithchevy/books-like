@@ -737,21 +737,6 @@ $('end-modal').close();
 // the win-screen line is the only thing we changed to drive it. Delegated on
 // the dialog so it covers the countdown line, the archive-mode replacement and
 // the in-game banner with one listener.
-// Buy Me a Coffee. It sits in two places (the help sheet and the win screen)
-// and BMC gives us nothing that says which one earned the click, so `source`
-// here is the only way to know which placement is worth keeping.
-document.addEventListener('click', (e) => {
-const a = e.target.closest && e.target.closest('a[href*="buymeacoffee.com"]');
-if (!a) return;
-posthog.capture('booky_support_link_clicked', {
-source: a.closest('#end-modal') ? (ARCHIVE ? 'archive_win_screen' : 'win_screen')
-      : a.closest('#help-modal') ? 'help_modal'
-      : 'other',
-word_number: DAY,
-archive: ARCHIVE,
-});
-});
-
 document.addEventListener('click', (e) => {
 const a = e.target.closest && e.target.closest('a[href^="/booky/archive"]');
 if (!a) return;
