@@ -240,6 +240,30 @@
   "redirects": [
     {
       "source": "/play",
+      "has": [
+        {
+          "type": "query",
+          "key": "s",
+          "value": "n"
+        }
+      ],
+      "destination": "/booky?utm_source=share&utm_content=native",
+      "permanent": false
+    },
+    {
+      "source": "/play",
+      "has": [
+        {
+          "type": "query",
+          "key": "s",
+          "value": "c"
+        }
+      ],
+      "destination": "/booky?utm_source=share&utm_content=clipboard",
+      "permanent": false
+    },
+    {
+      "source": "/play",
       "destination": "/booky?utm_source=share",
       "permanent": false
     },

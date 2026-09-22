@@ -1236,6 +1236,17 @@ const r = STATE.guesses.length;
 const guess = CURRENT;
 CURRENT = '';
 STATE.guesses.push(guess);
+// Sept 2026: 2,370 people opened a fresh board and 1,570 finished. The 800 who
+// left were invisible, because the only signals were "opened" and "finished".
+// Never typing a letter and giving up on guess five need opposite fixes, and
+// this is the event that tells them apart. Fires once per game, on the first
+// accepted guess, AFTER the dictionary check — a rejected word is not a guess.
+if (STATE.guesses.length === 1) {
+posthog.capture('booky_first_guess', {
+word_number: DAY,
+archive: ARCHIVE,
+});
+}
 const result = evaluate(guess, ANSWER);
 
 // Animate reveal, then update state + keyboard
@@ -1693,7 +1704,7 @@ window.__countdownTicker = setInterval(tickCountdown, 1000);
 }
 }
 
-function buildShareString({ clickable = false, omitUrl = false } = {}) {
+function buildShareString({ clickable = false, omitUrl = false, tag = '' } = {}) {
 // The link is DELIBERATELY dead on Reddit and DELIBERATELY live everywhere else.
 //
 // Reddit (and similar) downrank posts perceived as link self-promotion, so the
@@ -1730,8 +1741,13 @@ function buildShareString({ clickable = false, omitUrl = false } = {}) {
 // auto-links a URL with a scheme or a www. prefix, so the copy path lost the
 // click while the native path, which carries https:// in its url field, kept it.
 // Looks lose to working here.
+// `tag` marks which share path produced the link, so an arrival can be
+// attributed to native vs clipboard instead of a single undifferentiated
+// utm_source=share. One short param, not a tracking blob: vercel.json maps
+// ?s=n / ?s=c onto utm_content. The Reddit path passes no tag on purpose,
+// for the same reason it keeps a dead link.
 const shareUrl = clickable
-? `https://${SHARE_URL}`
+? `https://${SHARE_URL}${tag ? `?s=${tag}` : ''}`
 : SITE_URL.replace('.com', '.\u200Bcom');
 // The rank rides in the header — identity is the shareable bit (Spelling
 // Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
@@ -1895,8 +1911,6 @@ function prefersNativeShare() {
 async function onSharePrimary() {
   // The tagged, tappable string either way, so it unfurls into the OG card
   // wherever it lands.
-  const text = buildShareString({ clickable: true });
-
   if (prefersNativeShare()) {
     try {
       // ⚠️ text and url go in SEPARATE fields on purpose. With the link buried
@@ -1908,7 +1922,7 @@ async function onSharePrimary() {
       // apps that append `url` themselves do not print it twice.
       await navigator.share({
         text: buildShareString({ clickable: true, omitUrl: true }),
-        url: `https://${SHARE_URL}`,
+        url: `https://${SHARE_URL}?s=n`,
       });
       captureShare('native');
       $('share-sheet')?.close();
@@ -1921,7 +1935,7 @@ async function onSharePrimary() {
     }
   }
 
-  const ok = await copyText(text);
+  const ok = await copyText(buildShareString({ clickable: true, tag: 'c' }));
   if (!ok) return;
   captureShare('clipboard');
   $('share-sheet')?.close();
