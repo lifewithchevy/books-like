@@ -296,15 +296,15 @@ module.exports = async (req, res) => {
             first_name: encodeStats(best),
             // last_name stores the giveaway entry tag (internal field — never shown)
             ...(entryTag ? { last_name: entryTag } : {}),
-            // `status` is a Resend custom contact property (dashboard-visible,
-            // added 2026-09-22). `unsubscribed` alone made a not-yet-confirmed
-            // signup look identical to a real opt-out in the Audience table —
-            // both show "Unsubscribed" — which is confusing to eyeball and was
-            // the reason a pending backlog went unnoticed. This does not change
-            // send behaviour: api/booky-send.js still filters on `unsubscribed`
-            // alone, so this is display-only, purely for reading the dashboard.
-            // Record shape, not an array — see lib/confirm-handler.js for why.
-            properties: { status: pending ? 'pending' : 'confirmed' },
+            // A `properties` field was added here 2026-09-22 to make pending
+            // vs confirmed visible in the Resend dashboard. Resend's Contacts
+            // API does not accept that field in any shape (object or array —
+            // both 422 "expected record, received array") and this endpoint
+            // upserts, so the 422 was silently read as "contact already
+            // exists" (see the comment on `read` above) rather than a real
+            // failure — removed. `unsubscribed` is still the only field
+            // api/booky-send.js filters on, so this never changed who gets
+            // mail; it only broke the dashboard-only status label.
           }),
         }
       );
