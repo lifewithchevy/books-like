@@ -778,6 +778,23 @@ $('giveaway-tap').addEventListener('click', onGiveawayTap);
 // card disappears and the reminder form comes back by itself.
 
 const GIVEAWAY_ENTERED_KEY = '90books_booky_giveaway_entered';
+// Holds the tag of a giveaway entered by an address that has NOT confirmed
+// double opt-in yet. Without it a reload forgets the pending state and the
+// strip reverts to promising "daily reminders on" to someone who is still
+// unsubscribed and receiving nothing.
+const GIVEAWAY_PENDING_KEY = '90books_booky_giveaway_pending';
+
+// The entered strip, in both its states. A pending entrant must never be told
+// their reminders are on: they are stored as `unsubscribed` until they tap the
+// link, so the daily send skips them entirely. Said in one place because the
+// strip is written from two (on entry, and on every later render).
+function setGiveawayEnteredCopy(g, pending) {
+  const title = $('giveaway-in-title');
+  if (title) title.textContent = pending ? 'almost in 📬' : "you're in 🤞";
+  $('giveaway-in-sub').textContent = pending
+    ? `tap the link in your inbox to confirm · winner announced ${g.announce}`
+    : `winner announced ${g.announce} · 📩 daily reminders on`;
+}
 
 function localMidnight(dateStr) {
 const [y, m, d] = String(dateStr).split('-').map(Number);
@@ -821,8 +838,7 @@ return false;
 // Already entered → show only the confirmation strip.
 if (localStorage.getItem(GIVEAWAY_ENTERED_KEY) === g.tag) {
 card.hidden = true;
-$('giveaway-in-sub').textContent =
-`winner announced ${g.announce} · 📩 daily reminders on`;
+setGiveawayEnteredCopy(g, localStorage.getItem(GIVEAWAY_PENDING_KEY) === g.tag);
 done.hidden = false;
 return true;
 }
@@ -872,11 +888,12 @@ card.hidden = false;
 return true;
 }
 
-function showGiveawayEntered(g) {
+function showGiveawayEntered(g, pending) {
 localStorage.setItem(GIVEAWAY_ENTERED_KEY, g.tag);
+if (pending) localStorage.setItem(GIVEAWAY_PENDING_KEY, g.tag);
+else localStorage.removeItem(GIVEAWAY_PENDING_KEY);
 $('giveaway').hidden = true;
-$('giveaway-in-sub').textContent =
-`winner announced ${g.announce} · 📩 daily reminders on`;
+setGiveawayEnteredCopy(g, pending);
 $('giveaway-in').hidden = false;
 }
 
@@ -906,7 +923,15 @@ stats: statsForServer(),
 if (!res.ok) throw new Error('subscribe-failed');
 
 // Returning player on a wiped device — give them their record back.
-try { restoreStats((await res.json())?.stats); } catch {}
+// `pending` rides on the same response and must be read here: an address
+// that has not confirmed double opt-in is stored as `unsubscribed`, so
+// telling it "daily reminders on" is false. The body can only be read once.
+let pending = false;
+try {
+const data = await res.json();
+restoreStats(data?.stats);
+pending = data?.pending === true;
+} catch {}
 
 const alreadySubscribed = !!localStorage.getItem('90books_booky_reminder_sub');
 localStorage.setItem('90books_booky_reminder_sub', email);
@@ -923,10 +948,13 @@ word_number_at_signup: DAY,
 posthog.capture('giveaway_entered', {
 giveaway: g.tag,
 already_subscribed: alreadySubscribed,
+// Separates entries that are live from ones still waiting on a confirm
+// click, so the entrant count can be read honestly before the draw.
+pending_confirmation: pending,
 word_number: DAY,
 });
 
-showGiveawayEntered(g);
+showGiveawayEntered(g, pending);
 } catch {
 fine.className = 'giveaway-fine is-error';
 fine.textContent = "couldn't save that right now. try again in a sec?";
