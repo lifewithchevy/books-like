@@ -16,7 +16,7 @@
 // api/booky-send.js so readers get used to seeing a book cover in Booky mail.
 // Table layout (not flexbox) because Outlook doesn't do flex, and the title is
 // live text rather than baked into the image because clients block images.
-function buildGiveawayWelcomeHtml({ title, announce, playUrl, cover }) {
+function buildGiveawayWelcomeHtml({ title, announce, playUrl, cover, unsubUrl }) {
   const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const safeTitle = esc(title);
   const coverCell = cover && /^https:\/\//.test(cover)
@@ -55,7 +55,7 @@ function buildGiveawayWelcomeHtml({ title, announce, playUrl, cover }) {
           <p style="margin:18px 0 0;font-size:11px;color:#a587a9;line-height:1.5;">
             Free to enter, no purchase necessary. One entry per reader, open worldwide, void where prohibited.<br>
             Booky by 90books &middot; you signed up at 90books.com/booky.<br>
-            <a href="mailto:booky@90books.com?subject=unsubscribe" style="color:#a587a9;text-decoration:underline;">Unsubscribe</a>
+            <a href="${esc(unsubUrl)}" style="color:#a587a9;text-decoration:underline;">Unsubscribe</a>
           </p>
         </td></tr>
       </table>
@@ -67,6 +67,13 @@ function buildGiveawayWelcomeHtml({ title, announce, playUrl, cover }) {
 
 const { enforce } = require('./_rate-limit');
 const { encodeStats, decodeStats } = require('./_stats-codec');
+// Same signed one-click link the daily reminder uses (lib/unsubscribe.js).
+// The giveaway welcome/confirmation mail below used to carry a mailto-only
+// List-Unsubscribe, which Apple Mail's and Gmail's built-in Unsubscribe
+// button turns into a plain email instead of a link — nothing processes it,
+// so the subscriber stays on the list believing they left. Fixed 2026-09-22
+// after a real report (Lisa, giveaway welcome mail, 19 Sep).
+const { unsubscribeUrl, unsubscribeHeaders } = require('../lib/unsubscribe');
 
 // Read back whatever stats we already hold for this contact.
 //
@@ -289,6 +296,14 @@ module.exports = async (req, res) => {
             first_name: encodeStats(best),
             // last_name stores the giveaway entry tag (internal field — never shown)
             ...(entryTag ? { last_name: entryTag } : {}),
+            // `status` is a Resend custom contact property (dashboard-visible,
+            // added 2026-09-22). `unsubscribed` alone made a not-yet-confirmed
+            // signup look identical to a real opt-out in the Audience table —
+            // both show "Unsubscribed" — which is confusing to eyeball and was
+            // the reason a pending backlog went unnoticed. This does not change
+            // send behaviour: api/booky-send.js still filters on `unsubscribed`
+            // alone, so this is display-only, purely for reading the dashboard.
+            properties: [{ key: 'status', value: pending ? 'pending' : 'confirmed' }],
           }),
         }
       );
@@ -381,7 +396,6 @@ Booky by 90books`,
           // alike. Deliberately NOT process.env.RESEND_FROM: that one variable is
           // read by every sender, so setting it would silently retarget these too.
           const RESEND_FROM = 'Booky <booky@90books.com>';
-          const UNSUBSCRIBE = '<mailto:booky@90books.com?subject=unsubscribe>';
           const title = (giveawayTitle || 'the book').slice(0, 120);
           const announce = (giveawayAnnounce || 'soon').slice(0, 40);
           const playUrl = 'https://90books.com/booky?utm_source=giveaway_welcome&utm_medium=email&utm_campaign=giveaway_welcome';
@@ -400,10 +414,7 @@ Booky by 90books`,
                 // authors and press. Both reach the same inbox via forwarding.
                 reply_to: 'booky@90books.com',
                 subject: "🎁 You're entered · Booky giveaway",
-                headers: {
-                  'List-Unsubscribe': UNSUBSCRIBE,
-                  'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-                },
+                headers: unsubscribeHeaders(cleanEmail),
                 text: `You're entered. 🎁
 
 ${title}
@@ -416,7 +427,7 @@ Play today's Booky: ${playUrl}
 
 ---
 Booky by 90books · you signed up at 90books.com/booky`,
-                html: buildGiveawayWelcomeHtml({ title, announce, playUrl, cover: req.body?.giveawayCover }),
+                html: buildGiveawayWelcomeHtml({ title, announce, playUrl, cover: req.body?.giveawayCover, unsubUrl: unsubscribeUrl(cleanEmail) }),
               }),
             });
           } catch (err) {
@@ -427,7 +438,6 @@ Booky by 90books · you signed up at 90books.com/booky`,
           // alike. Deliberately NOT process.env.RESEND_FROM: that one variable is
           // read by every sender, so setting it would silently retarget these too.
           const RESEND_FROM = 'Booky <booky@90books.com>';
-          const UNSUBSCRIBE  = '<mailto:booky@90books.com?subject=unsubscribe>';
           try {
             await fetch('https://api.resend.com/emails', {
               method: 'POST',
@@ -443,10 +453,7 @@ Booky by 90books · you signed up at 90books.com/booky`,
                 // authors and press. Both reach the same inbox via forwarding.
                 reply_to: 'booky@90books.com',
                 subject: "you're in, Booky will remind you 📚",
-                headers: {
-                  'List-Unsubscribe': UNSUBSCRIBE,
-                  'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-                },
+                headers: unsubscribeHeaders(cleanEmail),
                 text: `okay you're in. 📚
 
 new word drops every midnight. i'll send you a reminder each evening so you don't lose your streak.
@@ -488,7 +495,7 @@ Booky by 90books · you signed up at 90books.com/booky · reply to unsubscribe`,
   <p>olga from booky</p>
   <p class="footer">
     Booky by 90books · you signed up at 90books.com/booky<br>
-    <a href="mailto:booky@90books.com?subject=unsubscribe">unsubscribe</a>
+    <a href="${unsubscribeUrl(cleanEmail)}">unsubscribe</a>
   </p>
 </div>
 </body>

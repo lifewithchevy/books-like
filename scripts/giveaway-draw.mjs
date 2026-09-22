@@ -29,6 +29,13 @@ import path from 'node:path';
 import crypto from 'node:crypto';
 import { fileURLToPath } from 'node:url';
 import EMAILS from '../lib/giveaway-emails.js';
+// Same signed one-click link api/booky-send.js and api/booky-giveaway.js use.
+// A mailto-only List-Unsubscribe here made Apple Mail/Gmail's Unsubscribe
+// button compose an email instead of hitting a real link — nothing processed
+// it. Fixed 2026-09-22, alongside the same bug in api/booky-subscribe.js,
+// api/booky-giveaway.js and lib/giveaway-emails.js.
+import UNSUBSCRIBE_LIB from '../lib/unsubscribe.js';
+const { unsubscribeHeaders } = UNSUBSCRIBE_LIB;
 
 const REPO = path.dirname(path.dirname(fileURLToPath(import.meta.url)));
 
@@ -53,7 +60,6 @@ loadDotEnv(path.join(REPO, '.env.local'));
 const KEY         = process.env.RESEND_API_KEY;
 const AUDIENCE_ID = process.env.RESEND_AUDIENCE_ID;
 const FROM        = process.env.RESEND_FROM || 'Olga from Booky <hello@90books.com>';
-const UNSUB       = '<mailto:hello@90books.com?subject=unsubscribe>';
 
 // ---- giveaway config, straight from the file that drives the live card ----
 const words = JSON.parse(fs.readFileSync(path.join(REPO, 'booky', 'words.json'), 'utf8'));
@@ -144,16 +150,19 @@ async function main() {
   if (!CONFIRM) fail('--send requires --yes. Refusing to email anyone by accident.');
 
   if (SEND === 'winner') {
-    const { subject, html, text } = EMAILS.winnerEmail({ ga: GA, winnerName });
+    const { subject, html, text } = EMAILS.winnerEmail({ ga: GA, winnerName, email: winner.email });
     const ok = await sendOne(winner.email, subject, html, text, 'giveaway-winner');
     console.log(ok ? `Sent winner email to ${winner.email}` : `FAILED to send to ${winner.email}`);
     if (ok) markSent('winner');
     return;
   }
 
-  const { subject, html, text } = EMAILS.listEmail({ ga: GA, winnerName, entries: entrants.length, amzTag: AMZ_TAG });
+  // Built per recipient, not once for the whole list: the unsubscribe link
+  // baked into the html footer is signed per-address, so a shared mail object
+  // would sign it for the wrong person (or none).
   let sent = 0, failed = 0;
   for (const c of others) {
+    const { subject, html, text } = EMAILS.listEmail({ ga: GA, winnerName, entries: entrants.length, amzTag: AMZ_TAG, email: c.email });
     const ok = await sendOne(c.email, subject, html, text, 'giveaway-result');
     ok ? sent++ : failed++;
     await new Promise((r) => setTimeout(r, 600)); // Resend allows 2 req/s; stay well under
@@ -236,10 +245,7 @@ async function sendOne(to, subject, html, text, tag) {
       headers: { Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json' },
       body: JSON.stringify({
         from: FROM, to, reply_to: 'hello@90books.com', subject, html, text,
-        headers: {
-          'List-Unsubscribe': UNSUB,
-          'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-        },
+        headers: unsubscribeHeaders(to),
         tags: [{ name: 'type', value: tag }],
       }),
     });
@@ -255,8 +261,8 @@ async function sendOne(to, subject, html, text, tag) {
 function writePreviews({ winnerName, entries }) {
   const dir = path.join(REPO, '.giveaway-preview');
   fs.mkdirSync(dir, { recursive: true });
-  const w = EMAILS.winnerEmail({ ga: GA, winnerName });
-  const l = EMAILS.listEmail({ ga: GA, winnerName, entries, amzTag: AMZ_TAG });
+  const w = EMAILS.winnerEmail({ ga: GA, winnerName, email: 'preview@90books.com' });
+  const l = EMAILS.listEmail({ ga: GA, winnerName, entries, amzTag: AMZ_TAG, email: 'preview@90books.com' });
   const files = [
     [path.join(dir, 'winner.html'), w.html, w.subject],
     [path.join(dir, 'list.html'), l.html, l.subject],

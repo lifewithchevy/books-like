@@ -30,6 +30,11 @@
 
 const { winnerEmail, winnerEmailPlain, listEmail, displayName } = require('../lib/giveaway-emails');
 const { streakOf, decodeStats } = require('./_stats-codec');
+// Same signed one-click link api/booky-send.js already uses. A mailto-only
+// List-Unsubscribe here made Apple Mail/Gmail's Unsubscribe button compose an
+// email instead of hitting a real link, so it silently did nothing. Fixed
+// 2026-09-22, see lib/unsubscribe.js.
+const { unsubscribeHeaders } = require('../lib/unsubscribe');
 
 const WON_SUFFIX  = '#WON';
 const SENT_SUFFIX = '#SENT';
@@ -226,8 +231,8 @@ module.exports = async (req, res) => {
     const name = url.searchParams.get('name') || 'Kristen';
     const fancy = url.searchParams.get('style') === 'card';
     const mail = which === 'list'
-      ? listEmail({ ga, winnerName: name, entries: entrants.length, amzTag })
-      : (fancy ? winnerEmail({ ga, winnerName: name })
+      ? listEmail({ ga, winnerName: name, entries: entrants.length, amzTag, email: to })
+      : (fancy ? winnerEmail({ ga, winnerName: name, email: to })
                : winnerEmailPlain({ ga, winnerName: name }));
     const personal = which !== 'list' && !fancy;
     const sent = await sendOne(KEY, FROM, to, mail, 'giveaway-test', personal);
@@ -268,7 +273,6 @@ module.exports = async (req, res) => {
     // deliverability block, for instance, where every extra recipient is
     // another chance to bounce.
     const entrantsOnly = url.searchParams.get('audience') === 'entrants';
-    const mail = listEmail({ ga, winnerName, entries: entrants.length, amzTag });
     const audience = (entrantsOnly ? entrants : active)
       .filter((c) => c.email !== existing.email);
 
@@ -276,19 +280,26 @@ module.exports = async (req, res) => {
     // without sending, because "how many people is this about to hit" is the
     // one thing you want to be sure of before a send you cannot recall.
     if (url.searchParams.get('dry') === '1') {
+      const previewMail = listEmail({ ga, winnerName, entries: entrants.length, amzTag, email: audience[0]?.email });
       res.status(200).json({
         ok: true, dryRun: true,
         audience: entrantsOnly ? 'entrants' : 'all',
         wouldSend: audience.length,
         winnerName,
-        subject: mail.subject,
+        subject: previewMail.subject,
         recipients: audience.map((c) => c.email),
       });
       return;
     }
 
+    // Built PER RECIPIENT, not once for the whole audience: the unsubscribe
+    // link baked into the html footer is signed per-address (lib/unsubscribe.js),
+    // so a shared mail object would either leave it unsigned or sign it for the
+    // wrong person. Same reasoning as the header, which sendOne already sets
+    // per-recipient via unsubscribeHeaders(to).
     let sent = 0, failed = 0;
     for (const c of audience) {
+      const mail = listEmail({ ga, winnerName, entries: entrants.length, amzTag, email: c.email });
       const ok = await sendOne(KEY, FROM, c.email, mail, 'giveaway-result');
       ok ? sent++ : failed++;
       await new Promise((r) => setTimeout(r, 600)); // Resend allows 2/s, stay under
@@ -338,10 +349,7 @@ async function sendOne(key, from, to, mail, typeTag, personal = false) {
       body.track_click = false;
       body.track_opens = false;
     } else {
-      body.headers = {
-        'List-Unsubscribe': '<mailto:booky@90books.com?subject=unsubscribe>',
-        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-      };
+      body.headers = unsubscribeHeaders(to);
     }
     const r = await fetch('https://api.resend.com/emails', {
       method: 'POST',
