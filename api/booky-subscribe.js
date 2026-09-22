@@ -30,13 +30,13 @@ function buildGiveawayWelcomeHtml({ title, announce, playUrl, cover, unsubUrl })
 <body style="margin:0;padding:0;background:#fff8fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,sans-serif;color:#2a0a26;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fff8fb;padding:40px 16px;">
     <tr><td align="center">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
+      <table role="presentation" width="100%" align="center" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;margin-left:auto;margin-right:auto;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
         <tr><td>
           <img src="https://90books.com/logo/booky-email.png" width="104" height="40" alt="Booky" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;">
           <p style="margin:0 0 24px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;">You're entered</p>
           <p style="margin:0 0 16px;font-size:18px;line-height:1.5;color:#2a0a26;font-weight:600;">You're entered. &#127873;</p>
 
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fdf6e9;border:1px solid #e8d4a8;border-radius:10px;margin:0 0 18px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fdf6e9;border:1px solid #e8d4a8;border-radius:10px;margin:0 0 18px;text-align:left;">
             <tr>
               ${coverCell}
               <td style="padding:12px 12px 12px ${coverCell ? '0' : '12px'};vertical-align:middle">
@@ -86,13 +86,13 @@ function buildGiveawayConfirmHtml({ title, announce, cover, link }) {
 <body style="margin:0;padding:0;background:#fff8fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,sans-serif;color:#2a0a26;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fff8fb;padding:40px 16px;">
     <tr><td align="center" style="text-align:center;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
+      <table role="presentation" width="100%" align="center" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;margin-left:auto;margin-right:auto;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
         <tr><td>
           <img src="https://90books.com/logo/booky-email.png" width="104" height="40" alt="Booky" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;">
           <p style="margin:0 0 20px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;text-align:center;">One more tap</p>
           <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#2a0a26;">Confirm your entry</p>
 
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fdf6e9;border:1px solid #e8d4a8;border-radius:10px;margin:0 0 18px;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fdf6e9;border:1px solid #e8d4a8;border-radius:10px;margin:0 0 18px;text-align:left;">
             <tr>
               ${coverCell}
               <td style="padding:12px 12px 12px ${coverCell ? '0' : '12px'};vertical-align:middle">
@@ -158,7 +158,7 @@ function confirmHtml(link) {
 <body style="margin:0;padding:0;background:#fff8fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,sans-serif;color:#2a0a26;">
   <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fff8fb;padding:40px 16px;">
     <tr><td align="center" style="text-align:center;">
-      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
+      <table role="presentation" width="100%" align="center" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;margin-left:auto;margin-right:auto;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
         <tr><td>
           <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;color:#c8398f;margin:0 0 24px;letter-spacing:0.5px;">Booky</p>
           <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#2a0a26;">Almost there</p>
