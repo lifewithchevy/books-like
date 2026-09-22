@@ -102,12 +102,16 @@ function buildGiveawayConfirmHtml({ title, announce, cover, link }) {
             </tr>
           </table>
 
-          <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#4a2a4c;">Your entry isn't in yet. Tap below and you're counted, and I'll also send you the daily reminder each evening.</p>
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#4a2a4c;">Your entry isn't in yet. Tap below and you're counted, and I'll also send you the daily reminder each evening.</p>
+          <!-- What the prize actually is, at full body size and ABOVE the button,
+               not shrunk into the footer. Someone deciding whether to enter should
+               read it at the same weight as everything else, before they tap. -->
+          <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#4a2a4c;">Open worldwide. The winner gets a gift card for the book, so it works wherever you are.</p>
           <p style="margin:0 0 24px;">
             <a href="${esc(link)}" style="display:inline-block;background:linear-gradient(135deg,#c8398f,#9a2670);background-color:#c8398f;color:#ffffff;text-decoration:none;font-weight:600;padding:14px 30px;border-radius:10px;font-size:15px;">Yes, count me in</a>
           </p>
           <p style="margin:0;font-size:13px;line-height:1.6;color:#8a6a8c;">If you didn't enter, just ignore this. Nothing happens and you won't hear from me again.</p>
-          <p style="margin:18px 0 0;font-size:11px;color:#a587a9;line-height:1.5;">Open worldwide. The winner gets a gift card for the book, so it works wherever you are.<br>Free to enter, no purchase necessary. Booky by 90books.</p>
+          <p style="margin:18px 0 0;font-size:11px;color:#a587a9;line-height:1.5;">Free to enter, no purchase necessary. Booky by 90books.</p>
         </td></tr>
       </table>
     </td></tr>
@@ -420,12 +424,14 @@ module.exports = async (req, res) => {
           const text = entryTag
             ? `Your entry isn't in yet.
 
+Open worldwide. The winner gets a gift card for the book, so it works wherever you are.
+
 Tap this to confirm your entry for ${gTitle}:
 ${link}
 
 I'll pick the winner on ${gAnnounce}. Confirming also turns on the daily reminder.
 
-Open worldwide. The winner gets a gift card for the book, so it works wherever you are. Free to enter, no purchase necessary.
+Free to enter, no purchase necessary.
 
 If you didn't enter, ignore this and nothing happens. You won't hear from me again.
 
