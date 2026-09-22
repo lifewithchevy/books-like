@@ -64,18 +64,43 @@ function markDaySeen(day) {
 // "Subscriber" here means "has an address stored on this device", so someone
 // still in double opt-in limbo counts. That is correct for this question: they
 // handed over the email, and that is the behaviour being tested.
+// ⚠️ The boolean ALONE cannot answer "do subscribers come back", and believing
+// it can is probably what produced the old "subscribers play 3x longer" claim.
+// PostHog person properties hold CURRENT state, so a player who subscribed on
+// their fifth day is labelled a subscriber on day one too — and subscribers are
+// by construction people who already stuck around long enough to subscribe.
+// Any before/after comparison needs a date, so we store one and send it.
+//
+// Players flagged from storage with no stored date subscribed before this
+// shipped. They get subscriber_backfilled, and must be EXCLUDED from anything
+// time-based, because for them "since" is unknown rather than old.
+const SUB_KEY = '90books_booky_reminder_sub';
+const SUB_AT_KEY = '90books_booky_reminder_sub_at';
 let subFlagSent = null;
 function syncSubscriberFlag(value) {
   if (value === subFlagSent) return;
   subFlagSent = value;
+  const props = { is_subscriber: value };
+  if (value) {
+    const since = subscribedAt();
+    if (since) { props.subscriber_since = since; props.subscriber_backfilled = false; }
+    else { props.subscriber_backfilled = true; }
+  }
   try {
     if (window.posthog && posthog.setPersonProperties) {
-      posthog.setPersonProperties({ is_subscriber: value });
+      posthog.setPersonProperties(props);
     }
   } catch {}
 }
 function hasStoredEmail() {
-  try { return !!localStorage.getItem('90books_booky_reminder_sub'); } catch { return false; }
+  try { return !!localStorage.getItem(SUB_KEY); } catch { return false; }
+}
+function subscribedAt() {
+  try { return localStorage.getItem(SUB_AT_KEY) || null; } catch { return null; }
+}
+function markSubscribedNow() {
+  // Never overwrite an existing date — a resubmit is not a new signup.
+  try { if (!localStorage.getItem(SUB_AT_KEY)) localStorage.setItem(SUB_AT_KEY, new Date().toISOString()); } catch {}
 }
 
 const SITE_URL = '90books.com/booky';
@@ -669,6 +694,16 @@ if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); takeBook(); }
 $('stats-btn').addEventListener('click', () => {
 renderStatsModal();
 syncStatsReminder();
+// Without this the Stats archive link has no denominator: we would count
+// clicks with no idea how many people saw it, so a low number could mean bad
+// placement or simply nobody opening Stats. The win screen already has a
+// denominator in booky_game_complete; this is the equivalent.
+posthog.capture('booky_stats_opened', {
+word_number: DAY,
+archive: ARCHIVE,
+played: STATS.played,
+subscribed: hasStoredEmail(),
+});
 $('stats-modal').showModal();
 });
 // Wordle-exact: the win-screen button IS the share. On mobile it opens the OS
@@ -878,6 +913,7 @@ localStorage.setItem('90books_booky_reminder_sub', email);
 
 // Keep the historical north-star event comparable, and add a dedicated
 // one so entries can be separated from ordinary signups.
+markSubscribedNow();
 syncSubscriberFlag(true);
 posthog.capture('email_signup_completed', {
 source: 'booky_endscreen',
@@ -1123,7 +1159,8 @@ restored = restoreStats(data?.stats);
 pending = data?.pending === true;
 } catch {}
 
-localStorage.setItem('90books_booky_reminder_sub', email);
+localStorage.setItem(SUB_KEY, email);
+markSubscribedNow();
 syncSubscriberFlag(true);
 // PostHog: email signup completed
 posthog.capture('email_signup_completed', {
