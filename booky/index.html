@@ -277,7 +277,7 @@ Your <a href="https://buymeacoffee.com/bookygame" target="_blank" rel="noopener"
      reachable without winning, so the same link lives here too. Kept BELOW the
      email card on purpose, so the signup stays the closest thing to the streak
      it is saving. Tracked as source 'stats_modal'. -->
-<p class="next stats-archive"><a href="/booky/archive">Play Booky Archive</a></p>
+<p class="next stats-archive"><a href="/booky/archive">Play Booky Archive</a> and catch up on the words you missed</p>
 </form>
 </dialog>
 
@@ -384,10 +384,11 @@ required
 />
 <button type="submit" id="reminder-submit">Save stats</button>
 </div>
-<!-- Hidden 2026-09-13 (Olga). The field's own label already says what this
-     said. Kept per the dormant-features policy: uncomment to restore.
+<!-- Restored 2026-09-22 (Olga): hidden on 09-13 as redundant with the field
+     label, but the label is placeholder text that disappears on focus, and this
+     is the only line that discloses the daily email. Cloned into the Stats card
+     by buildStatsReminder, so it shows in both places. -->
 <p class="reminder-pitch reminder-pitch--below">save your stats, plus a daily reminder</p>
--->
 <p class="reminder-toast" id="reminder-toast" hidden></p>
 </form>
 <p id="reminder-active" class="reminder-active" hidden>📩 Daily reminders on</p>
