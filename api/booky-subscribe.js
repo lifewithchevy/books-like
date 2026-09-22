@@ -409,7 +409,7 @@ module.exports = async (req, res) => {
         if (pending) {
           const RESEND_FROM = 'Booky <booky@90books.com>';
           const { confirmUrl } = require('../lib/confirm');
-          const link = confirmUrl(cleanEmail);
+          const link = confirmUrl(cleanEmail, entryTag);
           // A giveaway entrant gets an email about their ENTRY, not about a
           // daily reminder they never asked for. Same signed link either way.
           const gTitle    = (giveawayTitle || 'the book').slice(0, 120);
