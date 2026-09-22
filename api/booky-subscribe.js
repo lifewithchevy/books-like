@@ -65,6 +65,57 @@ function buildGiveawayWelcomeHtml({ title, announce, playUrl, cover, unsubUrl })
 </html>`;
 }
 
+// Double opt-in confirmation for someone who arrived through a GIVEAWAY.
+// The generic confirmHtml below only talks about turning on a daily reminder,
+// which is not what this reader just did: they entered to win a book. Being
+// answered about something they did not ask for is how a confirmation goes
+// unclicked, and an unclicked confirmation is a lost entrant, so the entry is
+// what this email leads with. Same one-button shape as confirmHtml, same card
+// as buildGiveawayWelcomeHtml, so it still looks like Booky mail.
+function buildGiveawayConfirmHtml({ title, announce, cover, link }) {
+  const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
+  const safeTitle = esc(title);
+  const coverCell = cover && /^https:\/\//.test(cover)
+    ? `<td style="padding:12px;width:52px;vertical-align:middle">
+             <img src="${esc(cover)}" width="52" height="78" alt="${safeTitle}" style="display:block;border-radius:4px;border:0" />
+           </td>`
+    : '';
+  return `<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Confirm your entry</title></head>
+<body style="margin:0;padding:0;background:#fff8fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,sans-serif;color:#2a0a26;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fff8fb;padding:40px 16px;">
+    <tr><td align="center" style="text-align:center;">
+      <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
+        <tr><td>
+          <img src="https://90books.com/logo/booky-email.png" width="104" height="40" alt="Booky" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;">
+          <p style="margin:0 0 20px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;text-align:center;">One more tap</p>
+          <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#2a0a26;">Confirm your entry</p>
+
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fdf6e9;border:1px solid #e8d4a8;border-radius:10px;margin:0 0 18px;text-align:left;">
+            <tr>
+              ${coverCell}
+              <td style="padding:12px 12px 12px ${coverCell ? '0' : '12px'};vertical-align:middle">
+                <div style="font-family:'Cormorant Garamond',Georgia,serif;font-size:17px;font-weight:600;color:#2a0a26;line-height:1.15;">${safeTitle}</div>
+                <div style="font-size:11.5px;color:#96700c;margin-top:5px;font-weight:600;">Winner announced ${esc(announce)}</div>
+              </td>
+            </tr>
+          </table>
+
+          <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#4a2a4c;">Your entry isn't in yet. Tap below and you're counted, and I'll also send you the daily word each evening.</p>
+          <p style="margin:0 0 24px;">
+            <a href="${esc(link)}" style="display:inline-block;background:linear-gradient(135deg,#c8398f,#9a2670);background-color:#c8398f;color:#ffffff;text-decoration:none;font-weight:600;padding:14px 30px;border-radius:10px;font-size:15px;">Yes, count me in</a>
+          </p>
+          <p style="margin:0;font-size:13px;line-height:1.6;color:#8a6a8c;">If you didn't enter, just ignore this. Nothing happens and you won't hear from me again.</p>
+          <p style="margin:18px 0 0;font-size:11px;color:#a587a9;line-height:1.5;">Free to enter, no purchase necessary. Booky by 90books.</p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
 const { enforce } = require('./_rate-limit');
 const { encodeStats, decodeStats } = require('./_stats-codec');
 // Same signed one-click link the daily reminder uses (lib/unsubscribe.js).
@@ -359,6 +410,35 @@ module.exports = async (req, res) => {
           const RESEND_FROM = 'Booky <booky@90books.com>';
           const { confirmUrl } = require('../lib/confirm');
           const link = confirmUrl(cleanEmail);
+          // A giveaway entrant gets an email about their ENTRY, not about a
+          // daily reminder they never asked for. Same signed link either way.
+          const gTitle    = (giveawayTitle || 'the book').slice(0, 120);
+          const gAnnounce = (giveawayAnnounce || 'soon').slice(0, 40);
+          const subject = entryTag
+            ? `one tap to lock in your giveaway entry 🎁`
+            : 'one tap and your Booky reminder is on 📚';
+          const text = entryTag
+            ? `Your entry isn't in yet.
+
+Tap this to confirm your entry for ${gTitle}:
+${link}
+
+I'll pick the winner on ${gAnnounce}. Confirming also turns on the daily Booky word.
+
+If you didn't enter, ignore this and nothing happens. You won't hear from me again.
+
+Booky by 90books`
+            : `Almost there.
+
+Tap this to turn on your daily Booky reminder:
+${link}
+
+If you didn't sign up for Booky, ignore this and nothing happens. You won't hear from me again.
+
+Booky by 90books`;
+          const html = entryTag
+            ? buildGiveawayConfirmHtml({ title: gTitle, announce: gAnnounce, cover: req.body?.giveawayCover, link })
+            : confirmHtml(link);
           try {
             const sendRes = await fetch('https://api.resend.com/emails', {
               method: 'POST',
@@ -370,20 +450,13 @@ module.exports = async (req, res) => {
                 from: RESEND_FROM,
                 to: cleanEmail,
                 reply_to: 'booky@90books.com',
-                subject: 'one tap and your Booky reminder is on 📚',
                 // No List-Unsubscribe here on purpose. This is a transactional
                 // confirmation to an address that is NOT on the list yet, and
                 // offering to unsubscribe from something you have not joined is
                 // just confusing. The daily mail carries the header.
-                text: `Almost there.
-
-Tap this to turn on your daily Booky reminder:
-${link}
-
-If you didn't sign up for Booky, ignore this and nothing happens. You won't hear from me again.
-
-Booky by 90books`,
-                html: confirmHtml(link),
+                subject,
+                text,
+                html,
               }),
             });
             // This send used to go unchecked — a Resend-side rejection (bad

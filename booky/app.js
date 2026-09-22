@@ -790,9 +790,9 @@ const GIVEAWAY_PENDING_KEY = '90books_booky_giveaway_pending';
 // strip is written from two (on entry, and on every later render).
 function setGiveawayEnteredCopy(g, pending) {
   const title = $('giveaway-in-title');
-  if (title) title.textContent = pending ? 'almost in 📬' : "you're in 🤞";
+  if (title) title.textContent = pending ? 'Almost in 📬' : "you're in 🤞";
   $('giveaway-in-sub').textContent = pending
-    ? `tap the link in your inbox to confirm · winner announced ${g.announce}`
+    ? `Tap the link in your inbox to confirm · winner announced ${g.announce}`
     : `winner announced ${g.announce} · 📩 daily reminders on`;
 }
 
