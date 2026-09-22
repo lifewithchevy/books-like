@@ -791,8 +791,11 @@ const GIVEAWAY_PENDING_KEY = '90books_booky_giveaway_pending';
 function setGiveawayEnteredCopy(g, pending) {
   const title = $('giveaway-in-title');
   if (title) title.textContent = pending ? 'Almost in 📬' : "you're in 🤞";
+  // Pending says one thing only. The announce date rode along here and pushed
+  // the strip onto two lines, and it is already in the confirmation email and
+  // on the page the link opens. The only job of this line is the next action.
   $('giveaway-in-sub').textContent = pending
-    ? `Tap the link in your inbox to confirm · winner announced ${g.announce}`
+    ? 'Tap the link in your inbox to confirm'
     : `winner announced ${g.announce} · 📩 daily reminders on`;
 }
 
