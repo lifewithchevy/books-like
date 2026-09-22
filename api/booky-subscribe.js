@@ -102,7 +102,7 @@ function buildGiveawayConfirmHtml({ title, announce, cover, link }) {
             </tr>
           </table>
 
-          <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#4a2a4c;">Your entry isn't in yet. Tap below and you're counted, and I'll also send you the daily word each evening.</p>
+          <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#4a2a4c;">Your entry isn't in yet. Tap below and you're counted, and I'll also send you the daily reminder each evening.</p>
           <p style="margin:0 0 24px;">
             <a href="${esc(link)}" style="display:inline-block;background:linear-gradient(135deg,#c8398f,#9a2670);background-color:#c8398f;color:#ffffff;text-decoration:none;font-weight:600;padding:14px 30px;border-radius:10px;font-size:15px;">Yes, count me in</a>
           </p>
@@ -423,7 +423,7 @@ module.exports = async (req, res) => {
 Tap this to confirm your entry for ${gTitle}:
 ${link}
 
-I'll pick the winner on ${gAnnounce}. Confirming also turns on the daily Booky word.
+I'll pick the winner on ${gAnnounce}. Confirming also turns on the daily reminder.
 
 If you didn't enter, ignore this and nothing happens. You won't hear from me again.
 
