@@ -303,7 +303,8 @@ module.exports = async (req, res) => {
             // the reason a pending backlog went unnoticed. This does not change
             // send behaviour: api/booky-send.js still filters on `unsubscribed`
             // alone, so this is display-only, purely for reading the dashboard.
-            properties: [{ key: 'status', value: pending ? 'pending' : 'confirmed' }],
+            // Record shape, not an array — see lib/confirm-handler.js for why.
+            properties: { status: pending ? 'pending' : 'confirmed' },
           }),
         }
       );
