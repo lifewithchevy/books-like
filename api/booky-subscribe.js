@@ -359,7 +359,7 @@ module.exports = async (req, res) => {
           const { confirmUrl } = require('../lib/confirm');
           const link = confirmUrl(cleanEmail);
           try {
-            await fetch('https://api.resend.com/emails', {
+            const sendRes = await fetch('https://api.resend.com/emails', {
               method: 'POST',
               headers: {
                 Authorization: `Bearer ${RESEND_API_KEY}`,
@@ -385,6 +385,14 @@ Booky by 90books`,
                 html: confirmHtml(link),
               }),
             });
+            // This send used to go unchecked — a Resend-side rejection (bad
+            // sender domain, rate limit, etc.) looked identical to success and
+            // the pending backlog had no visible cause. Log the body so a
+            // failure shows up in Vercel logs instead of vanishing silently.
+            if (!sendRes.ok) {
+              const errTxt = await sendRes.text();
+              console.error('[booky-subscribe] confirmation email rejected:', sendRes.status, errTxt);
+            }
           } catch (err) {
             console.error('[booky-subscribe] confirmation email failed:', err);
           }
