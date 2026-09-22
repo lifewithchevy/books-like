@@ -92,7 +92,7 @@ function buildGiveawayConfirmHtml({ title, announce, cover, link }) {
           <p style="margin:0 0 20px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;text-align:center;">One more tap</p>
           <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#2a0a26;">Confirm your entry</p>
 
-          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fdf6e9;border:1px solid #e8d4a8;border-radius:10px;margin:0 0 18px;text-align:left;">
+          <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fdf6e9;border:1px solid #e8d4a8;border-radius:10px;margin:0 0 18px;">
             <tr>
               ${coverCell}
               <td style="padding:12px 12px 12px ${coverCell ? '0' : '12px'};vertical-align:middle">
