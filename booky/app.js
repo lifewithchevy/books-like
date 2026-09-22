@@ -871,18 +871,13 @@ const subscribed = localStorage.getItem('90books_booky_reminder_sub');
 $('giveaway-form').hidden = !!subscribed;
 $('giveaway-tap').hidden = !subscribed;
 $('giveaway-fine').className = 'giveaway-fine';
-// Never print a raw ISO date at a reader: "Ends 2026-08-31" is not copy.
-// localMidnight() returns a TIMESTAMP, not a Date. Calling a Date method on
-// it straight threw inside this function on 2026-08-23, and because
-// showEndScreen() calls renderGiveaway(), the throw took the WHOLE win
-// screen down in prod. Wrap it, and never assume the return type here.
-const endTs = localMidnight(g.end);
-const endsOn = endTs
-? new Date(endTs).toLocaleDateString('en-US', { month: 'short', day: 'numeric' })
-: g.end;
+// The deadline is not repeated here: the days-left badge at the top of the
+// card already carries it, and flips to "last day" on the final day.
+// Someone already subscribed is not promised a daily email they are
+// already getting.
 $('giveaway-fine').textContent = subscribed
-? `Free, worldwide. Ends ${endsOn}.`
-: `Free, worldwide. Ends ${endsOn}. Starts your daily email.`;
+? 'Free, worldwide.'
+: 'Free, worldwide. Plus a daily email reminder.';
 
 card.hidden = false;
 return true;
