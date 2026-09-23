@@ -1715,7 +1715,7 @@ window.__countdownTicker = setInterval(tickCountdown, 1000);
 }
 }
 
-function buildShareString({ clickable = false, omitUrl = false, tag = '' } = {}) {
+function buildShareString({ clickable = false, omitUrl = false } = {}) {
 // The link is DELIBERATELY dead on Reddit and DELIBERATELY live everywhere else.
 //
 // Reddit (and similar) downrank posts perceived as link self-promotion, so the
@@ -1752,13 +1752,16 @@ function buildShareString({ clickable = false, omitUrl = false, tag = '' } = {})
 // auto-links a URL with a scheme or a www. prefix, so the copy path lost the
 // click while the native path, which carries https:// in its url field, kept it.
 // Looks lose to working here.
-// `tag` marks which share path produced the link, so an arrival can be
-// attributed to native vs clipboard instead of a single undifferentiated
-// utm_source=share. One short param, not a tracking blob: vercel.json maps
-// ?s=n / ?s=c onto utm_content. The Reddit path passes no tag on purpose,
-// for the same reason it keeps a dead link.
+// ⚠️ NO query string here, ever. A `?s=n` tag was added 22 Sep to tell native
+// shares from clipboard ones, and it showed up as raw visible text in r/B00KY
+// comments the next morning: the iOS share sheet hands Reddit the url as plain
+// text, so anything in it is read by humans. A share link is the product's
+// shop window and it has to look clean, which matters more than knowing which
+// button produced it. The method still rides on the booky_share_clicked event;
+// only the per-method view of ARRIVALS is given up. /play already redirects to
+// ?utm_source=share, so share attribution itself is untouched.
 const shareUrl = clickable
-? `https://${SHARE_URL}${tag ? `?s=${tag}` : ''}`
+? `https://${SHARE_URL}`
 : SITE_URL.replace('.com', '.\u200Bcom');
 // The rank rides in the header — identity is the shareable bit (Spelling
 // Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
@@ -1933,7 +1936,7 @@ async function onSharePrimary() {
       // apps that append `url` themselves do not print it twice.
       await navigator.share({
         text: buildShareString({ clickable: true, omitUrl: true }),
-        url: `https://${SHARE_URL}?s=n`,
+        url: `https://${SHARE_URL}`,
       });
       captureShare('native');
       $('share-sheet')?.close();
@@ -1946,7 +1949,7 @@ async function onSharePrimary() {
     }
   }
 
-  const ok = await copyText(buildShareString({ clickable: true, tag: 'c' }));
+  const ok = await copyText(buildShareString({ clickable: true }));
   if (!ok) return;
   captureShare('clipboard');
   $('share-sheet')?.close();
