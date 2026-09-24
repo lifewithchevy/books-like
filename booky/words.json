@@ -162,7 +162,7 @@
     "KAINE",
     "AZURE",
     "REGAL",
-    "XADEN",
+    "RIDER",
     "CORAL",
     "CALEB",
     "HEXED",
@@ -175,7 +175,7 @@
     "VEILS",
     "GREED",
     "YRENE",
-    "STEED",
+    "XADEN",
     "GLYPH",
     "NOBLE",
     "SIGNS",
@@ -328,7 +328,8 @@
     "ALLOY",
     "CACHE",
     "MERCY",
-    "RAIHN"
+    "RAIHN",
+    "STEED"
   ],
   "wordBooks": {
     "COURT": {
@@ -381,11 +382,11 @@
       "buyUrl": "https://amzn.to/49prybO"
     },
     "RIDER": {
-      "slug": "fourth-wing",
-      "title": "Fourth Wing",
+      "slug": "threshing-day",
+      "title": "Threshing Day",
       "author": "Rebecca Yarros",
-      "cover": "/booky/covers/fourth-wing.jpg",
-      "buyUrl": "https://amzn.to/4vaA7Q6"
+      "cover": "/booky/covers/threshing-day.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B0GZ14SN6W?tag=90books-20"
     },
     "BEAST": {
       "slug": "a-court-of-thorns-and-roses",
