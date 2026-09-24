@@ -159,11 +159,11 @@
     "CROWS",
     "LANCE",
     "GATES",
-    "KAINE",
     "AZURE",
+    "VEINS",
     "UNDER",
     "RIDER",
-    "CORAL",
+    "KAINE",
     "CALEB",
     "HEXED",
     "FAIRY",
@@ -331,7 +331,8 @@
     "RAIHN",
     "STEED",
     "REGAL",
-    "SINGE"
+    "SINGE",
+    "CORAL"
   ],
   "wordBooks": {
     "COURT": {
@@ -2834,6 +2835,13 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
       "buyUrl": "https://www.amazon.com/dp/B00OZP5VRS?tag=90books-20"
+    },
+    "VEINS": {
+      "slug": "in-the-veins-of-the-drowning",
+      "title": "In the Veins of the Drowning",
+      "author": "Kalie Cassidy",
+      "cover": "/booky/covers/in-the-veins-of-the-drowning.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B0D1BMW3F3?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
