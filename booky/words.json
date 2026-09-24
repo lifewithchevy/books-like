@@ -163,22 +163,22 @@
     "VEINS",
     "UNDER",
     "RIDER",
+    "TOUCH",
+    "HARPY",
     "KAINE",
-    "CALEB",
-    "HEXED",
     "FAIRY",
     "PRISM",
     "NIGHT",
     "MOTHS",
     "CHAOS",
-    "RIGEL",
+    "CALEB",
     "BRASS",
     "GREED",
     "YRENE",
     "XADEN",
     "GLYPH",
     "NOBLE",
-    "SIGNS",
+    "RIGEL",
     "SHEEN",
     "COINS",
     "MOATS",
@@ -332,7 +332,9 @@
     "STEED",
     "REGAL",
     "SINGE",
-    "CORAL"
+    "CORAL",
+    "HEXED",
+    "SIGNS"
   ],
   "wordBooks": {
     "COURT": {
@@ -2645,7 +2647,7 @@
       "title": "A Touch of Darkness",
       "author": "Scarlett St. Clair",
       "cover": "/booky/covers/a-touch-of-darkness.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1728258456?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B09C2PWWNP?tag=90books-20"
     },
     "TREES": {
       "slug": "one-dark-window",
@@ -2842,6 +2844,20 @@
       "author": "Kalie Cassidy",
       "cover": "/booky/covers/in-the-veins-of-the-drowning.jpg",
       "buyUrl": "https://www.amazon.com/dp/B0D1BMW3F3?tag=90books-20"
+    },
+    "TOUCH": {
+      "slug": "a-touch-of-darkness",
+      "title": "A Touch of Darkness",
+      "author": "Scarlett St. Clair",
+      "cover": "/booky/covers/a-touch-of-darkness.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B09C2PWWNP?tag=90books-20"
+    },
+    "HARPY": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "/booky/covers/zodiac-academy.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
