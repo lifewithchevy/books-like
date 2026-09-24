@@ -161,7 +161,7 @@
     "GATES",
     "KAINE",
     "AZURE",
-    "REGAL",
+    "UNDER",
     "RIDER",
     "CORAL",
     "CALEB",
@@ -329,7 +329,8 @@
     "CACHE",
     "MERCY",
     "RAIHN",
-    "STEED"
+    "STEED",
+    "REGAL"
   ],
   "wordBooks": {
     "COURT": {
@@ -2825,6 +2826,13 @@
       "author": "T. Kingfisher",
       "cover": "/booky/covers/paladins-grace.jpg",
       "buyUrl": "https://www.amazon.com/dp/B0848Q8JVW?tag=90books-20"
+    },
+    "UNDER": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B00OZP5VRS?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
