@@ -166,13 +166,13 @@
     "CORAL",
     "CALEB",
     "HEXED",
-    "SHINE",
+    "FAIRY",
     "PRISM",
-    "SINGE",
+    "NIGHT",
     "MOTHS",
     "CHAOS",
     "RIGEL",
-    "VEILS",
+    "BRASS",
     "GREED",
     "YRENE",
     "XADEN",
@@ -202,7 +202,7 @@
     "FROST",
     "JEWEL",
     "COAST",
-    "FAIRY",
+    "SHINE",
     "ENVOY",
     "DIRGE",
     "CHARS",
@@ -216,7 +216,7 @@
     "SLEEK",
     "TRICK",
     "DOVES",
-    "BRASS",
+    "VEILS",
     "GNOME",
     "TRUCE",
     "SOOTH",
@@ -330,7 +330,8 @@
     "MERCY",
     "RAIHN",
     "STEED",
-    "REGAL"
+    "REGAL",
+    "SINGE"
   ],
   "wordBooks": {
     "COURT": {
@@ -359,7 +360,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "DEMON": {
       "slug": "throne-in-the-dark",
@@ -443,7 +444,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "QUEEN": {
       "slug": "the-cruel-prince",
@@ -555,7 +556,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "BRAVE": {
       "slug": "fourth-wing",
@@ -653,7 +654,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "EMBER": {
       "slug": "iron-flame",
@@ -691,11 +692,11 @@
       "buyUrl": "https://www.amazon.com/dp/0316587587?tag=90books-20"
     },
     "NIGHT": {
-      "slug": "the-serpent-and-the-wings-of-night",
-      "title": "The Serpent and the Wings of Night",
-      "author": "Carissa Broadbent",
-      "cover": "/booky/covers/the-serpent-and-the-wings-of-night.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "REALM": {
       "slug": "the-cruel-prince",
@@ -709,7 +710,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "STEEL": {
       "slug": "throne-of-glass",
@@ -744,7 +745,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "FERAL": {
       "slug": "from-blood-and-ash",
@@ -807,7 +808,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "REIGN": {
       "slug": "a-court-of-thorns-and-roses",
@@ -1032,7 +1033,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "PARRY": {
       "slug": "throne-of-glass",
@@ -1137,7 +1138,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "SCION": {
       "slug": "throne-of-glass",
@@ -1235,7 +1236,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "RELIC": {
       "slug": "daggerbound",
@@ -1333,7 +1334,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "GUARD": {
       "slug": "throne-of-glass",
@@ -1438,7 +1439,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "SIEGE": {
       "slug": "throne-of-glass",
@@ -1543,7 +1544,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "HEIRS": {
       "slug": "zodiac-academy",
@@ -1648,7 +1649,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "FAITH": {
       "slug": "from-blood-and-ash",
@@ -1739,7 +1740,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "FIGHT": {
       "slug": "throne-of-glass",
@@ -1837,7 +1838,7 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "SWORE": {
       "slug": "throne-of-glass",
@@ -1963,14 +1964,14 @@
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "MATED": {
       "slug": "a-court-of-mist-and-fury",
       "title": "A Court of Mist and Fury",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575575?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "SYBIL": {
       "slug": "the-knave-and-the-moon",
