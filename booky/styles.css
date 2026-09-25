@@ -1898,3 +1898,25 @@ body.og-image-page {
   color: var(--ink-faint);
   font-size: 11.5px;
 }
+
+/* The puzzle number used to sit UNDER the wordmark (display:block, margin-top),
+   which was fine when the bar was just a logo. In the rebuilt header it wrapped
+   to a second line and pushed the bar from 54px to 64px, so the logo no longer
+   lined up with the icons. It now sits beside the wordmark on the same
+   baseline. Tracking drops from 2px to 0.3px too: at 2px "#124" reads as
+   "# 1 2 4". */
+.wordmark {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 7px;
+}
+.wordmark a img { margin: 0; }
+.puzzle-no {
+  display: inline-block;
+  margin-top: 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.3px;
+  text-transform: none;
+}
