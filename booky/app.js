@@ -1916,8 +1916,13 @@ let scoreLine;
 // below would render "🥀 X/6" at someone who has not lost yet. An unfinished
 // game shares an INVITE instead: no grid, because a partial grid leaks which
 // letters are placed, and no score, because there isn't one.
+//
+// Name, number, link. Nothing else. Checked against Squaredle on 2026-09-25
+// with a board at 0/62: theirs is "#Squaredle 09/25 / 0/62 words /
+// squaredle.app", and on X the link is what carries it — the card does the
+// selling, so a line of our own copy only pushes the preview down.
 if (STATE.status === 'playing') {
-  const lines = [header, "Today's word is from a romantasy novel. Can you get it?"];
+  const lines = [header];
   if (!omitUrl) lines.push(shareUrl);
   return lines.join('\n');
 }
