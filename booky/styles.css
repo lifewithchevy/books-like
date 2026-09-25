@@ -2044,44 +2044,62 @@ body.og-image-page {
 @media (min-width: 521px) { .giveaway-strip { padding: 8px 24px; } }
 @media (min-width: 901px) { .giveaway-strip { padding: 9px 48px; } }
 
-/* Same card as the win screen, with two changes the sheet earns.
-   1. Its gold "BOOKY GIVEAWAY" label goes, because the sheet title above it
-      already says exactly that. The days badge is the only thing left in that
-      row, so space-between drops it to the left on its own.
-   2. Everything scales up. On the win screen this is a strip under a page of
-      content; here it is the whole modal and has to hold it. */
+/* Same card as the win screen, rebuilt as a grid for the room a sheet has.
+   Its gold "BOOKY GIVEAWAY" label goes, because the sheet title above already
+   says exactly that, which leaves the days badge alone on the left.
+
+   The cover sits beside the title and the email field, all three the same
+   height, and ENTER runs the full width underneath both columns. Enter was
+   stuck in the narrow right-hand column before, which is the bit that looked
+   wrong: the primary action was the smallest thing in the card. */
 .giveaway-sheet-host .giveaway-label > span:first-child { display: none; }
 .giveaway-sheet-host .giveaway {
-  padding: 16px 18px;
-  gap: 16px;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr);
+  column-gap: 14px;
+  row-gap: 10px;
+  align-items: start;
+  padding: 18px;
   border-radius: 13px;
 }
+/* Both wrappers step aside so their children become cells of the one grid. */
+.giveaway-sheet-host .giveaway-body,
+.giveaway-sheet-host .giveaway-form { display: contents; }
 .giveaway-sheet-host .giveaway-cover {
-  width: 66px;
-  height: 99px;
+  grid-area: 1 / 1 / 4 / 2;
+  width: 74px;
+  height: 111px;
   border-radius: 5px;
 }
 .giveaway-sheet-host .giveaway-label {
+  grid-area: 1 / 2 / 2 / 3;
+  margin: 0;
   font-size: 11px;
   letter-spacing: 1.3px;
-  margin-bottom: 6px;
 }
 .giveaway-sheet-host .giveaway-title {
+  grid-area: 2 / 2 / 3 / 3;
+  margin: 0;
   font-size: 19px;
-  margin-bottom: 11px;
 }
-/* Stacked, not side by side. The win screen squeezes both onto one line
-   because it is a strip; the sheet has the height to give the field its full
-   width and put the button under it, which is also the easier tap. */
-.giveaway-sheet-host .giveaway-form {
-  grid-template-columns: 1fr;
-  gap: 9px;
+.giveaway-sheet-host #giveaway-email {
+  grid-area: 3 / 2 / 4 / 3;
+  padding: 10px 13px;
+  font-size: 14px;
 }
-.giveaway-sheet-host #giveaway-submit { width: 100%; }
-.giveaway-sheet-host #giveaway-email,
 .giveaway-sheet-host #giveaway-submit,
-.giveaway-sheet-host .giveaway-btn-wide { padding: 10px 14px; font-size: 14px; }
-.giveaway-sheet-host .giveaway-fine { margin-top: 9px; font-size: 11.5px; }
-.giveaway-sheet-host .giveaway-entered { padding: 24px 16px; }
+.giveaway-sheet-host .giveaway-btn-wide {
+  grid-column: 1 / -1;
+  width: 100%;
+  padding: 11px 14px;
+  font-size: 14px;
+}
+.giveaway-sheet-host .giveaway-fine {
+  grid-column: 1 / -1;
+  margin: 0;
+  font-size: 11.5px;
+  text-align: center;
+}
+.giveaway-sheet-host .giveaway-entered { padding: 26px 18px; }
 .giveaway-sheet-host .giveaway-in-title { font-size: 21px; }
 .giveaway-sheet-host .giveaway-in-sub { font-size: 12.5px; }
