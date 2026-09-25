@@ -1835,7 +1835,22 @@ body.og-image-page {
    rule underneath. The game used to look like a different site; it no longer
    does. Three icons on the right means the side columns grew from 74px to
    104px, and they stay EQUAL so the wordmark is still optically centred. */
-.topbar { grid-template-columns: 104px 1fr 104px; padding: 12px 16px; }
+.topbar {
+  grid-template-columns: 104px 1fr 104px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--border);
+}
+/* Full width on anything bigger than a phone, like the landing header, and
+   stepping its padding at exactly the same breakpoints the rest of the site
+   uses: 12/16 up to 520, 14/24 up to 900, 18/48 above. The 500px cap stays on
+   phones, where the game column IS 500px and a wider bar would drift away from
+   the board. */
+@media (min-width: 521px) {
+  .topbar { max-width: none; padding: 14px 24px; }
+}
+@media (min-width: 901px) {
+  .topbar { padding: 18px 48px; }
+}
 .topbar-side { gap: 2px; }
 /* Borderless, matching the landing header's icon buttons rather than the old
    bordered circles. Squarer radius for the same reason. */
