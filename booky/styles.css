@@ -2044,54 +2044,9 @@ body.og-image-page {
 @media (min-width: 521px) { .giveaway-strip { padding: 8px 24px; } }
 @media (min-width: 901px) { .giveaway-strip { padding: 9px 48px; } }
 
-/* Inside the sheet the card drops its own frame — the sheet is the container. */
-.giveaway-sheet-host .giveaway {
-  border: 0;
-  background: none;
-  padding: 0;
-}
-/* Same composition as the win screen, just bigger: the gold label on the left,
-   the days on the right, one line, and the book below it. The win-screen card
-   is a strip under a page of content, so it is deliberately tiny there; given a
-   modal to itself it can be read at arm's length. */
-.giveaway-sheet-host .giveaway {
-  flex-direction: column;
-  align-items: stretch;
-  gap: 14px;
-  padding: 0;
-  border: 0;
-  background: none;
-}
-.giveaway-sheet-host .giveaway-label {
-  font-size: 12.5px;
-  letter-spacing: 1.4px;
-  margin: 0;
-  padding-right: 40px; /* clears the close button */
-}
-.giveaway-sheet-host .giveaway-cover {
-  width: 104px;
-  height: 156px;
-  border-radius: 6px;
-  align-self: center;
-}
-/* The label lives inside .giveaway-body, which would trap it below the cover.
-   display:contents lifts the body's children into the card's own flex row so
-   they can be ordered: label, book, title, form, fine print. */
-.giveaway-sheet-host .giveaway-body { display: contents; }
-.giveaway-sheet-host .giveaway-label { order: 1; }
-.giveaway-sheet-host .giveaway-cover { order: 2; }
-.giveaway-sheet-host .giveaway-title { order: 3; text-align: center; }
-.giveaway-sheet-host .giveaway-form,
-.giveaway-sheet-host .giveaway-btn-wide { order: 4; }
-.giveaway-sheet-host .giveaway-fine { order: 5; text-align: center; }
-.giveaway-sheet-host .giveaway-title {
-  font-size: 21px;
-  margin: 0;
-}
-.giveaway-sheet-host .giveaway-form { gap: 8px; }
-.giveaway-sheet-host #giveaway-email,
-.giveaway-sheet-host #giveaway-submit { padding: 10px 14px; font-size: 14px; }
-.giveaway-sheet-host .giveaway-fine { margin: -4px 0 0; font-size: 11.5px; }
-.giveaway-sheet-host .giveaway-entered { padding: 18px 0 8px; }
-.giveaway-sheet-host .giveaway-in-title { font-size: 21px; }
-.giveaway-sheet-host .giveaway-in-sub { font-size: 12.5px; }
+/* No overrides. The card renders in the sheet exactly as it does on the win
+   screen — same frame, same cover-left composition, same sizes. One design in
+   two places, so there is no second version of it to keep in step. */
+/* The only thing the sheet adds is room for its close button. */
+.giveaway-sheet-host { padding-top: 14px; }
+.giveaway-sheet-host .giveaway-label { padding-right: 26px; }
