@@ -1000,6 +1000,15 @@ daysEl.textContent = daysLeft <= 0 ? 'last day' : `${daysLeft} day${daysLeft ===
 daysEl.classList.toggle('last', daysLeft <= 0);
 
 $('giveaway-title').textContent = g.title || '';
+// The sheet has room the win screen never had, so it says what the giveaway
+// actually is. Guarded: this element only exists in the sheet, and a throw in
+// renderGiveaway takes the win screen down with it.
+const sheetSub = $('giveaway-sheet-sub');
+if (sheetSub) {
+sheetSub.textContent = g.announce
+? `One player wins a copy of this book. Enter with your email and we'll announce the winner on ${g.announce}.`
+: 'One player wins a copy of this book. Enter with your email to be in the draw.';
+}
 
 const coverEl = $('giveaway-cover');
 if (g.cover) {

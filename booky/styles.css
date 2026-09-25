@@ -1402,6 +1402,7 @@ body {
 .share-sheet-inner {
   padding: 18px 20px 22px;
 }
+.sheet-sub,
 .share-sheet-sub {
   margin: -6px 0 16px;
   font-size: 13px;
