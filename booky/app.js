@@ -828,6 +828,17 @@ if (shareSheet) {
     shareSheet.close();
     showShareToast('Copied! Paste it anywhere 📋');
   });
+  // The icon-row Reddit posts wherever the player likes; the full-width button
+  // below goes specifically to the daily results thread. Two destinations, so
+  // they are not the same button twice. Both keep the bare, deliberately
+  // unlinked URL, because the self-promo penalty applies on all of Reddit.
+  $('share-reddit-any-btn')?.addEventListener('click', () => {
+    const text = buildShareString({ clickable: false });
+    const url = `https://www.reddit.com/submit?title=${encodeURIComponent('Booky #' + DAY)}&text=${encodeURIComponent(text)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+    captureShare('reddit_post');
+    shareSheet.close();
+  });
   // X carries a live link: the dead-link treatment exists only because Reddit
   // penalises self-promo links, and that does not apply here.
   $('share-x-btn')?.addEventListener('click', () => {

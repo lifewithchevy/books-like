@@ -1958,12 +1958,13 @@ body.og-image-page {
   line-height: 1.45;
   white-space: pre-wrap;
   word-break: break-word;
-  margin: 0 0 14px;
-  padding: 12px 14px;
-  border-radius: 10px;
-  background: var(--bg-3);
-  border: 1px solid var(--border);
-  color: var(--ink);
+  /* ⚠️ NO card treatment. It had a background, a border and a radius, which is
+     exactly how the Reddit, X and Share buttons below are drawn, so the grid
+     read as a fourth button. It is a preview of what you are about to send, not
+     something to tap. Plain text, separated by space alone. */
+  margin: 0 0 16px;
+  padding: 0 2px;
+  color: var(--ink-dim);
   max-height: 168px;
   overflow-y: auto;
 }
