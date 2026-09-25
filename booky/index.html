@@ -46,7 +46,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=54" />
+<link rel="stylesheet" href="/booky/styles.css?v=55" />
 <!-- PostHog analytics -->
 <script>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
@@ -111,10 +111,11 @@
 
 <header class="topbar">
 <span class="topbar-side">
-<button id="help-btn" class="icon-btn" aria-label="How to play">?</button>
+<button id="menu-btn" class="icon-btn icon-btn-svg" aria-label="Menu" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M4 7h16M4 12h16M4 17h16"/></svg></button>
 </span>
 <h1 class="wordmark"><a href="/"><img class="wm-light" src="/logo/booky.svg" alt="Booky" width="160" height="26"><img class="wm-dark" src="/logo/booky-light.svg" alt="" aria-hidden="true" width="160" height="26"></a><span id="puzzle-no" class="puzzle-no" aria-label="Today's puzzle number"></span></h1>
 <span class="topbar-side topbar-side-end">
+<button id="help-btn" class="icon-btn icon-btn-svg" aria-label="How to play"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M9.6 9.6a2.5 2.5 0 1 1 2.9 2.4V14"/><path d="M12 17.4v.01"/></svg></button>
 <button id="hint-btn" class="icon-btn icon-btn-svg" aria-label="Get a hint"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M9 18h6"/><path d="M10 21h4"/><path d="M12 3a6 6 0 0 0-3.6 10.8c.5.4.8.9.9 1.5l.1.7h5.2l.1-.7c.1-.6.4-1.1.9-1.5A6 6 0 0 0 12 3Z"/></svg></button>
 <button id="stats-btn" class="icon-btn icon-btn-svg" aria-label="Stats"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M5 20V11M12 20V4M19 20v-8"/></svg></button>
 </span>
@@ -126,6 +127,32 @@
 <button type="button" id="hint-coach-close" class="coach-close" aria-label="Dismiss">&times;</button>
 </div>
 </header>
+
+<!-- Menu. New on 2026-09-25, and the only genuinely new thing in the header:
+     the archive had nowhere to live and was reachable only by winning. Order
+     copied from the games that work: Wordle lists Wordle Archive above every
+     other NYT game, Squaredle goes Today's puzzle then Archive & classics, and
+     both put the commercial door last. Every row carries its own event so the
+     next version of this decision has our own numbers instead of theirs. -->
+<dialog id="menu-drawer" class="menu-drawer" aria-label="Menu">
+<div class="menu-top">
+<span class="topbar-side">
+<button id="menu-close" class="icon-btn icon-btn-svg" aria-label="Close menu"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" aria-hidden="true"><path d="M6 6l12 12M18 6L6 18"/></svg></button>
+</span>
+<span class="menu-title">Booky</span>
+</div>
+<nav class="menu-nav">
+<a href="/booky" data-menu="today"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="12" cy="12" r="9"/><path d="M12 7v5l3 2"/></svg><span>Today&rsquo;s word<small id="menu-today-sub"></small></span></a>
+<a class="menu-hero" href="/booky/archive" data-menu="archive"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="4" width="18" height="17" rx="2"/><path d="M8 2v4M16 2v4M3 10h18"/></svg><span>Archive<small>Play any word you missed</small></span></a>
+<a href="/booky-library" data-menu="library"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h7v16H4zM13 4h7v16h-7z"/></svg><span>The Booky Library<small>Every book featured so far</small></span></a>
+<span class="menu-sep"></span>
+<a href="/contact" data-menu="contact"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 5h16v11H8l-4 3z"/></svg><span>Contact</span></a>
+<span class="menu-sep"></span>
+<a href="/" data-menu="home"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 11l8-7 8 7"/><path d="M6 10v10h12V10"/></svg><span>90books home</span></a>
+<a href="/authors" data-menu="authors"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M4 4h12l4 4v12H4z"/><path d="M8 12h8M8 16h5"/></svg><span>For authors</span></a>
+</nav>
+<p class="menu-foot">A daily romantasy word game</p>
+</dialog>
 
 <!-- Archive replay banner. Hidden in the normal game; app.js unhides it when
      /booky?day=N is replaying a past puzzle, so the player always knows this

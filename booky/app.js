@@ -672,6 +672,59 @@ else if (k === 'Backspace') { handleKey('BACK'); e.preventDefault(); }
 else if (/^[a-zA-Z]$/.test(k)) { handleKey(k.toUpperCase()); }
 });
 
+// ---- Menu ------------------------------------------------------------------
+// New 2026-09-25. The archive used to be reachable only from the win screen,
+// so you had to solve today's word to find the thing that most improves whether
+// you come back at all: newcomers who open it return at 25.4% against 14.4%,
+// and only 8 in 100 ever did. A link in the Stats sheet was tried first and
+// failed outright (52 opened Stats, 1 clicked through), which is why this is a
+// real nav and not another line tucked inside a sheet.
+const menuDrawer = $('menu-drawer');
+function setMenuOpen(open) {
+  if (!menuDrawer) return;
+  $('menu-btn')?.setAttribute('aria-expanded', open ? 'true' : 'false');
+  if (open) { if (typeof menuDrawer.showModal === 'function') menuDrawer.showModal(); }
+  else if (menuDrawer.open) menuDrawer.close();
+}
+$('menu-btn')?.addEventListener('click', () => {
+  // `played` separates a first-timer poking around from a regular going
+  // somewhere specific, which is the difference that decides what belongs here.
+  posthog.capture('booky_menu_opened', {
+    word_number: DAY,
+    guesses_used: STATE.guesses.length,
+    played: STATS.played,
+    archive: ARCHIVE,
+  });
+  // The one-time hint callout must not sit over the drawer.
+  $('hint-coach')?.setAttribute('hidden', '');
+  setMenuOpen(true);
+});
+$('menu-close')?.addEventListener('click', () => setMenuOpen(false));
+// Clicking the backdrop closes it. A <dialog> reports the click as landing on
+// the dialog itself, so compare against its own box rather than the target.
+menuDrawer?.addEventListener('click', (e) => {
+  if (e.target !== menuDrawer) return;
+  const r = menuDrawer.getBoundingClientRect();
+  const inside = e.clientX >= r.left && e.clientX <= r.right && e.clientY >= r.top && e.clientY <= r.bottom;
+  if (!inside) setMenuOpen(false);
+});
+// Every row reports itself. Without this the order in here stays a guess copied
+// from Wordle and Squaredle; with it, a week of data replaces the guess.
+menuDrawer?.addEventListener('click', (e) => {
+  const a = e.target.closest && e.target.closest('a[data-menu]');
+  if (!a) return;
+  posthog.capture('booky_menu_item_clicked', {
+    item: a.dataset.menu,
+    word_number: DAY,
+    played: STATS.played,
+  });
+});
+// In archive mode "Today's word" is the way back out, so say which day it is.
+(() => {
+  const sub = $('menu-today-sub');
+  if (sub) sub.textContent = ARCHIVE ? 'Back to today' : 'Puzzle #' + DAY;
+})();
+
 $('help-btn').addEventListener('click', () => {
 // Never tracked until 2026-09-25, so the one question that matters here has
 // never had a number: do people reach for the rules ONCE THEY ARE PLAYING, or
