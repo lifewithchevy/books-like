@@ -787,8 +787,10 @@ function openShareSheetFrom(source) {
   if (!shareSheet) return;
   fillSharePreview();
   // The OS sheet only exists on touch devices; on desktop Copy is the primary.
-  const nativeBtn = $('share-native-btn');
-  if (nativeBtn) nativeBtn.hidden = !prefersNativeShare();
+  const label = $('share-primary-label');
+  const desc = $('share-primary-desc');
+  if (label) label.textContent = prefersNativeShare() ? 'Share anywhere' : 'Copy result';
+  if (desc) desc.textContent = prefersNativeShare() ? 'Messages, WhatsApp, anywhere' : 'Paste it anywhere';
   posthog.capture('booky_share_sheet_opened', {
     source,
     word_number: DAY,
@@ -801,25 +803,39 @@ function openShareSheetFrom(source) {
 if (shareSheet) {
   $('share-sheet-close')?.addEventListener('click', () => shareSheet.close());
   $('share-reddit-btn')?.addEventListener('click', onShareReddit);
+  // One primary button. On a phone it opens the OS sheet; on desktop, where
+  // navigator.share does not exist, the same button copies instead, so there is
+  // never a dead control and never two buttons doing nearly the same thing.
   $('share-copy-link-btn')?.addEventListener('click', async () => {
+    if (prefersNativeShare()) {
+      try {
+        await navigator.share({
+          text: buildShareString({ clickable: true, omitUrl: true }),
+          url: `https://${SHARE_URL}`,
+        });
+        captureShare('native');
+        shareSheet.close();
+        return;
+      } catch (err) {
+        // Backing out of the OS sheet throws AbortError. A cancel is not a
+        // share, and it must not silently fall through to the clipboard.
+        if (err && err.name === 'AbortError') return;
+      }
+    }
     const ok = await copyText(buildShareString({ clickable: true }));
     if (!ok) return;
     captureShare('clipboard');
     shareSheet.close();
     showShareToast('Copied! Paste it anywhere 📋');
   });
-  $('share-native-btn')?.addEventListener('click', async () => {
-    try {
-      await navigator.share({
-        text: buildShareString({ clickable: true, omitUrl: true }),
-        url: `https://${SHARE_URL}`,
-      });
-      captureShare('native');
-      shareSheet.close();
-    } catch (err) {
-      // Backing out of the OS sheet throws AbortError. A cancel is not a share.
-      if (err && err.name === 'AbortError') return;
-    }
+  // X carries a live link: the dead-link treatment exists only because Reddit
+  // penalises self-promo links, and that does not apply here.
+  $('share-x-btn')?.addEventListener('click', () => {
+    const text = buildShareString({ clickable: true, omitUrl: true });
+    const url = `https://x.com/intent/post?text=${encodeURIComponent(text + '\n')}&url=${encodeURIComponent('https://' + SHARE_URL)}`;
+    window.open(url, '_blank', 'noopener,noreferrer');
+    captureShare('x');
+    shareSheet.close();
   });
 }
 $('share-top-btn')?.addEventListener('click', () => openShareSheetFrom('header'));
@@ -1877,6 +1893,16 @@ const shareUrl = clickable
 // Bee's "Genius" effect): "🐉 Rider" makes a stranger ask what Booky is.
 let header = `📚 Booky #${DAY}`;
 let scoreLine;
+// ⚠️ Mid-game is its own case. Share moved into the header on 2026-09-25, so a
+// player can now open this with the board half finished, and the losing branch
+// below would render "🥀 X/6" at someone who has not lost yet. An unfinished
+// game shares an INVITE instead: no grid, because a partial grid leaks which
+// letters are placed, and no score, because there isn't one.
+if (STATE.status === 'playing') {
+  const lines = [header, "Today's word is from a romantasy novel. Can you get it?"];
+  if (!omitUrl) lines.push(shareUrl);
+  return lines.join('\n');
+}
 if (STATE.status === 'won') {
 const { earned } = badgeForStreak(STATS.currentStreak);
 if (earned) header += ` · ${earned.icon} ${earned.name}`;
