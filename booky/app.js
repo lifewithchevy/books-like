@@ -801,8 +801,11 @@ document.addEventListener('click', (e) => {
 const a = e.target.closest && e.target.closest('a[href^="/booky/archive"]');
 if (!a) return;
 posthog.capture('booky_archive_link_clicked', {
-source: a.closest('#end-modal') ? (ARCHIVE ? 'archive_win_screen' : 'win_screen')
-      : a.closest('#stats-modal') ? 'stats_modal'
+// 'menu' is the route that matters now. The Stats link was removed 2026-09-25
+// after it plainly failed: 52 people opened Stats over three days and 1 clicked
+// through, while the win screen sent 34. The menu replaces it.
+source: a.closest('#menu-drawer') ? 'menu'
+      : a.closest('#end-modal') ? (ARCHIVE ? 'archive_win_screen' : 'win_screen')
       : 'game_banner',
 word_number: DAY,
 archive: ARCHIVE,
