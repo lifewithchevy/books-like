@@ -770,12 +770,59 @@ $('stats-modal').showModal();
 // sheet on the first tap; on desktop it copies. The old two-option dialog is
 // gone — it cost a tap and duplicated what the OS sheet already offers.
 $('share-btn').addEventListener('click', onSharePrimary);
+// ---- Share sheet -----------------------------------------------------------
+// Revived 2026-09-25 and moved into the HEADER. Until now the only way to share
+// was the win screen, so a player who did not finish, or who came back later,
+// could not share at all. Squaredle keeps share in the bar permanently; ours is
+// beside the menu because the right side already holds three icons.
+// Deliberately NOT copying their Facebook and X buttons: measured since 27 Aug,
+// Booky shares land in private messaging (319 people) and Reddit (102), with
+// Instagram at 8, Facebook 7 and X at zero.
 const shareSheet = $('share-sheet');
+function fillSharePreview() {
+  const pre = $('share-preview');
+  if (pre) pre.textContent = buildShareString({ clickable: false, omitUrl: true });
+}
+function openShareSheetFrom(source) {
+  if (!shareSheet) return;
+  fillSharePreview();
+  // The OS sheet only exists on touch devices; on desktop Copy is the primary.
+  const nativeBtn = $('share-native-btn');
+  if (nativeBtn) nativeBtn.hidden = !prefersNativeShare();
+  posthog.capture('booky_share_sheet_opened', {
+    source,
+    word_number: DAY,
+    status: STATE.status,
+    guesses_used: STATE.guesses.length,
+    played: STATS.played,
+  });
+  if (typeof shareSheet.showModal === 'function') shareSheet.showModal();
+}
 if (shareSheet) {
   $('share-sheet-close')?.addEventListener('click', () => shareSheet.close());
   $('share-reddit-btn')?.addEventListener('click', onShareReddit);
-
+  $('share-copy-link-btn')?.addEventListener('click', async () => {
+    const ok = await copyText(buildShareString({ clickable: true }));
+    if (!ok) return;
+    captureShare('clipboard');
+    shareSheet.close();
+    showShareToast('Copied! Paste it anywhere 📋');
+  });
+  $('share-native-btn')?.addEventListener('click', async () => {
+    try {
+      await navigator.share({
+        text: buildShareString({ clickable: true, omitUrl: true }),
+        url: `https://${SHARE_URL}`,
+      });
+      captureShare('native');
+      shareSheet.close();
+    } catch (err) {
+      // Backing out of the OS sheet throws AbortError. A cancel is not a share.
+      if (err && err.name === 'AbortError') return;
+    }
+  });
 }
+$('share-top-btn')?.addEventListener('click', () => openShareSheetFrom('header'));
 $('end-modal').querySelector('[data-close-end]').addEventListener('click', (e) => {
 e.preventDefault();
 // Closing today's win screen leaves you on today's board, which is where you
