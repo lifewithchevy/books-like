@@ -787,7 +787,13 @@ const shareSheet = $('share-sheet');
 let SHARE_SOURCE = null;
 function fillSharePreview() {
   const pre = $('share-preview');
-  if (pre) pre.textContent = buildShareString({ clickable: false, omitUrl: true });
+  if (!pre) return;
+  // A finished game previews the grid and leaves the URL out — the grid is the
+  // interesting part and the link is the same every day. An unfinished one has
+  // no grid, so the link IS the share, and hiding it made the preview look like
+  // it was about to send nothing. Squaredle shows theirs for the same reason.
+  const unplayed = STATE.status === 'playing';
+  pre.textContent = buildShareString({ clickable: true, omitUrl: !unplayed });
 }
 function openShareSheetFrom(source) {
   if (!shareSheet) return;
@@ -796,8 +802,17 @@ function openShareSheetFrom(source) {
   // The OS sheet only exists on touch devices; on desktop Copy is the primary.
   const label = $('share-primary-label');
   const desc = $('share-primary-desc');
-  if (label) label.textContent = prefersNativeShare() ? 'Share anywhere' : 'Copy result';
-  if (desc) desc.textContent = prefersNativeShare() ? 'Messages, WhatsApp, anywhere' : 'Paste it anywhere';
+  const unplayed = STATE.status === 'playing';
+  if (label) {
+    label.textContent = prefersNativeShare()
+      ? 'Share anywhere'
+      : (unplayed ? 'Copy link' : 'Copy result');
+  }
+  if (desc) {
+    desc.textContent = prefersNativeShare()
+      ? 'Messages, WhatsApp, anywhere'
+      : (unplayed ? 'Paste it anywhere to invite a friend' : 'Paste it anywhere');
+  }
   posthog.capture('booky_share_sheet_opened', {
     source,
     word_number: DAY,
@@ -2022,6 +2037,10 @@ function shareProps() {
   const sharedBook = DATA?.wordBooks?.[ANSWER] || null;
   return {
     word_number: DAY,
+    // An unplayed share is a different thing from a result share: it is an
+    // invite, and it is the only kind that can happen before the game starts.
+    status: STATE.status,
+    played_today: STATE.guesses.length > 0,
     won: STATE.status === 'won',
     guesses_used: STATE.guesses.length,
     streak: STATS.currentStreak,
