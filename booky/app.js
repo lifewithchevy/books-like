@@ -788,12 +788,11 @@ let SHARE_SOURCE = null;
 function fillSharePreview() {
   const pre = $('share-preview');
   if (!pre) return;
-  // A finished game previews the grid and leaves the URL out — the grid is the
-  // interesting part and the link is the same every day. An unfinished one has
-  // no grid, so the link IS the share, and hiding it made the preview look like
-  // it was about to send nothing. Squaredle shows theirs for the same reason.
-  const unplayed = STATE.status === 'playing';
-  pre.textContent = buildShareString({ clickable: true, omitUrl: !unplayed });
+  // The link shows in BOTH states. A result share is also an invite — the grid
+  // is what makes someone want to play, and the link is how they do it — so
+  // hiding it from the preview undersold what was about to be sent. Squaredle
+  // shows theirs the same way, played or not.
+  pre.textContent = buildShareString({ clickable: true });
 }
 function openShareSheetFrom(source) {
   if (!shareSheet) return;
@@ -1937,7 +1936,9 @@ let scoreLine;
 // squaredle.app", and on X the link is what carries it — the card does the
 // selling, so a line of our own copy only pushes the preview down.
 if (STATE.status === 'playing') {
-  const lines = [header];
+  // "I'm playing" is the whole message when there is no score to report, and
+  // it is the line Squaredle leads with too ("I played ... 0/62 words").
+  const lines = [`I'm playing ${header}`];
   if (!omitUrl) lines.push(shareUrl);
   return lines.join('\n');
 }
