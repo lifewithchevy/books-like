@@ -1907,7 +1907,11 @@ body.og-image-page {
    "# 1 2 4". */
 .wordmark {
   display: flex;
-  align-items: baseline;
+  /* CENTRE, not baseline. An <img>'s baseline is its BOTTOM edge, so aligning
+     to it dropped the number 7px below the icons while the logo sat 1.5px
+     above them. Measured on the live bar: logo mid 25.5, number mid 34.3,
+     every button mid 27. Centring puts all four on 27. */
+  align-items: center;
   justify-content: center;
   gap: 7px;
 }
