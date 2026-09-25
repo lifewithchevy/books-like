@@ -1454,6 +1454,13 @@ body {
   display: block;
 }
 .share-option-icon-copy { font-size: 17px; background: rgba(217, 70, 168, 0.18); }
+/* ⚠️ Same 17px as .icon-btn-svg in the header. The share glyph in the sheet is
+   the SAME path as the header button that opens it, but with no size rule it
+   rendered far larger, and a stroke-width of 1.8 on a bigger canvas draws a
+   visibly heavier line. Identical path plus identical render size is what makes
+   it the identical icon. The Reddit logo is excluded: it is a filled mark, not
+   a stroked one, and it is drawn at its own size. */
+.share-option-icon > svg:not(.share-reddit-logo) { width: 17px; height: 17px; display: block; }
 /* Native is the primary path where the OS sheet exists, so it reads brighter
    than the other two rather than sitting flush with them. */
 .share-option-native {
