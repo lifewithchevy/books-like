@@ -672,7 +672,20 @@ else if (k === 'Backspace') { handleKey('BACK'); e.preventDefault(); }
 else if (/^[a-zA-Z]$/.test(k)) { handleKey(k.toUpperCase()); }
 });
 
-$('help-btn').addEventListener('click', () => $('help-modal').showModal());
+$('help-btn').addEventListener('click', () => {
+// Never tracked until 2026-09-25, so the one question that matters here has
+// never had a number: do people reach for the rules ONCE THEY ARE PLAYING, or
+// only on a blank board before they start? `guesses_used` answers it. 0 means
+// they opened it before typing anything, anything higher means they were
+// mid-game and stuck. `played` separates a first-timer from a regular.
+posthog.capture('booky_help_opened', {
+word_number: DAY,
+guesses_used: STATE.guesses.length,
+played: STATS.played,
+archive: ARCHIVE,
+});
+$('help-modal').showModal();
+});
 
 $('hint-btn')?.addEventListener('click', () => {
 renderHints();
