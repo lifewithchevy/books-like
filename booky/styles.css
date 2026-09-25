@@ -1923,4 +1923,12 @@ body.og-image-page {
   font-weight: 600;
   letter-spacing: 0.3px;
   text-transform: none;
+  /* Optical, not geometric. Centring the boxes lines up their MIDDLES, but the
+     logo is an SVG whose glyph baseline sits at y=71.52 of a 96-unit viewBox,
+     i.e. 74.5% down rather than halfway, because the file carries descender
+     space under the y. At a 26px render that puts the logo's baseline 6.37px
+     below the row centre while the number's lands 4.25px below it, so the
+     number reads 2.1px high. Measured in the browser with a zero-size inline
+     probe, not guessed. Revisit if the logo file or its 26px height changes. */
+  transform: translateY(2.1px);
 }
