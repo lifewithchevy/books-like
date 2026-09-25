@@ -1889,7 +1889,19 @@ body.og-image-page {
   min-height: 54.5px; padding: 12px 16px;
   border-bottom: 1px solid var(--border);
 }
-.menu-title { font-family: var(--font-serif); font-size: 17px; color: var(--ink); }
+/* The real wordmark, not type. Same two-file swap as the bar: an <img> cannot
+   inherit currentColor, so booky.svg is the dark-ink file for LIGHT mode and
+   booky-light.svg is the pale one for dark mode. Dark is the default here, as
+   it is everywhere else in the game. Same 26px height as the bar, so opening
+   the menu does not resize the logo. */
+.menu-title { display: flex; align-items: center; }
+.menu-title img { height: 26px; width: auto; display: block; }
+.menu-title .wm-light { display: none; }
+.menu-title .wm-dark  { display: block; }
+@media (prefers-color-scheme: light) {
+  .menu-title .wm-light { display: block; }
+  .menu-title .wm-dark  { display: none; }
+}
 .menu-nav { display: flex; flex-direction: column; padding: 6px 0; }
 .menu-nav a {
   display: flex; align-items: center; gap: 12px;
