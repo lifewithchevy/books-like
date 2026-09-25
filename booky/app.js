@@ -719,12 +719,6 @@ menuDrawer?.addEventListener('click', (e) => {
     played: STATS.played,
   });
 });
-// In archive mode "Today's word" is the way back out, so say which day it is.
-(() => {
-  const sub = $('menu-today-sub');
-  if (sub) sub.textContent = ARCHIVE ? 'Back to today' : 'Puzzle #' + DAY;
-})();
-
 $('help-btn').addEventListener('click', () => {
 // Never tracked until 2026-09-25, so the one question that matters here has
 // never had a number: do people reach for the rules ONCE THEY ARE PLAYING, or
