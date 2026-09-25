@@ -2047,6 +2047,5 @@ body.og-image-page {
 /* No overrides. The card renders in the sheet exactly as it does on the win
    screen — same frame, same cover-left composition, same sizes. One design in
    two places, so there is no second version of it to keep in step. */
-/* The only thing the sheet adds is room for its close button. */
-.giveaway-sheet-host { padding-top: 14px; }
-.giveaway-sheet-host .giveaway-label { padding-right: 26px; }
+/* The sheet adds one thing of its own: the house .sheet-title, same as How to
+   play and Share, so the giveaway does not read as a different kind of thing. */
