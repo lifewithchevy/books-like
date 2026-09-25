@@ -2070,7 +2070,14 @@ body.og-image-page {
   font-size: 19px;
   margin-bottom: 11px;
 }
-.giveaway-sheet-host .giveaway-form { gap: 8px; }
+/* Stacked, not side by side. The win screen squeezes both onto one line
+   because it is a strip; the sheet has the height to give the field its full
+   width and put the button under it, which is also the easier tap. */
+.giveaway-sheet-host .giveaway-form {
+  grid-template-columns: 1fr;
+  gap: 9px;
+}
+.giveaway-sheet-host #giveaway-submit { width: 100%; }
 .giveaway-sheet-host #giveaway-email,
 .giveaway-sheet-host #giveaway-submit,
 .giveaway-sheet-host .giveaway-btn-wide { padding: 10px 14px; font-size: 14px; }
