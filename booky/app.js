@@ -206,6 +206,9 @@ if (!looksLikeQueue(data)) {
 return showFatal("Couldn't load today's word. Try refreshing.");
 }
 DATA = data;
+// The strip reads DATA, and the strip's own installer runs before this fetch
+// resolves, so this is the first moment it can know whether a giveaway is live.
+window.__refreshGiveawayStrip?.();
 
 // The dictionary only validates that a guess is a real word. Losing it must
 // not cost anyone their streak, so on failure we play on and skip that check
@@ -779,12 +782,16 @@ $('share-btn').addEventListener('click', onSharePrimary);
 // Booky shares land in private messaging (319 people) and Reddit (102), with
 // Instagram at 8, Facebook 7 and X at zero.
 const shareSheet = $('share-sheet');
+// Which door the sheet was opened from. It rides along on booky_share_clicked
+// so a header share and a win-screen share are distinguishable in PostHog.
+let SHARE_SOURCE = null;
 function fillSharePreview() {
   const pre = $('share-preview');
   if (pre) pre.textContent = buildShareString({ clickable: false, omitUrl: true });
 }
 function openShareSheetFrom(source) {
   if (!shareSheet) return;
+  SHARE_SOURCE = source;
   fillSharePreview();
   // The OS sheet only exists on touch devices; on desktop Copy is the primary.
   const label = $('share-primary-label');
@@ -2020,7 +2027,7 @@ function shareProps() {
 }
 
 function captureShare(method) {
-  posthog.capture('booky_share_clicked', { ...shareProps(), method });
+  posthog.capture('booky_share_clicked', { ...shareProps(), method, source: SHARE_SOURCE });
 }
 
 async function copyText(text) {
@@ -2252,3 +2259,71 @@ if (document.readyState === 'loading') {
 } else {
   installPullToRefresh();
 }
+
+// ---- Giveaway strip -------------------------------------------------------
+// The giveaway is the only capture mechanic we have measured (+56%, A/B/A) and
+// until now it only existed on the win screen. This is a second door to the
+// SAME card: app.js moves the live #giveaway / #giveaway-in nodes into the
+// sheet and puts them back on close, so every handler, id and the pending
+// double-opt-in state keep working exactly as they do on the win screen.
+(function installGiveawayStrip() {
+  const strip = document.getElementById('giveaway-strip');
+  const sheet = document.getElementById('giveaway-sheet');
+  const host = document.getElementById('giveaway-sheet-host');
+  if (!strip || !sheet || !host) return;
+
+  let home = null; // where the card lives when the sheet is closed
+
+  function refresh() {
+    let live = false;
+    // renderGiveaway() throwing takes the win screen down with it, so the strip
+    // must never be the thing that makes that happen.
+    try { live = renderGiveaway(); } catch { live = false; }
+    if (!live) { strip.hidden = true; return; }
+    const out = document.getElementById('giveaway-strip-days');
+    const done = document.getElementById('giveaway-in');
+    if (done && !done.hidden) {
+      const g = activeGiveaway();
+      const pending = !!g && localStorage.getItem(GIVEAWAY_PENDING_KEY) === g.tag;
+      // Pending is not entered. Saying "you're in" here is the one thing the
+      // double opt-in exists to prevent.
+      out.textContent = pending ? 'confirm your email' : "you're in";
+      out.classList.toggle('last', pending);
+    } else {
+      // Reuse the card's own day count rather than recomputing the dates.
+      const src = document.getElementById('giveaway-days');
+      out.textContent = src ? src.textContent : '';
+      out.classList.toggle('last', !!src && src.classList.contains('last'));
+    }
+    strip.hidden = false;
+  }
+
+  strip.addEventListener('click', () => {
+    try { if (!renderGiveaway()) { strip.hidden = true; return; } } catch { return; }
+    const card = document.getElementById('giveaway');
+    const done = document.getElementById('giveaway-in');
+    if (!home) home = { parent: card.parentNode, next: done.nextSibling };
+    host.appendChild(card);
+    host.appendChild(done);
+    posthog.capture('booky_giveaway_strip_opened', {
+      word_number: DAY,
+      entered: !done.hidden,
+      played: STATS.played,
+    });
+    if (typeof sheet.showModal === 'function') sheet.showModal();
+  });
+
+  document.getElementById('giveaway-sheet-close')?.addEventListener('click', () => sheet.close());
+  // Close covers the button, Esc and the backdrop in one place, so the nodes
+  // can never be left stranded in the sheet when the win screen wants them.
+  sheet.addEventListener('close', () => {
+    if (home) {
+      home.parent.insertBefore(document.getElementById('giveaway'), home.next);
+      home.parent.insertBefore(document.getElementById('giveaway-in'), home.next);
+    }
+    refresh();
+  });
+
+  window.__refreshGiveawayStrip = refresh;
+  refresh();
+})();

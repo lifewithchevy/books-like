@@ -2009,3 +2009,45 @@ body.og-image-page {
 }
 .share-social svg { width: 22px; height: 22px; display: block; }
 .share-social:active { background: var(--bg-2); }
+
+/* Giveaway strip — the win-screen card's palette, flattened into one bar.
+   Deliberately not a .giveaway: that one is a card, this one is a door. */
+.giveaway-strip {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  padding: 7px 16px;
+  border: 0;
+  border-bottom: 1px solid var(--giveaway-border);
+  background: linear-gradient(90deg, var(--giveaway-bg-from), var(--giveaway-bg-to));
+  color: var(--giveaway-ink);
+  font: inherit;
+  font-size: 11.5px;
+  font-weight: 600;
+  letter-spacing: 0.6px;
+  text-transform: uppercase;
+  cursor: pointer;
+  text-align: left;
+}
+.giveaway-strip[hidden] { display: none; }
+.giveaway-strip:hover { filter: brightness(1.08); }
+.giveaway-strip-days {
+  color: var(--giveaway-ink-dim);
+  letter-spacing: 0.6px;
+  margin-left: auto;
+}
+.giveaway-strip-days.last { color: var(--accent); }
+.giveaway-strip-chevron { font-size: 16px; line-height: 1; opacity: 0.7; }
+@media (min-width: 521px) { .giveaway-strip { padding: 8px 24px; } }
+@media (min-width: 901px) { .giveaway-strip { padding: 9px 48px; } }
+
+/* Inside the sheet the card drops its own frame — the sheet is the container. */
+.giveaway-sheet-host .giveaway {
+  border: 0;
+  background: none;
+  padding: 0;
+}
+/* The sheet's own heading already says "Booky giveaway"; the card's label
+   would say it a second time two lines below. The days badge stays. */
+.giveaway-sheet-host .giveaway-label > span:first-child { display: none; }

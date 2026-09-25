@@ -46,7 +46,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=68" />
+<link rel="stylesheet" href="/booky/styles.css?v=69" />
 <!-- PostHog analytics -->
 <script>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
@@ -105,7 +105,7 @@
 <header class="topbar">
 <span class="topbar-side">
 <button id="menu-btn" class="icon-btn icon-btn-svg" aria-label="Menu" aria-haspopup="dialog" aria-expanded="false"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" aria-hidden="true"><path d="M4 6.2h16M4 12h16M4 17.8h16"/></svg></button>
-<button id="share-top-btn" class="icon-btn icon-btn-svg" aria-label="Share your result" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM6 14.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM18 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/><path d="M8.2 11.3l7.6-4.1M8.2 12.7l7.6 4.1"/></svg></button>
+<button id="share-top-btn" class="icon-btn icon-btn-svg" aria-label="Share" aria-haspopup="dialog"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M18 8a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM6 14.5a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5zM18 21a2.5 2.5 0 1 0 0-5 2.5 2.5 0 0 0 0 5z"/><path d="M8.2 11.3l7.6-4.1M8.2 12.7l7.6 4.1"/></svg></button>
 </span>
 <h1 class="wordmark"><a href="/"><img class="wm-light" src="/logo/booky.svg" alt="Booky" width="160" height="26"><img class="wm-dark" src="/logo/booky-light.svg" alt="" aria-hidden="true" width="160" height="26"></a><span id="puzzle-no" class="puzzle-no" aria-label="Today's puzzle number"></span></h1>
 <span class="topbar-side topbar-side-end">
@@ -121,6 +121,17 @@
 <button type="button" id="hint-coach-close" class="coach-close" aria-label="Dismiss">&times;</button>
 </div>
 </header>
+
+<!-- Giveaway strip. The giveaway is the only capture mechanic we have measured
+     (+56% in an A/B/A), and until today it lived on the win screen only, so the
+     ~800 September players who never won never saw it. Same card, same flow,
+     same double opt-in; only the door is new. Hidden whenever activeGiveaway()
+     returns null, so it disappears on its own when the giveaway ends. -->
+<button type="button" id="giveaway-strip" class="giveaway-strip" hidden aria-haspopup="dialog">
+<span class="giveaway-strip-label"><span class="giveaway-strip-emoji" aria-hidden="true">&#127873;</span> Booky giveaway</span>
+<span id="giveaway-strip-days" class="giveaway-strip-days"></span>
+<span class="giveaway-strip-chevron" aria-hidden="true">&rsaquo;</span>
+</button>
 
 <!-- Menu. New on 2026-09-25, and the only genuinely new thing in the header:
      the archive had nowhere to live and was reachable only by winning. Order
@@ -419,10 +430,22 @@ required
 </dialog>
 
 <!-- Share sheet — same UI on mobile and desktop -->
+<!-- The giveaway sheet reuses the house .sheet shell (same as share/stats).
+     It has no card of its own: app.js MOVES the live #giveaway / #giveaway-in
+     nodes in here and puts them back in #end-modal on close, so every existing
+     handler, id and the pending-confirmation state keep working untouched. -->
+<dialog id="giveaway-sheet" class="sheet giveaway-sheet" aria-labelledby="giveaway-sheet-title">
+<div class="sheet-inner">
+<button type="button" class="sheet-close" id="giveaway-sheet-close" aria-label="Close">&times;</button>
+<h2 id="giveaway-sheet-title" class="sheet-title">Booky giveaway</h2>
+<div id="giveaway-sheet-host" class="giveaway-sheet-host"></div>
+</div>
+</dialog>
+
 <dialog id="share-sheet" class="sheet share-sheet" aria-labelledby="share-sheet-title">
 <div class="sheet-inner share-sheet-inner">
 <button type="button" class="sheet-close" id="share-sheet-close" aria-label="Close">×</button>
-<h2 id="share-sheet-title" class="sheet-title">Share your result</h2>
+<h2 id="share-sheet-title" class="sheet-title">Share</h2>
 <p class="share-sheet-sub">Send it to a friend or post it anywhere.</p>
 <!-- The grid, shown before you send it. Squaredle puts the exact text in the
      sheet so you know what you are about to paste; ours was invisible until it
@@ -453,8 +476,8 @@ required
 <svg class="share-reddit-logo" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg" aria-hidden="true"><path fill="#FF4500" d="M12 0C5.373 0 0 5.373 0 12c0 3.314 1.343 6.314 3.515 8.485l-2.286 2.286C.775 23.225 1.097 24 1.738 24H12c6.627 0 12-5.373 12-12S18.627 0 12 0Zm4.388 3.199c1.104 0 1.999.895 1.999 1.999 0 1.105-.895 2-1.999 2-.946 0-1.739-.657-1.947-1.539v.002c-1.147.162-2.032 1.15-2.032 2.341v.007c1.776.067 3.4.567 4.686 1.363.473-.363 1.064-.58 1.707-.58 1.547 0 2.802 1.254 2.802 2.802 0 1.117-.655 2.081-1.601 2.531-.088 3.256-3.637 5.876-7.997 5.876-4.361 0-7.905-2.617-7.998-5.87-.954-.447-1.614-1.415-1.614-2.538 0-1.548 1.255-2.802 2.803-2.802.645 0 1.239.218 1.712.585 1.275-.79 2.881-1.291 4.64-1.365v-.01c0-1.663 1.263-3.034 2.88-3.207.188-.911.993-1.595 1.959-1.595Zm-8.085 8.376c-.784 0-1.459.78-1.506 1.797-.047 1.016.64 1.429 1.426 1.429.786 0 1.371-.369 1.418-1.385.047-1.017-.553-1.841-1.338-1.841Zm7.406 0c-.786 0-1.385.824-1.338 1.841.047 1.017.634 1.385 1.418 1.385.785 0 1.473-.413 1.426-1.429-.046-1.017-.721-1.797-1.506-1.797Zm-3.703 4.013c-.974 0-1.907.048-2.77.135-.147.015-.241.168-.183.305.483 1.154 1.622 1.964 2.953 1.964 1.33 0 2.47-.81 2.953-1.964.057-.137-.037-.29-.184-.305-.863-.087-1.795-.135-2.769-.135Z"/></svg>
 </span>
 <span class="share-option-text">
-<span class="share-option-label">Booky daily thread</span>
-<span class="share-option-desc">r/B00KY, where players post theirs</span>
+<span class="share-option-label">Share in r/B00KY</span>
+<span class="share-option-desc">Daily result thread</span>
 </span>
 </button>
 </div>
