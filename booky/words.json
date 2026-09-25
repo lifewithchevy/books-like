@@ -165,7 +165,7 @@
     "RIDER",
     "TOUCH",
     "HARPY",
-    "KAINE",
+    "TOWER",
     "FAIRY",
     "PRISM",
     "NIGHT",
@@ -334,7 +334,8 @@
     "SINGE",
     "CORAL",
     "HEXED",
-    "SIGNS"
+    "SIGNS",
+    "KAINE"
   ],
   "wordBooks": {
     "COURT": {
@@ -2858,6 +2859,13 @@
       "author": "Caroline Peckham & Susanne Valenti",
       "cover": "/booky/covers/zodiac-academy.jpg",
       "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
+    },
+    "TOWER": {
+      "slug": "tower-of-dawn",
+      "title": "Tower of Dawn",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/tower-of-dawn.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B01M8NHXGH?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
