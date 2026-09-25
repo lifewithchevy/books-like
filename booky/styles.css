@@ -2044,8 +2044,37 @@ body.og-image-page {
 @media (min-width: 521px) { .giveaway-strip { padding: 8px 24px; } }
 @media (min-width: 901px) { .giveaway-strip { padding: 9px 48px; } }
 
-/* No overrides. The card renders in the sheet exactly as it does on the win
-   screen — same frame, same cover-left composition, same sizes. One design in
-   two places, so there is no second version of it to keep in step. */
-/* The sheet adds one thing of its own: the house .sheet-title, same as How to
-   play and Share, so the giveaway does not read as a different kind of thing. */
+/* Same card as the win screen, with two changes the sheet earns.
+   1. Its gold "BOOKY GIVEAWAY" label goes, because the sheet title above it
+      already says exactly that. The days badge is the only thing left in that
+      row, so space-between drops it to the left on its own.
+   2. Everything scales up. On the win screen this is a strip under a page of
+      content; here it is the whole modal and has to hold it. */
+.giveaway-sheet-host .giveaway-label > span:first-child { display: none; }
+.giveaway-sheet-host .giveaway {
+  padding: 16px 18px;
+  gap: 16px;
+  border-radius: 13px;
+}
+.giveaway-sheet-host .giveaway-cover {
+  width: 66px;
+  height: 99px;
+  border-radius: 5px;
+}
+.giveaway-sheet-host .giveaway-label {
+  font-size: 11px;
+  letter-spacing: 1.3px;
+  margin-bottom: 6px;
+}
+.giveaway-sheet-host .giveaway-title {
+  font-size: 19px;
+  margin-bottom: 11px;
+}
+.giveaway-sheet-host .giveaway-form { gap: 8px; }
+.giveaway-sheet-host #giveaway-email,
+.giveaway-sheet-host #giveaway-submit,
+.giveaway-sheet-host .giveaway-btn-wide { padding: 10px 14px; font-size: 14px; }
+.giveaway-sheet-host .giveaway-fine { margin-top: 9px; font-size: 11.5px; }
+.giveaway-sheet-host .giveaway-entered { padding: 24px 16px; }
+.giveaway-sheet-host .giveaway-in-title { font-size: 21px; }
+.giveaway-sheet-host .giveaway-in-sub { font-size: 12.5px; }
