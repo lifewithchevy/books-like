@@ -2015,7 +2015,8 @@ body.og-image-page {
 .giveaway-strip {
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: 7px;
+  justify-content: center;
   width: 100%;
   padding: 7px 16px;
   border: 0;
@@ -2035,8 +2036,9 @@ body.og-image-page {
 .giveaway-strip-days {
   color: var(--giveaway-ink-dim);
   letter-spacing: 0.6px;
-  margin-left: auto;
 }
+/* Centred, so the bar reads as one sentence rather than two corners. */
+.giveaway-strip-dot { color: var(--giveaway-ink-dim); opacity: 0.6; }
 .giveaway-strip-days.last { color: var(--accent); }
 .giveaway-strip-chevron { font-size: 16px; line-height: 1; opacity: 0.7; }
 @media (min-width: 521px) { .giveaway-strip { padding: 8px 24px; } }
@@ -2051,3 +2053,28 @@ body.og-image-page {
 /* The sheet's own heading already says "Booky giveaway"; the card's label
    would say it a second time two lines below. The days badge stays. */
 .giveaway-sheet-host .giveaway-label > span:first-child { display: none; }
+
+/* The win screen shows this card as a strip under a page of content, so it is
+   deliberately tiny there. On its own in a sheet that reads as an afterthought,
+   so here it stacks and the cover gets to be the book it is selling. */
+.giveaway-sheet-host .giveaway {
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+.giveaway-sheet-host .giveaway-cover {
+  width: 104px;
+  height: 156px;
+  border-radius: 6px;
+}
+.giveaway-sheet-host .giveaway-body { width: 100%; }
+.giveaway-sheet-host .giveaway-label { justify-content: center; }
+.giveaway-sheet-host .giveaway-title {
+  font-size: 20px;
+  margin-bottom: 12px;
+}
+.giveaway-sheet-host .giveaway-fine { margin-top: 8px; }
+.giveaway-sheet-host .giveaway-entered { padding: 22px 11px 10px; }
+.giveaway-sheet-host .giveaway-in-title { font-size: 19px; }
+.giveaway-sheet-host .giveaway-in-sub { font-size: 12.5px; }
