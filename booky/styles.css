@@ -2044,66 +2044,142 @@ body.og-image-page {
 @media (min-width: 521px) { .giveaway-strip { padding: 8px 24px; } }
 @media (min-width: 901px) { .giveaway-strip { padding: 9px 48px; } }
 
-/* The explainer is the hint sheet's note, same component and same weight, so
-   the sheets read as one family. It just needs room before the card. */
-.giveaway-sheet-note { margin: -2px 0 14px; }
+/* Title top left with the explanation under it, exactly as Hints and How to
+   play do it. That block is the ONLY part of this page following the sheet
+   convention; everything below it is the win screen's composition. */
+.giveaway-sheet-head { text-align: left; }
+.giveaway-sheet-head .sheet-title { margin: 0; }
+.giveaway-sheet-note { margin: 8px 0 0; }
 
-/* Same card as the win screen, rebuilt as a grid for the room a sheet has.
-   Its gold "BOOKY GIVEAWAY" label goes, because the sheet title above already
-   says exactly that, which leaves the days badge alone on the left.
-
-   The cover sits beside the title and the email field, all three the same
-   height, and ENTER runs the full width underneath both columns. Enter was
-   stuck in the narrow right-hand column before, which is the bit that looked
-   wrong: the primary action was the smallest thing in the card. */
-.giveaway-sheet-host .giveaway-label > span:first-child { display: none; }
-.giveaway-sheet-host .giveaway {
-  display: grid;
-  grid-template-columns: auto minmax(0, 1fr);
-  column-gap: 14px;
-  row-gap: 10px;
-  align-items: start;
-  padding: 18px;
-  border-radius: 13px;
+/* The author line belongs to the sheet only. The win-screen card is a strip
+   with no room for it, so it never renders there. */
+#end-modal .giveaway-author { display: none; }
+.giveaway-author {
+  font-family: var(--font-sans);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 2px;
+  text-transform: uppercase;
+  color: var(--ink-dim);
+  margin: 7px 0 0;
 }
-/* Both wrappers step aside so their children become cells of the one grid. */
+
+/* Full page, like the win screen. A centred card the size of a toast was the
+   complaint, and fairly: the giveaway is the whole reason you opened this. */
+#giveaway-sheet {
+  inset: 0;
+  width: 100%;
+  max-width: none;
+  height: 100%;
+  max-height: none;
+  margin: 0;
+  border-radius: 0;
+  background: var(--bg);
+}
+#giveaway-sheet .sheet-inner {
+  max-width: 420px;
+  margin: 0 auto;
+  /* dvh, not vh, for the same reason as the win screen: 100vh on mobile Safari
+     includes the strip behind the URL bar and pushes the last row out of reach. */
+  min-height: 100dvh;
+  padding: 26px 22px calc(26px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+}
+#giveaway-sheet .sheet-close { top: 22px; right: 18px; }
+.giveaway-sheet-host {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: safe center;
+}
+
+/* Book on top, then title, author, days. Email and the action sit at the foot,
+   pushed there by margin-top:auto so short viewports simply close the gap. */
+.giveaway-sheet-host .giveaway {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 0;
+  border: 0;
+  background: none;
+  padding: 0;
+}
 .giveaway-sheet-host .giveaway-body,
 .giveaway-sheet-host .giveaway-form { display: contents; }
 .giveaway-sheet-host .giveaway-cover {
-  grid-area: 1 / 1 / 4 / 2;
-  width: 74px;
-  height: 111px;
-  border-radius: 5px;
-}
-.giveaway-sheet-host .giveaway-label {
-  grid-area: 1 / 2 / 2 / 3;
-  margin: 0;
-  font-size: 11px;
-  letter-spacing: 1.3px;
+  order: 1;
+  width: min(176px, 24dvh);
+  height: auto;
+  aspect-ratio: 2 / 3;
+  border-radius: 6px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.26);
 }
 .giveaway-sheet-host .giveaway-title {
-  grid-area: 2 / 2 / 3 / 3;
-  margin: 0;
-  font-size: 19px;
+  order: 2;
+  font-size: 24px;
+  margin: 16px 0 0;
+  line-height: 1.05;
+}
+.giveaway-sheet-host .giveaway-author { order: 3; }
+/* Days above the cover: it is the reason to act now, so it leads. */
+.giveaway-sheet-host .giveaway-label > span:first-child { display: none; }
+.giveaway-sheet-host .giveaway-label {
+  order: 0;
+  justify-content: center;
+  margin: 0 0 18px;
+  font-size: 15px;
+  letter-spacing: 1.8px;
 }
 .giveaway-sheet-host #giveaway-email {
-  grid-area: 3 / 2 / 4 / 3;
-  padding: 10px 13px;
-  font-size: 14px;
+  order: 5;
+  width: 100%;
+  margin-top: 30px;
+  padding: 13px 15px;
+  font-size: 15px;
+  text-align: center;
+  border-radius: 8px;
 }
 .giveaway-sheet-host #giveaway-submit,
 .giveaway-sheet-host .giveaway-btn-wide {
-  grid-column: 1 / -1;
+  order: 6;
   width: 100%;
-  padding: 11px 14px;
-  font-size: 14px;
+  margin-top: 9px;
+  padding: 14px 16px;
+  font-size: 15px;
+  border-radius: 8px;
 }
+/* Subscribed players skip the email field, so the button takes its spacing. */
+.giveaway-sheet-host .giveaway-form[hidden] ~ .giveaway-btn-wide { margin-top: 30px; }
 .giveaway-sheet-host .giveaway-fine {
-  grid-column: 1 / -1;
-  margin: 0;
+  order: 7;
+  margin: 10px 0 0;
   font-size: 11.5px;
-  text-align: center;
 }
-.giveaway-sheet-host .giveaway-entered { padding: 26px 18px; }
-.giveaway-sheet-host .giveaway-in-title { font-size: 21px; }
-.giveaway-sheet-host .giveaway-in-sub { font-size: 12.5px; }
+/* The entered state's book block: the same composition as the entry form, so
+   confirming your email does not drop you onto a blank page. */
+.giveaway-sheet-book {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  padding: 18px 0 0;
+}
+.giveaway-sheet-book[hidden] { display: none; }
+.giveaway-sheet-book .giveaway-cover {
+  width: min(176px, 24dvh);
+  height: auto;
+  aspect-ratio: 2 / 3;
+  border-radius: 6px;
+  box-shadow: 0 10px 26px rgba(0, 0, 0, 0.26);
+}
+.giveaway-sheet-book .giveaway-title { font-size: 24px; margin: 16px 0 0; line-height: 1.05; }
+
+/* Entered state: centred under the book rather than stranded in empty space. */
+.giveaway-sheet-host .giveaway-entered {
+  justify-content: center;
+  padding: 26px 0 0;
+}
+.giveaway-sheet-host .giveaway-in-title { font-size: 26px; }
+.giveaway-sheet-host .giveaway-in-sub { font-size: 13px; }

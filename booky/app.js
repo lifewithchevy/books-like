@@ -982,6 +982,18 @@ return false;
 }
 
 // Already entered → show only the confirmation strip.
+// The sheet's own book block: same data, shown only in the entered state.
+const sb = $('giveaway-sheet-book');
+if (sb) {
+const c = $('giveaway-sheet-cover');
+if (c) {
+if (g.cover) { c.src = g.cover; c.hidden = false; c.onerror = () => { c.hidden = true; }; }
+else c.hidden = true;
+}
+$('giveaway-sheet-booktitle').textContent = g.title || '';
+$('giveaway-sheet-bookauthor').textContent = g.author || '';
+sb.hidden = localStorage.getItem(GIVEAWAY_ENTERED_KEY) !== g.tag;
+}
 if (localStorage.getItem(GIVEAWAY_ENTERED_KEY) === g.tag) {
 card.hidden = true;
 setGiveawayEnteredCopy(g, localStorage.getItem(GIVEAWAY_PENDING_KEY) === g.tag);
@@ -1000,14 +1012,16 @@ daysEl.textContent = daysLeft <= 0 ? 'last day' : `${daysLeft} day${daysLeft ===
 daysEl.classList.toggle('last', daysLeft <= 0);
 
 $('giveaway-title').textContent = g.title || '';
+// Author is the sheet's alone: the win-screen card is a strip with no room
+// for it, so CSS hides it there.
+const authorEl = $('giveaway-author');
+if (authorEl) authorEl.textContent = g.author || '';
 // The sheet has room the win screen never had, so it says what the giveaway
 // actually is. Guarded: this element only exists in the sheet, and a throw in
 // renderGiveaway takes the win screen down with it.
 const sheetSub = $('giveaway-sheet-sub');
 if (sheetSub) {
-sheetSub.textContent = g.announce
-? `One player wins a copy. Winner announced ${g.announce}.`
-: 'One player wins a copy of this book.';
+sheetSub.textContent = 'Win a free copy of this book!';
 }
 
 const coverEl = $('giveaway-cover');
@@ -2339,6 +2353,11 @@ if (document.readyState === 'loading') {
     if (!home) home = { parent: card.parentNode, next: done.nextSibling };
     host.appendChild(card);
     host.appendChild(done);
+    // Full width and alone at the foot of a page, "enter" reads like a stray
+    // word. It goes back to "enter" when the card returns to the win screen,
+    // where it sits inline beside the field and the row explains itself.
+    const submit = document.getElementById('giveaway-submit');
+    if (submit) submit.textContent = 'Enter giveaway';
     posthog.capture('booky_giveaway_strip_opened', {
       word_number: DAY,
       entered: !done.hidden,
@@ -2355,6 +2374,8 @@ if (document.readyState === 'loading') {
       home.parent.insertBefore(document.getElementById('giveaway'), home.next);
       home.parent.insertBefore(document.getElementById('giveaway-in'), home.next);
     }
+    const submit = document.getElementById('giveaway-submit');
+    if (submit) submit.textContent = 'enter';
     refresh();
   });
 
