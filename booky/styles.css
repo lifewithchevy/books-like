@@ -2268,10 +2268,39 @@ body.og-image-page {
   padding: 10px 16px calc(14px + env(safe-area-inset-bottom, 0px));
 }
 .post-game[hidden] { display: none; }
-/* House styles only: See results is the .primary button the win screen uses,
-   and the archive link is its outlined twin. The pill shape was borrowed from
-   Wordle and Booky does not have one anywhere else. */
-.post-game .primary,
+/* Share sheet: one primary, the rest outlined.
+   The sheet had four buttons all wearing tinted fills, so nothing led. The
+   primary is the one that actually sends the share (the OS sheet on a phone,
+   the clipboard on desktop) and it gets the same filled treatment as Share
+   result on the win screen. Reddit, X and the r/B00KY thread are outlined in
+   the same pink, because they are alternatives, not the main road. */
+.share-option-native {
+  border: none;
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  color: #fff;
+  box-shadow: 0 6px 20px var(--shadow-accent);
+}
+.share-option-native:hover {
+  background: linear-gradient(135deg, var(--accent), var(--accent-dark));
+  filter: brightness(1.06);
+}
+.share-option-native .share-option-desc { color: rgba(255, 255, 255, 0.82); }
+.share-option-native .share-option-icon { color: #fff; }
+
+.share-social,
+.share-option-reddit {
+  background: transparent;
+  border: 1.5px solid var(--link);
+  color: var(--link);
+}
+.share-social:hover,
+.share-option-reddit:hover { background: rgba(217, 70, 168, 0.10); }
+.share-option-reddit .share-option-label { color: var(--link); }
+.share-option-reddit .share-option-desc { color: var(--link); opacity: 0.75; }
+
+/* Both post-game CTAs use the game's outlined secondary button. The board is
+   not the place for a filled primary: the one real primary is Share result on
+   the win screen, and two of them competing under the grid flattens that. */
 .post-game-btn {
   width: 100%;
   max-width: 320px;
