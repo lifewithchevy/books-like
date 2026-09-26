@@ -2284,8 +2284,15 @@ body.og-image-page {
   background: linear-gradient(135deg, var(--accent), var(--accent-dark));
   filter: brightness(1.06);
 }
+.share-option-native .share-option-label { color: #fff; }
 .share-option-native .share-option-desc { color: rgba(255, 255, 255, 0.82); }
-.share-option-native .share-option-icon { color: #fff; }
+/* No tile behind the icon on the filled button: the gradient is the surface,
+   so the icon is just a white glyph sitting on it. */
+.share-option-native .share-option-icon {
+  background: transparent;
+  color: #fff;
+}
+.share-option-native .share-option-icon svg { stroke: #fff; }
 
 .share-social,
 .share-option-reddit {
@@ -2321,3 +2328,13 @@ body.og-image-page {
   transition: background 0.15s, color 0.15s;
 }
 .post-game-btn:hover { background: var(--link); color: var(--bg); }
+
+
+/* Signup sheet. An ordinary bottom sheet that hugs its content, like How to
+   play and Hints: the full-page version left a screen of empty space in the
+   middle, because there simply is not much to say. No new text styles either.
+   The title, sub, list and form row are all classes the game already uses. */
+.signup-line { margin-top: 16px; line-height: 1.6; }
+.signup-line a { color: var(--link); font-weight: 600; }
+.signup-line-sub { color: var(--ink-dim); }
+.signup-body { border-top: 0; padding-top: 0; margin-top: 18px; }

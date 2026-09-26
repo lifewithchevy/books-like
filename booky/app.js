@@ -916,6 +916,32 @@ archive: ARCHIVE,
 
 wireReminder($('reminder-form'));
 buildStatsReminder();
+
+// One signup sheet behind every link in the game. It submits through the same
+// handler as the win screen's row, so there is one signup code path, not three.
+wireReminder($('signup-form'));
+(function installSignupSheet() {
+  const sheet = document.getElementById('signup-sheet');
+  if (!sheet) return;
+  document.querySelectorAll('.signup-link').forEach((a) => {
+    a.addEventListener('click', (e) => {
+      e.preventDefault();
+      posthog.capture('booky_signup_sheet_opened', {
+        source: a.dataset.signupFrom || 'unknown',
+        word_number: DAY,
+        played: STATS.played,
+      });
+      // Replace, never stack. Material says bottom sheets should not stack and
+      // Apple warns off sheet hierarchies; all three reference games sidestep
+      // it by navigating to a page. iOS stacking at least scales the sheet
+      // underneath so you can see there are two, and the web gives us nothing:
+      // you would close this and land in How to play with no idea why.
+      a.closest('dialog')?.close();
+      if (typeof sheet.showModal === 'function') sheet.showModal();
+    });
+  });
+  document.getElementById('signup-sheet-close')?.addEventListener('click', () => sheet.close());
+})();
 $('giveaway-form').addEventListener('submit', onGiveawaySubmit);
 $('giveaway-tap').addEventListener('click', onGiveawayTap);
 }
