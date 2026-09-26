@@ -1843,8 +1843,9 @@ renderStatsModal();
 
 // Hero 2: the word's book. CTA adapts — sponsored buy link, curated page, or none.
 // "Today's word" is a lie on a replay of July 5th.
-const heroLabel = $('book-hero-label');
-if (heroLabel) heroLabel.textContent = ARCHIVE ? 'This word is from' : "Today's word is from";
+// The line is now "The word AZURE is from", which is true on today's puzzle
+// and on a replay of July 5th alike, so the old ARCHIVE special case is gone.
+// Only the word itself is set, above.
 
 const bookRec = DATA.wordBooks?.[ANSWER];
 const recEl = $('book-rec');

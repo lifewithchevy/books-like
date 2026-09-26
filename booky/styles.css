@@ -2268,18 +2268,27 @@ body.og-image-page {
   padding: 10px 16px calc(14px + env(safe-area-inset-bottom, 0px));
 }
 .post-game[hidden] { display: none; }
+/* House styles only: See results is the .primary button the win screen uses,
+   and the archive link is its outlined twin. The pill shape was borrowed from
+   Wordle and Booky does not have one anywhere else. */
+.post-game .primary,
 .post-game-btn {
   width: 100%;
   max-width: 320px;
   box-sizing: border-box;
-  padding: 13px 16px;
-  border: 1.5px solid var(--border);
-  border-radius: 999px;
+}
+.post-game-btn {
+  padding: 10px;
+  border: 1.5px solid var(--link);
+  border-radius: 10px;
   background: transparent;
-  color: var(--ink);
-  font: 600 15px var(--font-sans);
+  color: var(--link);
+  font-family: var(--font-sans);
+  font-size: 14px;
+  font-weight: 600;
   text-align: center;
   text-decoration: none;
   cursor: pointer;
+  transition: background 0.15s, color 0.15s;
 }
-.post-game-btn:hover { border-color: var(--ink-dim); }
+.post-game-btn:hover { background: var(--link); color: var(--bg); }
