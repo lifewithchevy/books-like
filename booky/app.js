@@ -294,6 +294,7 @@ initHint();
 
 if (STATE.status !== 'playing') {
 LOCKED = true;
+showPostGame();
 showEndScreen();
 }
 
@@ -870,6 +871,10 @@ if (shareSheet) {
     shareSheet.close();
   });
 }
+$('see-results-btn')?.addEventListener('click', () => {
+  posthog.capture('booky_see_results_clicked', { word_number: DAY, won: STATE.status === 'won' });
+  showEndScreen();
+});
 $('share-top-btn')?.addEventListener('click', () => openShareSheetFrom('header'));
 $('end-modal').querySelector('[data-close-end]').addEventListener('click', (e) => {
 e.preventDefault();
@@ -1459,9 +1464,20 @@ saveState();
 
 if (STATE.status !== 'playing') {
 LOCKED = true;
+showPostGame();
 setTimeout(showEndScreen, 400);
 }
 }, revealTotal);
+}
+
+// Once the game is over the keyboard has nothing left to do, so it steps aside
+// for the two things a finished player actually wants: their result, and
+// another puzzle. Copied from Wordle, checked at 375px on 2026-09-26.
+function showPostGame() {
+  const kb = document.getElementById('keyboard');
+  const pg = document.getElementById('post-game');
+  if (kb) kb.hidden = true;
+  if (pg) pg.hidden = false;
 }
 
 function shake(message) {
@@ -2321,6 +2337,60 @@ if (document.readyState === 'loading') {
   if (!strip || !sheet || !host) return;
 
   let home = null; // where the card lives when the sheet is closed
+  let tick = null; // countdown interval, alive only while the sheet is open
+
+  // The giveaway runs through the END of its last day, so it expires at the
+  // midnight AFTER g.end, not at g.end itself.
+  function endsAt(g) {
+    const m = localMidnight(g.end);
+    return m == null ? null : m + 86_400_000;
+  }
+
+  // Goodreads format: "3 days and 15:27:46", dropping the days part on the
+  // final day so the clock is the only thing left moving.
+  function countdownText(ms) {
+    const total = Math.max(0, Math.floor(ms / 1000));
+    const days = Math.floor(total / 86_400);
+    const h = String(Math.floor((total % 86_400) / 3600)).padStart(2, '0');
+    const m = String(Math.floor((total % 3600) / 60)).padStart(2, '0');
+    const sec = String(total % 60).padStart(2, '0');
+    const clock = `${h}:${m}:${sec}`;
+    if (days <= 0) return `${clock} left`;
+    return `${days} day${days === 1 ? '' : 's'} and ${clock} left`;
+  }
+
+  function stopTick() {
+    if (tick) { clearInterval(tick); tick = null; }
+  }
+
+  function startTick() {
+    stopTick();
+    const el = document.getElementById('giveaway-sheet-timer');
+    if (!el) return;
+    let g = null;
+    try { g = activeGiveaway(); } catch { g = null; }
+    const target = g && endsAt(g);
+    // No giveaway, a malformed date, or an already-entered player: no clock.
+    if (!target || (g && localStorage.getItem(GIVEAWAY_ENTERED_KEY) === g.tag)) {
+      el.hidden = true;
+      return;
+    }
+    const paint = () => {
+      const left = target - Date.now();
+      if (left <= 0) {
+        // It ended while the sheet was open. Stop rather than count negatives.
+        el.textContent = 'Giveaway closed';
+        el.classList.add('last');
+        stopTick();
+        return;
+      }
+      el.textContent = countdownText(left);
+      el.classList.toggle('last', left < 86_400_000);
+    };
+    paint();
+    el.hidden = false;
+    tick = setInterval(paint, 1000);
+  }
 
   function refresh() {
     let live = false;
@@ -2353,11 +2423,18 @@ if (document.readyState === 'loading') {
     if (!home) home = { parent: card.parentNode, next: done.nextSibling };
     host.appendChild(card);
     host.appendChild(done);
+    // The clock belongs directly above the email field, and the email lives
+    // inside the card, so the clock has to move in with it: display:contents
+    // on the body and form means only real children of .giveaway can be
+    // ordered against them.
+    const clock = document.getElementById('giveaway-sheet-timer');
+    if (clock) card.appendChild(clock);
     // Full width and alone at the foot of a page, "enter" reads like a stray
     // word. It goes back to "enter" when the card returns to the win screen,
     // where it sits inline beside the field and the row explains itself.
     const submit = document.getElementById('giveaway-submit');
     if (submit) submit.textContent = 'Enter giveaway';
+    startTick();
     posthog.capture('booky_giveaway_strip_opened', {
       word_number: DAY,
       entered: !done.hidden,
@@ -2376,9 +2453,49 @@ if (document.readyState === 'loading') {
     }
     const submit = document.getElementById('giveaway-submit');
     if (submit) submit.textContent = 'enter';
+    // Nothing is visible once the sheet closes, so the interval stops with it.
+    stopTick();
+    const clock = document.getElementById('giveaway-sheet-timer');
+    if (clock) host.insertBefore(clock, host.firstChild);
     refresh();
   });
 
   window.__refreshGiveawayStrip = refresh;
   refresh();
+})();
+
+// ---- Tap outside to close -------------------------------------------------
+// Relying on a click whose target is the <dialog> works in Chrome but not
+// reliably in iOS Safari, where a tap on the backdrop may not be dispatched to
+// the dialog at all. So this measures instead: pointerdown, compare the point
+// against the dialog's own rect, and treat anything outside it as a dismiss.
+// pointerdown rather than click, because iOS is the browser that drops the click.
+(function installBackdropClose() {
+  function dismiss(dlg) {
+    // The win screen's close is not a plain close: from the archive it has to
+    // send you back where you came from. Reuse its button rather than
+    // duplicating that decision here.
+    const own = dlg.id === 'end-modal' ? dlg.querySelector('[data-close-end]') : null;
+    if (own) own.click();
+    else dlg.close();
+  }
+  document.querySelectorAll('dialog').forEach((dlg) => {
+    let startedOutside = false;
+    const outside = (e) => {
+      const r = dlg.getBoundingClientRect();
+      if (!r.width || !r.height) return false;
+      return e.clientX < r.left || e.clientX > r.right
+          || e.clientY < r.top  || e.clientY > r.bottom;
+    };
+    dlg.addEventListener('pointerdown', (e) => { startedOutside = outside(e); });
+    // Dismissing on pointerup, not pointerdown, so a drag that begins outside
+    // and ends on the sheet does not close it out from under your finger.
+    dlg.addEventListener('pointerup', (e) => {
+      if (startedOutside && outside(e)) dismiss(dlg);
+      startedOutside = false;
+    });
+    // Desktop belt and braces: a plain click that lands on the dialog element
+    // itself can only have come from the backdrop.
+    dlg.addEventListener('click', (e) => { if (e.target === dlg) dismiss(dlg); });
+  });
 })();

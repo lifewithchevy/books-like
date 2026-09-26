@@ -585,6 +585,62 @@ body {
   overflow-y: auto;
   animation: sheetIn 0.3s cubic-bezier(0.2, 0.8, 0.2, 1);
 }
+/* One shape for every sheet: a panel that slides up from the bottom edge,
+   full width, no side gutters, rounded only at the top. Checked against Wordle
+   at 375px on 2026-09-26 - Settings is short and the sheet is short with it,
+   How to Play and Statistics are long and fill the screen, and the results
+   sheet scrolls. Height hugs the content and only caps when it runs out. */
+@media (max-width: 520px) {
+  .sheet {
+    /* The UA gives a modal dialog inset:0 + margin:auto, and with inset:0 the
+       box stretches to the full height however little is inside it. Releasing
+       the top and pinning the bottom is what lets a short sheet stay short. */
+    top: auto;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    max-width: none;
+    height: auto;
+    /* dvh, not vh: 100vh on mobile Safari counts the strip behind the URL bar,
+       so the last row of a tall sheet ends up under the toolbar. */
+    max-height: 92dvh;
+    margin: 0;
+    border-radius: 18px 18px 0 0;
+    overflow-y: auto;
+    animation: sheetUp 0.28s cubic-bezier(0.2, 0.8, 0.2, 1);
+  }
+  .sheet .sheet-inner {
+    box-sizing: border-box;
+    padding-bottom: calc(18px + env(safe-area-inset-bottom, 0px));
+  }
+}
+@supports not (height: 100dvh) {
+  @media (max-width: 520px) { .sheet { max-height: 92vh; } }
+}
+/* Close gets a line of its own, with everything else starting below it.
+   Wordle does this on every panel: the × never sits on top of the heading. */
+@media (max-width: 520px) {
+  .sheet .sheet-close,
+  #end-modal .end-top .sheet-close {
+    position: static;
+    display: block;
+    margin: 0 0 4px auto;
+    font-size: 26px;
+    padding: 2px 4px;
+  }
+  /* The end screen's close used to ride on the BOOKY #NNN line; now it leads,
+     so that line goes back to being centred with nothing beside it. */
+  #end-modal .end-top { display: flex; flex-direction: column; }
+  #end-modal .end-top .sheet-close { order: -1; }
+  .giveaway-sheet-head { margin-top: 0; }
+}
+
+@keyframes sheetUp {
+  from { transform: translateY(100%); }
+  to   { transform: translateY(0); }
+}
+
 .sheet::backdrop {
   background: var(--backdrop);
   backdrop-filter: blur(6px);
@@ -596,15 +652,34 @@ body {
 .sheet-inner { padding: 16px 20px 18px; position: relative; }
 
 /* End screen: full-page, mobile-first (overrides the centered .sheet card for #end-modal only) */
+/* The results sheet is the tallest of them, so it caps and scrolls. Wordle's
+   does the same rather than taking over the whole screen. */
 #end-modal {
-  inset: 0;
   width: 100%;
   max-width: none;
-  height: 100%;
-  max-height: none;
-  margin: 0;
-  border-radius: 0;
   background: var(--bg);
+}
+/* The results sheet is the one that has to show everything: word, book, streak,
+   share, giveaway and the archive link. It takes the whole screen so nothing
+   needs scrolling today, and scrolls on its own once we add more. */
+@media (max-width: 520px) {
+  #end-modal {
+    max-height: 100dvh;
+    height: 100dvh;
+    border-radius: 0;
+  }
+}
+@supports not (height: 100dvh) {
+  @media (max-width: 520px) { #end-modal { max-height: 100vh; height: 100vh; } }
+}
+@media (min-width: 521px) {
+  #end-modal {
+    inset: 0;
+    height: 100%;
+    max-height: none;
+    margin: 0;
+    border-radius: 0;
+  }
 }
 #end-modal .end-inner {
   max-width: 420px;
@@ -612,8 +687,7 @@ body {
   /* dvh, not vh: on mobile Safari 100vh includes the strip behind the URL bar
      and the bottom toolbar, so centring into it pushed the last element (the
      support line) under the toolbar and left a dead gap up top. */
-  min-height: 100dvh;
-  padding: 28px 22px calc(26px + env(safe-area-inset-bottom, 0px));
+  padding: 22px 22px calc(26px + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
   /* safe centring: centre while it fits, fall back to top-aligned once the
@@ -621,10 +695,7 @@ body {
   justify-content: safe center;
   gap: 15px;
 }
-/* Older engines that do not know dvh still get the old behaviour. */
-@supports not (height: 100dvh) {
-  #end-modal .end-inner { min-height: 100vh; }
-}
+
 #end-modal .celebration-title { font-size: 40px; }
 /* Loss headline is longer copy — shrink so it stays on one line (fits down to ~320px phones) */
 #end-modal .celebration.lost .celebration-title { font-size: 24px; white-space: nowrap; }
@@ -2064,35 +2135,17 @@ body.og-image-page {
   margin: 7px 0 0;
 }
 
-/* Full page, like the win screen. A centred card the size of a toast was the
-   complaint, and fairly: the giveaway is the whole reason you opened this. */
-#giveaway-sheet {
-  inset: 0;
-  width: 100%;
-  max-width: none;
-  height: 100%;
-  max-height: none;
-  margin: 0;
-  border-radius: 0;
-  background: var(--bg);
-}
+/* The giveaway uses the shared panel like every other sheet. It keeps its own
+   internal centring, because the book is the thing you are meant to look at. */
 #giveaway-sheet .sheet-inner {
   max-width: 420px;
   margin: 0 auto;
-  /* dvh, not vh, for the same reason as the win screen: 100vh on mobile Safari
-     includes the strip behind the URL bar and pushes the last row out of reach. */
-  min-height: 100dvh;
   padding: 26px 22px calc(26px + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
 }
-#giveaway-sheet .sheet-close { top: 22px; right: 18px; }
-.giveaway-sheet-host {
-  flex: 1;
-  display: flex;
-  flex-direction: column;
-  justify-content: safe center;
-}
+@media (min-width: 521px) { #giveaway-sheet .sheet-close { top: 22px; right: 18px; } }
+.giveaway-sheet-host { display: flex; flex-direction: column; }
 
 /* Book on top, then title, author, days. Email and the action sit at the foot,
    pushed there by margin-top:auto so short viewports simply close the gap. */
@@ -2104,13 +2157,14 @@ body.og-image-page {
   gap: 0;
   border: 0;
   background: none;
-  padding: 0;
+  /* The cover needs air under the title block, or it reads as attached to it. */
+  padding: 28px 0 0;
 }
 .giveaway-sheet-host .giveaway-body,
 .giveaway-sheet-host .giveaway-form { display: contents; }
 .giveaway-sheet-host .giveaway-cover {
   order: 1;
-  width: min(176px, 24dvh);
+  width: min(150px, 22dvh);
   height: auto;
   aspect-ratio: 2 / 3;
   border-radius: 6px;
@@ -2123,19 +2177,29 @@ body.og-image-page {
   line-height: 1.05;
 }
 .giveaway-sheet-host .giveaway-author { order: 3; }
-/* Days above the cover: it is the reason to act now, so it leads. */
-.giveaway-sheet-host .giveaway-label > span:first-child { display: none; }
-.giveaway-sheet-host .giveaway-label {
-  order: 0;
-  justify-content: center;
-  margin: 0 0 18px;
-  font-size: 15px;
-  letter-spacing: 1.8px;
+/* The live countdown replaces the days badge inside the sheet. Goodreads runs
+   one on every giveaway for the same reason: a date is information, a clock
+   ticking down is a reason to act now. */
+.giveaway-sheet-host .giveaway-label { display: none; }
+.giveaway-sheet-timer {
+  order: 4;
+  margin: 26px 0 0;
+  text-align: center;
+  font-family: var(--font-sans);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.4px;
+  color: var(--giveaway-ink);
+  /* Tabular figures, or the whole line jitters once a second. */
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: 'tnum' 1;
 }
+.giveaway-sheet-timer[hidden] { display: none; }
+.giveaway-sheet-timer.last { color: var(--accent); }
 .giveaway-sheet-host #giveaway-email {
   order: 5;
   width: 100%;
-  margin-top: 30px;
+  margin-top: 12px;
   padding: 13px 15px;
   font-size: 15px;
   text-align: center;
@@ -2151,7 +2215,7 @@ body.og-image-page {
   border-radius: 8px;
 }
 /* Subscribed players skip the email field, so the button takes its spacing. */
-.giveaway-sheet-host .giveaway-form[hidden] ~ .giveaway-btn-wide { margin-top: 30px; }
+.giveaway-sheet-host .giveaway-form[hidden] ~ .giveaway-btn-wide { margin-top: 12px; }
 .giveaway-sheet-host .giveaway-fine {
   order: 7;
   margin: 10px 0 0;
@@ -2164,7 +2228,7 @@ body.og-image-page {
   flex-direction: column;
   align-items: center;
   text-align: center;
-  padding: 18px 0 0;
+  padding: 28px 0 0;
 }
 .giveaway-sheet-book[hidden] { display: none; }
 .giveaway-sheet-book .giveaway-cover {
@@ -2183,3 +2247,29 @@ body.og-image-page {
 }
 .giveaway-sheet-host .giveaway-in-title { font-size: 26px; }
 .giveaway-sheet-host .giveaway-in-sub { font-size: 13px; }
+
+
+/* Post-game CTAs, standing in for the keyboard once the game is over. */
+.post-game {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 16px calc(14px + env(safe-area-inset-bottom, 0px));
+}
+.post-game[hidden] { display: none; }
+.post-game-btn {
+  width: 100%;
+  max-width: 320px;
+  box-sizing: border-box;
+  padding: 13px 16px;
+  border: 1.5px solid var(--border);
+  border-radius: 999px;
+  background: transparent;
+  color: var(--ink);
+  font: 600 15px var(--font-sans);
+  text-align: center;
+  text-decoration: none;
+  cursor: pointer;
+}
+.post-game-btn:hover { border-color: var(--ink-dim); }
