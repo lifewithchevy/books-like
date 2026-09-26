@@ -294,8 +294,10 @@ initHint();
 
 if (STATE.status !== 'playing') {
 LOCKED = true;
+// Board first, not the win screen. Reopening the game, or coming back from
+// the archive, used to throw the result sheet in your face every time. The
+// See results button is right there now, which is how Wordle handles it.
 showPostGame();
-showEndScreen();
 }
 
 // First-time visitor: show help
@@ -1129,7 +1131,18 @@ fine.className = 'giveaway-fine is-error';
 fine.textContent = "couldn't save that right now. try again in a sec?";
 btn.disabled = false;
 btn.textContent = originalLabel;
+revealGiveawayFine();
 }
+}
+
+// The giveaway error prints below the button, which on a phone can land under
+// the fold once the keyboard is up: the sheet is sized in dvh and dvh does not
+// shrink when the keyboard appears. Rather than guess a height, bring the line
+// into view whenever it is set.
+function revealGiveawayFine() {
+const fine = $('giveaway-fine');
+if (!fine || typeof fine.scrollIntoView !== 'function') return;
+try { fine.scrollIntoView({ block: 'nearest', behavior: 'smooth' }); } catch { fine.scrollIntoView(false); }
 }
 
 function onGiveawaySubmit(e) {
@@ -1140,12 +1153,13 @@ const email = (input.value || '').trim();
 if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
 fine.className = 'giveaway-fine is-error';
 fine.textContent = 'hmm, that email looks off. mind checking it?';
+revealGiveawayFine();
 return;
 }
 // Shaped like an email but the domain looks like a near-miss. Offer the fix
 // and stop; accepting it re-enters here with the corrected address.
 if (offerEmailFix(input, fine, 'giveaway-fine is-error',
-() => onGiveawaySubmit({ preventDefault() {} }))) return;
+() => onGiveawaySubmit({ preventDefault() {} }))) { revealGiveawayFine(); return; }
 enterGiveaway(email, $('giveaway-submit'), 'enter');
 }
 
@@ -2177,6 +2191,13 @@ async function onSharePrimary() {
 function showShareToast(msg) {
 const t = $('share-toast');
 if (!t) return;
+// A <dialog> renders in the top layer, above everything outside it regardless
+// of z-index, and a CLOSED one hides its children entirely. So the toast has
+// to live wherever the action happened: inside the open sheet if there is one,
+// otherwise on the page.
+const openDialog = [...document.querySelectorAll('dialog[open]')].pop();
+const host = openDialog || document.body;
+if (t.parentNode !== host) host.appendChild(t);
 t.textContent = msg;
 t.hidden = false;
 void t.offsetWidth; // force reflow so the transition plays on re-trigger

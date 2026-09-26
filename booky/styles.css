@@ -2135,6 +2135,16 @@ body.og-image-page {
   margin: 7px 0 0;
 }
 
+/* The giveaway can take the whole screen when it needs to. It still hugs its
+   content, so this only bites once the error line appears under the button and
+   the sheet would otherwise have had to scroll to show it. */
+@media (max-width: 520px) {
+  #giveaway-sheet { max-height: 100dvh; }
+}
+@supports not (height: 100dvh) {
+  @media (max-width: 520px) { #giveaway-sheet { max-height: 100vh; } }
+}
+
 /* The giveaway uses the shared panel like every other sheet. It keeps its own
    internal centring, because the book is the thing you are meant to look at. */
 #giveaway-sheet .sheet-inner {
