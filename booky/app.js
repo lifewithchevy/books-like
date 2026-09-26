@@ -1006,8 +1006,8 @@ $('giveaway-title').textContent = g.title || '';
 const sheetSub = $('giveaway-sheet-sub');
 if (sheetSub) {
 sheetSub.textContent = g.announce
-? `One player wins a copy of this book. Enter with your email and we'll announce the winner on ${g.announce}.`
-: 'One player wins a copy of this book. Enter with your email to be in the draw.';
+? `One player wins a copy. Winner announced ${g.announce}.`
+: 'One player wins a copy of this book.';
 }
 
 const coverEl = $('giveaway-cover');
