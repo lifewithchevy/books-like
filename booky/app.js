@@ -1077,9 +1077,12 @@ $('giveaway-fine').className = 'giveaway-fine';
 // card already carries it, and flips to "last day" on the final day.
 // Someone already subscribed is not promised a daily email they are
 // already getting.
+// The prize is a gift card, not a posted book, so say that here rather than
+// letting a winner find out in the email. It is also what makes "worldwide"
+// true: a gift card travels where a parcel does not.
 $('giveaway-fine').textContent = subscribed
-? 'Free, worldwide.'
-: 'Free, worldwide. Plus a daily email reminder.';
+? 'Free, worldwide. The winner gets a gift card.'
+: 'Free, worldwide. The winner gets a gift card. Plus a daily email reminder.';
 
 card.hidden = false;
 return true;
