@@ -785,9 +785,6 @@ $('share-btn').addEventListener('click', onSharePrimary);
 // Booky shares land in private messaging (319 people) and Reddit (102), with
 // Instagram at 8, Facebook 7 and X at zero.
 const shareSheet = $('share-sheet');
-// Which door the sheet was opened from. It rides along on booky_share_clicked
-// so a header share and a win-screen share are distinguishable in PostHog.
-let SHARE_SOURCE = null;
 function fillSharePreview() {
   const pre = $('share-preview');
   if (!pre) return;
@@ -2133,6 +2130,14 @@ function shareProps() {
     book_author: sharedBook?.author || null,
   };
 }
+
+// Which door the share sheet was opened from, so a header share and a win-screen
+// share are distinguishable in PostHog.
+// ⚠️ This MUST live at top level. It was declared with `let` inside bindUI() on
+// 26 Sep, which block-scoped it away from captureShare below, so every single
+// share threw "SHARE_SOURCE is not defined" before it could report. Sharing
+// still worked for the player and recorded nothing: 15 a day went to 0.
+let SHARE_SOURCE = null;
 
 function captureShare(method) {
   posthog.capture('booky_share_clicked', { ...shareProps(), method, source: SHARE_SOURCE });
