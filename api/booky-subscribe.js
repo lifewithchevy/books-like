@@ -233,6 +233,16 @@ module.exports = async (req, res) => {
     return;
   }
 
+  // ---- Email lifecycle self-test rides on this route too ----
+  // GET ?selftest=1. Walks pending -> confirm -> unsubscribe against a
+  // hardcoded test address and reports whether each step really moved the
+  // contact. Called by scripts/health-live.mjs every 3 hours. See lib/selftest.js
+  // for why this exists (a week-long silent unsubscribe outage).
+  if (req.query && req.query.selftest) {
+    await require('../lib/selftest')(req, res);
+    return;
+  }
+
   // ---- Resend click webhook rides on this route too ----
   // Same 12-function reason. POST from Resend with ?webhook=resend, checked
   // before the POST-only guard's body handling so it never hits the subscribe

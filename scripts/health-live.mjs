@@ -187,6 +187,7 @@ async function main() {
   }
 
   await triggerDailyEmail();
+  await checkEmailLifecycle();
 
 
   // Buy links on the reveal cards. This is the last click before a possible
@@ -278,6 +279,26 @@ async function triggerDailyEmail() {
     ok(`daily email sent to ${body.sent} subscriber(s)`);
   } catch (e) {
     fail(`daily email trigger failed: ${e.message}`);
+  }
+}
+
+async function checkEmailLifecycle() {
+  // ---- email lifecycle ----
+  // The game checks above are blind to confirm/unsubscribe, which is how a
+  // broken unsubscribe link survived 22-29 Sep 2026 with every check green.
+  try {
+    const sr = await fetch('https://90books.com/api/booky-subscribe?selftest=1', { cache: 'no-store' });
+    const sj = await sr.json().catch(() => null);
+    if (!sj) fail(`email self-test returned ${sr.status} with no JSON`);
+    else {
+      for (const st of sj.steps || []) {
+        if (st.ok) ok(`email ${st.step}: ${st.detail}`);
+        else fail(`email ${st.step}: ${st.detail}`);
+      }
+      if (!sj.steps || !sj.steps.length) fail('email self-test ran no steps');
+    }
+  } catch (e) {
+    fail(`email self-test crashed: ${e.message}`);
   }
 }
 
