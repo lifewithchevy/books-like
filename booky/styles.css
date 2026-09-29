@@ -1005,6 +1005,18 @@ body {
      everything else in the card. */
   text-align: left;
 }
+/* The consequence line under the signup row. Same size and colour as
+   .reminder-pitch--below so the two read as one block of fine print, with a
+   little space above so it does not crowd the pitch. Readable, not decorative:
+   it is the only place the game tells a player their streak can be lost. */
+.reminder-risk {
+  margin: 5px 0 0;
+  font-size: 12px;
+  line-height: 1.45;
+  letter-spacing: 0.3px;
+  color: var(--ink-dim);
+  text-align: left;
+}
 .reminder-row {
   display: grid;
   grid-template-columns: 1fr auto;

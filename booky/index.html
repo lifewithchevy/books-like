@@ -46,7 +46,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=91" />
+<link rel="stylesheet" href="/booky/styles.css?v=92" />
 <!-- PostHog analytics -->
 <script>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
@@ -423,6 +423,13 @@ required
      is the only line that discloses the daily email. Cloned into the Stats card
      by buildStatsReminder, so it shows in both places. -->
 <p class="reminder-pitch reminder-pitch--below">save your stats, plus a daily reminder</p>
+<!-- Added 2026-09-29 (Olga): the pitch above says what you GET, this says what
+     you lose without it. Players were signing up without understanding that the
+     streak is device-local, so a new phone quietly wiped it and there was no way
+     to tell whose streak was whose: the player record is a random id holding no
+     email and no name (see api/booky-player.js). Cloned into the Stats card by
+     buildStatsReminder along with everything else in this form. -->
+<p class="reminder-risk">Without an email, your streak lives only on your device. Switch phones or clear your browser and it's gone.</p>
 <p class="reminder-toast" id="reminder-toast" hidden></p>
 </form>
 <p id="reminder-active" class="reminder-active" hidden>📩 Daily reminders on</p>
@@ -481,7 +488,7 @@ required
 <p class="share-sheet-sub">Get a daily reminder email to play the daily word and keep your Booky streak alive.</p>
 <ul class="rules">
 <li>Sent to your inbox every evening</li>
-<li>Your streak and stats saved if you lose this device</li>
+<li>Get your streak back if you switch phones or clear your browser</li>
 </ul>
 <form id="signup-form" class="reminder-card signup-body" novalidate>
 <div class="reminder-row">

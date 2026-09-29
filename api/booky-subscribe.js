@@ -182,6 +182,10 @@ function confirmHtml(link) {
 // nothing else, so it says exactly that and nothing about a prize.
 // Uses the real logo image, like every other Booky email.
 function buildSignupReminderHtml(link) {
+  // Same shape as the play links in api/booky-send.js and the welcome mails, so
+  // this email is attributable in PostHog like every other. Its own source, so
+  // it does not get counted as daily-reminder traffic.
+  const PLAY_URL = 'https://90books.com/booky?utm_source=signup_reminder&utm_medium=email&utm_campaign=signup_reminder';
   return `<!doctype html>
 <html lang="en">
 <head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Your Booky reminder isn't on yet</title></head>
@@ -198,6 +202,7 @@ function buildSignupReminderHtml(link) {
           <p style="margin:0 0 24px;">
             <a href="${link}" style="display:inline-block;background:linear-gradient(135deg,#c8398f,#9a2670);background-color:#c8398f;color:#ffffff;text-decoration:none;font-weight:600;padding:14px 30px;border-radius:10px;font-size:15px;">Yes, remind me daily</a>
           </p>
+          <p style="margin:0 0 18px;font-size:14px;line-height:1.6;color:#4a2a4c;">Or just <a href="${PLAY_URL}" style="color:#c8398f;font-weight:600;text-decoration:none;">play today's Booky</a>.</p>
           <p style="margin:0;font-size:13px;line-height:1.6;color:#8a6a8c;">Not interested? Ignore this and you won't hear from me again.</p>
         </td></tr>
       </table>
@@ -329,7 +334,7 @@ module.exports = async (req, res) => {
         reply_to: 'booky@90books.com',
         subject: "your Booky reminder was never switched on 📚",
         tags: [{ name: 'type', value: 'signup-reminder' }],
-        text: `Your reminder isn't on yet.\n\nOne tap and you'll get a nudge each evening when the new word is up:\n${link}\n\nIt also ties your streak to your email. Without that, your stats live only on your device, and if you switch phones or clear your browser there's no way for me to tell which streak was yours.\n\nNot interested? Ignore this and you won't hear from me again.\n\nBooky by 90books`,
+        text: `Your reminder isn't on yet.\n\nOne tap and you'll get a nudge each evening when the new word is up:\n${link}\n\nIt also ties your streak to your email. Without that, your stats live only on your device, and if you switch phones or clear your browser there's no way for me to tell which streak was yours.\n\nOr just play today's Booky: https://90books.com/booky?utm_source=signup_reminder&utm_medium=email&utm_campaign=signup_reminder\n\nNot interested? Ignore this and you won't hear from me again.\n\nBooky by 90books`,
         html: buildSignupReminderHtml(link),
       }),
     });
