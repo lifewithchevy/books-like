@@ -256,18 +256,6 @@ module.exports = async (req, res) => {
     return;
   }
 
-  // ---- TEMPORARY: one-off backfill of the `status` label ----
-  // Remove after the 55 pre-existing contacts are labelled. Cosmetic only: it
-  // writes the `status` property and nothing else.
-  if (req.body && req.body.backfill === true) {
-    const ok = await require('../lib/contact-status').setStatus(
-      String(req.body.email || '').trim().toLowerCase(),
-      String(req.body.status || '')
-    );
-    res.status(ok ? 200 : 400).json({ ok });
-    return;
-  }
-
   // ---- Last-day reminder for giveaway entrants who never confirmed ----
   // Resends the entrant's own signed confirm link with "last day" copy. Writes
   // nothing. Only fires for a contact that already carries this giveaway's tag
@@ -461,6 +449,14 @@ module.exports = async (req, res) => {
           res.status(500).json({ error: 'entry-not-recorded' });
           return;
         }
+      }
+
+      // Dashboard label, in its own request so it can never fail a signup.
+      // `pending` is the honest word for "signed up, never clicked"; without it
+      // the Audience table calls those readers Unsubscribed and it is
+      // impossible to tell them from a real opt-out. See lib/contact-status.js.
+      if (r.ok || r.status === 422) {
+        await require('../lib/contact-status').setStatus(cleanEmail, pending ? 'pending' : 'confirmed');
       }
 
       if (r.ok || r.status === 422) {
