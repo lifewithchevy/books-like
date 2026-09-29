@@ -258,10 +258,11 @@ module.exports = async (req, res) => {
     const tag = typeof b.giveawayTag === 'string' ? b.giveawayTag.slice(0, 60) : '';
     const KEY = process.env.RESEND_API_KEY, AUD = process.env.RESEND_AUDIENCE_ID;
     if (!em || !tag || !KEY || !AUD) { res.status(400).json({ error: 'bad-request' }); return; }
-    if (await enforce(req, res, { name: `giveaway-reminder:${em}`, limit: 1, windowSeconds: 86400 })) return;
+    if (await enforce(req, res, { name: `giveaway-remind:${em}`, limit: 1, windowSeconds: 86400 })) return;
     const cr = await fetch(`https://api.resend.com/audiences/${AUD}/contacts/${encodeURIComponent(em)}`,
       { headers: { Authorization: `Bearer ${KEY}` } });
-    const c = cr.ok ? ((await cr.json())?.data || {}) : null;
+    const cj = cr.ok ? await cr.json() : null;
+    const c = cj ? (cj.data && cj.data.email ? cj.data : cj) : null;
     if (!c || c.unsubscribed !== true || c.last_name !== tag) { res.status(200).json({ sent: false, reason: 'not-pending-entrant' }); return; }
     const { confirmUrl } = require('../lib/confirm');
     const link = confirmUrl(em, tag);
