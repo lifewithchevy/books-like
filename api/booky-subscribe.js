@@ -176,6 +176,38 @@ function confirmHtml(link) {
 </html>`;
 }
 
+// The nudge for someone who signed up for the daily reminder, never tapped
+// confirm, and has been sitting in limbo ever since. Deliberately NOT the
+// giveaway version: these readers asked for a daily book puzzle reminder and
+// nothing else, so it says exactly that and nothing about a prize.
+// Uses the real logo image, like every other Booky email.
+function buildSignupReminderHtml(link) {
+  return `<!doctype html>
+<html lang="en">
+<head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Your Booky reminder isn't on yet</title></head>
+<body style="margin:0;padding:0;background:#fff8fb;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,Inter,sans-serif;color:#2a0a26;">
+  <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fff8fb;padding:40px 16px;">
+    <tr><td align="center" style="text-align:center;">
+      <table role="presentation" width="100%" align="center" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;margin-left:auto;margin-right:auto;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
+        <tr><td>
+          <img src="https://90books.com/logo/booky-email.png" width="104" height="40" alt="Booky" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;">
+          <p style="margin:0 0 20px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;text-align:center;">One more tap</p>
+          <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#2a0a26;">Your reminder isn't on yet</p>
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#4a2a4c;">You asked for the daily Booky reminder a little while back, but the confirmation never got tapped, so it never switched on.</p>
+          <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#4a2a4c;">One tap and you'll get a nudge each evening when the new book word is up. That's all it is.</p>
+          <p style="margin:0 0 24px;">
+            <a href="${link}" style="display:inline-block;background:linear-gradient(135deg,#c8398f,#9a2670);background-color:#c8398f;color:#ffffff;text-decoration:none;font-weight:600;padding:14px 30px;border-radius:10px;font-size:15px;">Yes, remind me daily</a>
+          </p>
+          <p style="margin:0;font-size:13px;line-height:1.6;color:#8a6a8c;">Not interested any more? Ignore this and you won't hear from me again. This is the last one.</p>
+        </td></tr>
+      </table>
+      <p style="margin:20px 0 0;font-size:12px;color:#a587a9;">Booky by 90books</p>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
 async function fetchStoredStats(apiKey, audienceId, email) {
   const attempts = [
     ['audience', `https://api.resend.com/audiences/${audienceId}/contacts/${encodeURIComponent(email)}`],
@@ -263,6 +295,46 @@ module.exports = async (req, res) => {
 
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+
+  // ---- Reminder for a plain signup that never confirmed ----
+  // Same idea as the giveaway reminder below, different audience and different
+  // copy. Guards, all of which must hold:
+  //   * the contact exists and is still pending (`unsubscribed === true`)
+  //   * it carries NO giveaway tag, so a giveaway entrant can never be caught
+  //     by this branch and emailed twice on the same day
+  //   * one send per address per day, enforced by the rate limiter
+  // Writes nothing. Resends the reader's own signed confirm link.
+  if (req.body && req.body.signupReminder === true) {
+    const em = String(req.body.email || '').trim().toLowerCase();
+    const KEY = process.env.RESEND_API_KEY, AUD = process.env.RESEND_AUDIENCE_ID;
+    if (!em || !KEY || !AUD) { res.status(400).json({ error: 'bad-request' }); return; }
+    if (await enforce(req, res, { name: `signup-remind:${em}`, limit: 1, windowSeconds: 86400 })) return;
+    const cr = await fetch(`https://api.resend.com/audiences/${AUD}/contacts/${encodeURIComponent(em)}`,
+      { headers: { Authorization: `Bearer ${KEY}` } });
+    const cj = cr.ok ? await cr.json() : null;
+    const c = cj ? (cj.data && cj.data.email ? cj.data : cj) : null;
+    if (!c) { res.status(200).json({ sent: false, reason: 'no-contact' }); return; }
+    if (c.unsubscribed !== true) { res.status(200).json({ sent: false, reason: 'not-pending' }); return; }
+    if (c.last_name) { res.status(200).json({ sent: false, reason: 'giveaway-entrant' }); return; }
+    const { confirmUrl } = require('../lib/confirm');
+    const link = confirmUrl(em);
+    const sr = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Booky <booky@90books.com>',
+        to: em,
+        reply_to: 'booky@90books.com',
+        subject: "your Booky reminder was never switched on 📚",
+        tags: [{ name: 'type', value: 'signup-reminder' }],
+        text: `Your reminder isn't on yet.\n\nYou asked for the daily Booky reminder a little while back, but the confirmation never got tapped, so it never switched on.\n\nOne tap and you'll get a nudge each evening when the new book word is up:\n${link}\n\nNot interested any more? Ignore this and you won't hear from me again. This is the last one.\n\nBooky by 90books`,
+        html: buildSignupReminderHtml(link),
+      }),
+    });
+    const st = sr.ok ? await sr.json() : { error: await sr.text() };
+    res.status(sr.ok ? 200 : 502).json({ sent: sr.ok, ...st });
     return;
   }
 
