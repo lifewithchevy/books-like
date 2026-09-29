@@ -33,7 +33,7 @@ function buildGiveawayWelcomeHtml({ title, announce, playUrl, cover, unsubUrl })
       <table role="presentation" width="100%" align="center" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;margin-left:auto;margin-right:auto;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
         <tr><td>
           <img src="https://90books.com/logo/booky-email.png" width="104" height="40" alt="Booky" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;">
-          <p style="margin:0 0 24px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;">You're entered</p>
+          <p style="margin:0 0 24px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;">Romantasy word game</p>
           <p style="margin:0 0 16px;font-size:18px;line-height:1.5;color:#2a0a26;font-weight:600;">You're entered. &#127873;</p>
 
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fdf6e9;border:1px solid #e8d4a8;border-radius:10px;margin:0 0 18px;text-align:left;">
@@ -89,7 +89,7 @@ function buildGiveawayConfirmHtml({ title, announce, cover, link, lastDay }) {
       <table role="presentation" width="100%" align="center" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;margin-left:auto;margin-right:auto;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
         <tr><td>
           <img src="https://90books.com/logo/booky-email.png" width="104" height="40" alt="Booky" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;">
-          <p style="margin:0 0 20px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;text-align:center;">${lastDay ? 'Last day to enter' : 'One more tap'}</p>
+          <p style="margin:0 0 20px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;text-align:center;">Romantasy word game</p>
           <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#2a0a26;">${lastDay ? 'Today is your last chance to confirm' : 'Confirm your entry'}</p>
 
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fdf6e9;border:1px solid #e8d4a8;border-radius:10px;margin:0 0 18px;text-align:left;">
@@ -160,7 +160,10 @@ function confirmHtml(link) {
     <tr><td align="center" style="text-align:center;">
       <table role="presentation" width="100%" align="center" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;margin-left:auto;margin-right:auto;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
         <tr><td>
-          <p style="font-family:'Cormorant Garamond',Georgia,serif;font-size:28px;font-weight:600;color:#c8398f;margin:0 0 24px;letter-spacing:0.5px;">Booky</p>
+          <!-- Was a pink text wordmark, the only email not using the real logo.
+               Fixed 2026-09-29 so every Booky email looks like the same sender. -->
+          <img src="https://90books.com/logo/booky-email.png" width="104" height="40" alt="Booky" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;">
+          <p style="margin:0 0 20px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;">Romantasy word game</p>
           <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#2a0a26;">Almost there</p>
           <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#4a2a4c;">Tap the button and your daily Booky reminder is on. That's the whole thing.</p>
           <p style="margin:0 0 24px;">
@@ -195,7 +198,7 @@ function buildSignupReminderHtml(link) {
       <table role="presentation" width="100%" align="center" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;margin-left:auto;margin-right:auto;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
         <tr><td>
           <img src="https://90books.com/logo/booky-email.png" width="104" height="40" alt="Booky" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;">
-          <p style="margin:0 0 20px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;text-align:center;">One more tap</p>
+          <p style="margin:0 0 20px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;text-align:center;">Romantasy word game</p>
           <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#2a0a26;">Your reminder isn't on yet</p>
           <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#4a2a4c;">One tap and you'll get a nudge each evening when the new word is up.</p>
           <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#4a2a4c;">It also ties your streak to your email. Without that, your stats live only on your device, and if you switch phones or clear your browser there's no way for me to tell which streak was yours.</p>

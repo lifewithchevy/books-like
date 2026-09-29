@@ -342,7 +342,11 @@ function buildHtml({ subject, headline, subline, today, playUrl, updateNote, uns
       <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
         <tr><td align="center">
           <img src="https://90books.com/logo/booky-email.png" width="104" height="40" alt="Booky" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;">
-          <p style="margin:0 0 24px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;">${today}</p>
+          <!-- The slot under the logo says what Booky IS, on every template we send.
+               Inboxes are crowded and the wordmark alone does not tell anyone what
+               this email is for. The date keeps its own line underneath. -->
+          <p style="margin:0 0 6px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;">Romantasy word game</p>
+          <p style="margin:0 0 20px;color:#a587a9;font-size:12px;">${today}</p>
           <p style="margin:0 0 12px;font-size:18px;line-height:1.5;color:#2a0a26;font-weight:600;">${headline}</p>
           <p style="margin:0 0 24px;font-size:14px;line-height:1.5;color:#6a4a6c;">${subline}</p>
           <a href="${playUrl}" style="display:inline-block;background:linear-gradient(135deg,#c8398f,#9a2670);color:#ffffff;text-decoration:none;font-weight:600;padding:13px 28px;border-radius:10px;font-size:15px;">Play today's Booky →</a>
