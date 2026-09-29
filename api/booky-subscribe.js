@@ -233,6 +233,15 @@ module.exports = async (req, res) => {
     return;
   }
 
+  // ---- Resend click webhook rides on this route too ----
+  // Same 12-function reason. POST from Resend with ?webhook=resend, checked
+  // before the POST-only guard's body handling so it never hits the subscribe
+  // path. See lib/resend-webhook.js.
+  if (req.query && req.query.webhook === 'resend') {
+    await require('../lib/resend-webhook')(req, res);
+    return;
+  }
+
   // ---- Double opt-in confirmation rides on this route too ----
   // Same reason as unsubscribe above: api/ is at the 12-function cap. The link
   // in the confirmation email points here with `?confirm=1`. Also before the
