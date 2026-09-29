@@ -72,7 +72,7 @@ function buildGiveawayWelcomeHtml({ title, announce, playUrl, cover, unsubUrl })
 // unclicked, and an unclicked confirmation is a lost entrant, so the entry is
 // what this email leads with. Same one-button shape as confirmHtml, same card
 // as buildGiveawayWelcomeHtml, so it still looks like Booky mail.
-function buildGiveawayConfirmHtml({ title, announce, cover, link }) {
+function buildGiveawayConfirmHtml({ title, announce, cover, link, lastDay }) {
   const esc = (s) => String(s || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;');
   const safeTitle = esc(title);
   const coverCell = cover && /^https:\/\//.test(cover)
@@ -89,8 +89,8 @@ function buildGiveawayConfirmHtml({ title, announce, cover, link }) {
       <table role="presentation" width="100%" align="center" cellpadding="0" cellspacing="0" border="0" style="max-width:480px;margin-left:auto;margin-right:auto;background:#ffffff;border:1px solid #ead4e2;border-radius:14px;padding:32px 28px;">
         <tr><td>
           <img src="https://90books.com/logo/booky-email.png" width="104" height="40" alt="Booky" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;">
-          <p style="margin:0 0 20px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;text-align:center;">One more tap</p>
-          <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#2a0a26;">Confirm your entry</p>
+          <p style="margin:0 0 20px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;text-align:center;">${lastDay ? 'Last day to enter' : 'One more tap'}</p>
+          <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#2a0a26;">${lastDay ? 'Today is your last chance to confirm' : 'Confirm your entry'}</p>
 
           <table role="presentation" width="100%" cellpadding="0" cellspacing="0" border="0" style="background:#fdf6e9;border:1px solid #e8d4a8;border-radius:10px;margin:0 0 18px;text-align:left;">
             <tr>
@@ -102,7 +102,7 @@ function buildGiveawayConfirmHtml({ title, announce, cover, link }) {
             </tr>
           </table>
 
-          <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#4a2a4c;">Your entry isn't in yet. Tap below and you're counted, and I'll also send you the daily reminder each evening.</p>
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#4a2a4c;">${lastDay ? "The giveaway closes tonight and your entry isn't in yet." : "Your entry isn't in yet."} Tap below and you're counted, and I'll also send you the daily reminder each evening.</p>
           <!-- What the prize actually is, at full body size and ABOVE the button,
                not shrunk into the footer. Someone deciding whether to enter should
                read it at the same weight as everything else, before they tap. -->
@@ -244,6 +244,44 @@ module.exports = async (req, res) => {
 
   if (req.method !== 'POST') {
     res.status(405).json({ error: 'Method not allowed' });
+    return;
+  }
+
+  // ---- Last-day reminder for giveaway entrants who never confirmed ----
+  // Resends the entrant's own signed confirm link with "last day" copy. Writes
+  // nothing. Only fires for a contact that already carries this giveaway's tag
+  // AND is still pending, so it cannot mail an address that never entered, and
+  // cannot touch a confirmed subscriber. Once per address per IP per day.
+  if (req.body && req.body.reminder === true) {
+    const b = req.body;
+    const em = String(b.email || '').trim().toLowerCase();
+    const tag = typeof b.giveawayTag === 'string' ? b.giveawayTag.slice(0, 60) : '';
+    const KEY = process.env.RESEND_API_KEY, AUD = process.env.RESEND_AUDIENCE_ID;
+    if (!em || !tag || !KEY || !AUD) { res.status(400).json({ error: 'bad-request' }); return; }
+    if (await enforce(req, res, { name: `giveaway-reminder:${em}`, limit: 1, windowSeconds: 86400 })) return;
+    const cr = await fetch(`https://api.resend.com/audiences/${AUD}/contacts/${encodeURIComponent(em)}`,
+      { headers: { Authorization: `Bearer ${KEY}` } });
+    const c = cr.ok ? ((await cr.json())?.data || {}) : null;
+    if (!c || c.unsubscribed !== true || c.last_name !== tag) { res.status(200).json({ sent: false, reason: 'not-pending-entrant' }); return; }
+    const { confirmUrl } = require('../lib/confirm');
+    const link = confirmUrl(em, tag);
+    const gTitle = String(b.giveawayTitle || 'the book').slice(0, 120);
+    const gAnnounce = String(b.giveawayAnnounce || 'soon').slice(0, 40);
+    const sr = await fetch('https://api.resend.com/emails', {
+      method: 'POST',
+      headers: { Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        from: 'Booky <booky@90books.com>',
+        to: em,
+        reply_to: 'booky@90books.com',
+        subject: 'Last day: one tap to lock in your giveaway entry 🎁',
+        tags: [{ name: 'type', value: 'giveaway-reminder' }],
+        text: `Last day to enter.\n\nThe giveaway closes tonight and your entry isn't in yet.\n\nTap this to confirm your entry for ${gTitle}:\n${link}\n\nI'll pick the winner on ${gAnnounce}. Confirming also turns on the daily reminder.\n\nFree to enter, no purchase necessary.\n\nIf you didn't enter, ignore this and nothing happens.\n\nBooky by 90books`,
+        html: buildGiveawayConfirmHtml({ title: gTitle, announce: gAnnounce, cover: b.giveawayCover, link, lastDay: true }),
+      }),
+    });
+    const st = sr.ok ? await sr.json() : { error: await sr.text() };
+    res.status(sr.ok ? 200 : 502).json({ sent: sr.ok, ...st });
     return;
   }
 
