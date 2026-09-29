@@ -256,29 +256,15 @@ module.exports = async (req, res) => {
     return;
   }
 
-  // ---- TEMPORARY: prove which `properties` shape Resend accepts ----
-  // Remove once the answer is recorded. Writes only the cosmetic `status`
-  // property on an existing contact; touches nothing that affects sending.
-  if (req.body && req.body.shapetest === true) {
-    const KEY = process.env.RESEND_API_KEY, AUD = process.env.RESEND_AUDIENCE_ID;
-    const em = String(req.body.email || '').trim().toLowerCase();
-    if (!em || !KEY || !AUD) { res.status(400).json({ error: 'bad-request' }); return; }
-    const url = `https://api.resend.com/audiences/${AUD}/contacts/${encodeURIComponent(em)}`;
-    const out = {};
-    for (const [label, body] of [
-      ['array', { properties: [{ key: 'status', value: 'pending' }] }],
-      ['object', { properties: { status: 'pending' } }],
-    ]) {
-      try {
-        const r = await fetch(url, {
-          method: 'PATCH',
-          headers: { Authorization: `Bearer ${KEY}`, 'Content-Type': 'application/json' },
-          body: JSON.stringify(body),
-        });
-        out[label] = { status: r.status, body: (await r.text()).slice(0, 300) };
-      } catch (err) { out[label] = { error: String(err) }; }
-    }
-    res.status(200).json(out);
+  // ---- TEMPORARY: one-off backfill of the `status` label ----
+  // Remove after the 55 pre-existing contacts are labelled. Cosmetic only: it
+  // writes the `status` property and nothing else.
+  if (req.body && req.body.backfill === true) {
+    const ok = await require('../lib/contact-status').setStatus(
+      String(req.body.email || '').trim().toLowerCase(),
+      String(req.body.status || '')
+    );
+    res.status(ok ? 200 : 400).json({ ok });
     return;
   }
 
