@@ -193,12 +193,12 @@ function buildSignupReminderHtml(link) {
           <img src="https://90books.com/logo/booky-email.png" width="104" height="40" alt="Booky" style="display:block;margin:0 auto 4px;border:0;outline:none;text-decoration:none;">
           <p style="margin:0 0 20px;color:#a587a9;font-size:11px;letter-spacing:2.5px;text-transform:uppercase;text-align:center;">One more tap</p>
           <p style="margin:0 0 16px;font-size:18px;font-weight:600;color:#2a0a26;">Your reminder isn't on yet</p>
-          <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#4a2a4c;">You asked for the daily Booky reminder a little while back, but the confirmation never got tapped, so it never switched on.</p>
-          <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#4a2a4c;">One tap and you'll get a nudge each evening when the new book word is up. That's all it is.</p>
+          <p style="margin:0 0 16px;font-size:15px;line-height:1.6;color:#4a2a4c;">One tap and you'll get a nudge each evening when the new book word is up.</p>
+          <p style="margin:0 0 24px;font-size:15px;line-height:1.6;color:#4a2a4c;">It also ties your streak to your email. Without that, your stats live only on this device, and if you switch phones or clear your browser there's no way for me to tell which streak was yours.</p>
           <p style="margin:0 0 24px;">
             <a href="${link}" style="display:inline-block;background:linear-gradient(135deg,#c8398f,#9a2670);background-color:#c8398f;color:#ffffff;text-decoration:none;font-weight:600;padding:14px 30px;border-radius:10px;font-size:15px;">Yes, remind me daily</a>
           </p>
-          <p style="margin:0;font-size:13px;line-height:1.6;color:#8a6a8c;">Not interested any more? Ignore this and you won't hear from me again. This is the last one.</p>
+          <p style="margin:0;font-size:13px;line-height:1.6;color:#8a6a8c;">Not interested? Ignore this and you won't hear from me again.</p>
         </td></tr>
       </table>
       <p style="margin:20px 0 0;font-size:12px;color:#a587a9;">Booky by 90books</p>
@@ -329,7 +329,7 @@ module.exports = async (req, res) => {
         reply_to: 'booky@90books.com',
         subject: "your Booky reminder was never switched on 📚",
         tags: [{ name: 'type', value: 'signup-reminder' }],
-        text: `Your reminder isn't on yet.\n\nYou asked for the daily Booky reminder a little while back, but the confirmation never got tapped, so it never switched on.\n\nOne tap and you'll get a nudge each evening when the new book word is up:\n${link}\n\nNot interested any more? Ignore this and you won't hear from me again. This is the last one.\n\nBooky by 90books`,
+        text: `Your reminder isn't on yet.\n\nOne tap and you'll get a nudge each evening when the new book word is up:\n${link}\n\nIt also ties your streak to your email. Without that, your stats live only on this device, and if you switch phones or clear your browser there's no way for me to tell which streak was yours.\n\nNot interested? Ignore this and you won't hear from me again.\n\nBooky by 90books`,
         html: buildSignupReminderHtml(link),
       }),
     });
