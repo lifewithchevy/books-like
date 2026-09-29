@@ -282,8 +282,24 @@ async function triggerDailyEmail() {
   }
 }
 
+// ONCE A DAY, not every run. This workflow fires every 3 hours, which is more
+// often than the thing it is watching can plausibly break, and each run writes
+// to Resend. Cadence picked from the actual record rather than taste: across
+// May-Sep 2026 this repo averaged ~12 regression fixes a month, about one every
+// 2.5 days, so a daily check keeps a regression live for ~12 hours at worst.
+// Gated on the clock rather than stored state because the script is stateless
+// and a duplicate run is harmless anyway (test contact only, sends no mail).
+// The window deliberately avoids the 21:00-04:00 UTC daily-email window.
+function lifecycleDueNow() {
+  const h = new Date().getUTCHours();
+  return h >= 12 && h < 16;
+}
+
 async function checkEmailLifecycle() {
-  // ---- email lifecycle ----
+  if (!lifecycleDueNow()) {
+    notes.push('email lifecycle check runs once a day (12:00-16:00 UTC), skipped');
+    return;
+  }
   // The game checks above are blind to confirm/unsubscribe, which is how a
   // broken unsubscribe link survived 22-29 Sep 2026 with every check green.
   try {
