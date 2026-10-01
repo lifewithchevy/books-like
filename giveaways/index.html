@@ -469,6 +469,12 @@
     opt_out_capturing_by_default: _bkOptOut,
   });
   try { if (_bkOptOut) posthog.opt_out_capturing(); else if (_bkParams && _bkParams.get('notrack') === '0') posthog.opt_in_capturing(); } catch (e) {}
+
+  // Restored 1 Oct 2026: removing the dead open-days script took this with it,
+  // so every "Book a giveaway" click threw and tracked nothing for a few hours.
+  function trackAuthorsCta(channel) {
+    try { window.posthog && posthog.capture && posthog.capture('authors_cta_clicked', { channel: channel, page: '/giveaways' }); } catch (e) {}
+  }
 </script>
 </head>
 <body>
