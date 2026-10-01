@@ -239,6 +239,11 @@
   ],
   "redirects": [
     {
+      "source": "/authors",
+      "destination": "/giveaways",
+      "permanent": true
+    },
+    {
       "source": "/play",
       "has": [
         {
