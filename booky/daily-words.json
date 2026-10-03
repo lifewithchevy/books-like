@@ -166,8 +166,8 @@
     "TOUCH",
     "HARPY",
     "TOWER",
-    "FAIRY",
-    "PRISM",
+    "LIGHT",
+    "ROARS",
     "NIGHT",
     "MOTHS",
     "CHAOS",
@@ -183,7 +183,7 @@
     "COINS",
     "MOATS",
     "DEALS",
-    "ROARS",
+    "PRISM",
     "GRAVE",
     "THIEF",
     "GLADE",
@@ -335,7 +335,8 @@
     "CORAL",
     "HEXED",
     "SIGNS",
-    "KAINE"
+    "KAINE",
+    "FAIRY"
   ],
   "wordBooks": {
     "COURT": {
@@ -2866,6 +2867,13 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/tower-of-dawn.jpg",
       "buyUrl": "https://www.amazon.com/dp/B01M8NHXGH?tag=90books-20"
+    },
+    "LIGHT": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/house-of-earth-and-blood.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B07QBC8QTP?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
