@@ -174,7 +174,7 @@
     "CALEB",
     "BRASS",
     "GREED",
-    "YRENE",
+    "SLAVE",
     "XADEN",
     "GLYPH",
     "NOBLE",
@@ -339,7 +339,8 @@
     "FAIRY",
     "NIGHT",
     "ROARS",
-    "MOATS"
+    "MOATS",
+    "YRENE"
   ],
   "wordBooks": {
     "COURT": {
@@ -2778,7 +2779,7 @@
       "title": "Daughter of No Worlds",
       "author": "Carissa Broadbent",
       "cover": "/booky/covers/daughter-of-no-worlds.jpg",
-      "buyUrl": "https://www.amazon.com/dp/125040536X?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B082FRD429?tag=90books-20"
     },
     "ROADS": {
       "slug": "the-road-of-bones",
