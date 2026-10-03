@@ -172,7 +172,7 @@
     "STAIR",
     "MOTHS",
     "CALEB",
-    "ALDER",
+    "RAVYN",
     "GREED",
     "SLAVE",
     "GLYPH",
@@ -2904,6 +2904,13 @@
       "hook": "The price to enter… is your darkest secret.",
       "buyUrl": "https://www.amazon.com/dp/B0F9V6GXHP?tag=90books-20",
       "cover": "/booky/covers/weavingshaw.jpg"
+    },
+    "RAVYN": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "/booky/covers/one-dark-window.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
