@@ -388,6 +388,16 @@
       "permanent": false
     },
     {
+      "source": "/r/crescentcity",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=crescentcity",
+      "permanent": false
+    },
+    {
+      "source": "/crescentcity",
+      "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=crescentcity",
+      "permanent": false
+    },
+    {
       "source": "/r/maasverse",
       "destination": "/booky?utm_source=reddit&utm_medium=social&utm_campaign=maasverse",
       "permanent": false
