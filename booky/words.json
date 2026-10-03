@@ -168,7 +168,7 @@
     "TOWER",
     "LIGHT",
     "ROARS",
-    "NIGHT",
+    "STAIR",
     "MOTHS",
     "CHAOS",
     "CALEB",
@@ -336,7 +336,8 @@
     "HEXED",
     "SIGNS",
     "KAINE",
-    "FAIRY"
+    "FAIRY",
+    "NIGHT"
   ],
   "wordBooks": {
     "COURT": {
@@ -407,7 +408,7 @@
       "title": "A Court of Silver Flames",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-silver-flames.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635577993?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20"
     },
     "ROSES": {
       "slug": "a-court-of-thorns-and-roses",
@@ -1024,7 +1025,7 @@
       "title": "A Court of Silver Flames",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-silver-flames.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635577993?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20"
     },
     "PETAL": {
       "slug": "a-court-of-thorns-and-roses",
@@ -2874,6 +2875,13 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/house-of-earth-and-blood.jpg",
       "buyUrl": "https://www.amazon.com/dp/B07QBC8QTP?tag=90books-20"
+    },
+    "STAIR": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-silver-flames.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
