@@ -175,7 +175,7 @@
     "BRASS",
     "GREED",
     "SLAVE",
-    "XADEN",
+    "LORDS",
     "GLYPH",
     "NOBLE",
     "RIGEL",
@@ -340,7 +340,8 @@
     "NIGHT",
     "ROARS",
     "MOATS",
-    "YRENE"
+    "YRENE",
+    "XADEN"
   ],
   "wordBooks": {
     "COURT": {
@@ -2885,6 +2886,13 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-silver-flames.jpg",
       "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20"
+    },
+    "LORDS": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B00OZP5VRS?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
