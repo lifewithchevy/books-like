@@ -177,7 +177,7 @@
     "SLAVE",
     "GLYPH",
     "LORDS",
-    "NOBLE",
+    "MOORS",
     "RIGEL",
     "SHEEN",
     "COINS",
@@ -341,7 +341,8 @@
     "ROARS",
     "MOATS",
     "YRENE",
-    "XADEN"
+    "XADEN",
+    "NOBLE"
   ],
   "wordBooks": {
     "COURT": {
@@ -2894,6 +2895,14 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
       "buyUrl": "https://www.amazon.com/dp/B00OZP5VRS?tag=90books-20"
+    },
+    "MOORS": {
+      "slug": "weavingshaw",
+      "title": "Weavingshaw",
+      "author": "Heba Al-Wasity",
+      "hook": "The price to enter… is your darkest secret.",
+      "buyUrl": "https://www.amazon.com/dp/B0F9V6GXHP?tag=90books-20",
+      "cover": "/booky/covers/weavingshaw.jpg"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
