@@ -172,7 +172,7 @@
     "STAIR",
     "MOTHS",
     "CALEB",
-    "BRASS",
+    "ALDER",
     "GREED",
     "SLAVE",
     "GLYPH",
@@ -342,7 +342,8 @@
     "MOATS",
     "YRENE",
     "XADEN",
-    "NOBLE"
+    "NOBLE",
+    "BRASS"
   ],
   "wordBooks": {
     "COURT": {
@@ -525,7 +526,7 @@
       "title": "One Dark Window",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "VENOM": {
       "slug": "the-poison-daughter",
@@ -1002,7 +1003,7 @@
       "title": "One Dark Window",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "FLARE": {
       "slug": "iron-flame",
@@ -1114,7 +1115,7 @@
       "title": "One Dark Window",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "COALS": {
       "slug": "iron-flame",
@@ -1212,7 +1213,7 @@
       "title": "One Dark Window",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "SINGE": {
       "slug": "iron-flame",
@@ -1310,7 +1311,7 @@
       "title": "One Dark Window",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "ROARS": {
       "slug": "iron-flame",
@@ -1415,7 +1416,7 @@
       "title": "One Dark Window",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "CHARS": {
       "slug": "iron-flame",
@@ -1520,7 +1521,7 @@
       "title": "One Dark Window",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "SMOKY": {
       "slug": "iron-flame",
@@ -1626,7 +1627,7 @@
       "title": "One Dark Window",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "SCALD": {
       "slug": "iron-flame",
@@ -1717,7 +1718,7 @@
       "title": "One Dark Window",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "SEARS": {
       "slug": "iron-flame",
@@ -1815,7 +1816,7 @@
       "title": "One Dark Window",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "GLARE": {
       "slug": "iron-flame",
@@ -2649,7 +2650,7 @@
       "title": "One Dark Window",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "HADES": {
       "slug": "a-touch-of-darkness",
@@ -2663,7 +2664,7 @@
       "title": "One Dark Window",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "WARDS": {
       "slug": "iron-flame",
@@ -2677,7 +2678,7 @@
       "title": "One Dark Window",
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
-      "buyUrl": "https://amzn.to/4ox0w8K"
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "ISLES": {
       "slug": "onyx-storm",
