@@ -167,7 +167,7 @@
     "HARPY",
     "TOWER",
     "LIGHT",
-    "ROARS",
+    "SCENT",
     "STAIR",
     "MOTHS",
     "CHAOS",
@@ -181,7 +181,7 @@
     "RIGEL",
     "SHEEN",
     "COINS",
-    "MOATS",
+    "SMELL",
     "DEALS",
     "PRISM",
     "GRAVE",
@@ -337,7 +337,9 @@
     "SIGNS",
     "KAINE",
     "FAIRY",
-    "NIGHT"
+    "NIGHT",
+    "ROARS",
+    "MOATS"
   ],
   "wordBooks": {
     "COURT": {
@@ -898,7 +900,7 @@
       "title": "Bride",
       "author": "Ali Hazelwood",
       "cover": "/booky/covers/bride.jpg",
-      "buyUrl": "https://www.amazon.com/dp/0593550404?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B0C9GQV1TT?tag=90books-20"
     },
     "FIERY": {
       "slug": "iron-flame",
@@ -1735,11 +1737,11 @@
       "buyUrl": "https://www.amazon.com/dp/B00UG9LC4I?tag=90books-20"
     },
     "SCENT": {
-      "slug": "a-court-of-thorns-and-roses",
-      "title": "A Court of Thorns and Roses",
-      "author": "Sarah J. Maas",
-      "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
-      "buyUrl": "https://amzn.to/3PKcUoT"
+      "slug": "bride",
+      "title": "Bride",
+      "author": "Ali Hazelwood",
+      "cover": "/booky/covers/bride.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B0C9GQV1TT?tag=90books-20"
     },
     "GLOWS": {
       "slug": "a-court-of-mist-and-fury",
@@ -2737,11 +2739,11 @@
       "buyUrl": "https://www.amazon.com/dp/059350013X?tag=90books-20"
     },
     "SMELL": {
-      "slug": "paladins-grace",
-      "title": "Paladin's Grace",
-      "author": "T. Kingfisher",
-      "cover": "/booky/covers/paladins-grace.jpg",
-      "buyUrl": "https://www.amazon.com/dp/B0848Q8JVW?tag=90books-20"
+      "slug": "bride",
+      "title": "Bride",
+      "author": "Ali Hazelwood",
+      "cover": "/booky/covers/bride.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B0C9GQV1TT?tag=90books-20"
     },
     "TUSKS": {
       "slug": "tusk-love",
