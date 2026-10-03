@@ -190,7 +190,7 @@
     "SLOTH",
     "CREST",
     "ARRAY",
-    "REBEL",
+    "ELAIN",
     "SMOKE",
     "MASKS",
     "SPELL",
@@ -316,7 +316,7 @@
     "TAIRN",
     "BRIAR",
     "COBRA",
-    "ELAIN",
+    "REBEL",
     "KINGS",
     "HALOS",
     "DRAWS",
@@ -1952,11 +1952,11 @@
       "buyUrl": "https://www.amazon.com/dp/B07QBC8QTP?tag=90books-20"
     },
     "ELAIN": {
-      "slug": "a-court-of-thorns-and-roses",
-      "title": "A Court of Thorns and Roses",
+      "slug": "a-court-of-splintered-harmony",
+      "title": "A Court of Splintered Harmony",
       "author": "Sarah J. Maas",
-      "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
-      "buyUrl": "https://amzn.to/3PKcUoT"
+      "cover": "/booky/covers/a-court-of-splintered-harmony.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B0GR711WBV?tag=90books-20"
     },
     "PAINT": {
       "slug": "a-court-of-thorns-and-roses",
@@ -2911,6 +2911,13 @@
       "author": "Rachel Gillig",
       "cover": "/booky/covers/one-dark-window.jpg",
       "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
+    },
+    "INNER": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B00OZP5VRS?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
