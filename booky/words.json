@@ -170,7 +170,7 @@
     "SCENT",
     "MOTHS",
     "STAIR",
-    "CHAOS",
+    "SAINT",
     "CALEB",
     "BRASS",
     "GREED",
@@ -256,7 +256,7 @@
     "FAITH",
     "HAWKE",
     "HONEY",
-    "SAINT",
+    "CHAOS",
     "RIDOC",
     "FLESH",
     "DEITY",
@@ -972,7 +972,7 @@
       "title": "Weavingshaw",
       "author": "Heba Al-Wasity",
       "hook": "The price to enter… is your darkest secret.",
-      "buyUrl": "https://www.amazon.com/dp/0593982576?tag=90books-20",
+      "buyUrl": "https://www.amazon.com/dp/B0F9V6GXHP?tag=90books-20",
       "cover": "/booky/covers/weavingshaw.jpg"
     },
     "TOPAZ": {
@@ -1564,11 +1564,12 @@
       "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
     },
     "SAINT": {
-      "slug": "from-blood-and-ash",
-      "title": "From Blood and Ash",
-      "author": "Jennifer L. Armentrout",
-      "cover": "/booky/covers/from-blood-and-ash.jpg",
-      "buyUrl": "https://amzn.to/49prybO"
+      "slug": "weavingshaw",
+      "title": "Weavingshaw",
+      "author": "Heba Al-Wasity",
+      "hook": "The price to enter… is your darkest secret.",
+      "buyUrl": "https://www.amazon.com/dp/B0F9V6GXHP?tag=90books-20",
+      "cover": "/booky/covers/weavingshaw.jpg"
     },
     "TALON": {
       "slug": "fourth-wing",
