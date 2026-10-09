@@ -2294,7 +2294,7 @@
       "title": "House of Sky and Breath",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/house-of-sky-and-breath.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635574072?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B093WB84G1?tag=90books-20"
     },
     "LIDIA": {
       "slug": "house-of-flame-and-shadow",
@@ -2921,11 +2921,11 @@
       "buyUrl": "https://www.amazon.com/dp/B00OZP5VRS?tag=90books-20"
     },
     "THREE": {
-      "slug": "house-of-flame-and-shadow",
-      "title": "House of Flame and Shadow",
+      "slug": "house-of-sky-and-breath",
+      "title": "House of Sky and Breath",
       "author": "Sarah J. Maas",
-      "cover": "/booky/covers/house-of-flame-and-shadow.jpg",
-      "buyUrl": "https://www.amazon.com/dp/B0BY9M2C4X?tag=90books-20"
+      "cover": "/booky/covers/house-of-sky-and-breath.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B093WB84G1?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
