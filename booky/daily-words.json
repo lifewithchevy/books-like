@@ -173,7 +173,7 @@
     "RAVYN",
     "CALEB",
     "GREED",
-    "MOTHS",
+    "THREE",
     "SLAVE",
     "GLYPH",
     "LORDS",
@@ -343,7 +343,8 @@
     "YRENE",
     "XADEN",
     "NOBLE",
-    "BRASS"
+    "BRASS",
+    "MOTHS"
   ],
   "wordBooks": {
     "COURT": {
@@ -2300,14 +2301,14 @@
       "title": "House of Flame and Shadow",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/house-of-flame-and-shadow.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635574102?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B0BY9M2C4X?tag=90books-20"
     },
     "THANE": {
       "slug": "house-of-flame-and-shadow",
       "title": "House of Flame and Shadow",
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/house-of-flame-and-shadow.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635574102?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B0BY9M2C4X?tag=90books-20"
     },
     "RIVAL": {
       "slug": "divine-rivals",
@@ -2918,6 +2919,13 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
       "buyUrl": "https://www.amazon.com/dp/B00OZP5VRS?tag=90books-20"
+    },
+    "THREE": {
+      "slug": "house-of-flame-and-shadow",
+      "title": "House of Flame and Shadow",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/house-of-flame-and-shadow.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B0BY9M2C4X?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
