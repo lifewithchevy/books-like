@@ -1124,27 +1124,42 @@ if (!res.ok) throw new Error('subscribe-failed');
 // that has not confirmed double opt-in is stored as `unsubscribed`, so
 // telling it "daily reminders on" is false. The body can only be read once.
 let pending = false;
+let existing = null;
 try {
 const data = await res.json();
 restoreStats(data?.stats);
 pending = data?.pending === true;
+// Server-side truth: was this address a confirmed subscriber BEFORE this
+// entry. null means the read failed and we genuinely do not know.
+existing = typeof data?.existing === 'boolean' ? data.existing : null;
 } catch {}
 
-const alreadySubscribed = !!localStorage.getItem('90books_booky_reminder_sub');
+// localStorage only knows about THIS device, so it reported a subscriber
+// entering from a second device as brand new. Trust the server when it
+// answered; fall back to the device flag only when it did not.
+const deviceSub = !!localStorage.getItem('90books_booky_reminder_sub');
+const alreadySubscribed = existing === null ? deviceSub : existing;
 localStorage.setItem('90books_booky_reminder_sub', email);
 
-// Keep the historical north-star event comparable, and add a dedicated
-// one so entries can be separated from ordinary signups.
 markSubscribedNow();
 syncSubscriberFlag(true);
+// A giveaway entry by someone already on the list is NOT a signup. Firing
+// the north-star event for them inflated every giveaway week (45% of the
+// last one's entries were existing subscribers). `giveaway_entered` carries
+// the entry either way, so nothing is lost by staying silent here.
+if (!alreadySubscribed) {
 posthog.capture('email_signup_completed', {
 source: 'booky_endscreen',
 giveaway: true,
 word_number_at_signup: DAY,
 });
+}
 posthog.capture('giveaway_entered', {
 giveaway: g.tag,
 already_subscribed: alreadySubscribed,
+// How we know: 'server' is authoritative, 'device' is the localStorage
+// fallback used only when the Resend read failed.
+already_subscribed_source: existing === null ? 'device' : 'server',
 // Separates entries that are live from ones still waiting on a confirm
 // click, so the entrant count can be read honestly before the draw.
 pending_confirmation: pending,
@@ -1390,20 +1405,28 @@ let restored = false;
 // stored but deliberately NOT on the daily send until they confirm. Promising
 // "i'll email you a reminder" here would be a lie, so the copy has to change.
 let pending = false;
+// Server-side answer to "was this address already a confirmed subscriber".
+// null means the Resend read failed, so we say nothing rather than guess.
+let existing = null;
 try {
 const data = await res.json();
 restored = restoreStats(data?.stats);
 pending = data?.pending === true;
+existing = typeof data?.existing === 'boolean' ? data.existing : null;
 } catch {}
 
 localStorage.setItem(SUB_KEY, email);
 markSubscribedNow();
 syncSubscriberFlag(true);
-// PostHog: email signup completed
+// PostHog: email signup completed.
+// Still fires for everyone so this event's history stays unbroken, but it now
+// carries whether the address was ALREADY confirmed, so re-submits can be
+// netted out instead of reading as list growth.
 posthog.capture('email_signup_completed', {
 // The win screen's form carries no data-source, so it stays 'booky_endscreen'
 // and its history is unbroken. Anything else names itself.
 source: form.dataset.source ? `booky_${form.dataset.source}` : 'booky_endscreen',
+already_subscribed: existing,
 word_number_at_signup: DAY,
 });
 // Stats are saved either way, so a returning player still hears that first.

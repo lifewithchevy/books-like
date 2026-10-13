@@ -751,7 +751,13 @@ Booky by 90books · you signed up at 90books.com/booky · reply to unsubscribe`,
         // inbox" for a contact that still has to confirm, or the usual "you're
         // in" for someone who was already a confirmed subscriber. Without it the
         // UI would promise a daily email we are not going to send yet.
-        res.status(200).json({ ok: true, stored: 'resend', pending, stats: read.stats, stats_source: read.source });
+        // `existing` is the SERVER's answer to "was this person already a
+        // confirmed subscriber before this request". The client used to infer
+        // that from localStorage, which is per-device: a subscriber entering
+        // from a second device read as brand new, so giveaway entries
+        // double-counted as signups. Only an explicit read counts; when the
+        // read failed (`read.exists === null`) we send null rather than guess.
+        res.status(200).json({ ok: true, stored: 'resend', pending, existing: read.exists === null ? null : alreadyConfirmed, stats: read.stats, stats_source: read.source });
         return;
       }
 
