@@ -188,49 +188,49 @@
     "SMELL",
     "LORDS",
     "MOORS",
-    "RIGEL",
+    "IGNIS",
     "SHEEN",
     "COINS",
     "QUEST",
     "DEALS",
     "PRISM",
     "GRAVE",
-    "THIEF",
+    "TERRA",
     "GLADE",
     "SLOTH",
     "CREST",
     "ARRAY",
     "ELAIN",
     "SMOKE",
-    "MASKS",
+    "WATER",
     "SPELL",
     "SOOTY",
     "CLOAK",
     "TUSKS",
     "REIGN",
     "HOUND",
-    "FROST",
+    "EARTH",
     "JEWEL",
     "COAST",
     "SHINE",
     "ENVOY",
     "DIRGE",
     "CHARS",
-    "SOULS",
+    "HOUSE",
     "FLORA",
     "GAUZE",
     "GLINT",
     "SIEGE",
     "STALK",
     "SCALE",
-    "SLEEK",
+    "HYDRA",
     "TRICK",
     "DOVES",
     "VEILS",
     "GNOME",
     "TRUCE",
     "SOOTH",
-    "IRONS",
+    "SIREN",
     "BRIBE",
     "PROWL",
     "GROVE",
@@ -355,7 +355,14 @@
     "NOBLE",
     "BRASS",
     "MOTHS",
-    "GLYPH"
+    "GLYPH",
+    "RIGEL",
+    "THIEF",
+    "MASKS",
+    "FROST",
+    "IRONS",
+    "SOULS",
+    "SLEEK"
   ],
   "wordBooks": {
     "COURT": {
@@ -625,11 +632,11 @@
       "buyUrl": "https://www.amazon.com/dp/B0DDKHNVWF?tag=90books-20"
     },
     "EARTH": {
-      "slug": "house-of-earth-and-blood",
-      "title": "House of Earth and Blood",
-      "author": "Sarah J. Maas",
-      "cover": "/booky/covers/house-of-earth-and-blood.jpg",
-      "buyUrl": "https://www.amazon.com/dp/B07QBC8QTP?tag=90books-20"
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "/booky/covers/zodiac-academy.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
     },
     "ROYAL": {
       "slug": "the-bridge-kingdom",
@@ -702,11 +709,11 @@
       "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
     },
     "SIREN": {
-      "slug": "in-the-veins-of-the-drowning",
-      "title": "In the Veins of the Drowning",
-      "author": "Kalie Cassidy",
-      "cover": "/booky/covers/in-the-veins-of-the-drowning.jpg",
-      "buyUrl": "https://www.amazon.com/dp/0316587605?tag=90books-20"
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "/booky/covers/zodiac-academy.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
     },
     "WAKEN": {
       "slug": "in-the-wake-of-the-ruined",
@@ -2294,11 +2301,11 @@
       "buyUrl": "https://www.amazon.com/dp/1635575583?tag=90books-20"
     },
     "HOUSE": {
-      "slug": "house-of-earth-and-blood",
-      "title": "House of Earth and Blood",
-      "author": "Sarah J. Maas",
-      "cover": "/booky/covers/house-of-earth-and-blood.jpg",
-      "buyUrl": "https://www.amazon.com/dp/B07QBC8QTP?tag=90books-20"
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "/booky/covers/zodiac-academy.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
     },
     "SKIES": {
       "slug": "house-of-sky-and-breath",
@@ -2944,6 +2951,20 @@
       "author": "A.K. Caggiano",
       "buyUrl": "https://www.amazon.com/dp/B0BCXWP1NV?tag=90books-20",
       "cover": "/booky/covers/throne-in-the-dark.jpg"
+    },
+    "WATER": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "/booky/covers/zodiac-academy.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
+    },
+    "HYDRA": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "/booky/covers/zodiac-academy.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z"
