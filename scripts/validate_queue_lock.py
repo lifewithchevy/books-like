@@ -63,7 +63,18 @@ def main() -> int:
 
     last_locked = queue_day_index(current['epoch'], today)  # inclusive: today
     cur_q = current['queue']
-    base_q = baseline['queue']
+    base_q = list(baseline['queue'])
+    # A past edit that was already pushed becomes origin/main, so comparing with
+    # the last push can never catch it (it let 7 past days drift for months), and
+    # it would also block restoring them. scripts/book-history.json records what
+    # players actually saw: for every frozen day that is the truth, not the push.
+    hist_path = ROOT / 'scripts' / 'book-history.json'
+    if hist_path.exists():
+        for i, w in enumerate(json.loads(hist_path.read_text()).get('words', [])):
+            if i < len(base_q):
+                base_q[i] = w
+            else:
+                base_q.append(w)
     # The queue is ALLOWED to grow: CLAUDE.md's "never drop a displaced word"
     # rule says to append displaced words to the tail, which changes the length.
     # Only a shrink can threaten the lock, and only if it cuts into locked slots.

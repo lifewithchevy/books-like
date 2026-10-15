@@ -9,8 +9,8 @@
 // re-run for Zodiac Academy, 2026-10-14) and is exactly what must never happen.
 //
 // This guards it two ways:
-//  1. scripts/book-history.json freezes the book (slug) every day up to today
-//     showed. If today's words.json resolves any frozen day to a different
+//  1. scripts/book-history.json freezes the WORD and the book (slug) every day
+//     up to today showed. If today's words.json resolves any frozen day to a different
 //     book, ship fails. Run with --freeze after each day goes live to extend
 //     the record; it refuses to change a day that is already frozen.
 //  2. The lookup exists in four places (lib/book-for.js, booky/app.js, the
@@ -84,16 +84,17 @@ for (const [word, list] of Object.entries(data.wordBooksFrom || {})) {
 
 // ---- 2. frozen history
 const resolved = (day) => (bookFor(data, queue[day - 1], day) || {}).slug || null;
-let hist = { frozenThrough: 0, slugs: [] };
+let hist = { frozenThrough: 0, words: [], slugs: [] };
 try { hist = JSON.parse(fs.readFileSync(HISTORY, 'utf8')); } catch { /* first run */ }
 
 if (process.argv.includes('--freeze')) {
   const upTo = Math.min(today, queue.length);
   for (let day = 1; day <= hist.frozenThrough; day++) {
     if (resolved(day) !== hist.slugs[day - 1]) fail.push(`refusing to freeze: day ${day} is already frozen as ${hist.slugs[day - 1]} but resolves to ${resolved(day)}`);
+    if (queue[day - 1] !== hist.words[day - 1]) fail.push(`refusing to freeze: day ${day} is already frozen as ${hist.words[day - 1]} but the queue has ${queue[day - 1]}`);
   }
   if (!fail.length) {
-    for (let day = hist.frozenThrough + 1; day <= upTo; day++) hist.slugs[day - 1] = resolved(day);
+    for (let day = hist.frozenThrough + 1; day <= upTo; day++) { hist.slugs[day - 1] = resolved(day); hist.words[day - 1] = queue[day - 1]; }
     hist.frozenThrough = upTo;
     fs.writeFileSync(HISTORY, JSON.stringify(hist) + '\n');
     console.log(`froze ${upTo} days (through ${dateOf(upTo)})`);
@@ -101,7 +102,8 @@ if (process.argv.includes('--freeze')) {
 } else {
   for (let day = 1; day <= hist.frozenThrough; day++) {
     const was = hist.slugs[day - 1], now = resolved(day);
-    if (now !== was) fail.push(`PAST GAME CHANGED: day ${day} (${dateOf(day)}, ${queue[day - 1]}) showed ${was}, now resolves to ${now}`);
+    if (queue[day - 1] !== hist.words[day - 1]) fail.push(`PAST WORD CHANGED: day ${day} (${dateOf(day)}) was ${hist.words[day - 1]}, queue now has ${queue[day - 1]}`);
+    else if (now !== was) fail.push(`PAST GAME CHANGED: day ${day} (${dateOf(day)}, ${queue[day - 1]}) showed ${was}, now resolves to ${now}`);
   }
   const lag = Math.min(today, queue.length) - hist.frozenThrough;
   if (lag > 7) console.warn(`note: book history is ${lag} days behind; run  node scripts/validate_book_history.mjs --freeze`);

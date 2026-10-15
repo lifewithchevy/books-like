@@ -52,7 +52,10 @@ Edit workflow files through github.com, or ask Olga to grant the scope.
   `bookFor(data, word, day)` (lib/book-for.js, copied verbatim into
   booky/app.js, booky/archive/index.html and the hashed library bundle).
   `node scripts/validate_book_history.mjs` enforces both rules on every ship;
-  after a day goes live run it with `--freeze` to lock that day's book.
+  after a day goes live run it with `--freeze` to lock that day's WORD and book
+  in `scripts/book-history.json`. That file is the record of what players
+  actually saw, and `validate_queue_lock.py` compares past slots against it
+  (comparing with the last push cannot catch a past edit that was already pushed).
 - `giveaway` — **an ARRAY** of giveaway cards shown on the win screen. See
   "Giveaways" below before touching it.
 

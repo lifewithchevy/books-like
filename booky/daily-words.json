@@ -55,14 +55,14 @@
     "RIDER",
     "BEAST",
     "NESTA",
-    "BLOOD",
+    "ROSES",
     "ANGEL",
     "CURSE",
     "STARS",
     "THORN",
     "NIGHT",
     "WINGS",
-    "ALTAR",
+    "VENOM",
     "ROYAL",
     "MANOR",
     "CARDS",
@@ -82,7 +82,7 @@
     "DEMON",
     "BRYCE",
     "ROWAN",
-    "REINS",
+    "ELAIN",
     "HEART",
     "SCARS",
     "SWORD",
@@ -362,7 +362,8 @@
     "FROST",
     "IRONS",
     "SOULS",
-    "SLEEK"
+    "SLEEK",
+    "REINS"
   ],
   "wordBooks": {
     "COURT": {
@@ -394,11 +395,11 @@
       "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     },
     "DEMON": {
-      "slug": "throne-in-the-dark",
-      "title": "Throne in the Dark",
-      "author": "A.K. Caggiano",
-      "buyUrl": "https://www.amazon.com/dp/B0BCXWP1NV?tag=90books-20",
-      "cover": "/booky/covers/throne-in-the-dark.jpg"
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/house-of-earth-and-blood.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B07QBC8QTP?tag=90books-20"
     },
     "CROWN": {
       "slug": "the-cruel-prince",
@@ -415,11 +416,11 @@
       "buyUrl": "https://amzn.to/49prybO"
     },
     "RIDER": {
-      "slug": "threshing-day",
-      "title": "Threshing Day",
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
       "author": "Rebecca Yarros",
-      "cover": "/booky/covers/threshing-day.jpg",
-      "buyUrl": "https://www.amazon.com/dp/B0GZ14SN6W?tag=90books-20"
+      "cover": "/booky/covers/fourth-wing.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
     },
     "BEAST": {
       "slug": "a-court-of-thorns-and-roses",
@@ -457,11 +458,11 @@
       "buyUrl": "https://www.amazon.com/dp/B07QBC8QTP?tag=90books-20"
     },
     "CURSE": {
-      "slug": "burn-of-the-everflame",
-      "title": "Burn of the Everflame",
-      "author": "Penn Cole",
-      "cover": "/booky/covers/burn-of-the-everflame.jpg",
-      "buyUrl": "https://www.amazon.com/dp/B0GXGQZ7Y1?tag=90books-20"
+      "slug": "a-touch-of-darkness",
+      "title": "A Touch of Darkness",
+      "author": "Scarlett St. Clair",
+      "cover": "/booky/covers/a-touch-of-darkness.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B09C2PWWNP?tag=90books-20"
     },
     "BLOOD": {
       "slug": "from-blood-and-ash",
@@ -548,11 +549,11 @@
       "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
     },
     "VENOM": {
-      "slug": "the-poison-daughter",
-      "title": "The Poison Daughter",
-      "author": "Sheila Masterson",
-      "cover": "/booky/covers/the-poison-daughter.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "/booky/covers/the-serpent-and-the-wings-of-night.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
     },
     "RUNES": {
       "slug": "quicksilver",
@@ -723,11 +724,11 @@
       "buyUrl": "https://www.amazon.com/dp/B0FZ9B7ZD2?tag=90books-20"
     },
     "NIGHT": {
-      "slug": "a-court-of-mist-and-fury",
-      "title": "A Court of Mist and Fury",
-      "author": "Sarah J. Maas",
-      "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
-      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
+      "slug": "the-serpent-and-the-wings-of-night",
+      "title": "The Serpent and the Wings of Night",
+      "author": "Carissa Broadbent",
+      "cover": "/booky/covers/the-serpent-and-the-wings-of-night.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
     },
     "REALM": {
       "slug": "the-cruel-prince",
@@ -1971,11 +1972,11 @@
       "buyUrl": "https://www.amazon.com/dp/B07QBC8QTP?tag=90books-20"
     },
     "ELAIN": {
-      "slug": "a-court-of-splintered-harmony",
-      "title": "A Court of Splintered Harmony",
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
       "author": "Sarah J. Maas",
-      "cover": "/booky/covers/a-court-of-splintered-harmony.jpg",
-      "buyUrl": "https://www.amazon.com/dp/B0GR711WBV?tag=90books-20"
+      "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B00OZP5VRS?tag=90books-20"
     },
     "PAINT": {
       "slug": "a-court-of-thorns-and-roses",
@@ -2997,6 +2998,66 @@
         "author": "Caroline Peckham & Susanne Valenti",
         "cover": "/booky/covers/zodiac-academy.jpg",
         "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
+      }
+    ],
+    "DEMON": [
+      {
+        "from": "2026-06-27",
+        "slug": "throne-in-the-dark",
+        "title": "Throne in the Dark",
+        "author": "A.K. Caggiano",
+        "buyUrl": "https://www.amazon.com/dp/B0BCXWP1NV?tag=90books-20",
+        "cover": "/booky/covers/throne-in-the-dark.jpg"
+      }
+    ],
+    "RIDER": [
+      {
+        "from": "2026-09-24",
+        "slug": "threshing-day",
+        "title": "Threshing Day",
+        "author": "Rebecca Yarros",
+        "cover": "/booky/covers/threshing-day.jpg",
+        "buyUrl": "https://www.amazon.com/dp/B0GZ14SN6W?tag=90books-20"
+      }
+    ],
+    "CURSE": [
+      {
+        "from": "2026-09-06",
+        "slug": "burn-of-the-everflame",
+        "title": "Burn of the Everflame",
+        "author": "Penn Cole",
+        "cover": "/booky/covers/burn-of-the-everflame.jpg",
+        "buyUrl": "https://www.amazon.com/dp/B0GXGQZ7Y1?tag=90books-20"
+      }
+    ],
+    "NIGHT": [
+      {
+        "from": "2026-09-24",
+        "slug": "a-court-of-mist-and-fury",
+        "title": "A Court of Mist and Fury",
+        "author": "Sarah J. Maas",
+        "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
+        "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
+      }
+    ],
+    "VENOM": [
+      {
+        "from": "2026-08-09",
+        "slug": "the-poison-daughter",
+        "title": "The Poison Daughter",
+        "author": "Sheila Masterson",
+        "cover": "/booky/covers/the-poison-daughter.jpg",
+        "buyUrl": "https://www.amazon.com/dp/1638935971?tag=90books-20"
+      }
+    ],
+    "ELAIN": [
+      {
+        "from": "2026-10-13",
+        "slug": "a-court-of-splintered-harmony",
+        "title": "A Court of Splintered Harmony",
+        "author": "Sarah J. Maas",
+        "cover": "/booky/covers/a-court-of-splintered-harmony.jpg",
+        "buyUrl": "https://www.amazon.com/dp/B0GR711WBV?tag=90books-20"
       }
     ]
   }
