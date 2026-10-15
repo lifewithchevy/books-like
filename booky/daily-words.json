@@ -632,11 +632,11 @@
       "buyUrl": "https://www.amazon.com/dp/B0DDKHNVWF?tag=90books-20"
     },
     "EARTH": {
-      "slug": "zodiac-academy",
-      "title": "Zodiac Academy",
-      "author": "Caroline Peckham & Susanne Valenti",
-      "cover": "/booky/covers/zodiac-academy.jpg",
-      "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/house-of-earth-and-blood.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B07QBC8QTP?tag=90books-20"
     },
     "ROYAL": {
       "slug": "the-bridge-kingdom",
@@ -709,11 +709,11 @@
       "buyUrl": "https://www.amazon.com/dp/1957779004?tag=90books-20"
     },
     "SIREN": {
-      "slug": "zodiac-academy",
-      "title": "Zodiac Academy",
-      "author": "Caroline Peckham & Susanne Valenti",
-      "cover": "/booky/covers/zodiac-academy.jpg",
-      "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
+      "slug": "in-the-veins-of-the-drowning",
+      "title": "In the Veins of the Drowning",
+      "author": "Kalie Cassidy",
+      "cover": "/booky/covers/in-the-veins-of-the-drowning.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316587605?tag=90books-20"
     },
     "WAKEN": {
       "slug": "in-the-wake-of-the-ruined",
@@ -2301,11 +2301,11 @@
       "buyUrl": "https://www.amazon.com/dp/1635575583?tag=90books-20"
     },
     "HOUSE": {
-      "slug": "zodiac-academy",
-      "title": "Zodiac Academy",
-      "author": "Caroline Peckham & Susanne Valenti",
-      "cover": "/booky/covers/zodiac-academy.jpg",
-      "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/house-of-earth-and-blood.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B07QBC8QTP?tag=90books-20"
     },
     "SKIES": {
       "slug": "house-of-sky-and-breath",
@@ -2967,5 +2967,37 @@
       "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
     }
   },
-  "_deploy": "2026-07-17T22:21Z"
+  "_deploy": "2026-07-17T22:21Z",
+  "wordBooksFrom": {
+    "EARTH": [
+      {
+        "from": "2026-10-15",
+        "slug": "zodiac-academy",
+        "title": "Zodiac Academy",
+        "author": "Caroline Peckham & Susanne Valenti",
+        "cover": "/booky/covers/zodiac-academy.jpg",
+        "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
+      }
+    ],
+    "HOUSE": [
+      {
+        "from": "2026-10-15",
+        "slug": "zodiac-academy",
+        "title": "Zodiac Academy",
+        "author": "Caroline Peckham & Susanne Valenti",
+        "cover": "/booky/covers/zodiac-academy.jpg",
+        "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
+      }
+    ],
+    "SIREN": [
+      {
+        "from": "2026-10-15",
+        "slug": "zodiac-academy",
+        "title": "Zodiac Academy",
+        "author": "Caroline Peckham & Susanne Valenti",
+        "cover": "/booky/covers/zodiac-academy.jpg",
+        "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
+      }
+    ]
+  }
 }

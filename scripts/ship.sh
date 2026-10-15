@@ -37,6 +37,7 @@ python3 scripts/validate_winnable.py  || die "a scheduled answer is missing from
 python3 scripts/validate_giveaway.py  || die "giveaway array is invalid."
 python3 scripts/validate_daily_words_sync.py || die "booky/daily-words.json drifted from words.json — run: cp booky/words.json booky/daily-words.json"
 node scripts/validate_hints.mjs || die "a scheduled word cannot serve a hint. Fix the queue or the book mapping before shipping."
+node scripts/validate_book_history.mjs || die "a PAST game now resolves to a different book, or the bookFor copies drifted. Past days must never change: see scripts/validate_book_history.mjs."
 
 say "3/5  Loading every API route"
 for f in api/*.js; do

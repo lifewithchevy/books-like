@@ -12,6 +12,9 @@
 // HTTP 200. Exit 1 on any FAIL so CI can open an issue.
 
 import fs from 'node:fs';
+import { createRequire } from 'node:module';
+// A word can mean a different book on different days (words.json wordBooksFrom).
+const { bookFor } = createRequire(import.meta.url)('../lib/book-for.js');
 
 const WORDS = 'https://90books.com/api/booky-words';
 // Same-origin. This used to point at booky-deploy.vercel.app, which went 404
@@ -83,7 +86,7 @@ async function main() {
     const date = iso(addDays(today, i - n));
     if (!word) { fail(`#${i} (${date}) has no word`); continue; }
     if (!dict.has(String(word).toUpperCase())) fail(`#${i} (${date}) word ${word} is UNWINNABLE (not in dictionary)`);
-    if (!wb[word]) warn(`#${i} (${date}) word ${word} has no book mapped`);
+    if (!bookFor(w, word, i)) warn(`#${i} (${date}) word ${word} has no book mapped`);
   }
 
   // Giveaway: array of non-overlapping windows with unique tags. `tag` keys the
@@ -204,7 +207,7 @@ async function main() {
   const UA = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/124.0 Safari/537.36';
   const upcoming = new Map();
   for (let i = n; i < Math.min(n + 7, w.queue.length + 1); i++) {
-    const book = wb[w.queue[i - 1]];
+    const book = bookFor(w, w.queue[i - 1], i);
     if (book?.buyUrl && !upcoming.has(book.slug)) upcoming.set(book.slug, book);
   }
   let dead = 0, unverifiable = 0;

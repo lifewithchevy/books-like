@@ -16,6 +16,9 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+// A word can mean a different book on different days (words.json wordBooksFrom).
+const { bookFor } = createRequire(import.meta.url)('../lib/book-for.js');
 
 const root = path.join(path.dirname(fileURLToPath(import.meta.url)), '..');
 const appSrc = fs.readFileSync(path.join(root, 'booky/app.js'), 'utf8');
@@ -66,7 +69,7 @@ for (let i = from; i < queue.length; i++) {
   const ANSWER = queue[i];
   const DAY = i + 1;
   const where = `#${DAY} ${ANSWER}`;
-  const book = books[ANSWER];
+  const book = bookFor(data, ANSWER, DAY);
   if (!book) { fail.push(`${where}: no book mapped, the book hint would be missing`); continue; }
   const cover = String(book.cover || '').replace(/^\/booky\//, 'booky/');
   if (!cover || !fs.existsSync(path.join(root, cover))) fail.push(`${where}: cover file missing (${book.cover})`);

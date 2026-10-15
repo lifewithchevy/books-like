@@ -33,6 +33,24 @@ const ARCHIVE_DAY = (() => {
 })();
 let ARCHIVE = false; // set in boot, once today's real day number is known
 
+// Which book does `word` mean on day number `day`? Default is wordBooks[word];
+// wordBooksFrom[word] holds dated entries so a word can be re-run for another
+// series without rewriting any earlier day or the archive. KEEP IDENTICAL to
+// lib/book-for.js (scripts/validate_book_history.py checks that it is).
+function bookFor(data, word, day) {
+  const base = (data && data.wordBooks && data.wordBooks[word]) || null;
+  const alts = data && data.wordBooksFrom && data.wordBooksFrom[word];
+  if (!alts || !alts.length || !data.epoch) return base;
+  const p = String(data.epoch).split('-').map(Number);
+  const iso = new Date(Date.UTC(p[0], p[1] - 1, p[2] + day - 1)).toISOString().slice(0, 10);
+  let pick = base;
+  let best = '';
+  for (const a of alts) {
+    if (a && a.from && a.from <= iso && a.from >= best) { pick = a; best = a.from; }
+  }
+  return pick;
+}
+
 function stateKey() { return ARCHIVE ? '90books_booky_archive_v1_' + DAY : STATE_KEY; }
 function hintKey() { return ARCHIVE ? '90books_booky_archive_hints_v1_' + DAY : HINT_KEY; }
 
@@ -480,7 +498,7 @@ if (ARCHIVE) {
     won: STATE.status === 'won',
     guesses_used: STATE.guesses.length,
     answer: ANSWER,
-    book: DATA?.wordBooks?.[ANSWER]?.slug || null,
+    book: bookFor(DATA, ANSWER, DAY)?.slug || null,
   });
   return;
 }
@@ -530,7 +548,7 @@ body: JSON.stringify({ email: subEmail, streak: STATS.currentStreak, stats: stat
 // join against words.json, whose LIVE source is a different Vercel project —
 // so the join was neither reproducible nor safe to quote to an author. With
 // them, reach and buy-click CTR come from one group-by on book_title.
-const completedBook = DATA?.wordBooks?.[ANSWER] || null;
+const completedBook = bookFor(DATA, ANSWER, DAY) || null;
 posthog.capture('booky_game_complete', {
 word_number: DAY,
 won: STATE.status === 'won',
@@ -1652,7 +1670,7 @@ return target;
 // container, .share-option for the three rows, .ex-tile for the letters and
 // .book-hero for the reveal. Nothing here is a bespoke widget, so the hint
 // cannot drift out of step with the rest of the game.
-function hintBook() { return DATA?.wordBooks?.[ANSWER] || null; }
+function hintBook() { return bookFor(DATA, ANSWER, DAY) || null; }
 
 // Point at the hint once, for everyone. Not badged as "new": a player who
 // arrives next year is meeting it for the first time too, and the callout is
@@ -1779,7 +1797,7 @@ book_author: book.author || null,
 
 // ---- End screen ----
 function preloadBookCover() {
-const url = DATA?.wordBooks?.[ANSWER]?.cover;
+const url = bookFor(DATA, ANSWER, DAY)?.cover;
 if (!url) return;
 const img = new Image();
 img.decoding = 'async';
@@ -1896,7 +1914,7 @@ renderStatsModal();
 // and on a replay of July 5th alike, so the old ARCHIVE special case is gone.
 // Only the word itself is set, above.
 
-const bookRec = DATA.wordBooks?.[ANSWER];
+const bookRec = bookFor(DATA, ANSWER, DAY);
 const recEl = $('book-rec');
 if (bookRec) {
 $('book-rec-title').textContent = bookRec.title;
@@ -2138,7 +2156,7 @@ function shareProps() {
   // "players shared a puzzle featuring your book N times" is one group-by
   // rather than a word_number -> book join against a words.json this repo
   // does not own. Same fields as booky_game_complete, deliberately.
-  const sharedBook = DATA?.wordBooks?.[ANSWER] || null;
+  const sharedBook = bookFor(DATA, ANSWER, DAY) || null;
   return {
     word_number: DAY,
     // An unplayed share is a different thing from a result share: it is an

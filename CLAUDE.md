@@ -40,7 +40,19 @@ Edit workflow files through github.com, or ask Olga to grant the scope.
   `queue[dayNumber - 1]`, where `dayNumber` is days-since-epoch + 1 (see
   `booky/app.js` → `computeDayNumber`).
 - `wordBooks` — maps each word to the book shown on the end screen
-  (`slug`, `title`, `author`, `cover`).
+  (`slug`, `title`, `author`, `cover`). This is the DEFAULT and is what every
+  past play of the word used.
+- `wordBooksFrom` — optional, `{ WORD: [{ from: 'YYYY-MM-DD', ...book }] }`.
+  Lets one word mean a DIFFERENT book on later dates (re-running EARTH for
+  Zodiac Academy while its July play stays House of Earth and Blood). The latest
+  entry whose `from` is on or before the day's date wins; earlier days keep the
+  default. **Never edit `wordBooks[WORD]` for a word that has already played**:
+  that rewrites the past and the archive. Add a `wordBooksFrom` entry instead,
+  with `from` AFTER the last past play. Resolve a day's book only through
+  `bookFor(data, word, day)` (lib/book-for.js, copied verbatim into
+  booky/app.js, booky/archive/index.html and the hashed library bundle).
+  `node scripts/validate_book_history.mjs` enforces both rules on every ship;
+  after a day goes live run it with `--freeze` to lock that day's book.
 - `giveaway` — **an ARRAY** of giveaway cards shown on the win screen. See
   "Giveaways" below before touching it.
 

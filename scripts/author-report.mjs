@@ -17,6 +17,10 @@
 // keys, scope "Query Read"). Without it the script prints a snippet you paste
 // into the console of a logged-in us.posthog.com tab, which needs no key.
 
+import { createRequire } from 'node:module';
+// A word can mean a different book on different days (words.json wordBooksFrom).
+const { bookFor } = createRequire(import.meta.url)('../lib/book-for.js');
+
 const PROJECT = '443166';
 const WORDS_API = 'https://90books.com/api/booky-words';
 
@@ -98,7 +102,7 @@ async function main() {
   const words = await fetch(WORDS_API).then((r) => r.json());
   const n = dayNumber(words.epoch, date);
   const word = words.queue?.[n - 1];
-  const book = word ? words.wordBooks?.[word] : null;
+  const book = word ? bookFor(words, word, n) : null;
 
   const key = process.env.POSTHOG_PERSONAL_API_KEY;
   if (!key) {

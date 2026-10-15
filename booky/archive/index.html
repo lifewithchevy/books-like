@@ -141,6 +141,23 @@ Your streak and stats are not affected.</p>
     return d.toLocaleDateString(undefined, { month: 'short', day: 'numeric' });
   }
 
+  // Which book does `word` mean on day number `day`? Default is wordBooks[word];
+  // wordBooksFrom[word] holds dated entries so a word can be re-run for another
+  // series without touching any earlier day. KEEP IDENTICAL to lib/book-for.js.
+  function bookFor(data, word, day) {
+    const base = (data && data.wordBooks && data.wordBooks[word]) || null;
+    const alts = data && data.wordBooksFrom && data.wordBooksFrom[word];
+    if (!alts || !alts.length || !data.epoch) return base;
+    const p = String(data.epoch).split('-').map(Number);
+    const iso = new Date(Date.UTC(p[0], p[1] - 1, p[2] + day - 1)).toISOString().slice(0, 10);
+    let pick = base;
+    let best = '';
+    for (const a of alts) {
+      if (a && a.from && a.from <= iso && a.from >= best) { pick = a; best = a.from; }
+    }
+    return pick;
+  }
+
   // Which past days this player has already revealed. app.js STILL writes this
   // on every finished game, so the history keeps accumulating; the grid just
   // does not read it yet. Turning the reveal back on is a matter of using this
@@ -190,7 +207,7 @@ Your streak and stats are not affected.</p>
 
       function card(day) {
         var word = String(data.queue[day - 1] || '').toUpperCase();
-        var book = (data.wordBooks && data.wordBooks[word]) || null;
+        var book = bookFor(data, word, day);
         var cover = (book && book.cover) || '/booky/og-image.png';
         var when = dateFor(data.epoch, day);
 

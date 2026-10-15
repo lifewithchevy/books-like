@@ -5084,6 +5084,23 @@
       }
       // No book page available — do nothing (shelf card should not be clickable).
     }
+    // Which book does `word` mean on day number `day`? Default is wordBooks[word];
+    // wordBooksFrom[word] holds dated entries so a word can be re-run for another
+    // series without rewriting any earlier day. KEEP IDENTICAL to lib/book-for.js.
+    function bookFor(data, word, day) {
+      const base = (data && data.wordBooks && data.wordBooks[word]) || null;
+      const alts = data && data.wordBooksFrom && data.wordBooksFrom[word];
+      if (!alts || !alts.length || !data.epoch) return base;
+      const p = String(data.epoch).split('-').map(Number);
+      const iso = new Date(Date.UTC(p[0], p[1] - 1, p[2] + day - 1)).toISOString().slice(0, 10);
+      let pick = base;
+      let best = '';
+      for (const a of alts) {
+        if (a && a.from && a.from <= iso && a.from >= best) { pick = a; best = a.from; }
+      }
+      return pick;
+    }
+
     function bklLoadWordData() {
       if (BKL_WORD_DATA) return Promise.resolve(BKL_WORD_DATA);
       return fetch('/booky/daily-words.json', { cache: 'no-cache' }).then(function (r) { return r.json(); }).then(function (j) {
@@ -5094,13 +5111,19 @@
           var b = wb[word];
           if (b && b.slug && b.cover) BKL_COVER_BY_SLUG[b.slug] = b.cover;
         });
-        queue.forEach(function (w) {
-          var b = wb[w];
+        // A dated re-run can introduce a book that has no default mapping of its own.
+        Object.keys(j.wordBooksFrom || {}).forEach(function (word) {
+          (j.wordBooksFrom[word] || []).forEach(function (b) {
+            if (b && b.slug && b.cover && !BKL_COVER_BY_SLUG[b.slug]) BKL_COVER_BY_SLUG[b.slug] = b.cover;
+          });
+        });
+        queue.forEach(function (w, idx) {
+          var b = bookFor(j, w, idx + 1);
           if (b && b.slug && !seen[b.slug]) { seen[b.slug] = b; slugOrder.push(b.slug); BKL_WORD_BY_SLUG[b.slug] = b; }
         });
         var slugFirstDay = {};
         queue.forEach(function (w, idx) {
-          var b = wb[w];
+          var b = bookFor(j, w, idx + 1);
           if (b && b.slug && slugFirstDay[b.slug] === undefined) slugFirstDay[b.slug] = idx + 1;
         });
         var day = bklComputeDayNumber(j.epoch);
@@ -5113,7 +5136,7 @@
         // days". The right fix lives in the queue, by not scheduling one book twice in
         // a week, not here.
         for (var i = day - 2; i >= 0 && recent.length < 6; i--) {
-          var word = queue[i], b = wb[word];
+          var word = queue[i], b = bookFor(j, word, i + 1);
           if (b && b.slug) {
             recent.push({
               day: i + 1,
