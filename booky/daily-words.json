@@ -190,7 +190,7 @@
     "MOORS",
     "IGNIS",
     "SHEEN",
-    "COINS",
+    "CADRE",
     "QUEST",
     "DEALS",
     "PRISM",
@@ -363,7 +363,8 @@
     "IRONS",
     "SOULS",
     "SLEEK",
-    "REINS"
+    "REINS",
+    "COINS"
   ],
   "wordBooks": {
     "COURT": {
@@ -2966,6 +2967,13 @@
       "author": "Caroline Peckham & Susanne Valenti",
       "cover": "/booky/covers/zodiac-academy.jpg",
       "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
+    },
+    "CADRE": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/throne-of-glass.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B007N6JEII?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
