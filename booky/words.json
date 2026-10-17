@@ -193,7 +193,7 @@
     "CADRE",
     "QUEST",
     "DEALS",
-    "PRISM",
+    "SYNTH",
     "GRAVE",
     "TERRA",
     "GLADE",
@@ -364,7 +364,8 @@
     "SOULS",
     "SLEEK",
     "REINS",
-    "COINS"
+    "COINS",
+    "PRISM"
   ],
   "wordBooks": {
     "COURT": {
@@ -2974,6 +2975,13 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/throne-of-glass.jpg",
       "buyUrl": "https://www.amazon.com/dp/B007N6JEII?tag=90books-20"
+    },
+    "SYNTH": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/house-of-earth-and-blood.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B07QBC8QTP?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
