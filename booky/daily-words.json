@@ -194,7 +194,7 @@
     "TAIRN",
     "DEALS",
     "SYNTH",
-    "GRAVE",
+    "CLIMB",
     "TERRA",
     "FIFTY",
     "SLOTH",
@@ -366,7 +366,8 @@
     "REINS",
     "COINS",
     "PRISM",
-    "GLADE"
+    "GLADE",
+    "GRAVE"
   ],
   "wordBooks": {
     "COURT": {
@@ -2991,6 +2992,14 @@
       "hook": "Claim your sword, claim your fate.",
       "buyUrl": "https://www.amazon.com/dp/B0FFB66V7N?tag=90books-20",
       "cover": "/booky/covers/starside.jpg"
+    },
+    "CLIMB": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "hook": "",
+      "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20",
+      "cover": "/booky/covers/a-court-of-silver-flames.jpg"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
