@@ -207,7 +207,7 @@
     "SOOTY",
     "CLOAK",
     "TUSKS",
-    "REIGN",
+    "DEATH",
     "HOUND",
     "EARTH",
     "JEWEL",
@@ -367,7 +367,8 @@
     "COINS",
     "PRISM",
     "GLADE",
-    "GRAVE"
+    "GRAVE",
+    "REIGN"
   ],
   "wordBooks": {
     "COURT": {
@@ -2994,6 +2995,14 @@
       "cover": "/booky/covers/starside.jpg"
     },
     "CLIMB": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "hook": "",
+      "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20",
+      "cover": "/booky/covers/a-court-of-silver-flames.jpg"
+    },
+    "DEATH": {
       "slug": "a-court-of-silver-flames",
       "title": "A Court of Silver Flames",
       "author": "Sarah J. Maas",
