@@ -196,7 +196,7 @@
     "PRISM",
     "GRAVE",
     "TERRA",
-    "GLADE",
+    "FIFTY",
     "SLOTH",
     "CREST",
     "ARRAY",
@@ -364,7 +364,8 @@
     "SOULS",
     "SLEEK",
     "REINS",
-    "COINS"
+    "COINS",
+    "GLADE"
   ],
   "wordBooks": {
     "COURT": {
@@ -2061,7 +2062,7 @@
       "title": "Starside",
       "author": "Alex Aster",
       "hook": "Claim your sword, claim your fate.",
-      "buyUrl": "https://www.amazon.com/dp/0063479796?tag=90books-20",
+      "buyUrl": "https://www.amazon.com/dp/B0FFB66V7N?tag=90books-20",
       "cover": "/booky/covers/starside.jpg"
     },
     "DEVIL": {
@@ -2974,6 +2975,14 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/throne-of-glass.jpg",
       "buyUrl": "https://www.amazon.com/dp/B007N6JEII?tag=90books-20"
+    },
+    "FIFTY": {
+      "slug": "starside",
+      "title": "Starside",
+      "author": "Alex Aster",
+      "hook": "Claim your sword, claim your fate.",
+      "buyUrl": "https://www.amazon.com/dp/B0FFB66V7N?tag=90books-20",
+      "cover": "/booky/covers/starside.jpg"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
