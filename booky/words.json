@@ -197,7 +197,7 @@
     "CLIMB",
     "TERRA",
     "FIFTY",
-    "VANIR",
+    "VIPER",
     "XADEN",
     "CURSE",
     "CYCLE",
@@ -375,7 +375,8 @@
     "SEERS",
     "ARRAY",
     "CLOAK",
-    "TUSKS"
+    "TUSKS",
+    "VANIR"
   ],
   "wordBooks": {
     "COURT": {
@@ -3051,6 +3052,13 @@
       "author": "Rebecca Yarros",
       "buyUrl": "https://www.amazon.com/dp/B0BGDM197Q?tag=90books-20",
       "cover": "/booky/covers/fourth-wing.jpg"
+    },
+    "VIPER": {
+      "slug": "house-of-sky-and-breath",
+      "title": "House of Sky and Breath",
+      "author": "Sarah J. Maas",
+      "buyUrl": "https://www.amazon.com/dp/B093WB84G1?tag=90books-20",
+      "cover": "/booky/covers/house-of-sky-and-breath.jpg"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
