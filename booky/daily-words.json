@@ -198,7 +198,7 @@
     "TERRA",
     "FIFTY",
     "VANIR",
-    "RUINS",
+    "XADEN",
     "ARRAY",
     "CYCLE",
     "SMOKE",
@@ -351,7 +351,7 @@
     "ROARS",
     "MOATS",
     "YRENE",
-    "XADEN",
+    "RUINS",
     "NOBLE",
     "BRASS",
     "MOTHS",
@@ -1922,7 +1922,7 @@
       "title": "Fourth Wing",
       "author": "Rebecca Yarros",
       "cover": "/booky/covers/fourth-wing.jpg",
-      "buyUrl": "https://amzn.to/4vaA7Q6"
+      "buyUrl": "https://www.amazon.com/dp/B0BGDM197Q?tag=90books-20"
     },
     "ROWAN": {
       "slug": "throne-of-glass",
