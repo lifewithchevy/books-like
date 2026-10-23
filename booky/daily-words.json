@@ -199,13 +199,13 @@
     "FIFTY",
     "VANIR",
     "XADEN",
-    "ARRAY",
+    "CHAIR",
     "CYCLE",
     "SMOKE",
     "WATER",
     "SPELL",
     "SOOTY",
-    "CLOAK",
+    "SQUAD",
     "TUSKS",
     "DEATH",
     "HOUND",
@@ -372,7 +372,9 @@
     "SLOTH",
     "CREST",
     "ELAIN",
-    "SEERS"
+    "SEERS",
+    "ARRAY",
+    "CLOAK"
   ],
   "wordBooks": {
     "COURT": {
@@ -3034,6 +3036,20 @@
       "author": "Sarah J. Maas",
       "buyUrl": "https://www.amazon.com/dp/B0GR711WBV?tag=90books-20",
       "cover": "/booky/covers/a-court-of-splintered-harmony.jpg"
+    },
+    "CHAIR": {
+      "slug": "iron-flame",
+      "title": "Iron Flame",
+      "author": "Rebecca Yarros",
+      "buyUrl": "https://www.amazon.com/dp/B0C4JMJBNX?tag=90books-20",
+      "cover": "/booky/covers/iron-flame.jpg"
+    },
+    "SQUAD": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "buyUrl": "https://www.amazon.com/dp/B0BGDM197Q?tag=90books-20",
+      "cover": "/booky/covers/fourth-wing.jpg"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
