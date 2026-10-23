@@ -199,14 +199,14 @@
     "FIFTY",
     "VANIR",
     "XADEN",
-    "SHINE",
+    "CURSE",
     "CYCLE",
     "SMOKE",
     "WATER",
-    "SPELL",
+    "SHINE",
     "SOOTY",
     "CHAIR",
-    "TUSKS",
+    "SPELL",
     "DEATH",
     "HOUND",
     "EARTH",
@@ -374,7 +374,8 @@
     "ELAIN",
     "SEERS",
     "ARRAY",
-    "CLOAK"
+    "CLOAK",
+    "TUSKS"
   ],
   "wordBooks": {
     "COURT": {
@@ -3112,6 +3113,14 @@
         "author": "Penn Cole",
         "cover": "/booky/covers/burn-of-the-everflame.jpg",
         "buyUrl": "https://www.amazon.com/dp/B0GXGQZ7Y1?tag=90books-20"
+      },
+      {
+        "from": "2026-10-26",
+        "slug": "a-court-of-thorns-and-roses",
+        "title": "A Court of Thorns and Roses",
+        "author": "Sarah J. Maas",
+        "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
+        "buyUrl": "https://www.amazon.com/dp/B00OZP5VRS?tag=90books-20"
       }
     ],
     "NIGHT": [
