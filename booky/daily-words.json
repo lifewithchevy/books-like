@@ -200,7 +200,7 @@
     "VANIR",
     "RUINS",
     "ARRAY",
-    "SEERS",
+    "CYCLE",
     "SMOKE",
     "WATER",
     "SPELL",
@@ -371,7 +371,8 @@
     "REIGN",
     "SLOTH",
     "CREST",
-    "ELAIN"
+    "ELAIN",
+    "SEERS"
   ],
   "wordBooks": {
     "COURT": {
@@ -3021,6 +3022,13 @@
       "cover": "/booky/covers/house-of-sky-and-breath.jpg"
     },
     "SEERS": {
+      "slug": "a-court-of-splintered-harmony",
+      "title": "A Court of Splintered Harmony",
+      "author": "Sarah J. Maas",
+      "buyUrl": "https://www.amazon.com/dp/B0GR711WBV?tag=90books-20",
+      "cover": "/booky/covers/a-court-of-splintered-harmony.jpg"
+    },
+    "CYCLE": {
       "slug": "a-court-of-splintered-harmony",
       "title": "A Court of Splintered Harmony",
       "author": "Sarah J. Maas",
