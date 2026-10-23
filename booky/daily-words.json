@@ -197,10 +197,10 @@
     "CLIMB",
     "TERRA",
     "FIFTY",
-    "SLOTH",
-    "CREST",
+    "VANIR",
+    "RUINS",
     "ARRAY",
-    "ELAIN",
+    "SEERS",
     "SMOKE",
     "WATER",
     "SPELL",
@@ -368,7 +368,10 @@
     "PRISM",
     "GLADE",
     "GRAVE",
-    "REIGN"
+    "REIGN",
+    "SLOTH",
+    "CREST",
+    "ELAIN"
   ],
   "wordBooks": {
     "COURT": {
@@ -2296,8 +2299,8 @@
       "slug": "a-court-of-wings-and-ruin",
       "title": "A Court of Wings and Ruin",
       "author": "Sarah J. Maas",
-      "cover": "/booky/covers/a-court-of-wings-and-ruin.jpg",
-      "buyUrl": "https://www.amazon.com/dp/1635575583?tag=90books-20"
+      "buyUrl": "https://www.amazon.com/dp/B01LOWN78Y?tag=90books-20",
+      "cover": "/booky/covers/a-court-of-wings-and-ruin.jpg"
     },
     "AMREN": {
       "slug": "a-court-of-wings-and-ruin",
@@ -3009,6 +3012,20 @@
       "hook": "",
       "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20",
       "cover": "/booky/covers/a-court-of-silver-flames.jpg"
+    },
+    "VANIR": {
+      "slug": "house-of-sky-and-breath",
+      "title": "House of Sky and Breath",
+      "author": "Sarah J. Maas",
+      "buyUrl": "https://www.amazon.com/dp/B093WB84G1?tag=90books-20",
+      "cover": "/booky/covers/house-of-sky-and-breath.jpg"
+    },
+    "SEERS": {
+      "slug": "a-court-of-splintered-harmony",
+      "title": "A Court of Splintered Harmony",
+      "author": "Sarah J. Maas",
+      "buyUrl": "https://www.amazon.com/dp/B0GR711WBV?tag=90books-20",
+      "cover": "/booky/covers/a-court-of-splintered-harmony.jpg"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
