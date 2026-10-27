@@ -1295,7 +1295,13 @@ if (ev.key === 'Enter') { ev.preventDefault(); go(); }
 // to be real than to be a typo.
 const KNOWN_DOMAINS = [
 'gmail.com', 'googlemail.com',
-'yahoo.com', 'yahoo.co.uk', 'yahoo.ca', 'yahoo.de',
+'yahoo.com', 'yahoo.co.uk', 'yahoo.ca', 'yahoo.de', 'ymail.com', 'rocketmail.com',
+// ymail.com, mail.com and email.com are REAL providers that sit exactly one edit
+// from gmail.com, so the catcher fired on them and, because it blocks, locked
+// their owners out of signup entirely. Reported by a player on r/B00KY 24 Oct
+// 2026 who could not enter the giveaway or save stats. Listing a domain here is
+// what makes it immune: suggestEmailFix returns null for anything already known.
+'mail.com', 'email.com',
 'hotmail.com', 'hotmail.co.uk', 'hotmail.fr', 'hotmail.de',
 'outlook.com', 'outlook.co.uk', 'live.com', 'live.co.uk', 'live.de', 'msn.com',
 'icloud.com', 'me.com', 'mac.com',
