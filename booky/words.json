@@ -203,8 +203,8 @@
     "CYCLE",
     "TRIAL",
     "WATER",
-    "SHINE",
-    "SOOTY",
+    "ELITE",
+    "HAUNT",
     "CHAIR",
     "SPELL",
     "DEATH",
@@ -378,7 +378,9 @@
     "TUSKS",
     "VANIR",
     "SMOKE",
-    "HOUND"
+    "HOUND",
+    "SHINE",
+    "SOOTY"
   ],
   "wordBooks": {
     "COURT": {
@@ -3178,6 +3180,16 @@
         "author": "Rebecca Yarros",
         "cover": "/booky/covers/threshing-day.jpg",
         "buyUrl": "https://www.amazon.com/dp/B0GZ14SN6W?tag=90books-20"
+      }
+    ],
+    "ELITE": [
+      {
+        "from": "2026-10-30",
+        "slug": "fourth-wing",
+        "title": "Fourth Wing",
+        "author": "Rebecca Yarros",
+        "cover": "/booky/covers/fourth-wing.jpg",
+        "buyUrl": "https://amzn.to/4vaA7Q6"
       }
     ]
   }
