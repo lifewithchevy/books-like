@@ -208,7 +208,7 @@
     "CHAIR",
     "SPELL",
     "DEATH",
-    "HOUND",
+    "FIELD",
     "EARTH",
     "JEWEL",
     "COAST",
@@ -377,7 +377,8 @@
     "CLOAK",
     "TUSKS",
     "VANIR",
-    "SMOKE"
+    "SMOKE",
+    "HOUND"
   ],
   "wordBooks": {
     "COURT": {
@@ -3060,6 +3061,13 @@
       "author": "Sarah J. Maas",
       "buyUrl": "https://www.amazon.com/dp/B093WB84G1?tag=90books-20",
       "cover": "/booky/covers/house-of-sky-and-breath.jpg"
+    },
+    "FIELD": {
+      "slug": "threshing-day",
+      "title": "Threshing Day",
+      "author": "Rebecca Yarros",
+      "cover": "/booky/covers/threshing-day.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B0GZ14SN6W?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
