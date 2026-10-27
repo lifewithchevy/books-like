@@ -201,7 +201,7 @@
     "XADEN",
     "CURSE",
     "CYCLE",
-    "SMOKE",
+    "TRIAL",
     "WATER",
     "SHINE",
     "SOOTY",
@@ -376,7 +376,8 @@
     "ARRAY",
     "CLOAK",
     "TUSKS",
-    "VANIR"
+    "VANIR",
+    "SMOKE"
   ],
   "wordBooks": {
     "COURT": {
@@ -3159,6 +3160,16 @@
         "author": "Sarah J. Maas",
         "cover": "/booky/covers/a-court-of-splintered-harmony.jpg",
         "buyUrl": "https://www.amazon.com/dp/B0GR711WBV?tag=90books-20"
+      }
+    ],
+    "TRIAL": [
+      {
+        "from": "2026-10-28",
+        "slug": "threshing-day",
+        "title": "Threshing Day",
+        "author": "Rebecca Yarros",
+        "cover": "/booky/covers/threshing-day.jpg",
+        "buyUrl": "https://www.amazon.com/dp/B0GZ14SN6W?tag=90books-20"
       }
     ]
   }
