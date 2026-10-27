@@ -222,7 +222,7 @@
     "GLINT",
     "SIEGE",
     "STALK",
-    "SCALE",
+    "RULES",
     "HYDRA",
     "TRICK",
     "DOVES",
@@ -380,7 +380,8 @@
     "SMOKE",
     "HOUND",
     "SHINE",
-    "SOOTY"
+    "SOOTY",
+    "SCALE"
   ],
   "wordBooks": {
     "COURT": {
@@ -3070,6 +3071,13 @@
       "author": "Rebecca Yarros",
       "cover": "/booky/covers/threshing-day.jpg",
       "buyUrl": "https://www.amazon.com/dp/B0GZ14SN6W?tag=90books-20"
+    },
+    "RULES": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "/booky/covers/fourth-wing.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
