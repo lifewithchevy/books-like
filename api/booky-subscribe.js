@@ -357,12 +357,31 @@ module.exports = async (req, res) => {
     const tag = typeof b.giveawayTag === 'string' ? b.giveawayTag.slice(0, 60) : '';
     const KEY = process.env.RESEND_API_KEY, AUD = process.env.RESEND_AUDIENCE_ID;
     if (!em || !tag || !KEY || !AUD) { res.status(400).json({ error: 'bad-request' }); return; }
-    if (await enforce(req, res, { name: `giveaway-remind:${em}`, limit: 1, windowSeconds: 86400 })) return;
+    if (b.dryRun !== true && await enforce(req, res, { name: `giveaway-remind:${em}`, limit: 1, windowSeconds: 86400 })) return;
     const cr = await fetch(`https://api.resend.com/audiences/${AUD}/contacts/${encodeURIComponent(em)}`,
       { headers: { Authorization: `Bearer ${KEY}` } });
     const cj = cr.ok ? await cr.json() : null;
     const c = cj ? (cj.data && cj.data.email ? cj.data : cj) : null;
-    if (!c || c.unsubscribed !== true || c.last_name !== tag) { res.status(200).json({ sent: false, reason: 'not-pending-entrant' }); return; }
+    // `unsubscribed: true` means EITHER never-confirmed OR opted out on purpose:
+    // confirm-handler.js documents that tradeoff, and unsubscribing deliberately
+    // leaves `last_name` in place. So this check alone would mail a reader who
+    // actually pressed unsubscribe, which is the one mistake a reminder must
+    // never make. The `status` property (lib/contact-status.js) is the only
+    // thing that tells the two apart, so it is required to say `pending`.
+    const liveStatus = c && c.properties && c.properties.status;
+    if (!c || c.unsubscribed !== true || c.last_name !== tag || liveStatus !== 'pending') {
+      res.status(200).json({ sent: false, reason: 'not-pending-entrant', status: liveStatus || null });
+      return;
+    }
+    // Dry run: answer "would this address get the reminder?" and send nothing.
+    // A bulk reminder is irreversible, so the count has to be checkable before
+    // the first mail goes out rather than inferred from the dashboard, where a
+    // pending reader and a real opt-out look identical.
+    if (b.dryRun === true) {
+      res.status(200).json({ wouldSend: true, email: em, tag, status: liveStatus });
+      return;
+    }
+
     const { confirmUrl } = require('../lib/confirm');
     const link = confirmUrl(em, tag);
     const gTitle = String(b.giveawayTitle || 'the book').slice(0, 120);
