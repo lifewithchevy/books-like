@@ -705,7 +705,7 @@ else if (/^[a-zA-Z]$/.test(k)) { handleKey(k.toUpperCase()); }
 // real nav and not another line tucked inside a sheet.
 const menuDrawer = $('menu-drawer');
 
-// ---- Report a problem ----
+// ---- Feedback & reports ----
 // The channel this game did not have. On 24 Oct a player posted on r/B00KY
 // that ymail.com could not sign up; it went unanswered for three days because
 // nothing surfaced it, and it was found only because Olga opened Reddit by
