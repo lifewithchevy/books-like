@@ -2350,3 +2350,61 @@ body.og-image-page {
 .signup-line a { color: var(--link); font-weight: 600; }
 .signup-line-sub { color: var(--ink-dim); }
 .signup-body { border-top: 0; padding-top: 0; margin-top: 18px; }
+
+/* ---------------------------------------------------------------------------
+   Report a problem (27 Oct 2026)
+   Reuses .sheet / .sheet-inner / .primary so it is the same object as every
+   other sheet; only the form controls are new.
+--------------------------------------------------------------------------- */
+.feedback-intro { margin: 0 0 18px; text-align: left; }
+.feedback-label {
+  display: block;
+  margin: 0 0 6px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--ink);
+  text-align: left;
+}
+.feedback-optional {
+  font-weight: 400;
+  font-size: 11.5px;
+  color: var(--ink-dim);
+}
+.feedback-text,
+.feedback-email {
+  width: 100%;
+  box-sizing: border-box;
+  font-family: var(--font-sans);
+  font-size: 16px;            /* 16px or iOS Safari zooms the page on focus */
+  color: var(--ink);
+  background: var(--bg-2);
+  border: 1.5px solid var(--border);
+  border-radius: 10px;
+  padding: 11px 13px;
+  margin: 0 0 16px;
+}
+.feedback-text { resize: vertical; min-height: 92px; line-height: 1.5; }
+.feedback-text:focus, .feedback-email:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+.feedback-text::placeholder, .feedback-email::placeholder { color: var(--ink-faint); }
+.feedback-error {
+  margin: 0 0 12px;
+  font-family: var(--font-sans);
+  font-size: 13px;
+  line-height: 1.5;
+  color: var(--present);
+  text-align: left;
+}
+#feedback-submit { width: 100%; }
+#feedback-submit:disabled { opacity: 0.6; cursor: default; }
+.feedback-done {
+  margin: 8px 0 0;
+  font-family: var(--font-sans);
+  font-size: 15px;
+  line-height: 1.6;
+  color: var(--ink);
+  text-align: center;
+}

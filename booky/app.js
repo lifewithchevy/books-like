@@ -704,6 +704,77 @@ else if (/^[a-zA-Z]$/.test(k)) { handleKey(k.toUpperCase()); }
 // failed outright (52 opened Stats, 1 clicked through), which is why this is a
 // real nav and not another line tucked inside a sheet.
 const menuDrawer = $('menu-drawer');
+
+// ---- Report a problem ----
+// The channel this game did not have. On 24 Oct a player posted on r/B00KY
+// that ymail.com could not sign up; it went unanswered for three days because
+// nothing surfaced it, and it was found only because Olga opened Reddit by
+// chance. Three real domains were hard-locked out that whole time and nothing
+// was logged, so the size of the loss is unknowable. This exists so the next
+// one takes minutes.
+(function wireFeedback() {
+  const dlg = $('feedback-modal');
+  const link = $('feedback-link');
+  if (!dlg || !link) return;
+  const form = $('feedback-form');
+  const text = $('feedback-text');
+  const email = $('feedback-email');
+  const err = $('feedback-error');
+  const done = $('feedback-done');
+  const submit = $('feedback-submit');
+
+  function open(e) {
+    e?.preventDefault();
+    setMenuOpen(false);
+    err.hidden = true; done.hidden = true; form.hidden = false;
+    submit.disabled = false; submit.textContent = 'Send';
+    if (typeof dlg.showModal === 'function') dlg.showModal();
+    setTimeout(() => text.focus(), 60);
+  }
+  link.addEventListener('click', open);
+  dlg.querySelector('[data-close-feedback]')?.addEventListener('click', (e) => {
+    e.preventDefault(); dlg.close();
+  });
+
+  form.addEventListener('submit', async (e) => {
+    e.preventDefault();
+    const msg = (text.value || '').trim();
+    if (msg.length < 3) {
+      err.textContent = 'Tell me a little about what happened first.';
+      err.hidden = false; text.focus(); return;
+    }
+    const addr = (email.value || '').trim();
+    if (addr && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(addr)) {
+      err.textContent = "That email does not look right. Leave it blank if you'd rather.";
+      err.hidden = false; email.focus(); return;
+    }
+    err.hidden = true;
+    submit.disabled = true; submit.textContent = 'Sending...';
+    try {
+      const r = await fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message: msg,
+          email: addr,
+          type: 'booky-game',
+          // Which day and mode they were on. A bug report without this costs a
+          // round trip to ask, and most people never answer the round trip.
+          page: `booky #${DAY}${ARCHIVE ? ' (archive)' : ''}`,
+        }),
+      });
+      if (!r.ok) throw new Error('http ' + r.status);
+      form.hidden = true; done.hidden = false;
+      posthog.capture('booky_feedback_sent', { gave_email: !!addr, word_number: DAY });
+    } catch (e2) {
+      // Never swallow it: a failed report with no visible failure is exactly
+      // the hole this feature exists to close.
+      err.textContent = 'That did not send. Email booky@90books.com and I will pick it up.';
+      err.hidden = false;
+      submit.disabled = false; submit.textContent = 'Try again';
+    }
+  });
+})();
 function setMenuOpen(open) {
   if (!menuDrawer) return;
   $('menu-btn')?.setAttribute('aria-expanded', open ? 'true' : 'false');
