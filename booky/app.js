@@ -764,6 +764,11 @@ const menuDrawer = $('menu-drawer');
         }),
       });
       if (!r.ok) throw new Error('http ' + r.status);
+      // Two different outcomes, said plainly. Someone who skipped the email
+      // should not sit waiting for a reply that cannot come.
+      done.textContent = addr
+        ? 'Thank you, that reached me. I will reply to ' + addr + '.'
+        : 'Thank you, that reached me. You did not leave an email, so I have no way to reply, but I will read it and fix it.';
       form.hidden = true; done.hidden = false;
       posthog.capture('booky_feedback_sent', { gave_email: !!addr, word_number: DAY });
     } catch (e2) {
