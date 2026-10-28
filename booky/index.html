@@ -46,7 +46,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com" />
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=Inter:wght@600;700;800&display=swap" rel="stylesheet" />
-<link rel="stylesheet" href="/booky/styles.css?v=101" />
+<link rel="stylesheet" href="/booky/styles.css?v=102" />
 <!-- PostHog analytics -->
 <script>
   !function(t,e){var o,n,p,r;e.__SV||(window.posthog=e,e._i=[],e.init=function(i,s,a){function g(t,e){var o=e.split(".");2==o.length&&(t=t[o[0]],e=o[1]),t[e]=function(){t.push([e].concat(Array.prototype.slice.call(arguments,0)))}}(p=t.createElement("script")).type="text/javascript",p.crossOrigin="anonymous",p.async=!0,p.src=s.api_host.replace(".i.posthog.com","-assets.i.posthog.com")+"/static/array.js",(r=t.getElementsByTagName("script")[0]).parentNode.insertBefore(p,r);var u=e;for(void 0!==a?u=e[a]=[]:a="posthog",u.people=u.people||[],u.toString=function(t){var e="posthog";return"posthog"!==a&&(e+="."+a),t||(e+=" (stub)"),e},u.people.toString=function(){return u.toString(1)+".people (stub)"},o="init capture register register_once register_for_session unregister unregister_for_session getFeatureFlag getFeatureFlagPayload isFeatureEnabled reloadFeatureFlags updateEarlyAccessFeatureEnrollment getEarlyAccessFeatures on onFeatureFlags onSessionId getSurveys getActiveMatchingSurveys renderSurvey canRenderSurvey getNextSurveyStep identify setPersonProperties group resetGroups setPersonPropertiesForFlags resetPersonPropertiesForFlags setGroupPropertiesForFlags resetGroupPropertiesForFlags reset opt_in_capturing opt_out_capturing has_opted_in_capturing has_opted_out_capturing clear_opt_in_out_capturing debug getPageViewId captureTraceFeedback captureTraceMetric".split(" "),n=0;n<o.length;n++)g(u,o[n]);e._i.push([i,s,a])},e.__SV=1)}(document,window.posthog||[]);
@@ -238,8 +238,11 @@
 <textarea id="feedback-text" class="feedback-text" rows="4" maxlength="2000" required
   placeholder="I could not sign up with my email, or: it would be great if..."></textarea>
 
-<label class="feedback-label" for="feedback-email">Your email <span class="feedback-optional">add it if you want an answer, I cannot reply without it</span></label>
-<input id="feedback-email" class="feedback-email" type="email" autocomplete="email" placeholder="you@example.com" />
+<label class="feedback-label" for="feedback-email">Your email <span class="feedback-optional">optional</span></label>
+<input id="feedback-email" class="feedback-email feedback-email--hinted" type="email" autocomplete="email" placeholder="you@example.com" />
+<!-- Under the field, not inside the label: "optional" is the fact they need
+     BEFORE deciding, and the consequence is what they need while deciding. -->
+<p class="feedback-hint">Leave it if you want a reply. You can send this anonymously without it.</p>
 
 <p id="feedback-error" class="feedback-error" hidden></p>
 <button type="submit" id="feedback-submit" class="primary">Send</button>

@@ -2408,3 +2408,16 @@ body.og-image-page {
   color: var(--ink);
   text-align: center;
 }
+
+/* The email field's helper line. Sits UNDER the input so the label can stay
+   short enough to read at a glance: "optional" is what decides whether they
+   engage with the field at all, the consequence is what they read next. */
+.feedback-email--hinted { margin-bottom: 6px; }
+.feedback-hint {
+  margin: 0 0 18px;
+  font-family: var(--font-sans);
+  font-size: 12.5px;
+  line-height: 1.5;
+  color: var(--ink-dim);
+  text-align: left;
+}
