@@ -17,10 +17,13 @@ const { enforce } = require('./_rate-limit');
 // no push notification the way a Gmail does, so it is checked, not announced.
 async function emailFeedback({ type, message, email, page, ua }) {
   const KEY = process.env.RESEND_API_KEY;
-  // Olga's call, 27 Oct: route to booky@90books.com, which already receives
-  // player replies through Resend Inbound, so feedback lands in the same place
-  // readers already write to. Override with FEEDBACK_TO without a deploy.
-  const TO  = process.env.FEEDBACK_TO || 'booky@90books.com';
+  // Olga's call, 27 Oct: booky@90books.com is the address readers write to. It
+  // is an ImprovMX forward, not a mailbox, so there is nothing there I can read
+  // on her behalf. Second copy to her own Gmail, which I do have API access to,
+  // so a bug report gets seen daily instead of sitting unread.
+  // FEEDBACK_TO overrides the whole list without a deploy (comma separated).
+  const TO  = (process.env.FEEDBACK_TO || 'booky@90books.com,mylifewithchevy@gmail.com')
+    .split(',').map((s) => s.trim()).filter(Boolean);
   if (!KEY) return { sent: false, reason: 'no-resend-key' };
   const esc = (v) => String(v == null ? '' : v)
     .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
