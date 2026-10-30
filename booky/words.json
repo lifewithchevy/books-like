@@ -227,7 +227,7 @@
     "TRICK",
     "DOVES",
     "VEILS",
-    "GNOME",
+    "RELIC",
     "TRUCE",
     "SOOTH",
     "SIREN",
@@ -381,7 +381,8 @@
     "HOUND",
     "SHINE",
     "SOOTY",
-    "SCALE"
+    "SCALE",
+    "GNOME"
   ],
   "wordBooks": {
     "COURT": {
@@ -3193,6 +3194,16 @@
     "ELITE": [
       {
         "from": "2026-10-30",
+        "slug": "fourth-wing",
+        "title": "Fourth Wing",
+        "author": "Rebecca Yarros",
+        "cover": "/booky/covers/fourth-wing.jpg",
+        "buyUrl": "https://amzn.to/4vaA7Q6"
+      }
+    ],
+    "RELIC": [
+      {
+        "from": "2026-11-23",
         "slug": "fourth-wing",
         "title": "Fourth Wing",
         "author": "Rebecca Yarros",
