@@ -206,7 +206,7 @@
     "ELITE",
     "DEATH",
     "CHAIR",
-    "SPELL",
+    "RIVAL",
     "HAUNT",
     "FIELD",
     "EARTH",
@@ -382,7 +382,8 @@
     "SHINE",
     "SOOTY",
     "SCALE",
-    "GNOME"
+    "GNOME",
+    "SPELL"
   ],
   "wordBooks": {
     "COURT": {
