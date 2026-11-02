@@ -318,10 +318,32 @@ LOCKED = true;
 showPostGame();
 }
 
-// First-time visitor: show help
+// First-time visitor: show help.
+//
+// Until 2 Nov 2026 this auto-open fired NO event. Only the help BUTTON was
+// tracked, so the first screen every new player meets was the one step of the
+// journey with no numbers on it at all. The open question it hides: does a
+// first-timer read this and start playing, or is the sheet itself where they
+// go? Pair booky_help_autoshown with booky_first_guess to get the answer, and
+// seconds_open to tell a read from a reflex dismissal.
 if (!localStorage.getItem('90books_booky_seen_help_v1')) {
 localStorage.setItem('90books_booky_seen_help_v1', '1');
-setTimeout(() => $('help-modal').showModal(), 400);
+setTimeout(() => {
+const h = $('help-modal');
+h.showModal();
+const shownAt = Date.now();
+if (window.posthog) posthog.capture('booky_help_autoshown', { word_number: DAY });
+// Fires for every route out: the close button, a tap on the dimmed area and
+// the Escape key all end in dialog.close(), which emits this.
+h.addEventListener('close', () => {
+if (window.posthog) {
+posthog.capture('booky_help_dismissed', {
+word_number: DAY,
+seconds_open: Math.round((Date.now() - shownAt) / 1000),
+});
+}
+}, { once: true });
+}, 400);
 }
 })();
 
@@ -1643,12 +1665,37 @@ function showPostGame() {
   if (pg) pg.hidden = false;
 }
 
+// Rejections were invisible until 2 Nov 2026, and that hid the biggest number
+// in the product. `booky_first_guess` only fires on an ACCEPTED guess, so a
+// player whose words keep getting refused looks identical to one who never
+// touched the keyboard. Measured that day: 3,258 first-timers (37.4%) never got
+// a word accepted, and they averaged 45 to 72 taps on their first day. People
+// who tap 60 times are trying. This event is what tells "could not get in" apart
+// from "did not bother", and the words it returns are the list to add to
+// dictionary.json (adding words is always allowed, a real word must never be
+// refused twice).
+//
+// Capped per game because a frustrated player can mash ENTER, and a runaway
+// loop must never bury the rest of the funnel in noise.
+let rejectsSent = 0;
 function shake(message) {
 const r = STATE.guesses.length;
 const row = $('board').children[r];
 if (row) {
 row.classList.add('shake');
 setTimeout(() => row.classList.remove('shake'), 450);
+}
+if (window.posthog && rejectsSent < 25) {
+rejectsSent += 1;
+posthog.capture('booky_guess_rejected', {
+word_number: DAY,
+archive: ARCHIVE,
+reason: message,
+attempt: CURRENT,
+attempt_length: CURRENT.length,
+guesses_so_far: r,
+first_guess_of_game: r === 0,
+});
 }
 showToast(message);
 }
