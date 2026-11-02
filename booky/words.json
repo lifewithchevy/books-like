@@ -207,7 +207,7 @@
     "DEATH",
     "CHAIR",
     "RIVAL",
-    "HAUNT",
+    "INNER",
     "FIELD",
     "EARTH",
     "JEWEL",
@@ -217,7 +217,7 @@
     "DIRGE",
     "WARDS",
     "HOUSE",
-    "FLORA",
+    "HAUNT",
     "GAUZE",
     "GLINT",
     "SIEGE",
@@ -383,7 +383,8 @@
     "SOOTY",
     "SCALE",
     "GNOME",
-    "SPELL"
+    "SPELL",
+    "FLORA"
   ],
   "wordBooks": {
     "COURT": {
