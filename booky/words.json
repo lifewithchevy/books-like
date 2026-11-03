@@ -212,8 +212,8 @@
     "EARTH",
     "PHONE",
     "SQUAD",
-    "UNCLE",
-    "MALES",
+    "STONE",
+    "GRIEF",
     "DIRGE",
     "WARDS",
     "HOUSE",
@@ -259,11 +259,11 @@
     "ASHEN",
     "ALTAR",
     "TALON",
-    "POPPY",
+    "UNCLE",
     "GLOWS",
     "BONES",
     "IRONS",
-    "FAITH",
+    "MALES",
     "HAWKE",
     "HONEY",
     "CHAOS",
@@ -3109,6 +3109,20 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
       "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
+    },
+    "STONE": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "/booky/covers/one-dark-window.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
+    },
+    "GRIEF": {
+      "slug": "phantasma",
+      "title": "Phantasma",
+      "author": "Kaylie Smith",
+      "cover": "/booky/covers/phantasma.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B0CXNJDB4B?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
