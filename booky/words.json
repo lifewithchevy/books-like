@@ -210,7 +210,7 @@
     "INNER",
     "FIELD",
     "EARTH",
-    "JEWEL",
+    "PHONE",
     "COAST",
     "SQUAD",
     "ENVOY",
@@ -237,7 +237,7 @@
     "COVEN",
     "ANGER",
     "FAITH",
-    "TALON",
+    "LIBRA",
     "CHIME",
     "LEDGE",
     "CREED",
@@ -258,7 +258,7 @@
     "CAGED",
     "ASHEN",
     "ALTAR",
-    "OATHS",
+    "TALON",
     "POPPY",
     "GLOWS",
     "BONES",
@@ -3081,6 +3081,20 @@
       "author": "Rebecca Yarros",
       "cover": "/booky/covers/fourth-wing.jpg",
       "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "LIBRA": {
+      "slug": "zodiac-academy",
+      "title": "Zodiac Academy",
+      "author": "Caroline Peckham & Susanne Valenti",
+      "cover": "/booky/covers/zodiac-academy.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B07SV21LFY?tag=90books-20"
+    },
+    "PHONE": {
+      "slug": "house-of-earth-and-blood",
+      "title": "House of Earth and Blood",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/house-of-earth-and-blood.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B07QBC8QTP?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
