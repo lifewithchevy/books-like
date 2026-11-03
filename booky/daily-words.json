@@ -211,9 +211,9 @@
     "FIELD",
     "EARTH",
     "PHONE",
-    "COAST",
     "SQUAD",
-    "ENVOY",
+    "UNCLE",
+    "MALES",
     "DIRGE",
     "WARDS",
     "HOUSE",
@@ -3095,6 +3095,20 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/house-of-earth-and-blood.jpg",
       "buyUrl": "https://www.amazon.com/dp/B07QBC8QTP?tag=90books-20"
+    },
+    "UNCLE": {
+      "slug": "one-dark-window",
+      "title": "One Dark Window",
+      "author": "Rachel Gillig",
+      "cover": "/booky/covers/one-dark-window.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B09DCKSR8V?tag=90books-20"
+    },
+    "MALES": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
