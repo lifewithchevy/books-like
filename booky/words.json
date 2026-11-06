@@ -221,7 +221,7 @@
     "HAUNT",
     "GRIEF",
     "SIEGE",
-    "STALK",
+    "PANTS",
     "RULES",
     "HYDRA",
     "TRICK",
@@ -235,14 +235,14 @@
     "PROWL",
     "GROVE",
     "COVEN",
-    "ANGER",
+    "HAZEL",
     "FAITH",
     "LIBRA",
     "CHIME",
     "LEDGE",
     "CREED",
     "FEARS",
-    "SYLPH",
+    "QUICK",
     "WAVES",
     "TOMBS",
     "ELFIN",
@@ -256,7 +256,7 @@
     "FIGHT",
     "CHAIN",
     "CAGED",
-    "DIRGE",
+    "NOVEL",
     "ALTAR",
     "TALON",
     "UNCLE",
@@ -385,7 +385,11 @@
     "GNOME",
     "SPELL",
     "FLORA",
-    "GAUZE"
+    "GAUZE",
+    "STALK",
+    "ANGER",
+    "SYLPH",
+    "DIRGE"
   ],
   "wordBooks": {
     "COURT": {
@@ -3131,6 +3135,34 @@
       "author": "Ilona Andrews",
       "cover": "/booky/covers/this-kingdom-will-not-kill-me.jpg",
       "buyUrl": "https://www.amazon.com/dp/1250377269?tag=90books-20"
+    },
+    "PANTS": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-silver-flames.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20"
+    },
+    "HAZEL": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-silver-flames.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20"
+    },
+    "QUICK": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-silver-flames.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20"
+    },
+    "NOVEL": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-silver-flames.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
