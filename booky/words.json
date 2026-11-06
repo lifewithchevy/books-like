@@ -212,13 +212,13 @@
     "EARTH",
     "PHONE",
     "SQUAD",
-    "HAUNT",
+    "DITCH",
     "GLINT",
     "ASHEN",
     "WARDS",
     "HOUSE",
     "STONE",
-    "GAUZE",
+    "HAUNT",
     "GRIEF",
     "SIEGE",
     "STALK",
@@ -384,7 +384,8 @@
     "SCALE",
     "GNOME",
     "SPELL",
-    "FLORA"
+    "FLORA",
+    "GAUZE"
   ],
   "wordBooks": {
     "COURT": {
@@ -3123,6 +3124,13 @@
       "author": "Kaylie Smith",
       "cover": "/booky/covers/phantasma.jpg",
       "buyUrl": "https://www.amazon.com/dp/B0CXNJDB4B?tag=90books-20"
+    },
+    "DITCH": {
+      "slug": "this-kingdom-will-not-kill-me",
+      "title": "This Kingdom Will Not Kill Me",
+      "author": "Ilona Andrews",
+      "cover": "/booky/covers/this-kingdom-will-not-kill-me.jpg",
+      "buyUrl": "https://www.amazon.com/s?k=This+Kingdom+Will+Not+Kill+Me+Ilona+Andrews&tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
