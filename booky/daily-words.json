@@ -249,7 +249,7 @@
     "CREPT",
     "SNEAK",
     "FAERY",
-    "COMET",
+    "LABOR",
     "ELIDE",
     "MOANS",
     "CLIFF",
@@ -270,7 +270,7 @@
     "RIDOC",
     "FLESH",
     "DEITY",
-    "LABOR",
+    "FERAL",
     "SPITE",
     "ROOTS",
     "CREED",
@@ -390,7 +390,7 @@
     "ANGER",
     "SYLPH",
     "DIRGE",
-    "FERAL"
+    "COMET"
   ],
   "wordBooks": {
     "COURT": {
