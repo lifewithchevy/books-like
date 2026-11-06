@@ -265,7 +265,7 @@
     "IRONS",
     "MALES",
     "HAWKE",
-    "HONEY",
+    "ELITE",
     "CHAOS",
     "RIDOC",
     "FLESH",
@@ -3243,6 +3243,14 @@
         "author": "Rebecca Yarros",
         "cover": "/booky/covers/fourth-wing.jpg",
         "buyUrl": "https://amzn.to/4vaA7Q6"
+      },
+      {
+        "from": "2026-12-31",
+        "slug": "conform",
+        "title": "Conform",
+        "author": "Ariel Sullivan",
+        "cover": "/booky/covers/conform.jpg",
+        "buyUrl": "https://www.amazon.com/s?k=Conform+Ariel+Sullivan&tag=90books-20"
       }
     ],
     "RELIC": [
