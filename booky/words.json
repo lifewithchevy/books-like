@@ -270,7 +270,7 @@
     "RIDOC",
     "FLESH",
     "DEITY",
-    "FERAL",
+    "LABOR",
     "SPITE",
     "ROOTS",
     "CREED",
@@ -389,7 +389,8 @@
     "STALK",
     "ANGER",
     "SYLPH",
-    "DIRGE"
+    "DIRGE",
+    "FERAL"
   ],
   "wordBooks": {
     "COURT": {
@@ -3158,6 +3159,13 @@
       "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20"
     },
     "NOVEL": {
+      "slug": "a-court-of-silver-flames",
+      "title": "A Court of Silver Flames",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-silver-flames.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20"
+    },
+    "LABOR": {
       "slug": "a-court-of-silver-flames",
       "title": "A Court of Silver Flames",
       "author": "Sarah J. Maas",
