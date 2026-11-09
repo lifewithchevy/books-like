@@ -5,6 +5,47 @@
 //   AIRTABLE_FEEDBACK_TABLE — table name, default "Feedback"
 
 const { enforce } = require('./_rate-limit');
+const fs = require('fs');
+const path = require('path');
+const { bookFor } = require('../lib/book-for');
+
+// The exact puzzle they were on, resolved HERE rather than sent by the
+// browser: the answer must never travel out to a player's page, and the
+// server already has the queue. Added 8 Nov so a report can be reproduced
+// by replaying the day instead of guessing at it.
+//
+// `page` arrives as "booky #164" or "booky #164 (archive)". Anything else,
+// or any failure reading the queue, returns null and the email simply does
+// not carry the line. A feedback mail must never fail over a nicety.
+function puzzleFor(page) {
+  try {
+    const m = /#(\d{1,5})/.exec(String(page || ''));
+    if (!m) return null;
+    const day = Number(m[1]);
+    if (!(day >= 1)) return null;
+    const data = JSON.parse(
+      fs.readFileSync(path.join(__dirname, '..', 'booky', 'words.json'), 'utf8')
+    );
+    const word = data && data.queue && data.queue[day - 1];
+    if (!word) return null;
+    const book = bookFor(data, String(word).toUpperCase(), day) || {};
+    // Day 1 is `epoch`, computed in UTC so it cannot drift with the server's
+    // timezone. Same rule as lib/book-for.js.
+    const e = String(data.epoch).split('-').map(Number);
+    const date = new Date(Date.UTC(e[0], e[1] - 1, e[2] + day - 1)).toISOString().slice(0, 10);
+    return {
+      day,
+      date,
+      word: String(word).toUpperCase(),
+      title: book.title || '?',
+      // Replaying it is the whole point of knowing it.
+      replay: 'https://90books.com/booky?day=' + day,
+    };
+  } catch (err) {
+    console.error('[feedback] puzzleFor failed:', err);
+    return null;
+  }
+}
 
 // WHY THIS EMAILS AND DOES NOT ONLY WRITE TO AIRTABLE:
 // a player reported on r/B00KY that ymail.com could not sign up. It sat
@@ -15,7 +56,7 @@ const { enforce } = require('./_rate-limit');
 // in the Resend log, so there are two places to check and neither needs
 // Airtable to be configured. Note the tradeoff of the booky@ address: it has
 // no push notification the way a Gmail does, so it is checked, not announced.
-async function emailFeedback({ type, message, email, page, ua }) {
+async function emailFeedback({ type, message, email, page, ua, diag, puzzle }) {
   const KEY = process.env.RESEND_API_KEY;
   // Olga's call, 27 Oct: booky@90books.com is the address readers write to, but
   // it is an ImprovMX forward rather than a mailbox, and that forward bounced
@@ -41,13 +82,15 @@ async function emailFeedback({ type, message, email, page, ua }) {
         ...(from ? { reply_to: from } : {}),
         subject: `Booky feedback: ${String(type || 'general').slice(0, 40)}${from ? ` from ${from}` : ''}`,
         tags: [{ name: 'type', value: 'player-feedback' }],
-        text: `${message}\n\n---\nfrom: ${from || '(no email given)'}\npage: ${page || '?'}\ndevice: ${ua || '?'}`,
+        text: `${message}\n\n---\nfrom: ${from || '(no email given)'}\npage: ${page || '?'}\ndevice: ${ua || '?'}\nsession: ${diag || '?'}${puzzle ? `\npuzzle: #${puzzle.day} ${puzzle.date} ${puzzle.word} - ${puzzle.title}\nreplay: ${puzzle.replay}` : ''}`,
         html: `<div style="font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',Roboto,sans-serif;color:#2a0a26;max-width:560px">
   <p style="font-size:16px;line-height:1.6;white-space:pre-wrap;margin:0 0 20px">${esc(message)}</p>
   <table style="font-size:13px;color:#6a4a6c;border-top:1px solid #ead4e2;padding-top:12px;width:100%">
     <tr><td style="padding:3px 10px 3px 0">from</td><td>${from ? `<a href="mailto:${esc(from)}">${esc(from)}</a>` : '(no email given)'}</td></tr>
     <tr><td style="padding:3px 10px 3px 0">page</td><td>${esc(page || '?')}</td></tr>
+    ${puzzle ? `<tr><td style="padding:3px 10px 3px 0">puzzle</td><td><strong>${esc(puzzle.word)}</strong> &mdash; ${esc(puzzle.title)} <span style="color:#9a7a9c">(${esc(puzzle.date)})</span><br><a href="${esc(puzzle.replay)}">Replay day ${puzzle.day}</a></td></tr>` : ''}
     <tr><td style="padding:3px 10px 3px 0">device</td><td>${esc(ua || '?')}</td></tr>
+    <tr><td style="padding:3px 10px 3px 0">session</td><td style="word-break:break-word;line-height:1.5">${esc(diag || '?')}</td></tr>
   </table>
 </div>`,
       }),
@@ -77,7 +120,10 @@ module.exports = async (req, res) => {
   // Unauthenticated POST that spends a real resource. Fails open.
   if (await enforce(req, res, { name: 'feedback', limit: 10 })) return;
 
-  const { message, type, email, page } = req.body || {};
+  const { message, type, email, page, diagnostics } = req.body || {};
+  // The window geometry the player's browser reported. Untrusted text from an
+  // open endpoint, so it is capped and never parsed, only shown.
+  const diag = String(diagnostics == null ? '' : diagnostics).slice(0, 900);
   const ua = String(req.headers['user-agent'] || '').slice(0, 160);
 
   if (!message || typeof message !== 'string' || message.trim().length < 3) {
@@ -87,7 +133,8 @@ module.exports = async (req, res) => {
 
   // Sent before Airtable is even considered: the mail is the part that gets
   // read, and it must not depend on a table that may not be configured.
-  const mail = await emailFeedback({ type, message: message.trim(), email, page, ua });
+  const puzzle = puzzleFor(page);
+  const mail = await emailFeedback({ type, message: message.trim(), email, page, ua, diag, puzzle });
 
   const AIRTABLE_API_KEY = process.env.AIRTABLE_API_KEY;
   const AIRTABLE_BASE_ID = process.env.AIRTABLE_BASE_ID;

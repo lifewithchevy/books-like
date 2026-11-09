@@ -6,6 +6,33 @@ const MAX_GUESSES = 6;
 const STATE_KEY = '90books_booky_word_v1';
 const STATS_KEY = '90books_booky_word_stats_v1';
 
+// ---- Bug diagnostics --------------------------------------------------
+// Every feedback report carries a one-line summary of what the player's
+// browser was actually doing. Added 8 Nov after a report that the archive
+// keyboard was cut off: the layout measured clean at every phone size we
+// could reproduce, and nothing in the report said what they were looking
+// at. These two are filled in as the page runs so the line can be built at
+// the moment Send is pressed.
+let DATA_SOURCE = 'none';   // 'network' | 'cache' | 'none'
+let LAST_ERROR = '';        // the most recent uncaught error, if any
+
+// Installed first thing, before anything else can throw: an error that
+// happens during boot is exactly the one worth having.
+try {
+  addEventListener('error', (e) => {
+    try {
+      const where = e.filename ? ' @' + String(e.filename).split('/').pop() + ':' + e.lineno : '';
+      LAST_ERROR = String((e.error && e.error.message) || e.message || 'error').slice(0, 110) + where;
+    } catch {}
+  });
+  addEventListener('unhandledrejection', (e) => {
+    try {
+      const r = e.reason;
+      LAST_ERROR = 'promise: ' + String((r && r.message) || r || '?').slice(0, 110);
+    } catch {}
+  });
+} catch {}
+
 // ---- Archive mode -----------------------------------------------------
 // /booky?day=N replays a PAST puzzle. It is the same game, pointed at a
 // different slot in the queue, with three things deliberately severed:
@@ -212,13 +239,17 @@ let data = null;
 try {
 data = await fetchJSON('/api/booky-words', { cache: 'no-store' });
 if (looksLikeQueue(data)) {
+DATA_SOURCE = 'network';
 try { localStorage.setItem(WORDS_CACHE_KEY, JSON.stringify(data)); } catch {}
 }
 } catch {
 data = null;
 }
 if (!looksLikeQueue(data)) {
+// Serving a STALE cached queue is the cause of every "I got yesterday's
+// word" report, so the report has to say which copy was in play.
 try { data = JSON.parse(localStorage.getItem(WORDS_CACHE_KEY)); } catch { data = null; }
+if (looksLikeQueue(data)) DATA_SOURCE = 'cache';
 }
 if (!looksLikeQueue(data)) {
 return showFatal("Couldn't load today's word. Try refreshing.");
@@ -758,6 +789,120 @@ const menuDrawer = $('menu-drawer');
     e.preventDefault(); dlg.close();
   });
 
+  // Everything about this player's session that a bug report needs and that
+  // nobody would ever think to type. Added 8 Nov, after a report that the
+  // archive keyboard was cut off could not be reproduced or answered: the
+  // only facts we had were a sentence and a user agent.
+  //
+  // Nothing here identifies anyone. No email address, no answer word, no
+  // guesses. It is the shape of the window, the state of the clock, and
+  // whether the machinery worked, which is what every report so far has
+  // turned on. Each line is its own try/catch so one unsupported API in an
+  // old browser can never cost us the rest of the report.
+  function diagnostics() {
+    const bits = [];
+    const add = (fn) => { try { const v = fn(); if (v) bits.push(v); } catch {} };
+    const v = window.visualViewport;
+
+    // --- Geometry. The archive-keyboard class of report lives here. ---
+    add(() => 'win ' + Math.round(innerWidth) + 'x' + Math.round(innerHeight));
+    // visualViewport is the one that shrinks when a phone keyboard or a URL
+    // bar is covering the page. A gap between it and the window IS the bug
+    // in a "cut off" report, so it is only worth printing when they differ.
+    add(() => (v && Math.abs(v.height - innerHeight) > 2)
+      ? 'visual ' + Math.round(v.width) + 'x' + Math.round(v.height) : '');
+    add(() => 'screen ' + screen.width + 'x' + screen.height);
+    add(() => 'dpr ' + (devicePixelRatio || 1));
+    add(() => (v && v.scale && Math.abs(v.scale - 1) > 0.01) ? 'zoom ' + v.scale.toFixed(2) : '');
+    add(() => (screen.orientation && screen.orientation.type)
+      || (innerWidth > innerHeight ? 'landscape' : 'portrait'));
+    // The gesture bar on a phone. Chrome on Android reports 0 here even when
+    // the system bar is really there, so a 0 next to a small clearance below
+    // is the signature of a row the player can see but cannot tap.
+    add(() => {
+      const d = document.createElement('div');
+      d.style.cssText = 'position:fixed;bottom:0;height:env(safe-area-inset-bottom,0px);visibility:hidden';
+      document.body.appendChild(d);
+      const px = Math.round(d.getBoundingClientRect().height);
+      d.remove();
+      return 'safe-bottom ' + px + 'px';
+    });
+    // Where the keyboard's last row actually ended, relative to the bottom
+    // of the screen. Negative means it was off the screen: the report
+    // proving itself without anyone having to describe it.
+    add(() => {
+      const rows = document.querySelectorAll('.kb-row');
+      const last = rows.length ? rows[rows.length - 1].getBoundingClientRect() : null;
+      return last ? 'kb-gap ' + Math.round(innerHeight - last.bottom) + 'px' : '';
+    });
+    // A board that overflows its wrapper is the same bug one element up.
+    add(() => {
+      const b = document.getElementById('board');
+      const w = document.querySelector('.board-wrap');
+      if (!b || !w) return '';
+      const over = Math.round(b.getBoundingClientRect().height - w.getBoundingClientRect().height);
+      return over > 1 ? 'board-overflow ' + over + 'px' : '';
+    });
+
+    // --- Rendering. Text that overflows is usually one of these two. ---
+    add(() => matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+    add(() => matchMedia('(prefers-reduced-motion: reduce)').matches ? 'reduced-motion' : '');
+    add(() => {
+      // Browser or OS font scaling, which silently breaks fixed-height rows.
+      const d = document.createElement('div');
+      d.style.cssText = 'position:absolute;visibility:hidden;font-size:16px';
+      d.textContent = 'x';
+      document.body.appendChild(d);
+      const px = Math.round(parseFloat(getComputedStyle(d).fontSize));
+      d.remove();
+      return px !== 16 ? 'font-scale ' + px + 'px' : '';
+    });
+    add(() => matchMedia('(display-mode: standalone)').matches ? 'installed-pwa' : '');
+
+    // --- The clock. The day number comes from the PLAYER's local midnight,
+    // so a wrong-word report is nearly always a clock or a time zone. ---
+    add(() => {
+      // Their WALL CLOCK, not UTC: the day number is computed from their
+      // local midnight, so UTC here would hide the exact fault we look for.
+      const d = new Date();
+      const p2 = (n) => String(n).padStart(2, '0');
+      return 'clock ' + d.getFullYear() + '-' + p2(d.getMonth() + 1) + '-' + p2(d.getDate())
+        + ' ' + p2(d.getHours()) + ':' + p2(d.getMinutes()) + ' local';
+    });
+    add(() => 'tz ' + (Intl.DateTimeFormat().resolvedOptions().timeZone || '?')
+      + ' (' + (-new Date().getTimezoneOffset() / 60) + ')');
+    add(() => {
+      // What their clock says today is, against the day they are playing.
+      const theirs = computeDayNumber(DATA.epoch);
+      return theirs !== DAY ? 'their-day ' + theirs : '';
+    });
+
+    // --- Did the machinery work? ---
+    add(() => 'queue ' + DATA_SOURCE + '/' + (DATA && DATA.queue ? DATA.queue.length : '?'));
+    add(() => navigator.onLine === false ? 'offline' : '');
+    add(() => {
+      // Storage eviction costs people their streak and is invisible to them.
+      try {
+        const k = '__booky_probe';
+        localStorage.setItem(k, '1'); localStorage.removeItem(k);
+      } catch { return 'storage BLOCKED'; }
+      return localStorage.getItem(stateKey()) ? '' : 'no-saved-state';
+    });
+
+    // --- Where they were in the game. ---
+    add(() => 'guesses ' + STATE.guesses.length + '/' + STATE.status);
+    add(() => usedHint() ? 'used-hint' : '');
+    add(() => ARCHIVE ? 'archive' : 'streak ' + STATS.currentStreak + ' played ' + STATS.played);
+    // A boolean, never the address: enough to tell a signed-up player's
+    // report from a stranger's without putting an email in an email.
+    add(() => hasStoredEmail() ? 'subscribed' : '');
+
+    // --- Anything that actually threw. The single most useful line here. ---
+    add(() => LAST_ERROR ? 'ERROR ' + LAST_ERROR : '');
+
+    return bits.join(' | ');
+  }
+
   form.addEventListener('submit', async (e) => {
     e.preventDefault();
     const msg = (text.value || '').trim();
@@ -783,6 +928,7 @@ const menuDrawer = $('menu-drawer');
           // Which day and mode they were on. A bug report without this costs a
           // round trip to ask, and most people never answer the round trip.
           page: `booky #${DAY}${ARCHIVE ? ' (archive)' : ''}`,
+          diagnostics: diagnostics(),
         }),
       });
       if (!r.ok) throw new Error('http ' + r.status);
