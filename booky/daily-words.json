@@ -219,8 +219,8 @@
     "HOUSE",
     "KNIFE",
     "HAUNT",
-    "STONE",
-    "SIEGE",
+    "HORDE",
+    "MUSIC",
     "PANTS",
     "RULES",
     "HYDRA",
@@ -392,7 +392,9 @@
     "DIRGE",
     "COMET",
     "TRUCE",
-    "GRIEF"
+    "GRIEF",
+    "STONE",
+    "SIEGE"
   ],
   "wordBooks": {
     "COURT": {
@@ -3187,6 +3189,20 @@
       "author": "Holly Black",
       "cover": "/booky/covers/the-cruel-prince.jpg",
       "buyUrl": "https://www.amazon.com/dp/0316461253?tag=90books-20"
+    },
+    "HORDE": {
+      "slug": "this-kingdom-will-not-kill-me",
+      "title": "This Kingdom Will Not Kill Me",
+      "author": "Ilona Andrews",
+      "cover": "/booky/covers/this-kingdom-will-not-kill-me.jpg",
+      "buyUrl": "https://www.amazon.com/dp/1250377269?tag=90books-20"
+    },
+    "MUSIC": {
+      "slug": "throne-of-glass",
+      "title": "Throne of Glass",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/throne-of-glass.jpg",
+      "buyUrl": "https://amzn.to/4aeI6DP"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
