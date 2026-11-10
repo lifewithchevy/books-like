@@ -218,7 +218,7 @@
     "STEAL",
     "HOUSE",
     "KNIFE",
-    "HAUNT",
+    "ARROW",
     "HORDE",
     "MUSIC",
     "PANTS",
@@ -394,7 +394,8 @@
     "TRUCE",
     "GRIEF",
     "STONE",
-    "SIEGE"
+    "SIEGE",
+    "HAUNT"
   ],
   "wordBooks": {
     "COURT": {
@@ -3203,6 +3204,13 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/throne-of-glass.jpg",
       "buyUrl": "https://amzn.to/4aeI6DP"
+    },
+    "ARROW": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
