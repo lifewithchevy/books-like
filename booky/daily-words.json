@@ -215,11 +215,11 @@
     "DITCH",
     "WARDS",
     "NIGHT",
-    "TRUCE",
+    "STEAL",
     "HOUSE",
-    "STONE",
+    "KNIFE",
     "HAUNT",
-    "GRIEF",
+    "STONE",
     "SIEGE",
     "PANTS",
     "RULES",
@@ -390,7 +390,9 @@
     "ANGER",
     "SYLPH",
     "DIRGE",
-    "COMET"
+    "COMET",
+    "TRUCE",
+    "GRIEF"
   ],
   "wordBooks": {
     "COURT": {
@@ -3171,6 +3173,20 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-silver-flames.jpg",
       "buyUrl": "https://www.amazon.com/dp/B08BS4ZJS6?tag=90books-20"
+    },
+    "STEAL": {
+      "slug": "six-of-crows",
+      "title": "Six of Crows",
+      "author": "Leigh Bardugo",
+      "cover": "/booky/covers/six-of-crows.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B00UG9LC4I?tag=90books-20"
+    },
+    "KNIFE": {
+      "slug": "the-cruel-prince",
+      "title": "The Cruel Prince",
+      "author": "Holly Black",
+      "cover": "/booky/covers/the-cruel-prince.jpg",
+      "buyUrl": "https://www.amazon.com/dp/0316461253?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
