@@ -224,10 +224,10 @@
     "PANTS",
     "RULES",
     "HYDRA",
-    "TRICK",
+    "RELIC",
     "DOVES",
     "VEILS",
-    "RELIC",
+    "TRICK",
     "HAZEL",
     "SOOTH",
     "SIREN",
@@ -3343,7 +3343,7 @@
     ],
     "RELIC": [
       {
-        "from": "2026-11-23",
+        "from": "2026-11-20",
         "slug": "fourth-wing",
         "title": "Fourth Wing",
         "author": "Rebecca Yarros",
