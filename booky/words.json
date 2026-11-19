@@ -226,7 +226,7 @@
     "HYDRA",
     "RELIC",
     "BRUSH",
-    "VEILS",
+    "DANCE",
     "TRICK",
     "HAZEL",
     "SOOTH",
@@ -396,7 +396,8 @@
     "STONE",
     "SIEGE",
     "HAUNT",
-    "DOVES"
+    "DOVES",
+    "VEILS"
   ],
   "wordBooks": {
     "COURT": {
@@ -3219,6 +3220,13 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
       "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "DANCE": {
+      "slug": "a-court-of-mist-and-fury",
+      "title": "A Court of Mist and Fury",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-mist-and-fury.jpg",
+      "buyUrl": "https://www.amazon.com/dp/B015FELXQ0?tag=90books-20"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
