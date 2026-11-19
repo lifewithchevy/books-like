@@ -225,7 +225,7 @@
     "RULES",
     "HYDRA",
     "RELIC",
-    "DOVES",
+    "BRUSH",
     "VEILS",
     "TRICK",
     "HAZEL",
@@ -395,7 +395,8 @@
     "GRIEF",
     "STONE",
     "SIEGE",
-    "HAUNT"
+    "HAUNT",
+    "DOVES"
   ],
   "wordBooks": {
     "COURT": {
@@ -3206,6 +3207,13 @@
       "buyUrl": "https://amzn.to/4aeI6DP"
     },
     "ARROW": {
+      "slug": "a-court-of-thorns-and-roses",
+      "title": "A Court of Thorns and Roses",
+      "author": "Sarah J. Maas",
+      "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
+      "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "BRUSH": {
       "slug": "a-court-of-thorns-and-roses",
       "title": "A Court of Thorns and Roses",
       "author": "Sarah J. Maas",
