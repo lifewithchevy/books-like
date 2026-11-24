@@ -229,7 +229,7 @@
     "DANCE",
     "TRICK",
     "HAZEL",
-    "SOOTH",
+    "BRAID",
     "SIREN",
     "BRIBE",
     "PROWL",
@@ -397,7 +397,8 @@
     "SIEGE",
     "HAUNT",
     "DOVES",
-    "VEILS"
+    "VEILS",
+    "SOOTH"
   ],
   "wordBooks": {
     "COURT": {
@@ -3227,6 +3228,13 @@
       "author": "Sarah J. Maas",
       "cover": "/booky/covers/a-court-of-thorns-and-roses.jpg",
       "buyUrl": "https://amzn.to/3PKcUoT"
+    },
+    "BRAID": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "/booky/covers/fourth-wing.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
     }
   },
   "_deploy": "2026-07-17T22:21Z",
