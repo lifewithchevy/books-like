@@ -122,8 +122,10 @@ A word is never judged alone. Check the finished week, not the slot.
 - **Resolve the book through `wordBooksFrom`, not `wordBooks`.** Take every entry whose `from`
   is <= the target date and use the latest one. Reading `wordBooks` alone gives the wrong book.
   This has produced a wrong answer twice and Olga caught it both times.
-- **No book twice inside five days.** One Dark Window on Sunday and Tuesday reads as a rut
-  even though neither slot is broken.
+- **No five-day book-spacing rule. Dropped for good, Olga's call 24 Nov 2026.** The same
+  book may appear twice in a week, on back-to-back days, or three times in six days. Never
+  block, delay or reshape a word because of book adjacency, and never ask about it. Mention
+  a cluster once, in passing, only if she would want to know; her answer is already yes.
 - **Spread across the quarter.** No book gets more than about 8 of any 100 future days. From
   Blood and Ash sat at 24 of 178, which is why 13 of 21 broken slots were FBAA. Count before
   proposing, not after.
