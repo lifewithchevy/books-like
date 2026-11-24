@@ -236,7 +236,7 @@
     "GROVE",
     "MARKS",
     "QUICK",
-    "FAITH",
+    "KNIFE",
     "LIBRA",
     "CHIME",
     "LEDGE",
@@ -400,7 +400,8 @@
     "VEILS",
     "SOOTH",
     "COVEN",
-    "BRIBE"
+    "BRIBE",
+    "FAITH"
   ],
   "wordBooks": {
     "COURT": {
@@ -3384,6 +3385,16 @@
     "RELIC": [
       {
         "from": "2026-11-20",
+        "slug": "fourth-wing",
+        "title": "Fourth Wing",
+        "author": "Rebecca Yarros",
+        "cover": "/booky/covers/fourth-wing.jpg",
+        "buyUrl": "https://amzn.to/4vaA7Q6"
+      }
+    ],
+    "KNIFE": [
+      {
+        "from": "2026-12-02",
         "slug": "fourth-wing",
         "title": "Fourth Wing",
         "author": "Rebecca Yarros",
