@@ -231,7 +231,7 @@
     "HAZEL",
     "BRAID",
     "SIREN",
-    "BRIBE",
+    "BOOTS",
     "PROWL",
     "GROVE",
     "MARKS",
@@ -399,7 +399,8 @@
     "DOVES",
     "VEILS",
     "SOOTH",
-    "COVEN"
+    "COVEN",
+    "BRIBE"
   ],
   "wordBooks": {
     "COURT": {
@@ -3238,6 +3239,13 @@
       "buyUrl": "https://amzn.to/4vaA7Q6"
     },
     "MARKS": {
+      "slug": "fourth-wing",
+      "title": "Fourth Wing",
+      "author": "Rebecca Yarros",
+      "cover": "/booky/covers/fourth-wing.jpg",
+      "buyUrl": "https://amzn.to/4vaA7Q6"
+    },
+    "BOOTS": {
       "slug": "fourth-wing",
       "title": "Fourth Wing",
       "author": "Rebecca Yarros",
